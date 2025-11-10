@@ -18,7 +18,10 @@ import Dashboard from "@/pages/Dashboard";
 import Profile from "@/pages/Profile";
 import Subscription from "@/pages/Subscription";
 import Settings from "@/pages/Settings";
-import Notes from "@/pages/Notes";
+import Notes from "@/pages/notes";
+import CreateNote from "./pages/notes/CreateNote";
+import ViewNote from "./pages/notes/ViewNote";
+import EditNote from "./pages/notes/EditNote";
 import UserManagement from "@/pages/admin/UserManagement";
 
 // Routes
@@ -109,6 +112,33 @@ function App() {
           element={
             <ProtectedRoute>
               <Notes />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/notes/new"
+          element={
+            <ProtectedRoute>
+              <CreateNote />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/notes/:id"
+          element={
+            <ProtectedRoute>
+              <ViewNote />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/notes/:id/edit"
+          element={
+            <ProtectedRoute>
+              <EditNote />
             </ProtectedRoute>
           }
         />

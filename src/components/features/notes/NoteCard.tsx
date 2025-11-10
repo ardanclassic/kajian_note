@@ -1,6 +1,7 @@
 /**
- * NoteCard Component - FIXED
- * Display note summary in card format (no routing, use onClick)
+ * NoteCard Component - UPDATED
+ * Display note summary in card format with onClick support
+ * Path: src/components/features/notes/NoteCard.tsx
  */
 
 import { useState } from "react";
@@ -18,10 +19,10 @@ interface NoteCardProps {
   showActions?: boolean;
   isOwner?: boolean;
   isPinnable?: boolean; // Admin/panitia can pin
+  onClick?: (note: NoteSummary) => void; // NEW: Handle card click for view
   onEdit?: (note: NoteSummary) => void;
   onDelete?: (noteId: string) => void;
   onTogglePin?: (noteId: string, isPinned: boolean) => void;
-  onClick?: (note: NoteSummary) => void; // Handle card click
 }
 
 export function NoteCard({
@@ -30,10 +31,10 @@ export function NoteCard({
   showActions = false,
   isOwner = false,
   isPinnable = false,
+  onClick, // NEW
   onEdit,
   onDelete,
   onTogglePin,
-  onClick,
 }: NoteCardProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPinning, setIsPinning] = useState(false);
@@ -44,13 +45,10 @@ export function NoteCard({
     locale: idLocale,
   });
 
-  // Handle card click
+  // Handle card click - UPDATED
   const handleCardClick = () => {
     if (onClick) {
-      onClick(note);
-    } else if (onEdit) {
-      // Default: open edit if no onClick provided
-      onEdit(note);
+      onClick(note); // Use onClick for view if provided
     }
   };
 

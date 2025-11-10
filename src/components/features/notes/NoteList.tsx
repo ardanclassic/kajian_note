@@ -1,6 +1,7 @@
 /**
- * NoteList Component
- * Display list of notes with pagination
+ * NoteList Component - UPDATED
+ * Display list of notes with pagination and onClick support
+ * Path: src/components/features/notes/NoteList.tsx
  */
 
 import { NoteCard } from "./NoteCard";
@@ -14,6 +15,7 @@ interface NoteListProps {
   showAuthor?: boolean;
   showActions?: boolean;
   isPinnable?: boolean;
+  onClick?: (note: NoteSummary) => void; // NEW: Handle card click
   onEdit?: (note: NoteSummary) => void;
   onDelete?: (noteId: string) => void;
   onTogglePin?: (noteId: string, isPinned: boolean) => void;
@@ -34,6 +36,7 @@ export function NoteList({
   showAuthor = false,
   showActions = false,
   isPinnable = false,
+  onClick, // NEW
   onEdit,
   onDelete,
   onTogglePin,
@@ -73,6 +76,7 @@ export function NoteList({
                 showActions={showActions}
                 isOwner={currentUserId === note.userId}
                 isPinnable={isPinnable}
+                onClick={onClick}
                 onEdit={onEdit}
                 onDelete={onDelete}
                 onTogglePin={onTogglePin}
@@ -97,6 +101,7 @@ export function NoteList({
                 showActions={showActions}
                 isOwner={currentUserId === note.userId}
                 isPinnable={isPinnable}
+                onClick={onClick} // NEW: Pass onClick
                 onEdit={onEdit}
                 onDelete={onDelete}
                 onTogglePin={onTogglePin}
