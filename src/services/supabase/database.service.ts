@@ -1,6 +1,6 @@
 /**
- * Database Service - OPTIMIZED
- * General database utility functions with caching & deduplication
+ * Database Service - FIXED Error Handling
+ * General database utility functions with proper error propagation
  */
 
 import { supabase } from "@/lib/supabase";
@@ -19,6 +19,23 @@ const cache = new Map<string, { data: any; timestamp: number }>();
 const pendingRequests = new Map<string, Promise<any>>();
 
 /**
+ * Request timeout (10 seconds)
+ */
+const REQUEST_TIMEOUT = 10000;
+
+/**
+ * Custom error class for auth errors
+ */
+class AuthError extends Error {
+  statusCode: number;
+  constructor(message: string, statusCode: number) {
+    super(message);
+    this.name = "AuthError";
+    this.statusCode = statusCode;
+  }
+}
+
+/**
  * Generate cache key
  */
 const getCacheKey = (operation: string, params: any[]): string => {
@@ -33,12 +50,65 @@ const isCacheValid = (timestamp: number): boolean => {
 };
 
 /**
+ * Check if error is auth-related (401/403)
+ */
+const isAuthError = (error: any): boolean => {
+  return (
+    error?.code === "PGRST301" || // JWT expired
+    error?.code === "PGRST302" || // JWT invalid
+    error?.message?.includes("JWT") ||
+    error?.message?.includes("expired") ||
+    error?.message?.includes("unauthorized") ||
+    error?.status === 401 ||
+    error?.status === 403
+  );
+};
+
+/**
+ * Wrap async function with timeout
+ */
+const withTimeout = <T>(promise: Promise<T>, ms: number = REQUEST_TIMEOUT): Promise<T> => {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error("Request timeout")), ms)),
+  ]);
+};
+
+/**
+ * Handle database errors properly
+ */
+const handleDatabaseError = (error: any, operation: string, table: string): never => {
+  console.error(`Database error [${operation}] on ${table}:`, error);
+
+  // Check if auth error
+  if (isAuthError(error)) {
+    throw new AuthError("Sesi Anda telah berakhir. Silakan login kembali.", 401);
+  }
+
+  // Check for common errors
+  if (error?.code === "PGRST116") {
+    throw new Error("Data tidak ditemukan");
+  }
+
+  if (error?.code === "23505") {
+    throw new Error("Data sudah ada");
+  }
+
+  if (error?.code === "23503") {
+    throw new Error("Data terkait tidak ditemukan");
+  }
+
+  // Generic error
+  throw new Error(error?.message || `Gagal ${operation} ${table}`);
+};
+
+/**
  * Get from cache or execute
  */
 const cacheOrExecute = async <T>(key: string, executor: () => Promise<T>, skipCache: boolean = false): Promise<T> => {
   // Skip cache if requested
   if (skipCache) {
-    return executor();
+    return withTimeout(executor());
   }
 
   // Check cache
@@ -54,7 +124,7 @@ const cacheOrExecute = async <T>(key: string, executor: () => Promise<T>, skipCa
   }
 
   // Execute and cache
-  const promise = executor()
+  const promise = withTimeout(executor())
     .then((data) => {
       cache.set(key, { data, timestamp: Date.now() });
       pendingRequests.delete(key);
@@ -98,15 +168,17 @@ export const getById = async <T extends TableName>(
   return cacheOrExecute(
     cacheKey,
     async () => {
-      try {
-        const { data, error } = await supabase.from(table).select("*").eq("id", id).single();
+      const { data, error } = await supabase.from(table).select("*").eq("id", id).single();
 
-        if (error) throw error;
-        return data;
-      } catch (error: any) {
-        console.error(`Error getting ${table} by ID:`, error);
-        return null;
+      if (error) {
+        // Allow PGRST116 (not found) to return null
+        if (error.code === "PGRST116") {
+          return null;
+        }
+        handleDatabaseError(error, "get", table);
       }
+
+      return data;
     },
     skipCache
   );
@@ -129,25 +201,25 @@ export const getAll = async <T extends TableName>(
   return cacheOrExecute(
     cacheKey,
     async () => {
-      try {
-        let query = supabase.from(table).select("*");
+      let query = supabase.from(table).select("*");
 
-        if (options?.orderBy) {
-          query = query.order(options.orderBy, { ascending: options.ascending ?? true });
-        }
-
-        if (options?.limit) {
-          query = query.limit(options.limit);
-        }
-
-        const { data, error } = await query;
-
-        if (error) throw error;
-        return data || [];
-      } catch (error: any) {
-        console.error(`Error getting all ${table}:`, error);
-        return [];
+      if (options?.orderBy) {
+        query = query.order(options.orderBy, {
+          ascending: options.ascending ?? true,
+        });
       }
+
+      if (options?.limit) {
+        query = query.limit(options.limit);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        handleDatabaseError(error, "getAll", table);
+      }
+
+      return data || [];
     },
     skipCache
   );
@@ -159,20 +231,22 @@ export const getAll = async <T extends TableName>(
 export const create = async <T extends TableName>(
   table: T,
   data: Database["public"]["Tables"][T]["Insert"]
-): Promise<Database["public"]["Tables"][T]["Row"] | null> => {
-  try {
-    const { data: record, error } = await supabase.from(table).insert(data).select().single();
+): Promise<Database["public"]["Tables"][T]["Row"]> => {
+  // const { data: record, error } = await withTimeout(supabase.from(table).insert(data).select().single());
+  const { data: record, error } = await supabase.from(table).insert(data).select().single();
 
-    if (error) throw error;
-
-    // Clear cache for this table
-    clearCache(table);
-
-    return record;
-  } catch (error: any) {
-    console.error(`Error creating ${table}:`, error);
-    throw new Error(error.message || `Gagal membuat ${table}`);
+  if (error) {
+    handleDatabaseError(error, "create", table);
   }
+
+  if (!record) {
+    throw new Error(`Gagal membuat ${table}`);
+  }
+
+  // Clear cache for this table
+  clearCache(table);
+
+  return record;
 };
 
 /**
@@ -182,39 +256,39 @@ export const update = async <T extends TableName>(
   table: T,
   id: string,
   data: Database["public"]["Tables"][T]["Update"]
-): Promise<Database["public"]["Tables"][T]["Row"] | null> => {
-  try {
-    const { data: record, error } = await supabase.from(table).update(data).eq("id", id).select().single();
+): Promise<Database["public"]["Tables"][T]["Row"]> => {
+  // const { data: record, error } = await withTimeout(supabase.from(table).update(data).eq("id", id).select().single());
+  const { data: record, error } = await supabase.from(table).update(data).eq("id", id).select().single();
 
-    if (error) throw error;
-
-    // Clear cache for this table
-    clearCache(table);
-
-    return record;
-  } catch (error: any) {
-    console.error(`Error updating ${table}:`, error);
-    throw new Error(error.message || `Gagal mengubah ${table}`);
+  if (error) {
+    handleDatabaseError(error, "update", table);
   }
+
+  if (!record) {
+    throw new Error(`Gagal mengubah ${table}`);
+  }
+
+  // Clear cache for this table
+  clearCache(table);
+
+  return record;
 };
 
 /**
  * Delete record by ID
  */
 export const deleteById = async <T extends TableName>(table: T, id: string): Promise<boolean> => {
-  try {
-    const { error } = await supabase.from(table).delete().eq("id", id);
+  // const { error } = await withTimeout(supabase.from(table).delete().eq("id", id));
+  const { error } = await supabase.from(table).delete().eq("id", id);
 
-    if (error) throw error;
-
-    // Clear cache for this table
-    clearCache(table);
-
-    return true;
-  } catch (error: any) {
-    console.error(`Error deleting ${table}:`, error);
-    throw new Error(error.message || `Gagal menghapus ${table}`);
+  if (error) {
+    handleDatabaseError(error, "delete", table);
   }
+
+  // Clear cache for this table
+  clearCache(table);
+
+  return true;
 };
 
 /**
@@ -230,23 +304,21 @@ export const count = async <T extends TableName>(
   return cacheOrExecute(
     cacheKey,
     async () => {
-      try {
-        let query = supabase.from(table).select("*", { count: "exact", head: true });
+      let query = supabase.from(table).select("*", { count: "exact", head: true });
 
-        if (filters) {
-          Object.entries(filters).forEach(([key, value]) => {
-            query = query.eq(key, value);
-          });
-        }
-
-        const { count, error } = await query;
-
-        if (error) throw error;
-        return count || 0;
-      } catch (error: any) {
-        console.error(`Error counting ${table}:`, error);
-        return 0;
+      if (filters) {
+        Object.entries(filters).forEach(([key, value]) => {
+          query = query.eq(key, value);
+        });
       }
+
+      const { count, error } = await query;
+
+      if (error) {
+        handleDatabaseError(error, "count", table);
+      }
+
+      return count || 0;
     },
     skipCache
   );
@@ -265,19 +337,24 @@ export const exists = async <T extends TableName>(
   return cacheOrExecute(
     cacheKey,
     async () => {
-      try {
-        let query = supabase.from(table).select("id", { head: true });
+      let query = supabase.from(table).select("id", { head: true });
 
-        Object.entries(filters).forEach(([key, value]) => {
-          query = query.eq(key, value);
-        });
+      Object.entries(filters).forEach(([key, value]) => {
+        query = query.eq(key, value);
+      });
 
-        const { error } = await query.single();
+      const { error } = await query.single();
 
-        return !error;
-      } catch (error: any) {
+      // PGRST116 = not found, so return false
+      if (error?.code === "PGRST116") {
         return false;
       }
+
+      if (error) {
+        handleDatabaseError(error, "exists", table);
+      }
+
+      return true;
     },
     skipCache
   );
@@ -290,19 +367,17 @@ export const batchCreate = async <T extends TableName>(
   table: T,
   dataArray: Database["public"]["Tables"][T]["Insert"][]
 ): Promise<Database["public"]["Tables"][T]["Row"][]> => {
-  try {
-    const { data, error } = await supabase.from(table).insert(dataArray).select();
+  // const { data, error } = await withTimeout(supabase.from(table).insert(dataArray).select());
+  const { data, error } = await supabase.from(table).insert(dataArray).select();
 
-    if (error) throw error;
-
-    // Clear cache for this table
-    clearCache(table);
-
-    return data || [];
-  } catch (error: any) {
-    console.error(`Error batch creating ${table}:`, error);
-    throw new Error(error.message || `Gagal membuat ${table}`);
+  if (error) {
+    handleDatabaseError(error, "batchCreate", table);
   }
+
+  // Clear cache for this table
+  clearCache(table);
+
+  return data || [];
 };
 
 /**
@@ -312,38 +387,31 @@ export const batchUpdate = async <T extends TableName>(
   table: T,
   updates: Array<{ id: string; data: Database["public"]["Tables"][T]["Update"] }>
 ): Promise<boolean> => {
-  try {
-    const promises = updates.map(({ id, data }) => update(table, id, data));
+  const promises = updates.map(({ id, data }) => update(table, id, data));
 
-    await Promise.all(promises);
+  await Promise.all(promises);
 
-    // Clear cache for this table
-    clearCache(table);
+  // Clear cache for this table
+  clearCache(table);
 
-    return true;
-  } catch (error: any) {
-    console.error(`Error batch updating ${table}:`, error);
-    throw new Error(error.message || `Gagal mengubah ${table}`);
-  }
+  return true;
 };
 
 /**
  * Batch delete records
  */
 export const batchDelete = async <T extends TableName>(table: T, ids: string[]): Promise<boolean> => {
-  try {
-    const { error } = await supabase.from(table).delete().in("id", ids);
+  // const { error } = await withTimeout(supabase.from(table).delete().in("id", ids));
+  const { error } = await supabase.from(table).delete().in("id", ids);
 
-    if (error) throw error;
-
-    // Clear cache for this table
-    clearCache(table);
-
-    return true;
-  } catch (error: any) {
-    console.error(`Error batch deleting ${table}:`, error);
-    throw new Error(error.message || `Gagal menghapus ${table}`);
+  if (error) {
+    handleDatabaseError(error, "batchDelete", table);
   }
+
+  // Clear cache for this table
+  clearCache(table);
+
+  return true;
 };
 
 /**
@@ -371,52 +439,43 @@ export const paginate = async <T extends TableName>(
   return cacheOrExecute(
     cacheKey,
     async () => {
-      try {
-        const { page, pageSize, orderBy, ascending, filters } = options;
-        const from = (page - 1) * pageSize;
-        const to = from + pageSize - 1;
+      const { page, pageSize, orderBy, ascending, filters } = options;
+      const from = (page - 1) * pageSize;
+      const to = from + pageSize - 1;
 
-        // Build query
-        let query = supabase.from(table).select("*", { count: "exact" });
+      // Build query
+      let query = supabase.from(table).select("*", { count: "exact" });
 
-        // Apply filters
-        if (filters) {
-          Object.entries(filters).forEach(([key, value]) => {
-            if (value !== undefined && value !== null) {
-              query = query.eq(key, value);
-            }
-          });
-        }
-
-        // Apply ordering
-        if (orderBy) {
-          query = query.order(orderBy, { ascending: ascending ?? true });
-        }
-
-        // Apply pagination
-        query = query.range(from, to);
-
-        const { data, error, count } = await query;
-
-        if (error) throw error;
-
-        return {
-          data: data || [],
-          total: count || 0,
-          page,
-          pageSize,
-          totalPages: Math.ceil((count || 0) / pageSize),
-        };
-      } catch (error: any) {
-        console.error(`Error paginating ${table}:`, error);
-        return {
-          data: [],
-          total: 0,
-          page: options.page,
-          pageSize: options.pageSize,
-          totalPages: 0,
-        };
+      // Apply filters
+      if (filters) {
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value !== undefined && value !== null) {
+            query = query.eq(key, value);
+          }
+        });
       }
+
+      // Apply ordering
+      if (orderBy) {
+        query = query.order(orderBy, { ascending: ascending ?? true });
+      }
+
+      // Apply pagination
+      query = query.range(from, to);
+
+      const { data, error, count } = await query;
+
+      if (error) {
+        handleDatabaseError(error, "paginate", table);
+      }
+
+      return {
+        data: data || [],
+        total: count || 0,
+        page,
+        pageSize,
+        totalPages: Math.ceil((count || 0) / pageSize),
+      };
     },
     skipCache
   );
@@ -441,25 +500,25 @@ export const search = async <T extends TableName>(
   return cacheOrExecute(
     cacheKey,
     async () => {
-      try {
-        let searchQuery = supabase.from(table).select("*").ilike(field, `%${query}%`);
+      let searchQuery = supabase.from(table).select("*").ilike(field, `%${query}%`);
 
-        if (options?.orderBy) {
-          searchQuery = searchQuery.order(options.orderBy, { ascending: options.ascending ?? true });
-        }
-
-        if (options?.limit) {
-          searchQuery = searchQuery.limit(options.limit);
-        }
-
-        const { data, error } = await searchQuery;
-
-        if (error) throw error;
-        return data || [];
-      } catch (error: any) {
-        console.error(`Error searching ${table}:`, error);
-        return [];
+      if (options?.orderBy) {
+        searchQuery = searchQuery.order(options.orderBy, {
+          ascending: options.ascending ?? true,
+        });
       }
+
+      if (options?.limit) {
+        searchQuery = searchQuery.limit(options.limit);
+      }
+
+      const { data, error } = await searchQuery;
+
+      if (error) {
+        handleDatabaseError(error, "search", table);
+      }
+
+      return data || [];
     },
     skipCache
   );
@@ -483,34 +542,34 @@ export const getWhere = async <T extends TableName>(
   return cacheOrExecute(
     cacheKey,
     async () => {
-      try {
-        let query = supabase.from(table).select("*");
+      let query = supabase.from(table).select("*");
 
-        // Apply filters
-        Object.entries(filters).forEach(([key, value]) => {
-          if (value !== undefined && value !== null) {
-            query = query.eq(key, value);
-          }
+      // Apply filters
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          query = query.eq(key, value);
+        }
+      });
+
+      // Apply ordering
+      if (options?.orderBy) {
+        query = query.order(options.orderBy, {
+          ascending: options.ascending ?? true,
         });
-
-        // Apply ordering
-        if (options?.orderBy) {
-          query = query.order(options.orderBy, { ascending: options.ascending ?? true });
-        }
-
-        // Apply limit
-        if (options?.limit) {
-          query = query.limit(options.limit);
-        }
-
-        const { data, error } = await query;
-
-        if (error) throw error;
-        return data || [];
-      } catch (error: any) {
-        console.error(`Error getting ${table} where:`, error);
-        return [];
       }
+
+      // Apply limit
+      if (options?.limit) {
+        query = query.limit(options.limit);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        handleDatabaseError(error, "getWhere", table);
+      }
+
+      return data || [];
     },
     skipCache
   );
@@ -520,36 +579,37 @@ export const getWhere = async <T extends TableName>(
  * Soft delete (set is_active = false)
  */
 export const softDelete = async (table: "users", id: string): Promise<boolean> => {
-  try {
-    const { error } = await supabase.from(table).update({ is_active: false }).eq("id", id);
+  // const { error } = await withTimeout(supabase.from(table).update({ is_active: false }).eq("id", id));
+  const { error } = await supabase.from(table).update({ is_active: false }).eq("id", id);
 
-    if (error) throw error;
-
-    // Clear cache for this table
-    clearCache(table);
-
-    return true;
-  } catch (error: any) {
-    console.error(`Error soft deleting ${table}:`, error);
-    throw new Error(error.message || `Gagal menghapus ${table}`);
+  if (error) {
+    handleDatabaseError(error, "softDelete", table);
   }
+
+  // Clear cache for this table
+  clearCache(table);
+
+  return true;
 };
 
 /**
  * Restore soft deleted record
  */
 export const restore = async (table: "users", id: string): Promise<boolean> => {
-  try {
-    const { error } = await supabase.from(table).update({ is_active: true }).eq("id", id);
+  // const { error } = await withTimeout(supabase.from(table).update({ is_active: true }).eq("id", id));
+  const { error } = await supabase.from(table).update({ is_active: true }).eq("id", id);
 
-    if (error) throw error;
-
-    // Clear cache for this table
-    clearCache(table);
-
-    return true;
-  } catch (error: any) {
-    console.error(`Error restoring ${table}:`, error);
-    throw new Error(error.message || `Gagal mengembalikan ${table}`);
+  if (error) {
+    handleDatabaseError(error, "restore", table);
   }
+
+  // Clear cache for this table
+  clearCache(table);
+
+  return true;
 };
+
+/**
+ * Export AuthError for catching in stores
+ */
+export { AuthError };

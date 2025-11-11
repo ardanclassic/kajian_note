@@ -1,161 +1,31 @@
 /**
- * App Component - OPTIMIZED with Global Initializer
- * Main application component with routing
+ * App Component - MINIMAL VERSION
+ * Only handle auth initialization, no data loading
  */
 
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
-import { useSubscriptionStore } from "@/store/subscriptionStore";
-import { useNotesStore } from "@/store/notesStore";
 import { Loading } from "@/components/common/Loading";
-
-// Pages
-import { Home } from "@/pages/Home";
-import { Login } from "@/pages/Login";
-import { Register } from "@/pages/Register";
-import Dashboard from "@/pages/Dashboard";
-import Profile from "@/pages/Profile";
-import Subscription from "@/pages/Subscription";
-import Settings from "@/pages/Settings";
-import Notes from "@/pages/notes";
-import CreateNote from "./pages/notes/CreateNote";
-import ViewNote from "./pages/notes/ViewNote";
-import EditNote from "./pages/notes/EditNote";
-import UserManagement from "@/pages/admin/UserManagement";
-
-// Routes
-import { ProtectedRoute } from "@/routes/ProtectedRoute";
-import { RoleBasedRoute } from "@/routes/RoleBasedRoute";
+import { AppRoutes } from "@/routes";
 
 function App() {
-  const { user, isAuthenticated, isLoading, initialize } = useAuthStore();
-  const { fetchUsage } = useSubscriptionStore();
-  const { fetchUserNotes, fetchStatistics, fetchUserTags } = useNotesStore();
+  const { isLoading, initialize } = useAuthStore();
 
-  // ✅ Initialize auth state on mount (only once)
+  // Initialize auth ONCE on mount
   useEffect(() => {
     initialize();
-  }, []);
+  }, []); // Empty deps = run once
 
-  // ✅ GLOBAL INITIALIZER: Fetch all user data once after auth
-  useEffect(() => {
-    if (isAuthenticated && user?.id) {
-      console.log("🚀 Global Initializer: Fetching user data...");
-
-      // Fetch all data in parallel (only once on mount)
-      Promise.all([
-        fetchUsage(user.id),
-        fetchUserNotes(user.id, 1, undefined, { field: "createdAt", order: "desc" }),
-        fetchStatistics(user.id),
-        fetchUserTags(user.id),
-      ])
-        .then(() => {
-          console.log("✅ Global Initializer: All data loaded");
-        })
-        .catch((error) => {
-          console.error("❌ Global Initializer: Error loading data", error);
-        });
-    }
-  }, [isAuthenticated, user?.id]); // Only run when auth state changes
-
-  // Show loading while checking auth session
+  // Show loading only during initial auth check
   if (isLoading) {
     return <Loading fullscreen text="Memuat..." />;
   }
 
+  // Render app routes
   return (
     <BrowserRouter>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />} />
-        <Route path="/register" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Register />} />
-
-        {/* Protected Routes */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/subscription"
-          element={
-            <ProtectedRoute>
-              <Subscription />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <Settings />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Notes Routes */}
-        <Route
-          path="/notes"
-          element={
-            <ProtectedRoute>
-              <Notes />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/notes/new"
-          element={
-            <ProtectedRoute>
-              <CreateNote />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/notes/:id"
-          element={
-            <ProtectedRoute>
-              <ViewNote />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/notes/:id/edit"
-          element={
-            <ProtectedRoute>
-              <EditNote />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Admin Only Routes */}
-        <Route
-          path="/admin/users"
-          element={
-            <RoleBasedRoute allowedRoles={["admin"]}>
-              <UserManagement />
-            </RoleBasedRoute>
-          }
-        />
-
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <AppRoutes />
     </BrowserRouter>
   );
 }

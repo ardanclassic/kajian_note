@@ -1,15 +1,15 @@
 /**
- * Auth Store (Zustand) - FIXED
- * Global state management for authentication
+ * Auth Store - SIMPLE VERSION
+ * Back to basics, minimal complexity
  */
 
 import { create } from "zustand";
 import { supabase } from "@/lib/supabase";
 import * as authService from "@/services/supabase/auth.service";
 import type { LoginCredentials, RegisterData, ChangePINData, UserProfile, AuthState } from "@/types/auth.types";
+import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
 
 interface AuthStore extends AuthState {
-  // Actions
   login: (credentials: LoginCredentials) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
@@ -17,31 +17,60 @@ interface AuthStore extends AuthState {
   changePIN: (data: ChangePINData) => Promise<void>;
   clearError: () => void;
   setUser: (user: UserProfile | null) => void;
-  initialize: () => Promise<void>; // ✅ NEW: Initialize auth state
+  initialize: () => Promise<void>;
 }
 
+let authListenerUnsubscribe: (() => void) | null = null;
+
 /**
- * Auth store
+ * Setup auth listener - SIMPLE
+ */
+const setupAuthListener = (set: any) => {
+  if (authListenerUnsubscribe) {
+    authListenerUnsubscribe();
+    authListenerUnsubscribe = null;
+  }
+
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session: Session | null) => {
+    console.log("🔔 Auth event:", event);
+
+    if (event === "SIGNED_OUT") {
+      set({ user: null, isAuthenticated: false });
+    } else if (event === "TOKEN_REFRESHED" || event === "USER_UPDATED") {
+      // Silently update user data
+      const user = await authService.getCurrentUserProfile();
+      if (user) {
+        set({ user });
+      }
+    }
+  });
+
+  authListenerUnsubscribe = () => subscription.unsubscribe();
+};
+
+/**
+ * Auth Store
  */
 export const useAuthStore = create<AuthStore>()((set, get) => ({
-  // Initial state
   user: null,
   isAuthenticated: false,
-  isLoading: true, // ✅ FIX: Start with loading = true
+  isLoading: true,
   error: null,
 
-  // ✅ NEW: Initialize auth state from Supabase session
+  /**
+   * Initialize - Check session once
+   */
   initialize: async () => {
-    try {
-      set({ isLoading: true });
+    console.log("🚀 Initializing auth...");
 
-      // Get current session from Supabase
+    try {
       const {
         data: { session },
       } = await supabase.auth.getSession();
 
       if (session?.user) {
-        // Session exists, get user profile
         const user = await authService.getCurrentUserProfile();
 
         if (user) {
@@ -49,54 +78,26 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
             user,
             isAuthenticated: true,
             isLoading: false,
-            error: null,
           });
-        } else {
-          // Session exists but profile not found
-          set({
-            user: null,
-            isAuthenticated: false,
-            isLoading: false,
-            error: null,
-          });
+
+          // Setup listener AFTER successful init
+          setupAuthListener(set);
+
+          console.log("✅ Auth initialized:", user.username);
+          return;
         }
-      } else {
-        // No session
-        set({
-          user: null,
-          isAuthenticated: false,
-          isLoading: false,
-          error: null,
-        });
       }
 
-      // ✅ Setup auth state listener
-      supabase.auth.onAuthStateChange(async (event, session) => {
-        console.log("Auth state changed:", event);
-
-        if (event === "SIGNED_IN" && session?.user) {
-          // User signed in
-          const user = await authService.getCurrentUserProfile();
-          set({
-            user,
-            isAuthenticated: true,
-            error: null,
-          });
-        } else if (event === "SIGNED_OUT") {
-          // User signed out
-          set({
-            user: null,
-            isAuthenticated: false,
-            error: null,
-          });
-        } else if (event === "TOKEN_REFRESHED") {
-          // Token refreshed, update user data
-          const user = await authService.getCurrentUserProfile();
-          set({ user });
-        }
+      // No session or no user
+      set({
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
       });
+
+      console.log("ℹ️ No active session");
     } catch (error: any) {
-      console.error("Initialize error:", error);
+      console.error("❌ Init error:", error);
       set({
         user: null,
         isAuthenticated: false,
@@ -106,147 +107,136 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
     }
   },
 
-  // Login
+  /**
+   * Login
+   */
   login: async (credentials: LoginCredentials) => {
     try {
       set({ isLoading: true, error: null });
 
-      const { user, session } = await authService.login(credentials);
+      const { user } = await authService.login(credentials);
 
       set({
         user,
         isAuthenticated: true,
         isLoading: false,
-        error: null,
       });
+
+      // Setup listener after login
+      setupAuthListener(set);
+
+      console.log("✅ Login:", user.username);
     } catch (error: any) {
       set({
         user: null,
         isAuthenticated: false,
         isLoading: false,
-        error: error.message || "Gagal login",
+        error: error.message,
       });
       throw error;
     }
   },
 
-  // Register
+  /**
+   * Register
+   */
   register: async (data: RegisterData) => {
     try {
       set({ isLoading: true, error: null });
 
-      const { user, session } = await authService.register(data);
+      const { user } = await authService.register(data);
 
       set({
         user,
         isAuthenticated: true,
         isLoading: false,
-        error: null,
       });
+
+      // Setup listener after register
+      setupAuthListener(set);
+
+      console.log("✅ Register:", user.username);
     } catch (error: any) {
       set({
         user: null,
         isAuthenticated: false,
         isLoading: false,
-        error: error.message || "Gagal mendaftar",
+        error: error.message,
       });
       throw error;
     }
   },
 
-  // Logout
+  /**
+   * Logout
+   */
   logout: async () => {
     try {
-      set({ isLoading: true });
-
       await authService.logout();
+
+      // Cleanup listener
+      if (authListenerUnsubscribe) {
+        authListenerUnsubscribe();
+        authListenerUnsubscribe = null;
+      }
 
       set({
         user: null,
         isAuthenticated: false,
-        isLoading: false,
         error: null,
       });
+
+      console.log("✅ Logout");
     } catch (error: any) {
-      set({
-        isLoading: false,
-        error: error.message || "Gagal logout",
-      });
+      set({ error: error.message });
       throw error;
     }
   },
 
-  // Refresh user data
+  /**
+   * Refresh user
+   */
   refreshUser: async () => {
     try {
-      set({ isLoading: true, error: null });
-
       const user = await authService.getCurrentUserProfile();
 
       if (user) {
-        set({
-          user,
-          isAuthenticated: true,
-          isLoading: false,
-          error: null,
-        });
+        set({ user, isAuthenticated: true });
       } else {
-        set({
-          user: null,
-          isAuthenticated: false,
-          isLoading: false,
-          error: null,
-        });
+        set({ user: null, isAuthenticated: false });
       }
     } catch (error: any) {
-      set({
-        isLoading: false,
-        error: error.message || "Gagal memuat user",
-      });
+      console.error("Refresh error:", error);
+      set({ error: error.message });
     }
   },
 
-  // Change PIN
+  /**
+   * Change PIN
+   */
   changePIN: async (data: ChangePINData) => {
     try {
       set({ isLoading: true, error: null });
 
       await authService.changePIN(data);
-
-      // Refresh user data
       await get().refreshUser();
 
-      set({ isLoading: false, error: null });
+      set({ isLoading: false });
     } catch (error: any) {
       set({
         isLoading: false,
-        error: error.message || "Gagal mengubah PIN",
+        error: error.message,
       });
       throw error;
     }
   },
 
-  // Clear error
-  clearError: () => {
-    set({ error: null });
-  },
+  clearError: () => set({ error: null }),
 
-  // Set user manually (for updates from other stores)
-  setUser: (user: UserProfile | null) => {
-    set({
-      user,
-      isAuthenticated: !!user,
-    });
-  },
+  setUser: (user: UserProfile | null) => set({ user, isAuthenticated: !!user }),
 }));
 
-/**
- * Selectors
- */
 export const selectUser = (state: AuthStore) => state.user;
 export const selectIsAuthenticated = (state: AuthStore) => state.isAuthenticated;
 export const selectIsLoading = (state: AuthStore) => state.isLoading;
 export const selectError = (state: AuthStore) => state.error;
-export const selectUserRole = (state: AuthStore) => state.user?.role;
-export const selectSubscriptionTier = (state: AuthStore) => state.user?.subscriptionTier;
-export const selectForcePasswordChange = (state: AuthStore) => state.user?.forcePasswordChange;

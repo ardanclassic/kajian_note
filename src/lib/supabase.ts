@@ -1,46 +1,29 @@
 /**
- * Supabase Client Configuration (FIXED)
- * Initializes and exports Supabase client instance
+ * Supabase Client Configuration - SIMPLE VERSION
+ * Back to basics, no complex reconnect logic
  */
 
 import { createClient } from "@supabase/supabase-js";
 import { env } from "@/config/env";
 
 /**
- * Supabase client instance
- * Used for all database and auth operations
+ * Create Supabase client - SIMPLE
  */
 export const supabase = createClient(env.supabase.url, env.supabase.anonKey, {
   auth: {
-    // Auto refresh tokens
     autoRefreshToken: true,
-
-    // Persist session in localStorage
     persistSession: true,
-
-    // Detect session from URL (for email confirmations, etc)
     detectSessionInUrl: true,
-
-    // ✅ FIX: Use default Supabase storage key
-    // Jangan override storage key, biar Supabase handle sendiri
-    // storageKey: "kajian-note-auth", // ❌ REMOVE THIS
-  },
-
-  // Global options
-  global: {
-    headers: {
-      "x-app-name": env.app.name,
-    },
-  },
-
-  // Database options
-  db: {
-    schema: "public",
   },
 });
 
+// Bind to window for debugging
+if (typeof window !== "undefined") {
+  (window as any).supabase = supabase;
+}
+
 /**
- * Get current authenticated user
+ * Get current user
  */
 export const getCurrentUser = async () => {
   const {
@@ -49,7 +32,7 @@ export const getCurrentUser = async () => {
   } = await supabase.auth.getUser();
 
   if (error) {
-    console.error("Error getting current user:", error);
+    console.error("Error getting user:", error);
     return null;
   }
 
@@ -74,7 +57,7 @@ export const getCurrentSession = async () => {
 };
 
 /**
- * Sign out current user
+ * Sign out
  */
 export const signOut = async () => {
   const { error } = await supabase.auth.signOut();
@@ -93,8 +76,7 @@ export const onAuthStateChange = (callback: (event: string, session: any) => voi
 };
 
 /**
- * Database Tables Type Helper
- * Useful for type-safe queries
+ * Database Types
  */
 export type Database = {
   public: {

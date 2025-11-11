@@ -1,8 +1,8 @@
 /**
- * Dashboard Page - IMPROVED UI/UX
- * Modern, clean design with better visual hierarchy
+ * Dashboard Page
  */
 
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
@@ -30,8 +30,17 @@ import {
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
-  const { currentSubscription, usage } = useSubscriptionStore();
-  const { userNotes, statistics } = useNotesStore();
+  const { currentSubscription, usage, fetchUsage } = useSubscriptionStore();
+  const { userNotes, statistics, fetchUserNotes, fetchStatistics } = useNotesStore();
+
+  // Fetch data on mount
+  useEffect(() => {
+    if (user?.id) {
+      fetchUserNotes(user.id);
+      fetchStatistics(user.id);
+      fetchUsage(user.id);
+    }
+  }, [user?.id, fetchUserNotes, fetchStatistics, fetchUsage]);
 
   const handleLogout = async () => {
     try {
@@ -93,13 +102,13 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
                 <BookOpen className="h-6 w-6" />
-                <h1 className="text-xl font-bold">Kajian Note</h1>
+                <h1 className="text-lg! font-bold">Kajian Notes</h1>
               </div>
             </div>
 
@@ -151,7 +160,7 @@ export default function Dashboard() {
                 })}
               </span>
             </div>
-            <h2 className="text-4xl font-bold">Assalamu'alaikum, {user.fullName}</h2>
+            <h2 className="text-xl font-bold">Assalamu'alaikum, {user.fullName}</h2>
             <div className="flex items-center gap-2">
               <Badge variant={getTierBadgeVariant(user.subscriptionTier)} className="text-xs">
                 {user.subscriptionTier.toUpperCase()}
@@ -207,7 +216,7 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <Button variant="outline" className="h-24 flex-col gap-2" onClick={() => navigate("/notes")}>
+                    <Button variant="outline" className="h-24 flex-col gap-2" onClick={() => navigate("/notes/new")}>
                       <Plus className="h-6 w-6" />
                       <span className="text-sm">Catatan Baru</span>
                     </Button>
@@ -247,7 +256,7 @@ export default function Dashboard() {
                         <div
                           key={note.id}
                           className="flex items-start gap-3 p-3 rounded-lg border hover:bg-accent cursor-pointer transition-colors"
-                          onClick={() => navigate(`/notes`)}
+                          onClick={() => navigate(`/notes/${note.id}`)}
                         >
                           <div className="p-2 bg-primary/10 rounded-lg shrink-0">
                             <FileText className="h-4 w-4 text-primary" />
@@ -278,7 +287,7 @@ export default function Dashboard() {
                       </div>
                       <p className="text-muted-foreground mb-2">Belum ada catatan</p>
                       <p className="text-sm text-muted-foreground mb-4">Mulai buat catatan kajian pertama Anda</p>
-                      <Button onClick={() => navigate("/notes")}>
+                      <Button onClick={() => navigate("/notes/new")}>
                         <Plus className="h-4 w-4 mr-2" />
                         Buat Catatan
                       </Button>
