@@ -81,6 +81,7 @@ export const register = async (data: RegisterData): Promise<RegisterResponse> =>
       user: {
         id: userProfile.id,
         email: userProfile.email,
+        paymentEmail: userProfile.payment_email,
         authUserId: userProfile.auth_user_id,
         username: userProfile.username,
         fullName: userProfile.full_name,
@@ -156,11 +157,11 @@ export const login = async (credentials: LoginCredentials): Promise<LoginRespons
 
     // 5. Update last login
     await supabase.from("users").update({ last_login_at: new Date().toISOString() }).eq("id", userProfile.id);
-
     return {
       user: {
         id: userProfile.id,
         email: userProfile.email,
+        paymentEmail: userProfile.payment_email,
         authUserId: userProfile.auth_user_id,
         username: userProfile.username,
         fullName: userProfile.full_name,
@@ -239,6 +240,7 @@ export const getCurrentUserProfile = async (): Promise<UserProfile | null> => {
     return {
       id: profile.id,
       email: profile.email,
+      paymentEmail: profile.payment_email,
       authUserId: profile.auth_user_id,
       username: profile.username,
       fullName: profile.full_name,

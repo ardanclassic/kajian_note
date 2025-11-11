@@ -84,7 +84,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
 
-      const updatedUser = await userService.updateProfile(userId, data);
+      const updatedUser = await userService.userService.updateProfile(userId, data);
 
       // Update auth store if updating current user
       const authUser = useAuthStore.getState().user;
@@ -113,7 +113,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
 
-      const updatedUser = await userService.updateUsername(userId, newUsername);
+      const updatedUser = await userService.userService.updateUsername(userId, newUsername);
 
       // Update auth store if updating current user
       const authUser = useAuthStore.getState().user;
@@ -139,7 +139,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
 
-      const stats = await userService.getUserStats(userId);
+      const stats = await userService.userService.getUserStats(userId);
 
       set({
         currentUserStats: stats,
@@ -158,7 +158,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
 
-      const changes = await userService.getProfileChanges(userId);
+      const changes = await userService.userService.getProfileChanges(userId);
 
       set({
         profileChanges: changes,
@@ -181,7 +181,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
       const currentFilters = filters || get().filters;
       const currentSort = sort || get().sort;
 
-      const result = await userService.getUsers(currentPage, get().pageSize, currentFilters, currentSort);
+      const result = await userService.userService.getUsers(currentPage, get().pageSize, currentFilters, currentSort);
 
       set({
         users: result.users,
@@ -205,7 +205,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
 
-      await userService.createUser(data, createdBy);
+      await userService.userService.createUser(data, createdBy);
 
       // Refresh users list
       await get().fetchUsers();
@@ -225,7 +225,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
 
-      await userService.updateUser(userId, data, changedBy);
+      await userService.userService.updateUser(userId, data, changedBy);
 
       // Refresh users list
       await get().fetchUsers();
@@ -245,7 +245,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
 
-      await userService.deleteUser(userId);
+      await userService.userService.deleteUser(userId);
 
       // Refresh users list
       await get().fetchUsers();
@@ -265,7 +265,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
 
-      await userService.restoreUser(userId);
+      await userService.userService.restoreUser(userId);
 
       // Refresh users list
       await get().fetchUsers();
@@ -285,7 +285,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
 
-      await userService.resetUserPIN(userId, newPin, resetBy);
+      await userService.userService.resetUserPIN(userId, newPin, resetBy);
 
       set({ isLoading: false });
     } catch (error: any) {
