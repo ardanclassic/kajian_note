@@ -1,8 +1,6 @@
 /**
- * Notes Page - FIXED TYPE ERRORS
+ * Notes Page - UPDATED with Back to Dashboard
  * List notes only - create/edit/view in separate pages
- * Path: src/pages/Notes.tsx
- * Route: /notes
  */
 
 import { useCallback, useEffect } from "react";
@@ -79,17 +77,17 @@ export default function Notes() {
     [user?.id, fetchUserNotes, setPage]
   );
 
-  // Handle create note - navigate to create page
+  // Handle create note
   const handleCreateNote = () => {
     navigate("/notes/new");
   };
 
-  // Handle view note - navigate to detail page
+  // Handle view note
   const handleViewNote = (note: NoteSummary) => {
     navigate(`/notes/${note.id}`);
   };
 
-  // Handle edit note - navigate to edit page
+  // Handle edit note
   const handleEditNote = (note: NoteSummary) => {
     navigate(`/notes/${note.id}/edit`);
   };
@@ -110,12 +108,15 @@ export default function Notes() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Page Header with Stats */}
+      {/* Page Header with Stats and Back Button */}
       <PageHeader
         badgeIcon={BookOpen}
         badgeText="Notes Management"
         title="Catatan Saya"
         description="Kelola dan organisir catatan kajian Anda dengan mudah"
+        showBackButton
+        backTo="/dashboard"
+        backLabel="Kembali ke Dashboard"
         actions={
           <Button onClick={handleCreateNote} size="lg">
             <Plus className="w-4 h-4 mr-2" />

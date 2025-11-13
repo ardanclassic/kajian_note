@@ -4,6 +4,24 @@
  */
 
 /**
+ * Note source type
+ */
+export type NoteSourceType = "manual" | "youtube";
+
+/**
+ * Note source metadata (for YouTube imports)
+ */
+export interface NoteSourceMetadata {
+  video_id?: string;
+  video_url?: string;
+  language_used?: string;
+  total_segments?: number;
+  has_ai_summary?: boolean;
+  model_used?: string;
+  imported_at?: string;
+}
+
+/**
  * Note
  */
 export interface Note {
@@ -16,6 +34,10 @@ export interface Note {
   tags: string[];
   createdAt: string;
   updatedAt: string;
+  // YouTube source fields
+  sourceType: NoteSourceType;
+  sourceUrl?: string | null;
+  sourceMetadata?: NoteSourceMetadata | null;
 }
 
 /**
@@ -43,6 +65,10 @@ export interface NoteSummary {
   tags: string[];
   createdAt: string;
   updatedAt: string;
+  // YouTube source fields
+  sourceType: NoteSourceType;
+  sourceUrl?: string | null;
+  sourceMetadata?: NoteSourceMetadata | null;
 }
 
 /**
@@ -53,6 +79,10 @@ export interface CreateNoteData {
   content: string;
   isPublic?: boolean;
   tags?: string[];
+  // YouTube source fields
+  sourceType?: NoteSourceType;
+  sourceUrl?: string;
+  sourceMetadata?: NoteSourceMetadata;
 }
 
 /**
@@ -64,6 +94,10 @@ export interface UpdateNoteData {
   isPublic?: boolean;
   isPinned?: boolean;
   tags?: string[];
+  // YouTube source fields (rarely updated)
+  sourceType?: NoteSourceType;
+  sourceUrl?: string;
+  sourceMetadata?: NoteSourceMetadata;
 }
 
 /**
@@ -75,6 +109,7 @@ export interface NoteFilterOptions {
   isPinned?: boolean;
   tags?: string[];
   search?: string;
+  sourceType?: NoteSourceType; // Filter by source
 }
 
 /**
@@ -110,6 +145,7 @@ export type NoteExportFormat = "pdf" | "word" | "markdown" | "text";
 export interface NoteExportOptions {
   format: NoteExportFormat;
   includeMetadata?: boolean;
+  includeSourceUrl?: boolean; // Include YouTube source if available
 }
 
 /**
@@ -122,4 +158,8 @@ export interface NoteStatistics {
   pinnedNotes: number;
   totalTags: number;
   uniqueTags: string[];
+  // Source statistics
+  manualNotes: number;
+  youtubeNotes: number;
+  aiSummaryNotes: number;
 }
