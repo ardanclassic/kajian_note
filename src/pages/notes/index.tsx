@@ -112,7 +112,7 @@ export default function Notes() {
       <PageHeader
         badgeIcon={BookOpen}
         badgeText="Notes Management"
-        title="Catatan Saya"
+        title="Catatan Kajian"
         description="Kelola dan organisir catatan kajian Anda dengan mudah"
         showBackButton
         backTo="/dashboard"
