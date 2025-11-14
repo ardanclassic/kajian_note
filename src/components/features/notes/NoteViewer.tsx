@@ -105,7 +105,7 @@ export function NoteViewer({
     <div className="space-y-6">
       {/* Title Section */}
       <div className="space-y-4">
-        <h1 className="text-3xl md:text-4xl font-bold leading-tight">{note.title}</h1>
+        <h1 className="text-3xl! md:text-[36px]! font-bold leading-tight">{note.title}</h1>
 
         {/* Metadata Bar */}
         {showMetadata && (
@@ -166,7 +166,7 @@ export function NoteViewer({
               </a>
             </div>
             {note.sourceMetadata?.has_ai_summary && (
-              <Badge variant="outline" className="text-xs border-yellow-300/50 text-yellow-500 dark:text-yellow-400">
+              <Badge variant="outline" className="hidden md:block text-xs border-yellow-300/50 text-yellow-500 dark:text-yellow-400">
                 AI Summary
               </Badge>
             )}
@@ -192,7 +192,7 @@ export function NoteViewer({
       <div className="border-t" />
 
       {/* Content Section - FIXED: Render HTML */}
-      <Card className="border-none shadow-none">
+      <Card className="border-none shadow-none bg-transparent">
         <CardContent className="p-0">
           <div className="prose-editor">
             <div className="ProseMirror" dangerouslySetInnerHTML={{ __html: processedContent }} />

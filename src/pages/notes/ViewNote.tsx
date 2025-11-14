@@ -252,7 +252,7 @@ export default function ViewNote() {
                       exit={{ opacity: 0, y: -10 }}
                       className="absolute right-0 mt-2 w-48 bg-background border rounded-lg shadow-lg overflow-hidden"
                     >
-                      <button
+                      {/* <button
                         onClick={handleExportPDF}
                         className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left"
                       >
@@ -261,7 +261,7 @@ export default function ViewNote() {
                           <div className="font-medium text-sm">Export PDF</div>
                           <div className="text-xs text-muted-foreground">Unduh sebagai PDF</div>
                         </div>
-                      </button>
+                      </button> */}
                       <button
                         onClick={handleExportMarkdown}
                         className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t"
@@ -353,39 +353,14 @@ export default function ViewNote() {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <Card className="border-2 overflow-hidden">
-            <div id="note-content" className="p-6 md:p-8 lg:p-12 bg-background">
+          <Card className="border-none md:border-2 p-0 overflow-hidden">
+            <div id="note-content" className="p-0 md:p-8 lg:p-12 bg-background">
               <NoteViewer
                 note={currentNote}
                 showMetadata={true}
                 showAuthor={!isOwner}
                 authorName={isOwner ? undefined : "Anonymous"}
               />
-            </div>
-          </Card>
-        </motion.div>
-
-        {/* Quick Actions Card (Mobile Only) */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="mt-6 sm:hidden"
-        >
-          <Card className="p-4">
-            <div className="flex flex-wrap gap-2">
-              {canEdit && (
-                <Button variant="outline" size="sm" onClick={handleEdit} className="flex-1">
-                  <Edit className="w-4 h-4 mr-2" />
-                  Edit
-                </Button>
-              )}
-              {currentNote.isPublic && (
-                <Button variant="outline" size="sm" onClick={handleShare} className="flex-1">
-                  <Share2 className="w-4 h-4 mr-2" />
-                  Share
-                </Button>
-              )}
             </div>
           </Card>
         </motion.div>

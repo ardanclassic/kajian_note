@@ -443,3 +443,9 @@ button:focus-visible {
 .dark .prose-editor .ProseMirror pre {
   background-color: var(--muted);
 }
+
+@media screen and (max-width: 768px) {
+  .prose-editor .ProseMirror {
+    padding: 0;
+  }
+}
