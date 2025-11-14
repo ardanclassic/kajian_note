@@ -208,3 +208,238 @@ button:focus-visible {
     @apply bg-background text-foreground;
   }
 }
+
+/* ============================================
+   TIPTAP EDITOR STYLES - ELDERLY FRIENDLY
+   ============================================ */
+
+/* Tiptap Prose Styling */
+.prose-editor .ProseMirror {
+  outline: none;
+  min-height: 250px;
+  padding: 1rem;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--foreground);
+}
+
+/* Placeholder */
+.prose-editor .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--muted-foreground);
+  pointer-events: none;
+  height: 0;
+  float: left;
+}
+
+/* Headings - Elderly Friendly (Large, Clear) */
+.prose-editor .ProseMirror h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+  color: var(--foreground);
+}
+
+.prose-editor .ProseMirror h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+  color: var(--foreground);
+}
+
+/* Paragraphs */
+.prose-editor .ProseMirror p {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-editor .ProseMirror p:first-child {
+  margin-top: 0;
+}
+
+.prose-editor .ProseMirror p:last-child {
+  margin-bottom: 0;
+}
+
+/* Strong (Bold) */
+.prose-editor .ProseMirror strong {
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+/* Emphasis (Italic) */
+.prose-editor .ProseMirror em {
+  font-style: italic;
+}
+
+/* Strikethrough */
+.prose-editor .ProseMirror s {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+/* Lists - Large spacing for readability */
+.prose-editor .ProseMirror ul,
+.prose-editor .ProseMirror ol {
+  padding-left: 1.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-editor .ProseMirror ul {
+  list-style-type: disc;
+}
+
+.prose-editor .ProseMirror ol {
+  list-style-type: decimal;
+}
+
+.prose-editor .ProseMirror li {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.75;
+}
+
+.prose-editor .ProseMirror li p {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Nested Lists */
+.prose-editor .ProseMirror ul ul,
+.prose-editor .ProseMirror ol ul,
+.prose-editor .ProseMirror ul ol,
+.prose-editor .ProseMirror ol ol {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Blockquote */
+.prose-editor .ProseMirror blockquote {
+  border-left: 4px solid var(--primary);
+  padding-left: 1rem;
+  margin-left: 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+  color: var(--muted-foreground);
+}
+
+.prose-editor .ProseMirror blockquote p {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Links */
+.prose-editor .ProseMirror a {
+  color: var(--primary);
+  text-decoration: underline;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.prose-editor .ProseMirror a:hover {
+  opacity: 0.8;
+}
+
+/* Code (inline) */
+.prose-editor .ProseMirror code {
+  background-color: var(--muted);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+  font-family: "Courier New", monospace;
+}
+
+/* Code Block */
+.prose-editor .ProseMirror pre {
+  background-color: var(--muted);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.prose-editor .ProseMirror pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Horizontal Rule */
+.prose-editor .ProseMirror hr {
+  border: none;
+  border-top: 2px solid var(--border);
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Focus Styles */
+.prose-editor .ProseMirror:focus {
+  outline: none;
+}
+
+/* Selection */
+.prose-editor .ProseMirror ::selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* Disabled State */
+.prose-editor .ProseMirror[contenteditable="false"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--muted);
+}
+
+/* Light Mode Adjustments */
+.light .prose-editor .ProseMirror {
+  color: var(--foreground);
+}
+
+.light .prose-editor .ProseMirror h2,
+.light .prose-editor .ProseMirror h3 {
+  color: var(--foreground);
+}
+
+.light .prose-editor .ProseMirror blockquote {
+  border-left-color: var(--primary);
+  color: var(--muted-foreground);
+}
+
+.light .prose-editor .ProseMirror code {
+  background-color: var(--muted);
+}
+
+.light .prose-editor .ProseMirror pre {
+  background-color: var(--muted);
+}
+
+/* Dark Mode Adjustments */
+.dark .prose-editor .ProseMirror {
+  color: var(--foreground);
+}
+
+.dark .prose-editor .ProseMirror h2,
+.dark .prose-editor .ProseMirror h3 {
+  color: var(--foreground);
+}
+
+.dark .prose-editor .ProseMirror blockquote {
+  border-left-color: var(--primary);
+  color: var(--muted-foreground);
+}
+
+.dark .prose-editor .ProseMirror code {
+  background-color: var(--muted);
+}
+
+.dark .prose-editor .ProseMirror pre {
+  background-color: var(--muted);
+}

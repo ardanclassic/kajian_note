@@ -19,12 +19,12 @@ export const noteTitleSchema = z
 /**
  * Note content validation rules
  * - Required
- * - 10-10000 characters
+ * - 10-50000 characters
  */
 export const noteContentSchema = z
   .string()
   .min(10, "Konten minimal 10 karakter")
-  .max(10000, "Konten maksimal 10.000 karakter")
+  .max(50000, "Konten maksimal 50.000 karakter")
   .trim();
 
 /**

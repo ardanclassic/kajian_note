@@ -87,6 +87,16 @@ export interface TranscriptSummarizeResponse {
 }
 
 /**
+ * YouTube Reference Info (NEW - Optional fields for source citation)
+ */
+export interface YouTubeReferenceInfo {
+  materialTitle?: string; // Judul materi
+  speaker?: string; // Narasumber/Ustadz
+  channelName?: string; // Nama channel
+  videoUrl: string; // YouTube URL
+}
+
+/**
  * YouTube Import Options
  */
 export interface YouTubeImportOptions {
@@ -94,6 +104,8 @@ export interface YouTubeImportOptions {
   useAISummary: boolean;
   languages?: string;
   model?: string;
+  // NEW: Optional reference info
+  referenceInfo?: YouTubeReferenceInfo;
 }
 
 /**
@@ -117,6 +129,8 @@ export interface YouTubeImportResult {
     model_used?: string;
     imported_at: string;
   };
+  // NEW: Reference info for citation
+  referenceInfo?: YouTubeReferenceInfo;
   error?: string;
 }
 

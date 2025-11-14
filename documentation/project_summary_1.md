@@ -59,7 +59,6 @@
 ```
 kajian_note/
 ├── 📁 documentation/
-│   ├── 📄 design_system.md
 │   ├── 📄 project_summary_1.md
 │   └── 📄 project_summary_2.md
 │
@@ -95,8 +94,9 @@ kajian_note/
 │   │   │   │   ├── 📄 NoteSearch.tsx
 │   │   │   │   ├── 📄 NoteViewer.tsx
 │   │   │   │   ├── 📄 SubscriptionLimitBanner.tsx
-│   │   │   │   ├── 📄 YouTubeImportButton.tsx       # 🆕 NEW
-│   │   │   │   └── 📄 YouTubeImportModal.tsx        # 🆕 NEW
+│   │   │   │   ├── 📄 TiptapEditor.tsx
+│   │   │   │   ├── 📄 YouTubeImportButton.tsx
+│   │   │   │   └── 📄 YouTubeImportModal.tsx
 │   │   │   │
 │   │   │   ├── 📁 profile/
 │   │   │   │   ├── 📄 ChangePINForm.tsx
@@ -128,7 +128,7 @@ kajian_note/
 │   │   ├── 📄 payment.ts
 │   │   ├── 📄 permissions.ts
 │   │   ├── 📄 theme.ts
-│   │   └── 📄 youtube.ts                            # 🆕 NEW
+│   │   └── 📄 youtube.ts
 │   │
 │   ├── 📁 lib/
 │   │   ├── 📄 axios.ts
@@ -142,7 +142,7 @@ kajian_note/
 │   │   │   └── 📄 UserManagement.tsx
 │   │   │
 │   │   ├── 📁 notes/
-│   │   │   ├── 📄 CreateNote.tsx                    # 🔄 UPDATED
+│   │   │   ├── 📄 CreateNote.tsx
 │   │   │   ├── 📄 EditNote.tsx
 │   │   │   ├── 📄 index.tsx
 │   │   │   └── 📄 ViewNote.tsx
@@ -176,8 +176,8 @@ kajian_note/
 │   │   │   ├── 📄 notes.service.ts
 │   │   │   ├── 📄 subscription.service.ts
 │   │   │   └── 📄 user.service.ts
-│   │   └── 📁 youtube/                              # 🆕 NEW
-│   │       └── 📄 transcript.service.ts             # 🆕 NEW
+│   │   └── 📁 youtube/
+│   │       └── 📄 transcript.service.ts
 │   │
 │   ├── 📁 store/
 │   │   ├── 📄 authStore.ts
@@ -191,17 +191,18 @@ kajian_note/
 │   ├── 📁 types/
 │   │   ├── 📄 auth.types.ts
 │   │   ├── 📄 index.ts
-│   │   ├── 📄 notes.types.ts                        # 🔄 UPDATED
+│   │   ├── 📄 notes.types.ts
 │   │   ├── 📄 payment.types.ts
 │   │   ├── 📄 subscription.types.ts
 │   │   ├── 📄 supabase.types.ts
 │   │   ├── 📄 user.types.ts
-│   │   └── 📄 youtube.types.ts                      # 🆕 NEW
+│   │   └── 📄 youtube.types.ts
 │   │
 │   ├── 📁 utils/
 │   │   ├── 📄 paymentMatching.ts
 │   │   ├── 📄 subscriptionLimits.ts
-│   │   └── 📄 youtubeHelpers.ts                     # 🆕 NEW
+│   │   ├── 📄 textToHtml.ts
+│   │   └── 📄 youtubeHelpers.ts
 │   │
 │   ├── 📄 App.tsx
 │   └── 📄 main.tsx
@@ -211,8 +212,8 @@ kajian_note/
 │       └── 📁 lynk-webhook/
 │           └── 📄 index.ts
 │
-├── 📁 migrations/                                    # 🆕 NEW
-│   └── 📄 add_youtube_source_fields.sql             # 🆕 NEW
+├── 📁 migrations/                                   
+│   └── 📄 add_youtube_source_fields.sql
 │
 ├── 📄 .env
 ├── 📄 .env.example

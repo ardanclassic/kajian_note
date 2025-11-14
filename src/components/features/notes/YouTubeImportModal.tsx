@@ -1,6 +1,7 @@
 /**
- * YouTubeImportModal Component
+ * YouTubeImportModal Component - UPDATED
  * Modal dialog for importing YouTube videos
+ * NEW: Added optional reference fields (material title, speaker, channel)
  */
 
 import { useState } from "react";
@@ -16,11 +17,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, Youtube, Sparkles, FileText, AlertCircle, CheckCircle } from "lucide-react";
+import { Loader2, Youtube, Sparkles, FileText, AlertCircle, CheckCircle, Info } from "lucide-react";
 import { isValidYouTubeUrl } from "@/utils/youtubeHelpers";
 import { importYouTubeVideo } from "@/services/youtube/transcript.service";
 import { isAISummaryAvailable } from "@/config/youtube";
-import type { YouTubeImportResult } from "@/types/youtube.types";
+import type { YouTubeImportResult, YouTubeReferenceInfo } from "@/types/youtube.types";
 
 interface YouTubeImportModalProps {
   open: boolean;
@@ -34,6 +35,11 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [urlError, setUrlError] = useState<string | null>(null);
+
+  // NEW: Reference info fields
+  const [materialTitle, setMaterialTitle] = useState("");
+  const [speaker, setSpeaker] = useState("");
+  const [channelName, setChannelName] = useState("");
 
   const aiAvailable = isAISummaryAvailable();
 
@@ -67,9 +73,21 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
     setError(null);
 
     try {
+      // Prepare reference info
+      const referenceInfo: YouTubeReferenceInfo | undefined =
+        materialTitle || speaker || channelName
+          ? {
+              materialTitle: materialTitle.trim() || undefined,
+              speaker: speaker.trim() || undefined,
+              channelName: channelName.trim() || undefined,
+              videoUrl: url.trim(),
+            }
+          : undefined;
+
       const result = await importYouTubeVideo({
         url: url.trim(),
         useAISummary: useAISummary && aiAvailable,
+        referenceInfo,
       });
 
       if (result.success) {
@@ -79,6 +97,9 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
         // Reset form
         setUrl("");
         setUseAISummary(false);
+        setMaterialTitle("");
+        setSpeaker("");
+        setChannelName("");
         setError(null);
         setUrlError(null);
 
@@ -101,15 +122,50 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
     if (!isLoading) {
       setUrl("");
       setUseAISummary(false);
+      setMaterialTitle("");
+      setSpeaker("");
+      setChannelName("");
       setError(null);
       setUrlError(null);
       onOpenChange(false);
     }
   };
 
+  // Custom onOpenChange handler that blocks closing during loading
+  const handleOpenChange = (newOpen: boolean) => {
+    // Block closing if loading
+    if (isLoading) {
+      return;
+    }
+
+    // Allow closing if not loading
+    if (!newOpen) {
+      handleCancel();
+    } else {
+      onOpenChange(newOpen);
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogContent
+        className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto"
+        onEscapeKeyDown={(e) => {
+          if (isLoading) {
+            e.preventDefault();
+          }
+        }}
+        onPointerDownOutside={(e) => {
+          if (isLoading) {
+            e.preventDefault();
+          }
+        }}
+        onInteractOutside={(e) => {
+          if (isLoading) {
+            e.preventDefault();
+          }
+        }}
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Youtube className="w-5 h-5 text-red-500" />
@@ -141,6 +197,59 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
             <p className="text-xs text-muted-foreground">Contoh: youtube.com/watch?v=... atau youtu.be/...</p>
           </div>
 
+          {/* NEW: Reference Info Section */}
+          <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
+            <div className="flex items-center gap-2">
+              <Info className="w-4 h-4 text-muted-foreground" />
+              <Label className="text-sm font-semibold">Informasi Sumber (Opsional)</Label>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Isi informasi ini untuk ditampilkan sebagai kutipan sumber di awal catatan
+            </p>
+
+            {/* Material Title */}
+            <div className="space-y-1.5">
+              <Label htmlFor="material-title" className="text-sm">
+                Judul
+              </Label>
+              <Input
+                id="material-title"
+                placeholder="Contoh: Adab Menuntut Ilmu"
+                value={materialTitle}
+                onChange={(e) => setMaterialTitle(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+
+            {/* Speaker */}
+            <div className="space-y-1.5">
+              <Label htmlFor="speaker" className="text-sm">
+                Narasumber
+              </Label>
+              <Input
+                id="speaker"
+                placeholder="Contoh: Ustadz Khalid Basalamah"
+                value={speaker}
+                onChange={(e) => setSpeaker(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+
+            {/* Channel Name */}
+            <div className="space-y-1.5">
+              <Label htmlFor="channel-name" className="text-sm">
+                Nama Channel
+              </Label>
+              <Input
+                id="channel-name"
+                placeholder="Contoh: KHB Official"
+                value={channelName}
+                onChange={(e) => setChannelName(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+          </div>
+
           {/* AI Summary Option */}
           {aiAvailable && (
             <div className="space-y-2">
@@ -151,7 +260,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
                   checked={useAISummary}
                   onChange={(e) => setUseAISummary(e.target.checked)}
                   disabled={isLoading}
-                  className="cursor-pointer"
+                  className="cursor-pointer disabled:cursor-not-allowed"
                 />
                 <Label htmlFor="use-ai-summary" className="cursor-pointer flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-yellow-500" />
@@ -178,6 +287,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
                     ? "Ringkasan AI dari transcript"
                     : "Transcript lengkap dengan timestamps"}
                 </li>
+                {(materialTitle || speaker || channelName) && <li>Kutipan sumber referensi di awal catatan</li>}
                 <li>Link sumber video YouTube</li>
               </ul>
               <p className="mt-2 text-muted-foreground">Anda dapat mengedit catatan setelah diimpor</p>
@@ -189,6 +299,16 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
             <Alert variant="destructive">
               <AlertCircle className="w-4 h-4" />
               <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
+          {/* Loading Info Alert */}
+          {isLoading && (
+            <Alert className="border-blue-500/50 bg-blue-500/10">
+              <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
+              <AlertDescription className="text-sm text-blue-500">
+                <strong>Sedang memproses...</strong> Mohon tunggu.
+              </AlertDescription>
             </Alert>
           )}
         </div>

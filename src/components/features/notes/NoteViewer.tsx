@@ -1,12 +1,13 @@
 /**
- * NoteViewer Component
- * Read-only note display with beautiful formatting
- * Path: src/components/features/notes/NoteViewer.tsx
+ * NoteViewer Component - FIXED
+ * Read-only note display with HTML & Markdown support
+ * FIX: Render HTML from Tiptap + Convert markdown syntax
  */
 
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { useMemo } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, User, Globe, Lock, Tag as TagIcon, Clock } from "lucide-react";
+import { Calendar, User, Globe, Lock, Tag as TagIcon, Clock, Youtube } from "lucide-react";
 import type { Note } from "@/types/notes.types";
 import { formatDistanceToNow, format } from "date-fns";
 import { id as idLocale } from "date-fns/locale";
@@ -18,6 +19,57 @@ interface NoteViewerProps {
   authorName?: string;
   authorUsername?: string;
 }
+
+/**
+ * Convert markdown syntax to HTML
+ * Supports: **bold**, *italic*, [link](url), etc
+ */
+const convertMarkdownToHtml = (text: string): string => {
+  let html = text;
+
+  // Bold: **text** or __text__
+  html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  html = html.replace(/__(.+?)__/g, "<strong>$1</strong>");
+
+  // Italic: *text* or _text_
+  html = html.replace(/\*(.+?)\*/g, "<em>$1</em>");
+  html = html.replace(/_(.+?)_/g, "<em>$1</em>");
+
+  // Strikethrough: ~~text~~
+  html = html.replace(/~~(.+?)~~/g, "<s>$1</s>");
+
+  // Links: [text](url)
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
+  // Inline code: `code`
+  html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+
+  // Line breaks
+  html = html.replace(/\n/g, "<br>");
+
+  return html;
+};
+
+/**
+ * Detect if content is HTML (from Tiptap) or plain text/markdown
+ */
+const isHtmlContent = (content: string): boolean => {
+  // Check if content has HTML tags (excluding simple br tags from markdown conversion)
+  const htmlTagPattern = /<(?!br\s*\/?>)[^>]+>/;
+  return htmlTagPattern.test(content);
+};
+
+/**
+ * Sanitize HTML to prevent XSS (basic sanitization)
+ * Note: Since content is user's own notes, risk is minimal
+ */
+const sanitizeHtml = (html: string): string => {
+  // Remove script tags and event handlers
+  let clean = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+  clean = clean.replace(/on\w+="[^"]*"/g, "");
+  clean = clean.replace(/on\w+='[^']*'/g, "");
+  return clean;
+};
 
 export function NoteViewer({
   note,
@@ -32,6 +84,22 @@ export function NoteViewer({
     addSuffix: true,
     locale: idLocale,
   });
+
+  // Process content: detect HTML or convert markdown
+  const processedContent = useMemo(() => {
+    if (!note.content) return "";
+
+    // If already HTML (from Tiptap), sanitize and use directly
+    if (isHtmlContent(note.content)) {
+      return sanitizeHtml(note.content);
+    }
+
+    // If plain text or markdown, convert to HTML
+    return convertMarkdownToHtml(note.content);
+  }, [note.content]);
+
+  // Check if note is from YouTube
+  const isFromYouTube = note.sourceType === "youtube" && note.sourceUrl;
 
   return (
     <div className="space-y-6">
@@ -82,6 +150,29 @@ export function NoteViewer({
           </div>
         )}
 
+        {/* YouTube Source Badge */}
+        {isFromYouTube && (
+          <div className="flex items-center gap-4 p-3 px-6 bg-green-500/10 rounded-lg">
+            <Youtube className="w-8 h-8 text-red-500" />
+            <div className="flex-1">
+              <p className="text-sm font-medium text-green-500 dark:text-green-400">Diimpor dari YouTube</p>
+              <a
+                href={note.sourceUrl!}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[13px] font-normal! text-blue-300! dark:text-blue-300! hover:underline!"
+              >
+                Lihat video sumber
+              </a>
+            </div>
+            {note.sourceMetadata?.has_ai_summary && (
+              <Badge variant="outline" className="text-xs border-yellow-300/50 text-yellow-500 dark:text-yellow-400">
+                AI Summary
+              </Badge>
+            )}
+          </div>
+        )}
+
         {/* Tags */}
         {note.tags.length > 0 && (
           <div className="flex items-start gap-2">
@@ -100,11 +191,11 @@ export function NoteViewer({
       {/* Divider */}
       <div className="border-t" />
 
-      {/* Content Section */}
+      {/* Content Section - FIXED: Render HTML */}
       <Card className="border-none shadow-none">
         <CardContent className="p-0">
-          <div className="prose prose-slate dark:prose-invert max-w-none">
-            <div className="whitespace-pre-wrap text-base leading-relaxed">{note.content}</div>
+          <div className="prose-editor">
+            <div className="ProseMirror" dangerouslySetInnerHTML={{ __html: processedContent }} />
           </div>
         </CardContent>
       </Card>

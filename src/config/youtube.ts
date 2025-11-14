@@ -45,7 +45,7 @@ export const youtubeConfig: YouTubeConfig = {
   openRouter: {
     apiKey: getEnvVar("VITE_OPENROUTER_API_KEY", ""),
     defaultModel: getEnvVar("VITE_OPENROUTER_DEFAULT_MODEL", "qwen/qwen3-8b"),
-    maxTokens: 1000,
+    maxTokens: 50000,
   },
 
   // Default transcript settings

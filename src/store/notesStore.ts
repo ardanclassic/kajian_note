@@ -20,7 +20,7 @@ interface NotesStore {
   // State - User Notes
   userNotes: NoteSummary[];
   publicNotes: NoteSummary[];
-  currentNote: Note | null;
+  currentNote: Note | any;
   statistics: NoteStatistics | null;
   tags: string[];
   isLoading: boolean;

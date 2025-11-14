@@ -1,6 +1,7 @@
 /**
- * CreateNote Page - REDESIGNED
+ * CreateNote Page - WITH REFERENCE INFO INJECTION
  * Modern UI/UX with tabs for Manual/YouTube import
+ * NEW: Inject reference quote at the beginning of content
  */
 
 import { useState } from "react";
@@ -13,17 +14,51 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAuthStore } from "@/store/authStore";
+import { useSubscriptionStore } from "@/store/subscriptionStore";
 import { createNote } from "@/services/supabase/notes.service";
 import type { CreateNoteFormData } from "@/schemas/notes.schema";
 import type { YouTubeImportResult } from "@/types/youtube.types";
 import { generateSuggestedTags } from "@/utils/youtubeHelpers";
-import { PenLine, Youtube, Sparkles, FileText, Clock, CheckCircle2, Video } from "lucide-react";
+import { convertTextToHtml } from "@/utils/textToHtml";
+import { PenLine, Youtube, Sparkles, FileText, Clock, CheckCircle2, Video, AlertTriangle } from "lucide-react";
 
 type InputMode = "manual" | "youtube";
+
+/**
+ * Generate reference quote block from YouTube import result
+ */
+const generateReferenceQuote = (result: YouTubeImportResult): string => {
+  const { referenceInfo } = result;
+
+  if (!referenceInfo) return "";
+
+  const parts: string[] = ["<p><strong>Sumber Referensi:</strong></p>", "<p>"];
+
+  if (referenceInfo.materialTitle) {
+    parts.push(`<strong>Judul:</strong> ${referenceInfo.materialTitle}<br>`);
+  }
+
+  if (referenceInfo.speaker) {
+    parts.push(`<strong>Narasumber:</strong> ${referenceInfo.speaker}<br>`);
+  }
+
+  if (referenceInfo.channelName) {
+    parts.push(`<strong>Channel:</strong> ${referenceInfo.channelName}<br>`);
+  }
+
+  parts.push(
+    `<strong>Link:</strong> <a href="${referenceInfo.videoUrl}" target="_blank" rel="noopener noreferrer">${referenceInfo.videoUrl}</a>`
+  );
+
+  parts.push("</p>", "<p></p>"); // Add empty paragraph after quote
+
+  return parts.join("");
+};
 
 export default function CreateNote() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const { usage } = useSubscriptionStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [inputMode, setInputMode] = useState<InputMode>("manual");
   const [showImportModal, setShowImportModal] = useState(false);
@@ -36,12 +71,24 @@ export default function CreateNote() {
     setImportedData(result);
     setInputMode("youtube"); // Switch to YouTube tab
 
+    // Check if tags were stripped due to limit
+    const suggestedTags = generateSuggestedTags(result.content, 3);
+    const wasStripped = suggestedTags.length > 0 && usage && usage.tagsUsed >= usage.tagsLimit;
+
     toast.success("Video berhasil diimpor!", {
       description: result.metadata.has_ai_summary
         ? "Ringkasan AI siap untuk ditinjau"
         : "Transcript lengkap siap untuk diedit",
       duration: 4000,
     });
+
+    // Warning if tags were stripped
+    if (wasStripped) {
+      toast.warning("Tag otomatis dinonaktifkan", {
+        description: `Anda sudah mencapai batas ${usage.tagsLimit} tag. Upgrade untuk menambah lebih banyak tag.`,
+        duration: 5000,
+      });
+    }
   };
 
   /**
@@ -98,22 +145,38 @@ export default function CreateNote() {
   };
 
   /**
-   * Get initial form values
+   * Get initial form values - WITH REFERENCE QUOTE INJECTION
    */
   const getInitialFormValues = () => {
     if (!importedData || inputMode === "manual") {
       return undefined;
     }
 
-    const suggestedTags = generateSuggestedTags(importedData.content, 3);
+    // Convert plain text content to HTML
+    const formattedContent = convertTextToHtml(importedData.content);
+    
+    // Generate reference quote if available
+    const referenceQuote = generateReferenceQuote(importedData);
+
+    // Inject reference quote at the beginning
+    const finalContent = referenceQuote ? `${formattedContent}${referenceQuote}` : formattedContent;
+
+    // Don't auto-fill tags if user at tag limit
+    let suggestedTags: string[] = [];
+
+    if (usage && usage.tagsUsed < usage.tagsLimit) {
+      suggestedTags = generateSuggestedTags(importedData.content, 3);
+    }
 
     return {
       title: importedData.title,
-      content: importedData.content,
+      content: finalContent, // Content with reference quote injected
       isPublic: false,
-      tags: suggestedTags,
     };
   };
+
+  // Check if user is at tag limit
+  const isAtTagLimit = usage ? usage.tagsUsed >= usage.tagsLimit : false;
 
   return (
     <div className="min-h-screen bg-background">
@@ -206,7 +269,7 @@ export default function CreateNote() {
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
                   {/* Icon */}
-                  <div className="flex-shrink-0 p-3 bg-red-500/10 rounded-xl border border-red-500/20">
+                  <div className="shrink-0 p-3 bg-red-500/10 rounded-xl border border-red-500/20">
                     <Video className="w-6 h-6 text-red-500" />
                   </div>
 
@@ -256,6 +319,39 @@ export default function CreateNote() {
                         🌐 {importedData.metadata.language_used.toUpperCase()}
                       </Badge>
                     </div>
+
+                    {/* Reference Info Display */}
+                    {importedData.referenceInfo && (
+                      <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+                        <p className="text-xs font-semibold text-green-700 dark:text-green-400 mb-2">
+                          📚 Info Referensi ditambahkan di catatan
+                        </p>
+                        <div className="text-xs text-muted-foreground space-y-1">
+                          {importedData.referenceInfo.materialTitle && (
+                            <div>• Judul: {importedData.referenceInfo.materialTitle}</div>
+                          )}
+                          {importedData.referenceInfo.speaker && (
+                            <div>• Narasumber: {importedData.referenceInfo.speaker}</div>
+                          )}
+                          {importedData.referenceInfo.channelName && (
+                            <div>• Channel: {importedData.referenceInfo.channelName}</div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Tag Limit Warning */}
+                    {isAtTagLimit && (
+                      <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                        <div className="flex items-start gap-2">
+                          <AlertTriangle className="w-4 h-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+                          <div className="text-sm text-yellow-700">
+                            <strong>Tag otomatis dinonaktifkan.</strong> Anda sudah mencapai batas {usage?.tagsLimit}{" "}
+                            tag. Field tag akan disembunyikan. Upgrade untuk menambah lebih banyak tag.
+                          </div>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Video URL */}
                     <div className="p-3 bg-background/50 rounded-lg border">
@@ -317,7 +413,7 @@ export default function CreateNote() {
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-0.5">•</span>
                   <span>
-                    Gunakan <strong>AI Summary</strong> untuk mendapat ringkasan otomatis
+                    Isi <strong>informasi referensi</strong> saat import untuk dokumentasi sumber yang lebih baik
                   </span>
                 </li>
               </ul>

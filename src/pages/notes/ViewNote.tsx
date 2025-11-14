@@ -1,19 +1,33 @@
 /**
- * ViewNote Page
- * View note detail in read-only mode
- * Path: src/pages/ViewNote.tsx
- * Route: /notes/:id
+ * ViewNote Page - REDESIGNED
+ * Updated to use external export utilities
  */
 
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { NoteViewer } from "@/components/features/notes/NoteViewer";
-import { NoteDetailCard } from "@/components/features/notes/NoteDetailCard";
-import { PageHeader } from "@/components/common/PageHeader";
 import { useAuthStore } from "@/store/authStore";
 import { useNotesStore } from "@/store/notesStore";
-import { BookOpen, Loader2, AlertCircle } from "lucide-react";
+import {
+  BookOpen,
+  Loader2,
+  AlertCircle,
+  ArrowLeft,
+  Edit,
+  Trash2,
+  Share2,
+  Download,
+  FileText,
+  FileDown,
+  MoreVertical,
+  ChevronDown,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { toast } from "sonner";
+import { exportNoteToPDF, exportNoteToMarkdown } from "@/utils/exportUtils";
 
 export default function ViewNote() {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +36,9 @@ export default function ViewNote() {
   const { currentNote, isLoading, error, fetchNoteById, deleteNote, clearCurrentNote, clearError } = useNotesStore();
 
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showActions, setShowActions] = useState(false);
+  const [showExportMenu, setShowExportMenu] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   // Fetch note on mount
   useEffect(() => {
@@ -29,17 +46,18 @@ export default function ViewNote() {
       fetchNoteById(id);
     }
 
-    // Cleanup on unmount
     return () => {
       clearCurrentNote();
       clearError();
     };
   }, [id]);
 
-  // Check if user is owner
+  // Check permissions
   const isOwner = user?.id === currentNote?.userId;
   const isPanitia = user?.role === "panitia";
   const isAdmin = user?.role === "admin";
+  const canEdit = isOwner;
+  const canDelete = isOwner || isAdmin || isPanitia;
 
   // Handle back
   const handleBack = () => {
@@ -57,12 +75,18 @@ export default function ViewNote() {
   const handleDelete = async () => {
     if (!id || !user?.id) return;
 
+    const confirmed = window.confirm("Yakin ingin menghapus catatan ini?");
+    if (!confirmed) return;
+
     try {
       setIsDeleting(true);
       await deleteNote(id, user.id);
+      toast.success("Catatan berhasil dihapus");
       navigate("/notes", { replace: true });
     } catch (error: any) {
-      alert(error.message || "Gagal menghapus catatan");
+      toast.error("Gagal menghapus catatan", {
+        description: error.message || "Terjadi kesalahan",
+      });
     } finally {
       setIsDeleting(false);
     }
@@ -72,30 +96,65 @@ export default function ViewNote() {
   const handleShare = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url);
-    alert("Link disalin ke clipboard!");
+    toast.success("Link berhasil disalin!", {
+      description: "Link catatan telah disalin ke clipboard",
+    });
   };
 
-  // Handle export (placeholder)
-  const handleExport = () => {
-    alert("Fitur export akan segera hadir!");
+  // Export to PDF
+  const handleExportPDF = async () => {
+    if (!currentNote) return;
+
+    setIsExporting(true);
+    toast.loading("Membuat PDF...");
+
+    try {
+      await exportNoteToPDF(currentNote);
+      toast.dismiss();
+      toast.success("PDF berhasil diunduh!");
+    } catch (error) {
+      console.error("Export PDF error:", error);
+      toast.dismiss();
+      toast.error("Gagal export PDF", {
+        description: "Terjadi kesalahan saat membuat PDF",
+      });
+    } finally {
+      setIsExporting(false);
+      setShowExportMenu(false);
+    }
+  };
+
+  // Export to Markdown
+  const handleExportMarkdown = () => {
+    if (!currentNote) return;
+
+    setIsExporting(true);
+    toast.loading("Membuat Markdown...");
+
+    try {
+      exportNoteToMarkdown(currentNote);
+      toast.dismiss();
+      toast.success("Markdown berhasil diunduh!");
+    } catch (error) {
+      console.error("Export Markdown error:", error);
+      toast.dismiss();
+      toast.error("Gagal export Markdown", {
+        description: "Terjadi kesalahan saat membuat file",
+      });
+    } finally {
+      setIsExporting(false);
+      setShowExportMenu(false);
+    }
   };
 
   // Loading state
   if (isLoading && !currentNote) {
     return (
-      <div className="min-h-screen bg-background">
-        <PageHeader
-          badgeIcon={BookOpen}
-          badgeText="Loading"
-          title="Memuat Catatan..."
-          description="Mohon tunggu sebentar"
-        />
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col items-center justify-center py-16">
-            <Loader2 className="w-8 h-8 animate-spin text-primary mb-4" />
-            <p className="text-muted-foreground">Memuat catatan...</p>
-          </div>
-        </div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-muted-foreground">Memuat catatan...</p>
+        </motion.div>
       </div>
     );
   }
@@ -103,87 +162,233 @@ export default function ViewNote() {
   // Error state
   if (error || !currentNote) {
     return (
-      <div className="min-h-screen bg-background">
-        <PageHeader
-          badgeIcon={AlertCircle}
-          badgeText="Error"
-          title="Catatan Tidak Ditemukan"
-          description="Catatan yang Anda cari tidak ada atau sudah dihapus"
-        />
-        <div className="container mx-auto px-4 py-8">
-          <div className="max-w-3xl mx-auto">
-            <div className="flex flex-col items-center justify-center py-16 text-center">
-              <AlertCircle className="w-16 h-16 text-destructive mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Catatan Tidak Ditemukan</h3>
-              <p className="text-muted-foreground mb-6">
-                {error || "Catatan yang Anda cari tidak ada atau Anda tidak memiliki akses."}
-              </p>
-              <Button onClick={handleBack}>Kembali ke Daftar Catatan</Button>
-            </div>
-          </div>
-        </div>
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center max-w-md">
+          <AlertCircle className="w-16 h-16 text-destructive mx-auto mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Catatan Tidak Ditemukan</h3>
+          <p className="text-muted-foreground mb-6">
+            {error || "Catatan yang Anda cari tidak ada atau Anda tidak memiliki akses."}
+          </p>
+          <Button onClick={handleBack}>
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Kembali
+          </Button>
+        </motion.div>
       </div>
     );
   }
 
-  // Check access (private notes)
+  // Access denied
   if (!currentNote.isPublic && !isOwner && !isAdmin && !isPanitia) {
     return (
-      <div className="min-h-screen bg-background">
-        <PageHeader
-          badgeIcon={AlertCircle}
-          badgeText="Access Denied"
-          title="Akses Ditolak"
-          description="Anda tidak memiliki akses ke catatan ini"
-        />
-        <div className="container mx-auto px-4 py-8">
-          <div className="max-w-3xl mx-auto">
-            <div className="flex flex-col items-center justify-center py-16 text-center">
-              <AlertCircle className="w-16 h-16 text-destructive mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Akses Ditolak</h3>
-              <p className="text-muted-foreground mb-6">
-                Catatan ini bersifat pribadi. Hanya pemilik yang dapat mengaksesnya.
-              </p>
-              <Button onClick={handleBack}>Kembali ke Daftar Catatan</Button>
-            </div>
-          </div>
-        </div>
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center max-w-md">
+          <AlertCircle className="w-16 h-16 text-destructive mx-auto mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Akses Ditolak</h3>
+          <p className="text-muted-foreground mb-6">
+            Catatan ini bersifat pribadi. Hanya pemilik yang dapat mengaksesnya.
+          </p>
+          <Button onClick={handleBack}>
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Kembali
+          </Button>
+        </motion.div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Page Header */}
-      <PageHeader
-        badgeIcon={BookOpen}
-        badgeText="View Note"
-        title="Detail Catatan"
-        description="Baca catatan kajian dengan nyaman"
-      />
+      {/* Floating Action Bar - Desktop */}
+      <motion.div
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b"
+      >
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between gap-4">
+            {/* Left: Back Button */}
+            <Button variant="ghost" onClick={handleBack} className="gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              <span className="hidden sm:inline">Kembali</span>
+            </Button>
+
+            {/* Center: Title Badge (hidden on mobile) */}
+            <Badge variant="outline" className="hidden md:flex gap-2">
+              <BookOpen className="w-4 h-4" />
+              Detail Catatan
+            </Badge>
+
+            {/* Right: Action Buttons */}
+            <div className="flex items-center gap-2">
+              {/* Share Button (if public) */}
+              {currentNote.isPublic && (
+                <Button variant="outline" size="sm" onClick={handleShare} className="gap-2 hidden sm:flex">
+                  <Share2 className="w-4 h-4" />
+                  Share
+                </Button>
+              )}
+
+              {/* Export Button */}
+              <div className="relative">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowExportMenu(!showExportMenu)}
+                  className="gap-2"
+                  disabled={isExporting}
+                >
+                  <Download className="w-4 h-4" />
+                  <span className="hidden sm:inline">Export</span>
+                  <ChevronDown className="w-3 h-3" />
+                </Button>
+
+                {/* Export Dropdown */}
+                <AnimatePresence>
+                  {showExportMenu && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute right-0 mt-2 w-48 bg-background border rounded-lg shadow-lg overflow-hidden"
+                    >
+                      <button
+                        onClick={handleExportPDF}
+                        className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left"
+                      >
+                        <FileText className="w-4 h-4" />
+                        <div>
+                          <div className="font-medium text-sm">Export PDF</div>
+                          <div className="text-xs text-muted-foreground">Unduh sebagai PDF</div>
+                        </div>
+                      </button>
+                      <button
+                        onClick={handleExportMarkdown}
+                        className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t"
+                      >
+                        <FileDown className="w-4 h-4" />
+                        <div>
+                          <div className="font-medium text-sm">Export Markdown</div>
+                          <div className="text-xs text-muted-foreground">Unduh sebagai .md</div>
+                        </div>
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Edit Button (owner only) */}
+              {canEdit && (
+                <Button variant="default" size="sm" onClick={handleEdit} className="gap-2 hidden sm:flex">
+                  <Edit className="w-4 h-4" />
+                  Edit
+                </Button>
+              )}
+
+              {/* More Actions (Mobile) */}
+              <div className="relative sm:hidden">
+                <Button variant="outline" size="sm" onClick={() => setShowActions(!showActions)}>
+                  <MoreVertical className="w-4 h-4" />
+                </Button>
+
+                <AnimatePresence>
+                  {showActions && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute right-0 mt-2 w-48 bg-background border rounded-lg shadow-lg overflow-hidden"
+                    >
+                      {canEdit && (
+                        <button
+                          onClick={handleEdit}
+                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left"
+                        >
+                          <Edit className="w-4 h-4" />
+                          <span>Edit Catatan</span>
+                        </button>
+                      )}
+                      {currentNote.isPublic && (
+                        <button
+                          onClick={handleShare}
+                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t"
+                        >
+                          <Share2 className="w-4 h-4" />
+                          <span>Share Link</span>
+                        </button>
+                      )}
+                      {canDelete && (
+                        <button
+                          onClick={handleDelete}
+                          disabled={isDeleting}
+                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-destructive/10 text-destructive transition-colors text-left border-t"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                          <span>Hapus</span>
+                        </button>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Delete Button (Desktop, admin/owner only) */}
+              {canDelete && (
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className="gap-2 hidden sm:flex"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  {isDeleting ? "Menghapus..." : "Hapus"}
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <NoteDetailCard
-            note={currentNote}
-            isOwner={isOwner}
-            isPinnable={isAdmin || isPanitia}
-            onBack={handleBack}
-            onEdit={isOwner ? handleEdit : undefined}
-            onDelete={isOwner || isAdmin || isPanitia ? handleDelete : undefined}
-            onShare={currentNote.isPublic ? handleShare : undefined}
-            onExport={isOwner ? handleExport : undefined}
-          >
-            <NoteViewer
-              note={currentNote}
-              showMetadata={true}
-              showAuthor={!isOwner}
-              authorName={isOwner ? undefined : "Anonymous"}
-              authorUsername={isOwner ? undefined : undefined}
-            />
-          </NoteDetailCard>
-        </div>
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+          <Card className="border-2 overflow-hidden">
+            <div id="note-content" className="p-6 md:p-8 lg:p-12 bg-background">
+              <NoteViewer
+                note={currentNote}
+                showMetadata={true}
+                showAuthor={!isOwner}
+                authorName={isOwner ? undefined : "Anonymous"}
+              />
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* Quick Actions Card (Mobile Only) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mt-6 sm:hidden"
+        >
+          <Card className="p-4">
+            <div className="flex flex-wrap gap-2">
+              {canEdit && (
+                <Button variant="outline" size="sm" onClick={handleEdit} className="flex-1">
+                  <Edit className="w-4 h-4 mr-2" />
+                  Edit
+                </Button>
+              )}
+              {currentNote.isPublic && (
+                <Button variant="outline" size="sm" onClick={handleShare} className="flex-1">
+                  <Share2 className="w-4 h-4 mr-2" />
+                  Share
+                </Button>
+              )}
+            </div>
+          </Card>
+        </motion.div>
       </div>
     </div>
   );

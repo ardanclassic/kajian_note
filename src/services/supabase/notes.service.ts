@@ -1,6 +1,7 @@
 /**
- * Notes Service
+ * Notes Service - FIXED TAG VALIDATION
  * Handles notes-related operations
+ * FIX: Correct tag limit validation (only check NEW tags)
  */
 
 import { supabase } from "@/lib/supabase";
@@ -79,6 +80,9 @@ export const getNoteWithUser = async (noteId: string): Promise<NoteWithUser | nu
       tags: data.tags || [],
       createdAt: data.created_at,
       updatedAt: data.updated_at,
+      sourceType: data.source_type || "manual",
+      sourceUrl: data.source_url || null,
+      sourceMetadata: data.source_metadata || null,
       user: {
         id: (data.users as any).id,
         username: (data.users as any).username,
@@ -93,7 +97,7 @@ export const getNoteWithUser = async (noteId: string): Promise<NoteWithUser | nu
 };
 
 /**
- * Create note
+ * Create note - FIXED TAG VALIDATION
  */
 export const createNote = async (userId: string, data: CreateNoteData): Promise<Note> => {
   try {
@@ -111,27 +115,51 @@ export const createNote = async (userId: string, data: CreateNoteData): Promise<
       }
     }
 
-    // Check tag limit
+    // FIX: Check tag limit ONLY if there are NEW tags
     if (data.tags && data.tags.length > 0) {
       const usage = await subscriptionService.getSubscriptionUsage(userId);
       const notes = await db.getWhere("notes", { user_id: userId });
-      const allTags = notes.flatMap((note) => note.tags || []);
-      const uniqueTags = [...new Set([...allTags, ...data.tags])];
+      const existingTags = notes.flatMap((note) => note.tags || []);
+      const existingUniqueTags = new Set(existingTags);
 
-      if (uniqueTags.length > usage.tagsLimit) {
-        throw new Error(`Maksimal ${usage.tagsLimit} tag berbeda. Upgrade untuk lebih banyak tag.`);
+      // Find NEW tags (tags that don't exist yet)
+      const newTags = data.tags.filter((tag) => !existingUniqueTags.has(tag));
+
+      // Only validate if there are NEW tags
+      if (newTags.length > 0) {
+        const totalUniqueTagsAfter = existingUniqueTags.size + newTags.length;
+
+        if (totalUniqueTagsAfter > usage.tagsLimit) {
+          throw new Error(
+            `Batas tag tercapai. Anda sudah menggunakan ${existingUniqueTags.size} tag unik. Maksimal ${usage.tagsLimit} tag untuk tier ${usage.tier}.`
+          );
+        }
       }
     }
 
-    // Create note
-    const note = await db.create("notes", {
+    // Prepare note data with proper snake_case mapping
+    const noteData: any = {
       title: data.title,
       content: data.content,
       user_id: userId,
       is_public: data.isPublic || false,
       is_pinned: false,
       tags: data.tags || [],
-    });
+    };
+
+    // Add YouTube source fields mapping (camelCase → snake_case)
+    if (data.sourceType) {
+      noteData.source_type = data.sourceType;
+    }
+    if (data.sourceUrl) {
+      noteData.source_url = data.sourceUrl;
+    }
+    if (data.sourceMetadata) {
+      noteData.source_metadata = data.sourceMetadata;
+    }
+
+    // Create note
+    const note = await db.create("notes", noteData);
 
     if (!note) throw new Error("Gagal membuat catatan");
 
@@ -143,7 +171,7 @@ export const createNote = async (userId: string, data: CreateNoteData): Promise<
 };
 
 /**
- * Update note
+ * Update note - FIXED TAG VALIDATION
  */
 export const updateNote = async (noteId: string, userId: string, data: UpdateNoteData): Promise<Note> => {
   try {
@@ -160,25 +188,42 @@ export const updateNote = async (noteId: string, userId: string, data: UpdateNot
       }
     }
 
-    // Check tag limit if updating tags
+    // FIX: Check tag limit ONLY if there are NEW tags
     if (data.tags && data.tags.length > 0) {
       const usage = await subscriptionService.getSubscriptionUsage(userId);
       const notes = await db.getWhere("notes", { user_id: userId });
-      const allTags = notes.filter((note) => note.id !== noteId).flatMap((note) => note.tags || []);
-      const uniqueTags = [...new Set([...allTags, ...data.tags])];
 
-      if (uniqueTags.length > usage.tagsLimit) {
-        throw new Error(`Maksimal ${usage.tagsLimit} tag berbeda. Upgrade untuk lebih banyak tag.`);
+      // Exclude current note's tags from existing tags
+      const existingTags = notes.filter((note) => note.id !== noteId).flatMap((note) => note.tags || []);
+      const existingUniqueTags = new Set(existingTags);
+
+      // Find NEW tags (tags that don't exist yet)
+      const newTags = data.tags.filter((tag) => !existingUniqueTags.has(tag));
+
+      // Only validate if there are NEW tags
+      if (newTags.length > 0) {
+        const totalUniqueTagsAfter = existingUniqueTags.size + newTags.length;
+
+        if (totalUniqueTagsAfter > usage.tagsLimit) {
+          throw new Error(
+            `Batas tag tercapai. Anda sudah menggunakan ${existingUniqueTags.size} tag unik. Maksimal ${usage.tagsLimit} tag untuk tier ${usage.tier}.`
+          );
+        }
       }
     }
 
-    // Update note
+    // Update note with proper snake_case mapping
     const updateData: any = {};
     if (data.title !== undefined) updateData.title = data.title;
     if (data.content !== undefined) updateData.content = data.content;
     if (data.isPublic !== undefined) updateData.is_public = data.isPublic;
     if (data.isPinned !== undefined) updateData.is_pinned = data.isPinned;
     if (data.tags !== undefined) updateData.tags = data.tags;
+
+    // Add YouTube source fields mapping (camelCase → snake_case)
+    if (data.sourceType !== undefined) updateData.source_type = data.sourceType;
+    if (data.sourceUrl !== undefined) updateData.source_url = data.sourceUrl;
+    if (data.sourceMetadata !== undefined) updateData.source_metadata = data.sourceMetadata;
 
     const updated = await db.update("notes", noteId, updateData);
     if (!updated) throw new Error("Gagal mengubah catatan");
@@ -250,6 +295,7 @@ export const getUserNotes = async (
 
     if (filters?.isPublic !== undefined) dbFilters.is_public = filters.isPublic;
     if (filters?.isPinned !== undefined) dbFilters.is_pinned = filters.isPinned;
+    if (filters?.sourceType !== undefined) dbFilters.source_type = filters.sourceType;
 
     // Map sort field to database column
     const sortField = sort?.field ? mapSortFieldToColumn(sort.field) : "created_at";
@@ -310,6 +356,7 @@ export const getPublicNotes = async (
 
     if (filters?.isPinned !== undefined) dbFilters.is_pinned = filters.isPinned;
     if (filters?.userId) dbFilters.user_id = filters.userId;
+    if (filters?.sourceType !== undefined) dbFilters.source_type = filters.sourceType;
 
     // Map sort field to database column
     const sortField = sort?.field ? mapSortFieldToColumn(sort.field) : "created_at";
@@ -448,7 +495,17 @@ export const getNoteStatistics = async (userId: string): Promise<NoteStatistics>
     const privateNotes = totalNotes - publicNotes;
     const pinnedNotes = await db.count("notes", { user_id: userId, is_pinned: true });
 
+    // YouTube statistics
+    const manualNotes = await db.count("notes", { user_id: userId, source_type: "manual" });
+    const youtubeNotes = await db.count("notes", { user_id: userId, source_type: "youtube" });
+
     const tags = await getUserTags(userId);
+
+    // Get AI summary count
+    const allNotes = await db.getWhere("notes", { user_id: userId });
+    const aiSummaryNotes = allNotes.filter(
+      (note) => (note as any).source_metadata && ((note as any).source_metadata as any).has_ai_summary === true
+    ).length;
 
     return {
       totalNotes,
@@ -457,6 +514,9 @@ export const getNoteStatistics = async (userId: string): Promise<NoteStatistics>
       pinnedNotes,
       totalTags: tags.length,
       uniqueTags: tags,
+      manualNotes,
+      youtubeNotes,
+      aiSummaryNotes,
     };
   } catch (error: any) {
     console.error("Error getting note statistics:", error);
@@ -467,6 +527,9 @@ export const getNoteStatistics = async (userId: string): Promise<NoteStatistics>
       pinnedNotes: 0,
       totalTags: 0,
       uniqueTags: [],
+      manualNotes: 0,
+      youtubeNotes: 0,
+      aiSummaryNotes: 0,
     };
   }
 };
@@ -485,6 +548,10 @@ const mapDbNoteToNote = (dbNote: any): Note => {
     tags: dbNote.tags || [],
     createdAt: dbNote.created_at,
     updatedAt: dbNote.updated_at,
+    // Map YouTube fields (snake_case → camelCase)
+    sourceType: dbNote.source_type || "manual",
+    sourceUrl: dbNote.source_url || null,
+    sourceMetadata: dbNote.source_metadata || null,
   };
 };
 

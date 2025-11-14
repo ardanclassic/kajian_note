@@ -125,6 +125,7 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
         title,
         content: summaryData.summary,
         language: summaryData.language_used,
+        referenceInfo: options.referenceInfo,
         metadata: {
           source_type: "youtube",
           source_url: videoUrl,
@@ -154,6 +155,7 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
         content,
         transcript: transcriptData.transcript,
         language: transcriptData.language_used,
+        referenceInfo: options.referenceInfo,
         metadata: {
           source_type: "youtube",
           source_url: videoUrl,
@@ -175,6 +177,7 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
       title: "",
       content: "",
       language: "",
+      referenceInfo: options.referenceInfo,
       metadata: {
         source_type: "youtube",
         source_url: options.url,
