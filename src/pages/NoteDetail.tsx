@@ -235,7 +235,7 @@ export default function NoteDetail() {
           {/* Tags */}
           {currentNote.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
-              {currentNote.tags.map((tag) => (
+              {currentNote.tags.map((tag: any) => (
                 <Badge key={tag} variant="secondary">
                   #{tag}
                 </Badge>

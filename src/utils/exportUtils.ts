@@ -4,7 +4,7 @@
  */
 
 import jsPDF from "jspdf";
-import * as domtoimage from "dom-to-image-more";
+// import * as domtoimage from "dom-to-image-more";
 import TurndownService from "turndown";
 import { format } from "date-fns";
 import { id as idLocale } from "date-fns/locale";
@@ -130,51 +130,51 @@ export async function exportNoteToPDF(note: Note): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 100));
 
   // Capture with dom-to-image-more
-  const dataUrl = await domtoimage.toPng(tempContainer, {
-    quality: 0.95,
-    bgcolor: "#ffffff",
-    width: tempContainer.scrollWidth,
-    height: tempContainer.scrollHeight,
-  });
+  // const dataUrl = await domtoimage.toPng(tempContainer, {
+  //   quality: 0.95,
+  //   bgcolor: "#ffffff",
+  //   width: tempContainer.scrollWidth,
+  //   height: tempContainer.scrollHeight,
+  // });
 
-  // Remove temporary container
-  document.body.removeChild(tempContainer);
+  // // Remove temporary container
+  // document.body.removeChild(tempContainer);
 
-  // Create image to get dimensions
-  const img = new Image();
-  img.src = dataUrl;
+  // // Create image to get dimensions
+  // const img = new Image();
+  // img.src = dataUrl;
 
-  await new Promise((resolve) => {
-    img.onload = resolve;
-  });
+  // await new Promise((resolve) => {
+  //   img.onload = resolve;
+  // });
 
-  const pdf = new jsPDF({
-    orientation: "portrait",
-    unit: "mm",
-    format: "a4",
-  });
+  // const pdf = new jsPDF({
+  //   orientation: "portrait",
+  //   unit: "mm",
+  //   format: "a4",
+  // });
 
-  const imgWidth = 210; // A4 width in mm
-  const pageHeight = 297; // A4 height in mm
-  const imgHeight = (img.height * imgWidth) / img.width;
-  let heightLeft = imgHeight;
-  let position = 0;
+  // const imgWidth = 210; // A4 width in mm
+  // const pageHeight = 297; // A4 height in mm
+  // const imgHeight = (img.height * imgWidth) / img.width;
+  // let heightLeft = imgHeight;
+  // let position = 0;
 
-  // Add first page
-  pdf.addImage(dataUrl, "PNG", 0, position, imgWidth, imgHeight);
-  heightLeft -= pageHeight;
+  // // Add first page
+  // pdf.addImage(dataUrl, "PNG", 0, position, imgWidth, imgHeight);
+  // heightLeft -= pageHeight;
 
-  // Add additional pages if needed
-  while (heightLeft > 0) {
-    position = heightLeft - imgHeight;
-    pdf.addPage();
-    pdf.addImage(dataUrl, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
-  }
+  // // Add additional pages if needed
+  // while (heightLeft > 0) {
+  //   position = heightLeft - imgHeight;
+  //   pdf.addPage();
+  //   pdf.addImage(dataUrl, "PNG", 0, position, imgWidth, imgHeight);
+  //   heightLeft -= pageHeight;
+  // }
 
   // Generate filename
-  const filename = `${note.title.replace(/[^a-z0-9]/gi, "-")}-${format(new Date(), "yyyyMMdd")}.pdf`;
-  pdf.save(filename);
+  // const filename = `${note.title.replace(/[^a-z0-9]/gi, "-")}-${format(new Date(), "yyyyMMdd")}.pdf`;
+  // pdf.save(filename);
 }
 
 /**
