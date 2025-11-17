@@ -1,0 +1,587 @@
+/**
+ * Universal PDF Print Stylesheet
+ * Optimized untuk mobile reading & reusable across projects
+ * 
+ * Installation:
+ * 1. Save file ini sebagai src/styles/print.css
+ * 2. Import di main.tsx: import './styles/print.css';
+ * 3. Add class="printable-content" ke content wrapper
+ * 4. Add class="no-print" ke elements yg ingin di-hide
+ */
+
+/* ============================================
+   PAGE SETUP
+   ============================================ */
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 15mm 12mm 20mm 12mm; /* top right bottom left */
+  }
+
+  /* Page breaks */
+  @page :first {
+    margin-top: 15mm;
+  }
+
+  /* Footer dengan page number */
+  @page {
+    @bottom-center {
+      content: counter(page) " / " counter(pages);
+      font-size: 9pt;
+      color: #666;
+      font-family: system-ui, sans-serif;
+    }
+  }
+
+  /* ============================================
+     RESET & BASE STYLES
+     ============================================ */
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    /* Remove animations */
+    animation-duration: 0s !important;
+    transition-duration: 0s !important;
+  }
+
+  html {
+    font-size: 11pt; /* Base size optimized untuk A4 */
+  }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 
+                 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #1a1a1a;
+    background: white !important;
+    width: 100%;
+    max-width: none;
+  }
+
+  /* ============================================
+     HIDE NON-PRINTABLE ELEMENTS
+     ============================================ */
+
+  /* Common UI elements */
+  nav,
+  header:not(.print-visible),
+  footer:not(.print-visible),
+  aside,
+  .no-print,
+  .navbar,
+  .sidebar,
+  .toolbar,
+  .menu,
+  .modal,
+  .popup,
+  .tooltip,
+  .dropdown,
+  button:not(.print-visible),
+  [role="navigation"],
+  [aria-label="navigation"],
+  [class*="nav-"],
+  [class*="menu-"],
+  [class*="toolbar-"],
+  [class*="sidebar-"] {
+    display: none !important;
+  }
+
+  /* Form controls */
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  textarea,
+  select {
+    display: none !important;
+  }
+
+  /* Social & interactive */
+  .share-button,
+  .like-button,
+  .comment-section,
+  .social-icons,
+  [class*="interactive-"] {
+    display: none !important;
+  }
+
+  /* ============================================
+     SHOW PRINT-ONLY ELEMENTS
+     ============================================ */
+
+  .print-only {
+    display: block !important;
+  }
+
+  .print-inline {
+    display: inline !important;
+  }
+
+  /* ============================================
+     PRINTABLE CONTENT CONTAINER
+     ============================================ */
+
+  .printable-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  /* ============================================
+     TYPOGRAPHY
+     ============================================ */
+
+  /* Headings */
+  h1 {
+    font-size: 20pt;
+    line-height: 1.3;
+    margin-top: 0;
+    margin-bottom: 12pt;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    font-weight: 700;
+    color: #000;
+  }
+
+  h2 {
+    font-size: 16pt;
+    line-height: 1.3;
+    margin-top: 16pt;
+    margin-bottom: 8pt;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    font-weight: 600;
+    color: #000;
+  }
+
+  h3 {
+    font-size: 14pt;
+    line-height: 1.3;
+    margin-top: 12pt;
+    margin-bottom: 6pt;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  h4, h5, h6 {
+    font-size: 12pt;
+    line-height: 1.3;
+    margin-top: 10pt;
+    margin-bottom: 4pt;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  /* Paragraphs */
+  p {
+    margin: 0 0 8pt 0;
+    line-height: 1.6;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Links */
+  a {
+    color: #1a1a1a;
+    text-decoration: underline;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #666;
+    word-break: break-all;
+  }
+
+  /* Don't show URL for anchor links */
+  a[href^="#"]::after {
+    content: "";
+  }
+
+  /* Lists */
+  ul, ol {
+    margin: 8pt 0;
+    padding-left: 20pt;
+  }
+
+  li {
+    margin-bottom: 4pt;
+    line-height: 1.5;
+    orphans: 2;
+    widows: 2;
+  }
+
+  /* Emphasis */
+  strong, b {
+    font-weight: 600;
+    color: #000;
+  }
+
+  em, i {
+    font-style: italic;
+  }
+
+  /* ============================================
+     IMAGES
+     ============================================ */
+
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid;
+    page-break-after: auto;
+    display: block;
+    margin: 8pt auto;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Image with caption */
+  figure {
+    page-break-inside: avoid;
+    margin: 12pt 0;
+  }
+
+  figcaption {
+    font-size: 9pt;
+    color: #666;
+    text-align: center;
+    margin-top: 4pt;
+  }
+
+  /* ============================================
+     CODE & PRE
+     ============================================ */
+
+  code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9pt;
+    background: #f5f5f5 !important;
+    color: #1a1a1a !important;
+    padding: 1pt 3pt;
+    border: 0.5pt solid #e0e0e0 !important;
+    border-radius: 2pt;
+    word-break: break-word;
+  }
+
+  pre {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9pt;
+    background: #f5f5f5 !important;
+    color: #1a1a1a !important;
+    border: 0.5pt solid #e0e0e0 !important;
+    border-radius: 0 !important;
+    padding: 8pt !important;
+    margin: 8pt 0 !important;
+    page-break-inside: avoid;
+    overflow: visible !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+  }
+
+  pre code {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    font-size: inherit;
+  }
+
+  /* ============================================
+     BLOCKQUOTES
+     ============================================ */
+
+  blockquote {
+    margin: 12pt 0 12pt 15pt;
+    padding: 6pt 0 6pt 12pt;
+    border-left: 3pt solid #e0e0e0;
+    page-break-inside: avoid;
+    font-style: italic;
+    color: #333;
+  }
+
+  blockquote p {
+    margin: 4pt 0;
+  }
+
+  /* ============================================
+     TABLES
+     ============================================ */
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    page-break-inside: avoid;
+    margin: 12pt 0;
+    font-size: 10pt;
+  }
+
+  thead {
+    display: table-header-group; /* Repeat header di setiap page */
+  }
+
+  tfoot {
+    display: table-footer-group;
+  }
+
+  th, td {
+    border: 0.5pt solid #333 !important;
+    padding: 6pt 8pt;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: #f5f5f5 !important;
+    font-weight: 600;
+    color: #000;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  /* Zebra striping */
+  tbody tr:nth-child(even) {
+    background: #fafafa !important;
+  }
+
+  /* ============================================
+     HORIZONTAL RULES
+     ============================================ */
+
+  hr {
+    border: none;
+    border-top: 1pt solid #e0e0e0;
+    margin: 16pt 0;
+    page-break-after: avoid;
+  }
+
+  /* ============================================
+     PAGE BREAKS CONTROL
+     ============================================ */
+
+  /* Avoid breaks inside these elements */
+  h1, h2, h3, h4, h5, h6,
+  img, figure, pre, blockquote,
+  table, ul, ol {
+    page-break-inside: avoid;
+  }
+
+  /* Avoid breaks after headings */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+
+  /* Helper classes */
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+  }
+
+  .page-break-avoid {
+    page-break-inside: avoid;
+  }
+
+  /* ============================================
+     SPECIAL CONTENT TYPES
+     ============================================ */
+
+  /* Callouts / Alerts */
+  .callout,
+  .alert,
+  .note,
+  [class*="callout-"],
+  [class*="alert-"] {
+    background: #f5f5f5 !important;
+    border: 1pt solid #d0d0d0 !important;
+    border-radius: 0 !important;
+    padding: 8pt !important;
+    margin: 8pt 0 !important;
+    page-break-inside: avoid;
+  }
+
+  /* Cards */
+  .card,
+  [class*="card-"] {
+    background: white !important;
+    border: 0.5pt solid #e0e0e0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 8pt !important;
+    margin: 8pt 0 !important;
+    page-break-inside: avoid;
+  }
+
+  /* Badges / Tags */
+  .badge,
+  .tag,
+  [class*="badge-"],
+  [class*="tag-"] {
+    display: inline-block;
+    background: white !important;
+    color: #333 !important;
+    border: 0.5pt solid #333 !important;
+    padding: 2pt 6pt !important;
+    font-size: 9pt;
+    border-radius: 2pt;
+  }
+
+  /* ============================================
+     MOBILE OPTIMIZATION
+     ============================================ */
+
+  /* Khusus untuk konten yang dibaca di mobile */
+  @media print and (max-width: 600px) {
+    html {
+      font-size: 10pt; /* Sedikit lebih kecil untuk mobile */
+    }
+
+    h1 { font-size: 18pt; }
+    h2 { font-size: 15pt; }
+    h3 { font-size: 13pt; }
+    
+    /* Padding lebih kecil */
+    @page {
+      margin: 10mm 8mm 15mm 8mm;
+    }
+
+    /* Tabel lebih compact */
+    th, td {
+      padding: 4pt 6pt;
+      font-size: 9pt;
+    }
+
+    /* Code lebih kecil */
+    code, pre {
+      font-size: 8pt;
+    }
+  }
+
+  /* ============================================
+     UTILITY CLASSES
+     ============================================ */
+
+  /* Text alignment */
+  .text-left { text-align: left !important; }
+  .text-center { text-align: center !important; }
+  .text-right { text-align: right !important; }
+
+  /* Spacing utilities */
+  .mt-0 { margin-top: 0 !important; }
+  .mb-0 { margin-bottom: 0 !important; }
+  .my-0 { margin-top: 0 !important; margin-bottom: 0 !important; }
+
+  /* Border utilities */
+  .border-0 { border: none !important; }
+  .shadow-none { box-shadow: none !important; }
+  .rounded-0 { border-radius: 0 !important; }
+
+  /* Background utilities */
+  .bg-transparent { background: transparent !important; }
+  .bg-white { background: white !important; }
+
+  /* ============================================
+     FIXES FOR COMMON ISSUES
+     ============================================ */
+
+  /* Remove shadows & effects */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Remove transforms */
+  * {
+    transform: none !important;
+  }
+
+  /* Ensure scrollable containers are visible */
+  .overflow-auto,
+  .overflow-scroll,
+  [class*="overflow-"] {
+    overflow: visible !important;
+  }
+
+  /* Fix flex/grid layouts */
+  [class*="flex"],
+  [class*="grid"] {
+    display: block !important;
+  }
+
+  /* Remove max-height limitations */
+  * {
+    max-height: none !important;
+  }
+
+  /* ============================================
+     CUSTOM FOOTER (Optional)
+     ============================================ */
+
+  .print-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9pt;
+    color: #666;
+    border-top: 0.5pt solid #e0e0e0;
+  }
+
+  /* ============================================
+     DEBUG MODE (Uncomment untuk testing)
+     ============================================ */
+
+  /* 
+  * {
+    outline: 0.5pt dashed red !important;
+  }
+  
+  .printable-content {
+    outline: 2pt solid blue !important;
+  }
+  */
+}
+
+/* ============================================
+   SCREEN-ONLY STYLES (Optional helpers)
+   ============================================ */
+
+@media screen {
+  /* Preview mode - simulate print layout */
+  .print-preview-mode .printable-content {
+    max-width: 210mm; /* A4 width */
+    margin: 20px auto;
+    padding: 15mm 12mm;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-height: 297mm; /* A4 height */
+  }
+}

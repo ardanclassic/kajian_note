@@ -204,7 +204,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
               <Label className="text-sm font-semibold">Informasi Sumber (Opsional)</Label>
             </div>
             <p className="text-xs text-muted-foreground">
-              Isi informasi ini untuk ditampilkan sebagai kutipan sumber di awal catatan
+              Isi informasi ini untuk menambahkan sumber referensi di akhir catatan
             </p>
 
             {/* Material Title */}

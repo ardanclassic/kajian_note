@@ -1,6 +1,6 @@
 /**
- * ViewNote Page - REDESIGNED
- * Updated to use external export utilities
+ * ViewNote Page - UPDATED FOR NATIVE PRINT
+ * Uses native browser print API for PDF export
  */
 
 import { useEffect, useState } from "react";
@@ -101,22 +101,23 @@ export default function ViewNote() {
     });
   };
 
-  // Export to PDF
+  // Export to PDF (Native Print)
   const handleExportPDF = async () => {
     if (!currentNote) return;
 
     setIsExporting(true);
-    toast.loading("Membuat PDF...");
+    toast.info("Membuka dialog cetak...", {
+      description: "Pilih 'Save as PDF' untuk menyimpan",
+    });
 
     try {
       await exportNoteToPDF(currentNote);
-      toast.dismiss();
-      toast.success("PDF berhasil diunduh!");
+      // Note: No success toast here because print dialog is modal
+      // User feedback comes from the print dialog itself
     } catch (error) {
       console.error("Export PDF error:", error);
-      toast.dismiss();
-      toast.error("Gagal export PDF", {
-        description: "Terjadi kesalahan saat membuat PDF",
+      toast.error("Gagal membuka dialog cetak", {
+        description: "Terjadi kesalahan",
       });
     } finally {
       setIsExporting(false);
@@ -199,11 +200,11 @@ export default function ViewNote() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Floating Action Bar - Desktop */}
+      {/* Floating Action Bar - Desktop - HIDDEN IN PRINT */}
       <motion.div
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b"
+        className="no-print sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b"
       >
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-4">
@@ -252,16 +253,16 @@ export default function ViewNote() {
                       exit={{ opacity: 0, y: -10 }}
                       className="absolute right-0 mt-2 w-48 bg-background border rounded-lg shadow-lg overflow-hidden"
                     >
-                      {/* <button
+                      <button
                         onClick={handleExportPDF}
                         className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left"
                       >
                         <FileText className="w-4 h-4" />
                         <div>
                           <div className="font-medium text-sm">Export PDF</div>
-                          <div className="text-xs text-muted-foreground">Unduh sebagai PDF</div>
+                          <div className="text-xs text-muted-foreground">Via print dialog</div>
                         </div>
-                      </button> */}
+                      </button>
                       <button
                         onClick={handleExportMarkdown}
                         className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t"
@@ -350,11 +351,11 @@ export default function ViewNote() {
         </div>
       </motion.div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      {/* Main Content - PRINTABLE */}
+      <div className="container mx-auto px-4 py-8 max-w-4xl print:px-0 print:py-0 print:max-w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <Card className="border-none md:border-2 p-0 overflow-hidden">
-            <div id="note-content" className="p-0 md:p-8 lg:p-12 bg-background">
+          <Card className="printable-content border-none md:border-2 p-0 overflow-hidden print:!border-none print:!shadow-none print:!bg-white">
+            <div className="p-0 md:p-8 lg:p-12 bg-background print:!bg-white print:!p-0 print:!border-none">
               <NoteViewer
                 note={currentNote}
                 showMetadata={true}

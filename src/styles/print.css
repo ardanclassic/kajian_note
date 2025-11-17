@@ -1,0 +1,751 @@
+/* ============================================
+   PAGE SETUP - MOBILE-OPTIMIZED DEFAULT
+   ============================================ */
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 17mm 8mm 15mm 8mm; /* top right bottom left */
+  }
+
+  /* Page breaks */
+  @page :first {
+    margin-top: 17mm;
+  }
+
+  /* Footer dengan page number */
+  @page {
+    @bottom-center {
+      content: counter(page) " / " counter(pages);
+      font-size: 8pt;
+      color: #666;
+      font-family: system-ui, sans-serif;
+    }
+  }
+
+  /* ============================================
+     RESET & BASE STYLES - MOBILE-OPTIMIZED
+     ============================================ */
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    /* Remove animations */
+    animation-duration: 0s !important;
+    transition-duration: 0s !important;
+  }
+
+  /* MOBILE-OPTIMIZED: Larger base font for comfortable reading without zoom */
+  html {
+    font-size: 20pt; /* Adjusted for optimal reading */
+  }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+    font-size: 20pt; /* Adjusted for optimal reading */
+    line-height: 1.7; /* More breathing room */
+    color: #1a1a1a;
+    background: white !important;
+    width: 100%;
+    max-width: none;
+  }
+
+  /* ============================================
+     HIDE NON-PRINTABLE ELEMENTS - ENHANCED
+     ============================================ */
+
+  /* Common UI elements */
+  nav,
+  header:not(.print-visible),
+  footer:not(.print-visible),
+  aside,
+  .no-print,
+  .navbar,
+  .sidebar,
+  .toolbar,
+  .menu,
+  .modal,
+  .popup,
+  .tooltip,
+  .dropdown,
+  button:not(.print-visible),
+  [role="navigation"],
+  [aria-label="navigation"],
+  [class*="nav-"],
+  [class*="menu-"],
+  [class*="toolbar-"],
+  [class*="sidebar-"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Extra specificity for .no-print */
+  body .no-print,
+  .printable-content .no-print,
+  * .no-print {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Form controls */
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  textarea,
+  select {
+    display: none !important;
+  }
+
+  /* Social & interactive */
+  .share-button,
+  .like-button,
+  .comment-section,
+  .social-icons,
+  [class*="interactive-"] {
+    display: none !important;
+  }
+
+  /* ============================================
+     SHOW PRINT-ONLY ELEMENTS
+     ============================================ */
+
+  .print-only {
+    display: block !important;
+  }
+
+  .print-inline {
+    display: inline !important;
+  }
+
+  /* ============================================
+     PRINTABLE CONTENT CONTAINER - FIXED SPACING
+     ============================================ */
+
+  .printable-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    margin-top: 17mm !important; /* FIXED: Use margin instead of padding */
+    padding: 0 !important;
+    background: white !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  /* Extra specificity for margin-top */
+  body .printable-content {
+    margin-top: 17mm !important;
+  }
+
+  /* ============================================
+     TYPOGRAPHY - MOBILE-OPTIMIZED
+     ============================================ */
+
+  /* Headings - Larger for easy mobile reading */
+  h1 {
+    font-size: 40pt; /* Adjusted */
+    line-height: 1.3;
+    margin-top: 0;
+    margin-bottom: 16pt; /* More space below title */
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    font-weight: 700;
+    color: #000;
+  }
+
+  h2 {
+    font-size: 30pt; /* Adjusted */
+    line-height: 1.3;
+    margin-top: 18pt;
+    margin-bottom: 10pt;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    font-weight: 600;
+    color: #000;
+  }
+
+  h3 {
+    font-size: 24pt; /* Adjusted */
+    line-height: 1.3;
+    margin-top: 14pt;
+    margin-bottom: 7pt;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  h4,
+  h5,
+  h6 {
+    font-size: 22pt; /* Adjusted proportionally */
+    line-height: 1.3;
+    margin-top: 10pt;
+    margin-bottom: 5pt;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  /* Paragraphs */
+  p {
+    margin: 0 0 10pt 0; /* More spacing between paragraphs */
+    line-height: 1.7; /* Better readability */
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Links */
+  a {
+    color: #1a1a1a;
+    text-decoration: underline;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 14pt; /* Adjusted */
+    color: #666;
+    word-break: break-all;
+  }
+
+  /* Don't show URL for anchor links */
+  a[href^="#"]::after {
+    content: "";
+  }
+
+  /* Lists */
+  ul,
+  ol {
+    margin: 10pt 0;
+    padding-left: 20pt;
+  }
+
+  li {
+    margin-bottom: 5pt;
+    line-height: 1.6;
+    orphans: 2;
+    widows: 2;
+  }
+
+  /* Emphasis */
+  strong,
+  b {
+    font-weight: 600;
+    color: #000;
+  }
+
+  em,
+  i {
+    font-style: italic;
+  }
+
+  /* ============================================
+     IMAGES
+     ============================================ */
+
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid;
+    page-break-after: auto;
+    display: block;
+    margin: 7pt auto;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Image with caption */
+  figure {
+    page-break-inside: avoid;
+    margin: 10pt 0;
+  }
+
+  figcaption {
+    font-size: 8pt;
+    color: #666;
+    text-align: center;
+    margin-top: 3pt;
+  }
+
+  /* ============================================
+     CODE & PRE - MOBILE-OPTIMIZED
+     ============================================ */
+
+  code {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 14pt; /* Adjusted */
+    background: #f5f5f5 !important;
+    color: #1a1a1a !important;
+    padding: 1pt 3pt;
+    border: 0.5pt solid #e0e0e0 !important;
+    border-radius: 2pt;
+    word-break: break-word;
+  }
+
+  pre {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 14pt; /* Adjusted */
+    background: #f5f5f5 !important;
+    color: #1a1a1a !important;
+    border: 0.5pt solid #e0e0e0 !important;
+    border-radius: 0 !important;
+    padding: 8pt !important;
+    margin: 10pt 0 !important;
+    page-break-inside: avoid;
+    overflow: visible !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+  }
+
+  pre code {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    font-size: inherit;
+  }
+
+  /* ============================================
+     BLOCKQUOTES
+     ============================================ */
+
+  blockquote {
+    margin: 10pt 0 10pt 12pt;
+    padding: 5pt 0 5pt 10pt;
+    border-left: 2.5pt solid #e0e0e0;
+    page-break-inside: avoid;
+    font-style: italic;
+    color: #333;
+  }
+
+  blockquote p {
+    margin: 3pt 0;
+  }
+
+  /* ============================================
+     TABLES - MOBILE-OPTIMIZED
+     ============================================ */
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    page-break-inside: avoid;
+    margin: 10pt 0;
+    font-size: 14pt; /* Adjusted */
+  }
+
+  thead {
+    display: table-header-group; /* Repeat header di setiap page */
+  }
+
+  tfoot {
+    display: table-footer-group;
+  }
+
+  th,
+  td {
+    border: 0.5pt solid #333 !important;
+    padding: 4pt 6pt; /* Tighter padding */
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: #f5f5f5 !important;
+    font-weight: 600;
+    color: #000;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  /* Zebra striping */
+  tbody tr:nth-child(even) {
+    background: #fafafa !important;
+  }
+
+  /* ============================================
+     HORIZONTAL RULES
+     ============================================ */
+
+  hr {
+    border: none;
+    border-top: 1pt solid #e0e0e0;
+    margin: 14pt 0;
+    page-break-after: avoid;
+  }
+
+  /* ============================================
+     PAGE BREAKS CONTROL
+     ============================================ */
+
+  /* Avoid breaks inside these elements */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  img,
+  figure,
+  pre,
+  blockquote,
+  table,
+  ul,
+  ol {
+    page-break-inside: avoid;
+  }
+
+  /* Avoid breaks after headings */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+  }
+
+  /* Helper classes */
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+  }
+
+  .page-break-avoid {
+    page-break-inside: avoid;
+  }
+
+  /* ============================================
+     SPECIAL CONTENT TYPES
+     ============================================ */
+
+  /* Callouts / Alerts */
+  .callout,
+  .alert,
+  .note,
+  [class*="callout-"],
+  [class*="alert-"] {
+    background: #f5f5f5 !important;
+    border: 1pt solid #d0d0d0 !important;
+    border-radius: 0 !important;
+    padding: 6pt !important;
+    margin: 7pt 0 !important;
+    page-break-inside: avoid;
+  }
+
+  /* Cards */
+  .card,
+  [class*="card-"] {
+    background: white !important;
+    border: 0.5pt solid #e0e0e0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 6pt !important;
+    margin: 7pt 0 !important;
+    page-break-inside: avoid;
+  }
+
+  /* Badges / Tags */
+  .badge,
+  .tag,
+  [class*="badge-"],
+  [class*="tag-"] {
+    display: inline-block;
+    background: white !important;
+    color: #333 !important;
+    border: 0.5pt solid #333 !important;
+    padding: 1pt 4pt !important;
+    font-size: 8pt;
+    border-radius: 2pt;
+  }
+
+  /* ============================================
+     UTILITY CLASSES
+     ============================================ */
+
+  /* Text alignment */
+  .text-left {
+    text-align: left !important;
+  }
+  .text-center {
+    text-align: center !important;
+  }
+  .text-right {
+    text-align: right !important;
+  }
+
+  /* Spacing utilities */
+  .mt-0 {
+    margin-top: 0 !important;
+  }
+  .mb-0 {
+    margin-bottom: 0 !important;
+  }
+  .my-0 {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Border utilities */
+  .border-0 {
+    border: none !important;
+  }
+  .shadow-none {
+    box-shadow: none !important;
+  }
+  .rounded-0 {
+    border-radius: 0 !important;
+  }
+
+  /* Background utilities */
+  .bg-transparent {
+    background: transparent !important;
+  }
+  .bg-white {
+    background: white !important;
+  }
+
+  /* ============================================
+     FIXES FOR COMMON ISSUES
+     ============================================ */
+
+  /* Remove shadows & effects */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Remove transforms */
+  * {
+    transform: none !important;
+  }
+
+  /* Ensure scrollable containers are visible */
+  .overflow-auto,
+  .overflow-scroll,
+  [class*="overflow-"] {
+    overflow: visible !important;
+  }
+
+  /* Fix flex/grid layouts - but preserve specific flex containers */
+  [class*="grid"] {
+    display: block !important;
+  }
+
+  /* Preserve flex for metadata and inline elements */
+  .flex,
+  [class*="flex items-center"],
+  [class*="flex-wrap"] {
+    display: flex !important;
+  }
+
+  /* Remove max-height limitations */
+  * {
+    max-height: none !important;
+  }
+
+  /* ============================================
+     TIPTAP PROSE EDITOR - PRINT MODE OVERRIDE
+     MUST COME AFTER globals.css imports
+     ============================================ */
+
+  /* Force prose-editor to use print-friendly styles */
+  .prose-editor .ProseMirror {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  /* All text elements to black */
+  .prose-editor .ProseMirror * {
+    color: #000000 !important;
+  }
+
+  /* Headings */
+  .prose-editor .ProseMirror h1,
+  .prose-editor .ProseMirror h2,
+  .prose-editor .ProseMirror h3,
+  .prose-editor .ProseMirror h4,
+  .prose-editor .ProseMirror h5,
+  .prose-editor .ProseMirror h6 {
+    color: #000000 !important;
+    background: transparent !important;
+  }
+
+  /* Paragraphs */
+  .prose-editor .ProseMirror p {
+    color: #000000 !important;
+    background: transparent !important;
+  }
+
+  /* Strong/Bold */
+  .prose-editor .ProseMirror strong,
+  .prose-editor .ProseMirror b {
+    color: #000000 !important;
+  }
+
+  /* Lists */
+  .prose-editor .ProseMirror ul,
+  .prose-editor .ProseMirror ol,
+  .prose-editor .ProseMirror li {
+    color: #000000 !important;
+  }
+
+  /* Blockquote */
+  .prose-editor .ProseMirror blockquote {
+    color: #4b5563 !important;
+    border-left-color: #000000 !important;
+    background: transparent !important;
+  }
+
+  /* Links - blue for visibility */
+  .prose-editor .ProseMirror a {
+    color: #2563eb !important;
+  }
+
+  /* Code inline */
+  .prose-editor .ProseMirror code {
+    background-color: #f3f4f6 !important;
+    color: #000000 !important;
+  }
+
+  /* Code block */
+  .prose-editor .ProseMirror pre {
+    background-color: #f3f4f6 !important;
+    color: #000000 !important;
+    border: 1px solid #e5e7eb !important;
+  }
+
+  .prose-editor .ProseMirror pre code {
+    color: #000000 !important;
+    background: transparent !important;
+  }
+
+  /* ============================================
+     CUSTOM FOOTER (Optional)
+     ============================================ */
+
+  .print-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 15mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8pt;
+    color: #666;
+    border-top: 0.5pt solid #e0e0e0;
+  }
+}
+
+/* ============================================
+   DESKTOP STYLE (Optional Larger Format)
+   Use by adding class="print-desktop" to body
+   ============================================ */
+
+@media print {
+  body.print-desktop {
+    font-size: 11pt; /* Larger base for desktop */
+  }
+
+  body.print-desktop html {
+    font-size: 11pt;
+  }
+
+  body.print-desktop h1 {
+    font-size: 20pt;
+    margin-bottom: 12pt;
+  }
+
+  body.print-desktop h2 {
+    font-size: 16pt;
+    margin-top: 16pt;
+    margin-bottom: 8pt;
+  }
+
+  body.print-desktop h3 {
+    font-size: 14pt;
+    margin-top: 12pt;
+    margin-bottom: 6pt;
+  }
+
+  body.print-desktop h4,
+  body.print-desktop h5,
+  body.print-desktop h6 {
+    font-size: 12pt;
+  }
+
+  body.print-desktop p {
+    margin: 0 0 8pt 0;
+  }
+
+  body.print-desktop code {
+    font-size: 9pt;
+  }
+
+  body.print-desktop pre {
+    font-size: 9pt;
+    padding: 8pt !important;
+  }
+
+  body.print-desktop table {
+    font-size: 10pt;
+  }
+}
+
+/* ============================================
+   DESKTOP ALTERNATIVE: Adjust via body padding
+   ============================================ */
+
+@media print {
+  body.print-desktop .printable-content {
+    padding: 5mm 4mm !important; /* Extra padding for desktop feel */
+  }
+}
+
+/* ============================================
+   SCREEN-ONLY STYLES (Optional helpers)
+   ============================================ */
+
+@media screen {
+  /* Preview mode - simulate print layout */
+  .print-preview-mode .printable-content {
+    max-width: 210mm; /* A4 width */
+    margin: 20px auto;
+    padding: 10mm 8mm;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-height: 297mm; /* A4 height */
+  }
+}

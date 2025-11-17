@@ -444,6 +444,90 @@ button:focus-visible {
   background-color: var(--muted);
 }
 
+/* ============================================
+   PRINT MODE OVERRIDES - CRITICAL FIX
+   ============================================ */
+
+@media print {
+  /* Force black text on white background */
+  .prose-editor .ProseMirror {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+    padding: 0 !important;
+  }
+
+  /* Headings - black color */
+  .prose-editor .ProseMirror h1,
+  .prose-editor .ProseMirror h2,
+  .prose-editor .ProseMirror h3,
+  .prose-editor .ProseMirror h4,
+  .prose-editor .ProseMirror h5,
+  .prose-editor .ProseMirror h6 {
+    color: #000000 !important;
+  }
+
+  /* Paragraphs - black color */
+  .prose-editor .ProseMirror p {
+    color: #000000 !important;
+  }
+
+  /* Strong/Bold - black color */
+  .prose-editor .ProseMirror strong,
+  .prose-editor .ProseMirror b {
+    color: #000000 !important;
+  }
+
+  /* Lists - black color */
+  .prose-editor .ProseMirror ul,
+  .prose-editor .ProseMirror ol,
+  .prose-editor .ProseMirror li {
+    color: #000000 !important;
+  }
+
+  /* Blockquote - gray color with black border */
+  .prose-editor .ProseMirror blockquote {
+    color: #4b5563 !important;
+    border-left-color: #000000 !important;
+  }
+
+  /* Links - blue color for visibility */
+  .prose-editor .ProseMirror a {
+    color: #2563eb !important;
+  }
+
+  /* Code - light gray background with black text */
+  .prose-editor .ProseMirror code {
+    background-color: #f3f4f6 !important;
+    color: #000000 !important;
+  }
+
+  /* Code Block - light gray background with black text */
+  .prose-editor .ProseMirror pre {
+    background-color: #f3f4f6 !important;
+    color: #000000 !important;
+    border: 1px solid #e5e7eb !important;
+  }
+
+  .prose-editor .ProseMirror pre code {
+    color: #000000 !important;
+  }
+
+  /* Horizontal Rule - gray */
+  .prose-editor .ProseMirror hr {
+    border-top-color: #e5e7eb !important;
+  }
+
+  /* Remove any dark backgrounds */
+  .prose-editor .ProseMirror * {
+    background-color: transparent !important;
+  }
+
+  .prose-editor .ProseMirror code,
+  .prose-editor .ProseMirror pre {
+    background-color: #f3f4f6 !important;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .prose-editor .ProseMirror {
     padding: 0;

@@ -1,10 +1,8 @@
 /**
  * Export Utilities
- * Functions for exporting notes to PDF and Markdown formats
+ * Functions for exporting notes to PDF (native print) and Markdown formats
  */
 
-import jsPDF from "jspdf";
-// import * as domtoimage from "dom-to-image-more";
 import TurndownService from "turndown";
 import { format } from "date-fns";
 import { id as idLocale } from "date-fns/locale";
@@ -23,162 +21,33 @@ export interface Note {
 }
 
 /**
- * Export note to PDF
+ * Export note to PDF using native browser print
+ * This creates a vector PDF with selectable/searchable text
+ * Mobile-optimized for reading on smartphones
  */
 export async function exportNoteToPDF(note: Note): Promise<void> {
-  // Create a temporary container for rendering
-  const tempContainer = document.createElement("div");
-  tempContainer.style.position = "absolute";
-  tempContainer.style.left = "-9999px";
-  tempContainer.style.width = "210mm"; // A4 width
-  tempContainer.style.padding = "20mm";
-  tempContainer.style.backgroundColor = "#ffffff";
-  tempContainer.style.fontFamily = "system-ui, -apple-system, sans-serif";
-  tempContainer.style.fontSize = "12pt";
-  tempContainer.style.lineHeight = "1.6";
-  tempContainer.style.color = "#000000";
+  // Save original title
+  const originalTitle = document.title;
 
-  // Build styled HTML content
-  let htmlContent = `
-    <div style="margin-bottom: 30px; border-bottom: 2px solid #e5e7eb; padding-bottom: 20px;">
-      <h1 style="font-size: 24pt; font-weight: bold; margin: 0 0 15px 0; color: #111827;">
-        ${note.title}
-      </h1>
-      <div style="font-size: 10pt; color: #6b7280; margin-bottom: 10px;">
-        <div style="margin-bottom: 5px;">
-          <strong>Dibuat:</strong> ${format(new Date(note.createdAt), "dd MMMM yyyy, HH:mm", { locale: idLocale })}
-        </div>
-        <div style="margin-bottom: 5px;">
-          <strong>Diperbarui:</strong> ${format(new Date(note.updatedAt), "dd MMMM yyyy, HH:mm", { locale: idLocale })}
-        </div>
-  `;
+  // Set document title for PDF filename
+  const sanitizedTitle = note.title.replace(/[^a-z0-9]/gi, "-");
+  // const timestamp = format(new Date(), "yyyyMMdd");
+  document.title = `${sanitizedTitle}`;
 
-  if (note.tags.length > 0) {
-    htmlContent += `
-        <div style="margin-bottom: 5px;">
-          <strong>Tags:</strong> ${note.tags.map((t) => `#${t}`).join(", ")}
-        </div>
-    `;
-  }
+  // Trigger native print dialog
+  // User will save as PDF from the print dialog
+  window.print();
 
-  if (note.sourceType === "youtube" && note.sourceUrl) {
-    htmlContent += `
-        <div>
-          <strong>Sumber:</strong> ${note.sourceUrl}
-        </div>
-    `;
-  }
-
-  htmlContent += `
-      </div>
-    </div>
-    <div style="font-size: 11pt; line-height: 1.8;">
-      ${note.content}
-    </div>
-  `;
-
-  // Add CSS styles for better formatting
-  const styleElement = document.createElement("style");
-  styleElement.textContent = `
-    h1, h2, h3, h4, h5, h6 {
-      margin: 20px 0 10px 0;
-      font-weight: bold;
-      color: #111827;
-    }
-    h1 { font-size: 20pt; }
-    h2 { font-size: 18pt; }
-    h3 { font-size: 16pt; }
-    h4 { font-size: 14pt; }
-    p { margin: 10px 0; }
-    ul, ol { margin: 10px 0; padding-left: 25px; }
-    li { margin: 5px 0; }
-    blockquote {
-      border-left: 4px solid #e5e7eb;
-      padding-left: 15px;
-      margin: 15px 0;
-      color: #6b7280;
-      font-style: italic;
-    }
-    code {
-      background-color: #f3f4f6;
-      padding: 2px 6px;
-      border-radius: 3px;
-      font-family: monospace;
-      font-size: 10pt;
-    }
-    pre {
-      background-color: #f3f4f6;
-      padding: 15px;
-      border-radius: 5px;
-      overflow-x: auto;
-      margin: 15px 0;
-    }
-    pre code {
-      background-color: transparent;
-      padding: 0;
-    }
-    strong { font-weight: 600; }
-    em { font-style: italic; }
-    a { color: #2563eb; text-decoration: underline; }
-  `;
-
-  tempContainer.appendChild(styleElement);
-  tempContainer.innerHTML += htmlContent;
-  document.body.appendChild(tempContainer);
-
-  // Wait a bit for styles to apply
-  await new Promise((resolve) => setTimeout(resolve, 100));
-
-  // Capture with dom-to-image-more
-  // const dataUrl = await domtoimage.toPng(tempContainer, {
-  //   quality: 0.95,
-  //   bgcolor: "#ffffff",
-  //   width: tempContainer.scrollWidth,
-  //   height: tempContainer.scrollHeight,
-  // });
-
-  // // Remove temporary container
-  // document.body.removeChild(tempContainer);
-
-  // // Create image to get dimensions
-  // const img = new Image();
-  // img.src = dataUrl;
-
-  // await new Promise((resolve) => {
-  //   img.onload = resolve;
-  // });
-
-  // const pdf = new jsPDF({
-  //   orientation: "portrait",
-  //   unit: "mm",
-  //   format: "a4",
-  // });
-
-  // const imgWidth = 210; // A4 width in mm
-  // const pageHeight = 297; // A4 height in mm
-  // const imgHeight = (img.height * imgWidth) / img.width;
-  // let heightLeft = imgHeight;
-  // let position = 0;
-
-  // // Add first page
-  // pdf.addImage(dataUrl, "PNG", 0, position, imgWidth, imgHeight);
-  // heightLeft -= pageHeight;
-
-  // // Add additional pages if needed
-  // while (heightLeft > 0) {
-  //   position = heightLeft - imgHeight;
-  //   pdf.addPage();
-  //   pdf.addImage(dataUrl, "PNG", 0, position, imgWidth, imgHeight);
-  //   heightLeft -= pageHeight;
-  // }
-
-  // Generate filename
-  // const filename = `${note.title.replace(/[^a-z0-9]/gi, "-")}-${format(new Date(), "yyyyMMdd")}.pdf`;
-  // pdf.save(filename);
+  // Restore original title after print dialog closes
+  // Use setTimeout to ensure it runs after print dialog
+  setTimeout(() => {
+    document.title = originalTitle;
+  }, 100);
 }
 
 /**
  * Export note to Markdown
+ * Converts HTML content to markdown format
  */
 export function exportNoteToMarkdown(note: Note): void {
   const turndownService = new TurndownService({
@@ -218,3 +87,33 @@ export function exportNoteToMarkdown(note: Note): void {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
+
+/**
+ * Convert markdown syntax to HTML
+ * Supports: **bold**, *italic*, [link](url), etc
+ */
+export const convertMarkdownToHtml = (text: string): string => {
+  let html = text;
+
+  // Bold: **text** or __text__
+  html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  html = html.replace(/__(.+?)__/g, "<strong>$1</strong>");
+
+  // Italic: *text* or _text_
+  html = html.replace(/\*(.+?)\*/g, "<em>$1</em>");
+  html = html.replace(/_(.+?)_/g, "<em>$1</em>");
+
+  // Strikethrough: ~~text~~
+  html = html.replace(/~~(.+?)~~/g, "<s>$1</s>");
+
+  // Links: [text](url)
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
+  // Inline code: `code`
+  html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+
+  // Line breaks
+  html = html.replace(/\n/g, "<br>");
+
+  return html;
+};
