@@ -1,12 +1,12 @@
 /**
- * Change PIN Form Component
- * Form for changing user PIN
+ * Change PIN Form Component - Clean Modern Design
  */
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useAuthStore } from "@/store/authStore";
 import { changePINSchema } from "@/schemas/auth.schema";
 import type { ChangePINFormData } from "@/schemas/auth.schema";
@@ -26,7 +26,6 @@ export default function ChangePINForm({ forced = false }: ChangePINFormProps) {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Show/hide PIN states
   const [showOldPIN, setShowOldPIN] = useState(false);
   const [showNewPIN, setShowNewPIN] = useState(false);
   const [showConfirmPIN, setShowConfirmPIN] = useState(false);
@@ -48,7 +47,6 @@ export default function ChangePINForm({ forced = false }: ChangePINFormProps) {
       setSuccess(false);
       setError(null);
 
-      // Map form data to auth service format
       await changePIN({
         oldPin: data.oldPin,
         newPin: data.newPin,
@@ -57,13 +55,11 @@ export default function ChangePINForm({ forced = false }: ChangePINFormProps) {
 
       setSuccess(true);
 
-      // If forced, redirect to dashboard after 2 seconds
       if (forced) {
         setTimeout(() => {
           navigate("/dashboard");
         }, 2000);
       } else {
-        // Reset form
         form.reset();
         setTimeout(() => setSuccess(false), 3000);
       }
@@ -78,31 +74,43 @@ export default function ChangePINForm({ forced = false }: ChangePINFormProps) {
     <div className="space-y-4">
       {/* Forced Change Warning */}
       {forced && (
-        <div className="flex items-center gap-2 p-3 rounded-lg bg-yellow-50 dark:bg-yellow-950/20 text-yellow-800 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800">
-          <AlertCircle className="h-5 w-5" />
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-3 p-3 rounded-lg bg-yellow-50 dark:bg-yellow-950/20 text-yellow-800 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800"
+        >
+          <AlertCircle className="h-5 w-5 shrink-0" />
           <div>
             <p className="text-sm font-medium">PIN Anda telah direset</p>
             <p className="text-xs">Silakan buat PIN baru untuk melanjutkan</p>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Success Message */}
       {success && (
-        <div className="flex items-center gap-2 p-3 rounded-lg bg-green-50 dark:bg-green-950/20 text-green-800 dark:text-green-400 border border-green-200 dark:border-green-800">
-          <CheckCircle className="h-5 w-5" />
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-3 p-3 rounded-lg bg-green-50 dark:bg-green-950/20 text-green-800 dark:text-green-400 border border-green-200 dark:border-green-800"
+        >
+          <CheckCircle className="h-5 w-5 shrink-0" />
           <p className="text-sm font-medium">
             {forced ? "PIN berhasil diubah! Mengalihkan ke dashboard..." : "PIN berhasil diubah!"}
           </p>
-        </div>
+        </motion.div>
       )}
 
       {/* Error Message */}
       {error && (
-        <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-400 border border-red-200 dark:border-red-800">
-          <AlertCircle className="h-5 w-5" />
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-3 p-3 rounded-lg bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-400 border border-red-200 dark:border-red-800"
+        >
+          <AlertCircle className="h-5 w-5 shrink-0" />
           <p className="text-sm font-medium">{error}</p>
-        </div>
+        </motion.div>
       )}
 
       <Form {...form}>
@@ -122,12 +130,13 @@ export default function ChangePINForm({ forced = false }: ChangePINFormProps) {
                       maxLength={6}
                       {...field}
                       disabled={isLoading}
+                      className="pr-10"
                     />
                     <Button
                       type="button"
                       variant="ghost"
-                      size="sm"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      size="icon-sm"
+                      className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
                       onClick={() => setShowOldPIN(!showOldPIN)}
                       disabled={isLoading}
                     >
@@ -155,12 +164,13 @@ export default function ChangePINForm({ forced = false }: ChangePINFormProps) {
                       maxLength={6}
                       {...field}
                       disabled={isLoading}
+                      className="pr-10"
                     />
                     <Button
                       type="button"
                       variant="ghost"
-                      size="sm"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      size="icon-sm"
+                      className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
                       onClick={() => setShowNewPIN(!showNewPIN)}
                       disabled={isLoading}
                     >
@@ -189,12 +199,13 @@ export default function ChangePINForm({ forced = false }: ChangePINFormProps) {
                       maxLength={6}
                       {...field}
                       disabled={isLoading}
+                      className="pr-10"
                     />
                     <Button
                       type="button"
                       variant="ghost"
-                      size="sm"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      size="icon-sm"
+                      className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
                       onClick={() => setShowConfirmPIN(!showConfirmPIN)}
                       disabled={isLoading}
                     >

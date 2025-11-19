@@ -1,18 +1,17 @@
 /**
- * Edit Profile Form Component
- * Form for updating user profile information
+ * Edit Profile Form Component - Clean Modern Design
  */
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
 import { useAuthStore } from "@/store/authStore";
 import { userService } from "@/services/supabase/user.service";
 import { updateProfileSchema, type UpdateProfileFormData } from "@/schemas/user.schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, CheckCircle2, AlertCircle, Mail } from "lucide-react";
 
 export default function EditProfileForm() {
@@ -47,7 +46,6 @@ export default function EditProfileForm() {
       setUser(updatedUser);
       setSuccess(true);
 
-      // Hide success message after 3 seconds
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Gagal memperbarui profil");
@@ -60,37 +58,51 @@ export default function EditProfileForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {/* Success Alert */}
       {success && (
-        <Alert className="bg-green-50 text-green-900 border-green-200">
-          <CheckCircle2 className="h-4 w-4" />
-          <AlertDescription>Profil berhasil diperbarui!</AlertDescription>
-        </Alert>
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-2 p-3 rounded-lg bg-green-50 dark:bg-green-950/20 text-green-800 dark:text-green-400 border border-green-200 dark:border-green-800"
+        >
+          <CheckCircle2 className="h-4 w-4 shrink-0" />
+          <p className="text-sm font-medium">Profil berhasil diperbarui!</p>
+        </motion.div>
       )}
 
       {/* Error Alert */}
       {error && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-2 p-3 rounded-lg bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-400 border border-red-200 dark:border-red-800"
+        >
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <p className="text-sm font-medium">{error}</p>
+        </motion.div>
       )}
 
       {/* Full Name */}
       <div className="space-y-2">
         <Label htmlFor="fullName">
-          Nama Lengkap <span className="text-red-500">*</span>
+          Nama Lengkap <span className="text-destructive">*</span>
         </Label>
-        <Input id="fullName" {...register("fullName")} placeholder="Nama lengkap Anda" />
-        {errors.fullName && <p className="text-sm text-red-500">{errors.fullName.message}</p>}
+        <Input id="fullName" {...register("fullName")} placeholder="Nama lengkap Anda" disabled={isSubmitting} />
+        {errors.fullName && <p className="text-xs text-destructive">{errors.fullName.message}</p>}
       </div>
 
       {/* Phone */}
       <div className="space-y-2">
         <Label htmlFor="phone">Nomor Telepon</Label>
-        <Input id="phone" type="tel" {...register("phone")} placeholder="+62812345678 (opsional)" />
-        {errors.phone && <p className="text-sm text-red-500">{errors.phone.message}</p>}
+        <Input
+          id="phone"
+          type="tel"
+          {...register("phone")}
+          placeholder="+62812345678 (opsional)"
+          disabled={isSubmitting}
+        />
+        {errors.phone && <p className="text-xs text-destructive">{errors.phone.message}</p>}
       </div>
 
-      {/* Payment Email - NEW */}
+      {/* Payment Email */}
       <div className="space-y-2">
         <Label htmlFor="paymentEmail" className="flex items-center gap-2">
           <Mail className="h-4 w-4" />
@@ -100,12 +112,12 @@ export default function EditProfileForm() {
           id="paymentEmail"
           type="email"
           {...register("paymentEmail")}
-          placeholder="email@contoh.com (untuk verifikasi pembayaran)"
+          placeholder="email@contoh.com"
+          disabled={isSubmitting}
         />
-        {errors.paymentEmail && <p className="text-sm text-red-500">{errors.paymentEmail.message}</p>}
+        {errors.paymentEmail && <p className="text-xs text-destructive">{errors.paymentEmail.message}</p>}
         <p className="text-xs text-muted-foreground">
-          💡 Email ini digunakan untuk mencocokkan pembayaran Lynk.id dengan akun Anda. Gunakan email yang sama saat
-          checkout.
+          💡 Email ini digunakan untuk mencocokkan pembayaran Lynk.id dengan akun Anda.
         </p>
       </div>
 
@@ -116,9 +128,10 @@ export default function EditProfileForm() {
           id="bio"
           {...register("bio")}
           placeholder="Ceritakan sedikit tentang diri Anda (opsional)"
-          className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          disabled={isSubmitting}
+          className="flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
         />
-        {errors.bio && <p className="text-sm text-red-500">{errors.bio.message}</p>}
+        {errors.bio && <p className="text-xs text-destructive">{errors.bio.message}</p>}
         <p className="text-xs text-muted-foreground">Maksimal 200 karakter</p>
       </div>
 

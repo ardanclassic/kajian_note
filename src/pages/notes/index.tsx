@@ -1,9 +1,9 @@
 /**
- * Notes Page - UPDATED with Back to Dashboard
- * List notes only - create/edit/view in separate pages
+ * Notes Page - IMPROVED UI/UX
+ * Modern, clean, interactive, and mobile-responsive
  */
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,7 +12,7 @@ import { PageHeader } from "@/components/common/PageHeader";
 import { NoteList } from "@/components/features/notes/NoteList";
 import { NoteSearch } from "@/components/features/notes/NoteSearch";
 import { SubscriptionLimitBanner } from "@/components/features/notes/SubscriptionLimitBanner";
-import { Plus, FileText, Loader2, X, Sparkles, BookOpen, Globe, Lock, Tag as TagIcon } from "lucide-react";
+import { Plus, FileText, Loader2, X, Sparkles, BookOpen, Globe, Lock, Tag as TagIcon, TrendingUp } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { useNotesStore } from "@/store/notesStore";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
@@ -38,6 +38,7 @@ export default function Notes() {
   } = useNotesStore();
 
   const { usage, fetchUsage } = useSubscriptionStore();
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Fetch initial data
   useEffect(() => {
@@ -106,9 +107,26 @@ export default function Notes() {
     }
   };
 
+  // Handle refresh
+  const handleRefresh = async () => {
+    if (!user?.id || isRefreshing) return;
+
+    setIsRefreshing(true);
+    try {
+      await Promise.all([
+        fetchUserNotes(user.id),
+        fetchStatistics(user.id),
+        fetchUserTags(user.id),
+        fetchUsage(user.id),
+      ]);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* Page Header with Stats and Back Button */}
+    <div className="min-h-screen bg-linear-to-b from-background via-background to-primary/5">
+      {/* Page Header with Stats */}
       <PageHeader
         badgeIcon={BookOpen}
         badgeText="Notes Management"
@@ -116,11 +134,11 @@ export default function Notes() {
         description="Kelola dan organisir catatan kajian Anda dengan mudah"
         showBackButton
         backTo="/dashboard"
-        backLabel="Kembali ke Dashboard"
+        backLabel="Dashboard"
         actions={
-          <Button onClick={handleCreateNote} size="lg">
-            <Plus className="w-4 h-4 mr-2" />
-            Buat Catatan
+          <Button onClick={handleCreateNote} size="lg" className="shadow-lg hover:shadow-xl transition-shadow">
+            <Plus className="w-4 h-4" />
+            <span className="hidden sm:inline">Buat Catatan</span>
           </Button>
         }
         stats={
@@ -139,16 +157,16 @@ export default function Notes() {
                   color: "green",
                 },
                 {
-                  icon: TagIcon,
-                  value: statistics.totalTags,
-                  label: "Total Tag",
-                  color: "purple",
-                },
-                {
                   icon: Lock,
                   value: statistics.totalNotes - statistics.publicNotes,
                   label: "Pribadi",
                   color: "orange",
+                },
+                {
+                  icon: TagIcon,
+                  value: statistics.totalTags,
+                  label: "Total Tag",
+                  color: "purple",
                 },
               ]
             : undefined
@@ -159,36 +177,56 @@ export default function Notes() {
       <div className="container mx-auto px-4 py-6 md:py-8">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Usage Banner */}
-          {usage && <SubscriptionLimitBanner usage={usage} compact />}
+          {usage && (
+            <div className="animate-in fade-in slide-in-from-top-4 duration-500">
+              <SubscriptionLimitBanner usage={usage} compact />
+            </div>
+          )}
 
           {/* Search & Filter Bar */}
-          <div className="flex flex-col md:flex-row gap-3">
-            <div className="flex-1">
-              <NoteSearch availableTags={tags} onSearch={handleSearch} onClear={handleClearSearch} />
-            </div>
+          <div className="animate-in fade-in slide-in-from-top-4 duration-500 delay-100">
+            <Card className="shadow-md hover:shadow-lg transition-shadow">
+              <CardContent className="pt-6">
+                <NoteSearch availableTags={tags} onSearch={handleSearch} onClear={handleClearSearch} />
+              </CardContent>
+            </Card>
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-lg flex items-center justify-between">
-              <p className="text-sm">{error}</p>
-              <Button variant="ghost" size="sm" onClick={clearError}>
-                <X className="w-4 h-4" />
-              </Button>
+            <div className="animate-in fade-in slide-in-from-top-4 duration-500">
+              <Card className="border-destructive/50 bg-destructive/5">
+                <CardContent className="py-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-destructive/10 rounded-full">
+                        <X className="w-5 h-5 text-destructive" />
+                      </div>
+                      <p className="text-sm font-medium text-destructive">{error}</p>
+                    </div>
+                    <Button variant="ghost" size="sm" onClick={clearError}>
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           )}
 
           {/* Loading State */}
           {isLoading && !userNotes.length && (
-            <div className="flex flex-col items-center justify-center py-16">
-              <Loader2 className="w-8 h-8 animate-spin text-primary mb-4" />
-              <p className="text-muted-foreground">Memuat catatan...</p>
+            <div className="flex flex-col items-center justify-center py-20 animate-in fade-in duration-500">
+              <div className="relative">
+                <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full animate-pulse" />
+                <Loader2 className="w-12 h-12 animate-spin text-primary relative" />
+              </div>
+              <p className="text-muted-foreground mt-6 font-medium">Memuat catatan...</p>
             </div>
           )}
 
           {/* Notes List */}
           {!isLoading || userNotes.length > 0 ? (
-            <div className="mt-6">
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-200">
               <NoteList
                 notes={userNotes}
                 currentUserId={user?.id}
@@ -206,35 +244,69 @@ export default function Notes() {
 
           {/* Empty State - First Time User */}
           {userNotes.length === 0 && !isLoading && (
-            <Card className="border-2 border-dashed border-primary/20 bg-gradient-to-br from-primary/5 to-card">
-              <CardContent className="p-8 text-center">
-                <div className="inline-flex p-4 bg-primary/10 rounded-full mb-4">
-                  <Sparkles className="w-8 h-8 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Mulai Mencatat!</h3>
-                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-                  Belum ada catatan. Klik tombol "Buat Catatan" di atas untuk membuat catatan kajian pertama Anda.
-                </p>
-                <Button onClick={handleCreateNote} size="lg" className="mb-6">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Buat Catatan Pertama
-                </Button>
-                <div className="flex flex-wrap gap-2 justify-center text-xs text-muted-foreground">
-                  <Badge variant="secondary" className="gap-1">
-                    <TagIcon className="w-3 h-3" />
-                    Gunakan tags
-                  </Badge>
-                  <Badge variant="secondary" className="gap-1">
-                    <Globe className="w-3 h-3" />
-                    Bagikan publik
-                  </Badge>
-                  <Badge variant="secondary" className="gap-1">
-                    <FileText className="w-3 h-3" />
-                    Export PDF
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="animate-in fade-in zoom-in-95 duration-700 delay-300">
+              <Card className="border-2 border-dashed border-primary/30 bg-linear-to-br from-primary/5 via-background to-primary/10 shadow-lg hover:shadow-xl transition-all hover:border-primary/50">
+                <CardContent className="p-8 md:p-12 text-center">
+                  <div className="inline-flex p-6 bg-linear-to-br from-primary/20 to-primary/10 rounded-full mb-6 animate-pulse">
+                    <Sparkles className="w-12 h-12 text-primary" />
+                  </div>
+
+                  <h3 className="text-2xl font-bold mb-3 bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                    Mulai Mencatat!
+                  </h3>
+
+                  <p className="text-muted-foreground mb-8 max-w-md mx-auto text-base">
+                    Belum ada catatan. Klik tombol "Buat Catatan" di atas untuk membuat catatan kajian pertama Anda.
+                  </p>
+
+                  <Button
+                    onClick={handleCreateNote}
+                    size="xl"
+                    className="mb-8 shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                  >
+                    <Plus className="w-5 h-5" />
+                    Buat Catatan Pertama
+                  </Button>
+
+                  <div className="flex flex-wrap gap-3 justify-center pt-6 border-t border-primary/10">
+                    <Badge variant="secondary" className="gap-2 px-4 py-2 text-sm">
+                      <TagIcon className="w-4 h-4" />
+                      Gunakan tags
+                    </Badge>
+                    <Badge variant="secondary" className="gap-2 px-4 py-2 text-sm">
+                      <Globe className="w-4 h-4" />
+                      Bagikan publik
+                    </Badge>
+                    <Badge variant="secondary" className="gap-2 px-4 py-2 text-sm">
+                      <FileText className="w-4 h-4" />
+                      Export PDF
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {/* Quick Stats - Show when has notes */}
+          {userNotes.length > 0 && statistics && (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-300">
+              <Card className="bg-linear-to-r from-primary/5 to-primary/10 border-primary/20">
+                <CardContent className="py-4">
+                  <div className="flex items-center justify-between gap-4 flex-wrap">
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="w-5 h-5 text-primary" />
+                      <span className="text-sm font-medium">
+                        Total {statistics.totalNotes} catatan dengan {statistics.totalTags} tag
+                      </span>
+                    </div>
+                    <Button variant="ghost" size="sm" onClick={handleRefresh} disabled={isRefreshing}>
+                      <Loader2 className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`} />
+                      Refresh
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           )}
         </div>
       </div>

@@ -112,3 +112,31 @@ export function convertTextToHtmlSimple(text: string): string {
 
   return paragraphs.join("");
 }
+
+/**
+ * Strip HTML tags and decode HTML entities from string
+ * Useful for displaying HTML content as plain text
+ *
+ * @param html - HTML string to strip
+ * @returns Plain text without HTML tags
+ */
+export function stripHtml(html: string): string {
+  if (!html) return "";
+
+  return (
+    html
+      // Remove HTML tags
+      .replace(/<[^>]*>/g, "")
+      // Decode common HTML entities
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&apos;/g, "'")
+      // Remove extra whitespace
+      .replace(/\s+/g, " ")
+      .trim()
+  );
+}

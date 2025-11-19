@@ -1,19 +1,21 @@
 /**
- * Dashboard Page
+ * Dashboard Page - Mobile First Design
+ * Updated: Compact Recent Notes Section
  */
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useAuthStore } from "@/store/authStore";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
 import { useNotesStore } from "@/store/notesStore";
+import { MobileMenu } from "@/components/features/dashboard/MobileMenu";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loading } from "@/components/common/Loading";
 import {
   BookOpen,
-  Tag,
   Share2,
   FileText,
   Crown,
@@ -22,9 +24,11 @@ import {
   Settings,
   Users,
   Plus,
-  TrendingUp,
-  Clock,
+  Menu,
+  Calendar,
   Sparkles,
+  ArrowRight,
+  ChevronRight,
 } from "lucide-react";
 
 export default function Dashboard() {
@@ -32,8 +36,8 @@ export default function Dashboard() {
   const { user, logout } = useAuthStore();
   const { currentSubscription, usage, fetchUsage } = useSubscriptionStore();
   const { userNotes, statistics, fetchUserNotes, fetchStatistics } = useNotesStore();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Fetch data on mount
   useEffect(() => {
     if (user?.id) {
       fetchUserNotes(user.id);
@@ -55,16 +59,14 @@ export default function Dashboard() {
     return <Loading fullscreen text="Memuat..." />;
   }
 
-  const getTierBadgeVariant = (tier: string) => {
-    switch (tier) {
-      case "advance":
-        return "default";
-      case "premium":
-        return "secondary";
-      default:
-        return "outline";
-    }
-  };
+  const menuItems = [
+    { icon: BookOpen, label: "Catatan", onClick: () => navigate("/notes") },
+    { icon: Crown, label: "Subscription", onClick: () => navigate("/subscription") },
+    { icon: User, label: "Profile", onClick: () => navigate("/profile") },
+    { icon: Users, label: "Kelola Users", onClick: () => navigate("/admin/users"), adminOnly: true },
+    { icon: Settings, label: "Pengaturan", onClick: () => navigate("/settings") },
+    { icon: LogOut, label: "Logout", onClick: handleLogout },
+  ];
 
   const stats = [
     {
@@ -72,325 +74,244 @@ export default function Dashboard() {
       value: statistics?.totalNotes ?? 0,
       limit: usage?.notesLimit === Infinity ? "∞" : usage?.notesLimit ?? 0,
       icon: BookOpen,
-      color: "text-blue-500",
-      bgColor: "bg-blue-500/10",
+      gradient: "from-blue-500 to-cyan-500",
     },
     {
       title: "Catatan Publik",
       value: statistics?.publicNotes ?? 0,
       icon: Share2,
-      color: "text-green-500",
-      bgColor: "bg-green-500/10",
-    },
-    {
-      title: "Tag Digunakan",
-      value: statistics?.totalTags ?? 0,
-      limit: usage?.tagsLimit === Infinity ? "∞" : usage?.tagsLimit ?? 0,
-      icon: Tag,
-      color: "text-purple-500",
-      bgColor: "bg-purple-500/10",
-    },
-    {
-      title: "Catatan Pinned",
-      value: statistics?.pinnedNotes ?? 0,
-      icon: FileText,
-      color: "text-orange-500",
-      bgColor: "bg-orange-500/10",
+      gradient: "from-green-500 to-emerald-500",
     },
   ];
 
+  const quickActions = [
+    { icon: Plus, label: "Catatan Baru", path: "/notes/new", gradient: "from-blue-500 to-cyan-500" },
+    { icon: BookOpen, label: "Lihat Catatan", path: "/notes", gradient: "from-purple-500 to-pink-500" },
+    { icon: Crown, label: "Subscription", path: "/subscription", gradient: "from-orange-500 to-red-500" },
+    { icon: Settings, label: "Pengaturan", path: "/settings", gradient: "from-gray-500 to-gray-600" },
+  ];
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 },
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                <BookOpen className="h-6 w-6" />
-                <h1 className="text-lg! font-bold">Kajian Notes</h1>
-              </div>
-            </div>
+      {/* Mobile Menu */}
+      <MobileMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        userRole={user.role}
+        userName={user.fullName}
+        userTier={user.subscriptionTier}
+        menuItems={menuItems}
+      />
 
-            <nav className="hidden md:flex items-center gap-2">
-              <Button variant="ghost" size="sm" onClick={() => navigate("/notes")}>
-                <BookOpen className="h-4 w-4 mr-2" />
-                Catatan
-              </Button>
-              <Button variant="ghost" size="sm" onClick={() => navigate("/subscription")}>
-                <Crown className="h-4 w-4 mr-2" />
-                Subscription
-              </Button>
-              <Button variant="ghost" size="sm" onClick={() => navigate("/profile")}>
-                <User className="h-4 w-4 mr-2" />
-                Profile
-              </Button>
-              {user.role === "admin" && (
-                <Button variant="ghost" size="sm" onClick={() => navigate("/admin/users")}>
-                  <Users className="h-4 w-4 mr-2" />
-                  Users
-                </Button>
-              )}
-              <Button variant="ghost" size="sm" onClick={() => navigate("/settings")}>
-                <Settings className="h-4 w-4 mr-2" />
-                Settings
-              </Button>
-              <Button variant="ghost" size="sm" onClick={handleLogout}>
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
-              </Button>
-            </nav>
+      {/* Header - Simple & Clean */}
+      <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+        <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 mx-auto">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-linear-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+              <BookOpen className="h-5 w-5" />
+            </div>
+            <span className="text-lg font-bold hidden sm:inline">Kajian Notes</span>
           </div>
+
+          <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(true)}>
+            <Menu className="h-6 w-6" />
+          </Button>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        <div className="space-y-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <motion.div variants={container} initial="hidden" animate="show" className="space-y-6">
           {/* Welcome Section */}
-          <div className="space-y-2">
+          <motion.div variants={item} className="space-y-3">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Clock className="h-4 w-4" />
+              <Calendar className="h-4 w-4" />
               <span>
                 {new Date().toLocaleDateString("id-ID", {
                   weekday: "long",
-                  year: "numeric",
-                  month: "long",
                   day: "numeric",
+                  month: "long",
+                  year: "numeric",
                 })}
               </span>
             </div>
-            <h2 className="text-xl font-bold">Assalamu'alaikum, {user.fullName}</h2>
-            <div className="flex items-center gap-2">
-              <Badge variant={getTierBadgeVariant(user.subscriptionTier)} className="text-xs">
-                {user.subscriptionTier.toUpperCase()}
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                {user.role}
-              </Badge>
-            </div>
-          </div>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
+              Assalamu'alaikum, <br className="sm:hidden" />
+              {user.fullName}
+            </h1>
+          </motion.div>
 
-          {/* Stats Grid */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {/* Stats Grid - Mobile Optimized */}
+          <motion.div variants={item} className="grid gap-4 sm:grid-cols-2">
             {stats.map((stat, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
-                  <div className={`${stat.bgColor} p-2 rounded-lg`}>
-                    <stat.icon className={`h-4 w-4 ${stat.color}`} />
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {stat.value}
-                    {stat.limit && <span className="text-lg text-muted-foreground"> / {stat.limit}</span>}
+              <Card key={index} className="relative overflow-hidden">
+                <div className={`absolute inset-0 bg-linear-to-br ${stat.gradient} opacity-5`} />
+                <CardContent className="pt-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-2">{stat.title}</p>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-4xl font-bold">{stat.value}</span>
+                        {stat.limit && <span className="text-xl text-muted-foreground">/ {stat.limit}</span>}
+                      </div>
+                    </div>
+                    <div className={`p-3 rounded-xl bg-linear-to-br ${stat.gradient}`}>
+                      <stat.icon className="h-6 w-6 text-white" />
+                    </div>
                   </div>
                   {stat.limit && (
-                    <div className="mt-2 h-2 bg-muted rounded-full overflow-hidden">
-                      <div
-                        className={`h-full ${stat.color.replace("text-", "bg-")} transition-all`}
-                        style={{
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{
                           width: `${Math.min(
                             (stat.value / (typeof stat.limit === "string" ? stat.value : Number(stat.limit))) * 100,
                             100
                           )}%`,
                         }}
+                        transition={{ duration: 1, ease: "easeOut" }}
+                        className={`h-full bg-gradient-to-r ${stat.gradient}`}
                       />
                     </div>
                   )}
                 </CardContent>
               </Card>
             ))}
-          </div>
+          </motion.div>
 
-          {/* Two Column Layout */}
-          <div className="grid gap-6 lg:grid-cols-3">
-            {/* Left Column - Quick Actions + Recent Notes */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Quick Actions */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Aksi Cepat</CardTitle>
-                  <CardDescription>Mulai kelola catatan kajian Anda</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <Button variant="outline" className="h-24 flex-col gap-2" onClick={() => navigate("/notes/new")}>
-                      <Plus className="h-6 w-6" />
-                      <span className="text-sm">Catatan Baru</span>
-                    </Button>
-                    <Button variant="outline" className="h-24 flex-col gap-2" onClick={() => navigate("/notes")}>
-                      <BookOpen className="h-6 w-6" />
-                      <span className="text-sm">Lihat Catatan</span>
-                    </Button>
-                    <Button variant="outline" className="h-24 flex-col gap-2" onClick={() => navigate("/subscription")}>
-                      <Crown className="h-6 w-6" />
-                      <span className="text-sm">Subscription</span>
-                    </Button>
-                    <Button variant="outline" className="h-24 flex-col gap-2" onClick={() => navigate("/settings")}>
-                      <Settings className="h-6 w-6" />
-                      <span className="text-sm">Pengaturan</span>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Recent Notes */}
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle>Catatan Terbaru</CardTitle>
-                      <CardDescription>Catatan yang baru saja Anda buat</CardDescription>
+          {/* Quick Actions - Compact Grid */}
+          <motion.div variants={item}>
+            <div className="space-y-3">
+              <h2 className="text-lg font-semibold px-1">Navigasi Cepat</h2>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                {quickActions.map((action, idx) => (
+                  <motion.button
+                    key={idx}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => navigate(action.path)}
+                    className="relative overflow-hidden rounded-xl bg-card border p-4 text-left transition-all hover:shadow-md hover:border-primary/30 group"
+                  >
+                    <div className="md:flex items-center gap-3">
+                      <div
+                        className={`w-10 h-10 rounded-lg bg-linear-to-br ${action.gradient} flex items-center justify-center shrink-0`}
+                      >
+                        <action.icon className="h-5 w-5 text-white" />
+                      </div>
+                      <p className="font-medium text-sm leading-tight mt-3 md:mt-0">{action.label}</p>
                     </div>
-                    <Button variant="outline" size="sm" onClick={() => navigate("/notes")}>
-                      Lihat Semua
-                    </Button>
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Recent Notes */}
+          <motion.div variants={item}>
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle>Catatan Terbaru</CardTitle>
+                    <CardDescription>Aktivitas terkini Anda</CardDescription>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  {userNotes.length > 0 ? (
-                    <div className="space-y-3">
-                      {userNotes.slice(0, 5).map((note) => (
-                        <div
-                          key={note.id}
-                          className="flex items-start gap-3 p-3 rounded-lg border hover:bg-accent cursor-pointer transition-colors"
-                          onClick={() => navigate(`/notes/${note.id}`)}
-                        >
-                          <div className="p-2 bg-primary/10 rounded-lg shrink-0">
-                            <FileText className="h-4 w-4 text-primary" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-medium truncate">{note.title}</h4>
-                            <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{note.content}</p>
-                            <div className="flex items-center gap-2 mt-2">
-                              {note.tags.slice(0, 3).map((tag) => (
-                                <Badge key={tag} variant="secondary" className="text-xs">
+                  <Button variant="ghost" size="sm" onClick={() => navigate("/notes")}>
+                    <span className="hidden sm:inline">Semua</span>
+                    <ArrowRight className="h-4 w-4 sm:ml-1" />
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="px-3">
+                {userNotes.length > 0 ? (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
+                    {userNotes.slice(0, 6).map((note, idx) => (
+                      <motion.div
+                        key={note.id}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                        onClick={() => navigate(`/notes/${note.id}`)}
+                        className="group flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-accent cursor-pointer transition-all"
+                      >
+                        {/* Icon */}
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                          <FileText className="h-4 w-4 text-primary" />
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-sm font-medium truncate group-hover:text-primary transition-colors">
+                            {note.title}
+                          </h4>
+                          {note.tags.length > 0 && (
+                            <div className="flex items-center gap-1 mt-1">
+                              {note.tags.slice(0, 2).map((tag) => (
+                                <span key={tag} className="text-[10px] text-muted-foreground">
                                   #{tag}
-                                </Badge>
+                                </span>
                               ))}
-                              {note.tags.length > 3 && (
-                                <Badge variant="secondary" className="text-xs">
-                                  +{note.tags.length - 3}
-                                </Badge>
+                              {note.tags.length > 2 && (
+                                <span className="text-[10px] text-muted-foreground">+{note.tags.length - 2}</span>
                               )}
                             </div>
-                          </div>
+                          )}
                         </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-12">
-                      <div className="inline-flex p-4 bg-muted rounded-full mb-4">
-                        <BookOpen className="h-8 w-8 text-muted-foreground" />
-                      </div>
-                      <p className="text-muted-foreground mb-2">Belum ada catatan</p>
-                      <p className="text-sm text-muted-foreground mb-4">Mulai buat catatan kajian pertama Anda</p>
-                      <Button onClick={() => navigate("/notes/new")}>
-                        <Plus className="h-4 w-4 mr-2" />
-                        Buat Catatan
-                      </Button>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
 
-            {/* Right Column - Subscription Info */}
-            <div className="space-y-6">
-              {/* Free Tier - Upgrade Prompt */}
-              {user.subscriptionTier === "free" && (
-                <Card className="border-primary bg-linear-to-br from-primary/5 to-primary/10">
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="h-5 w-5 text-primary" />
-                      <CardTitle>Upgrade Sekarang</CardTitle>
+                        {/* Arrow */}
+                        <ChevronRight className="hidden md:block h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                      </motion.div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 mx-auto bg-muted rounded-full flex items-center justify-center mb-4">
+                      <BookOpen className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <CardDescription>Dapatkan fitur premium</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <ul className="space-y-2">
-                      <li className="flex items-start gap-2 text-sm">
-                        <TrendingUp className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                        <span>100+ catatan atau unlimited</span>
-                      </li>
-                      <li className="flex items-start gap-2 text-sm">
-                        <Share2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                        <span>Catatan publik</span>
-                      </li>
-                      <li className="flex items-start gap-2 text-sm">
-                        <FileText className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                        <span>Export PDF & Word</span>
-                      </li>
-                    </ul>
-                    <Button className="w-full" onClick={() => navigate("/subscription")}>
-                      <Crown className="h-4 w-4 mr-2" />
-                      Lihat Paket
+                    <p className="text-muted-foreground mb-2">Belum ada catatan</p>
+                    <p className="text-sm text-muted-foreground mb-4">Mulai buat catatan kajian pertama Anda</p>
+                    <Button onClick={() => navigate("/notes/new")}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Buat Catatan
                     </Button>
-                  </CardContent>
-                </Card>
-              )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
 
-              {/* Premium/Advance - Active Subscription */}
-              {user.subscriptionTier !== "free" && currentSubscription && (
-                <Card className="border-primary">
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      <Crown className="h-5 w-5 text-primary" />
-                      <CardTitle>Subscription Aktif</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Paket</span>
-                        <Badge variant={getTierBadgeVariant(currentSubscription.tier)}>
-                          {currentSubscription.tier.toUpperCase()}
-                        </Badge>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Status</span>
-                        <Badge variant={currentSubscription.status === "active" ? "default" : "destructive"}>
-                          {currentSubscription.status === "active" ? "Aktif" : "Tidak Aktif"}
-                        </Badge>
-                      </div>
-                      {currentSubscription.endDate && (
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-muted-foreground">Berakhir</span>
-                          <span className="text-sm font-medium">
-                            {new Date(currentSubscription.endDate).toLocaleDateString("id-ID", {
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric",
-                            })}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <Button variant="outline" className="w-full" onClick={() => navigate("/subscription")}>
-                      Kelola Subscription
-                    </Button>
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* Tips Card */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">💡 Tips</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li>• Gunakan tags untuk organisasi lebih baik</li>
-                    <li>• Pin catatan penting agar mudah diakses</li>
-                    <li>• Bagikan catatan publik untuk berbagi ilmu</li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
+          {/* Subscription CTA */}
+          {user.subscriptionTier === "free" && (
+            <motion.div variants={item}>
+              <div className="relative overflow-hidden rounded-xl border border-primary/50 bg-linear-to-br from-primary/5 to-transparent p-4">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-primary/20 to-transparent rounded-full blur-2xl" />
+                <div className="relative flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-linear-to-br from-primary/30 to-primary/10 flex items-center justify-center shrink-0">
+                    <Crown className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-sm mb-0.5">Upgrade Premium</h3>
+                    <p className="text-xs text-muted-foreground">Unlimited catatan & fitur eksklusif</p>
+                  </div>
+                  <Button size="sm" onClick={() => navigate("/subscription")} className="hidden md:block shrink-0">
+                    Lihat
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </motion.div>
       </main>
     </div>
   );
