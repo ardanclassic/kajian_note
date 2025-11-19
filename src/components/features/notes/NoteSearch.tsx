@@ -128,7 +128,7 @@ export function NoteSearch({ availableTags = [], onSearch, onClear }: NoteSearch
 
       {/* Filters Panel */}
       {showFilters && (
-        <div className="border-2 rounded-xl p-4 md:p-6 space-y-5 bg-gradient-to-br from-primary/5 to-background shadow-sm animate-in slide-in-from-top-4 fade-in duration-300">
+        <div className="border-2 rounded-xl p-4 md:p-6 space-y-5 bg-linear-to-br from-primary/5 to-background shadow-sm animate-in slide-in-from-top-4 fade-in duration-300">
           {/* Sort */}
           <div className="space-y-3">
             <Label className="text-sm font-semibold flex items-center gap-2">

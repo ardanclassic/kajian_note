@@ -189,7 +189,7 @@ export default function EditNote() {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Edit Form */}
-          <div className="bg-gradient-to-br from-blue-500/5 to-card border-2 border-blue-500/20 rounded-lg p-6 md:p-8">
+          <div className="bg-linear-to-br from-blue-500/5 to-card border-2 border-blue-500/20 rounded-lg p-6 md:p-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 bg-blue-500/10 rounded-lg">
                 <Edit3 className="w-6 h-6 text-blue-500" />

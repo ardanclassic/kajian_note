@@ -279,7 +279,7 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail }: Upgrade
                   <PaymentButton
                     tier={selectedTier}
                     userEmail={userEmail}
-                    className={`w-full h-11 md:h-12 text-sm md:text-base font-semibold shadow-lg bg-gradient-to-r ${config.gradient} hover:opacity-90 border-0`}
+                    className={`w-full h-11 md:h-12 text-sm md:text-base font-semibold shadow-lg bg-linear-to-r ${config.gradient} hover:opacity-90 border-0`}
                   >
                     <Sparkles className="h-4 w-4 md:h-5 md:w-5 mr-2" />
                     Lanjutkan ke Pembayaran

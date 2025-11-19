@@ -98,7 +98,7 @@ export const Home: React.FC = () => {
       description: "Paling populer",
       features: ["100 catatan", "10 tag berbeda", "Catatan publik", "Export PDF", "Pin catatan", "Prioritas support"],
       badge: "Populer",
-      badgeColor: "bg-gradient-to-r from-purple-500 to-pink-500",
+      badgeColor: "bg-linear-to-r from-purple-500 to-pink-500",
       popular: true,
       icon: Crown,
     },
@@ -109,7 +109,7 @@ export const Home: React.FC = () => {
       description: "Tanpa batas",
       features: ["Unlimited catatan", "Unlimited tag", "Semua fitur Premium", "Export PDF & Word", "Priority support"],
       badge: "Terbaik",
-      badgeColor: "bg-gradient-to-r from-yellow-500 to-orange-500",
+      badgeColor: "bg-linear-to-r from-yellow-500 to-orange-500",
       popular: false,
       icon: Sparkles,
     },
@@ -147,7 +147,7 @@ export const Home: React.FC = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         {/* Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-background" />
+        <div className="absolute inset-0 bg-linear-to-br from-primary/20 via-background to-background" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
 
         <div className="relative container mx-auto px-4 py-20 md:py-32">
@@ -159,7 +159,7 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Title */}
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/70">
               Kajian Note
             </h1>
 
@@ -328,7 +328,7 @@ export const Home: React.FC = () => {
 
         <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto relative">
           {/* Connection Lines */}
-          <div className="hidden md:block absolute top-20 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+          <div className="hidden md:block absolute top-20 left-0 right-0 h-0.5 bg-linear-to-r from-transparent via-primary/20 to-transparent" />
 
           {steps.map((step, index) => (
             <div key={index} className="relative">
@@ -355,7 +355,7 @@ export const Home: React.FC = () => {
 
       {/* CTA Section */}
       <div className="container mx-auto px-4 py-20">
-        <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-primary to-primary/80">
+        <Card className="relative overflow-hidden border-0 bg-linear-to-br from-primary to-primary/80">
           {/* Decorative Elements */}
           <div className="absolute top-0 right-0 h-64 w-64 bg-white/5 rounded-full -translate-y-32 translate-x-32" />
           <div className="absolute bottom-0 left-0 h-48 w-48 bg-white/5 rounded-full translate-y-24 -translate-x-24" />

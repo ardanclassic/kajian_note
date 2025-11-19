@@ -265,7 +265,7 @@ export default function CreateNote() {
 
           {/* YouTube Import Info Card */}
           {importedData && inputMode === "youtube" && (
-            <Card className="border-2 border-red-500/20 bg-gradient-to-br from-red-500/5 to-orange-500/5">
+            <Card className="border-2 border-red-500/20 bg-linear-to-br from-red-500/5 to-orange-500/5">
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
                   {/* Icon */}

@@ -70,7 +70,7 @@ export function NoteList({
           <div className="flex items-center gap-2 px-1">
             <Pin className="w-4 h-4 text-primary" />
             <h2 className="text-sm font-bold text-primary uppercase tracking-wider">Catatan Tersimpan</h2>
-            <div className="h-px flex-1 bg-gradient-to-r from-primary/50 to-transparent" />
+            <div className="h-px flex-1 bg-linear-to-r from-primary/50 to-transparent" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {pinnedNotes.map((note, index) => (
@@ -103,7 +103,7 @@ export function NoteList({
             <div className="flex items-center gap-2 px-1">
               <FileText className="w-4 h-4 text-muted-foreground" />
               <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Semua Catatan</h2>
-              <div className="h-px flex-1 bg-gradient-to-r from-muted-foreground/30 to-transparent" />
+              <div className="h-px flex-1 bg-linear-to-r from-muted-foreground/30 to-transparent" />
             </div>
           )}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">

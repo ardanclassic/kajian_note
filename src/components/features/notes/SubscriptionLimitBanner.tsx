@@ -88,7 +88,7 @@ export function SubscriptionLimitBanner({ usage, compact = false }: Subscription
 
   // Full version with progress bars
   return (
-    <Card className="border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20">
+    <Card className="border-orange-200 bg-linear-to-r from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20">
       <CardContent className="py-4 px-6">
         <div className="space-y-4">
           {/* Header */}

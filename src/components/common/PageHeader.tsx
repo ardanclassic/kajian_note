@@ -199,7 +199,7 @@ export function SimplePageHeader({
     <div
       className={cn(
         "border-b",
-        showGradient && "bg-gradient-to-br from-primary/10 via-primary/5 to-background",
+        showGradient && "bg-linear-to-br from-primary/10 via-primary/5 to-background",
         className
       )}
     >

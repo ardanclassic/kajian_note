@@ -183,7 +183,7 @@ export default function Dashboard() {
                           )}%`,
                         }}
                         transition={{ duration: 1, ease: "easeOut" }}
-                        className={`h-full bg-gradient-to-r ${stat.gradient}`}
+                        className={`h-full bg-linear-to-r ${stat.gradient}`}
                       />
                     </div>
                   )}
