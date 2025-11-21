@@ -294,7 +294,10 @@ export default function Dashboard() {
           {/* Subscription CTA */}
           {user.subscriptionTier === "free" && (
             <motion.div variants={item}>
-              <div className="relative overflow-hidden rounded-xl border border-primary/50 bg-linear-to-br from-primary/5 to-transparent p-4">
+              <div
+                className="relative overflow-hidden rounded-xl border border-primary/50 bg-linear-to-br from-primary/5 to-transparent p-4 cursor-pointer"
+                onClick={() => navigate("/subscription")}
+              >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-primary/20 to-transparent rounded-full blur-2xl" />
                 <div className="relative flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-linear-to-br from-primary/30 to-primary/10 flex items-center justify-center shrink-0">
@@ -304,9 +307,6 @@ export default function Dashboard() {
                     <h3 className="font-semibold text-sm mb-0.5">Upgrade Premium</h3>
                     <p className="text-xs text-muted-foreground">Unlimited catatan & fitur eksklusif</p>
                   </div>
-                  <Button size="sm" onClick={() => navigate("/subscription")} className="hidden md:block shrink-0">
-                    Lihat
-                  </Button>
                 </div>
               </div>
             </motion.div>

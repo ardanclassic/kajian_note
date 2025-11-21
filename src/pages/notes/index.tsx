@@ -290,8 +290,8 @@ export default function Notes() {
           {/* Quick Stats - Show when has notes */}
           {userNotes.length > 0 && statistics && (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-300">
-              <Card className="bg-linear-to-r from-primary/5 to-primary/10 border-primary/20">
-                <CardContent className="py-4">
+              <Card className="bg-linear-to-r from-primary/5 to-primary/10 py-3">
+                <CardContent>
                   <div className="flex items-center justify-between gap-4 flex-wrap">
                     <div className="flex items-center gap-2">
                       <TrendingUp className="w-5 h-5 text-primary" />

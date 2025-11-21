@@ -1,17 +1,17 @@
 /**
- * CreateNote Page - WITH REFERENCE INFO INJECTION
- * Modern UI/UX with tabs for Manual/YouTube import
- * NEW: Inject reference quote at the beginning of content
+ * CreateNote Page - ENHANCED UI/UX
+ * Compact, clean, beautiful, interactive design
+ * With Framer Motion animations & mobile responsive
  */
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { motion, AnimatePresence } from "framer-motion";
 import { NoteForm } from "@/components/features/notes/NoteForm";
 import { YouTubeImportModal } from "@/components/features/notes/YouTubeImportModal";
-import { PageHeader } from "@/components/common/PageHeader";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAuthStore } from "@/store/authStore";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
@@ -20,7 +20,7 @@ import type { CreateNoteFormData } from "@/schemas/notes.schema";
 import type { YouTubeImportResult } from "@/types/youtube.types";
 import { generateSuggestedTags } from "@/utils/youtubeHelpers";
 import { convertTextToHtml } from "@/utils/textToHtml";
-import { PenLine, Youtube, Sparkles, FileText, Clock, CheckCircle2, Video, AlertTriangle } from "lucide-react";
+import { PenLine, Youtube, Sparkles, FileText, Clock, Video, ChevronLeft, Info, CheckCircle2 } from "lucide-react";
 
 type InputMode = "manual" | "youtube";
 
@@ -29,30 +29,37 @@ type InputMode = "manual" | "youtube";
  */
 const generateReferenceQuote = (result: YouTubeImportResult): string => {
   const { referenceInfo } = result;
-
   if (!referenceInfo) return "";
 
-  const parts: string[] = ["<p><strong>Sumber Referensi:</strong></p>", "<p>"];
+  const parts: string[] = ["<p><strong>📚 Sumber Referensi:</strong></p>", "<p>"];
 
   if (referenceInfo.materialTitle) {
     parts.push(`<strong>Judul:</strong> ${referenceInfo.materialTitle}<br>`);
   }
-
   if (referenceInfo.speaker) {
     parts.push(`<strong>Narasumber:</strong> ${referenceInfo.speaker}<br>`);
   }
-
   if (referenceInfo.channelName) {
     parts.push(`<strong>Channel:</strong> ${referenceInfo.channelName}<br>`);
   }
-
   parts.push(
     `<strong>Link:</strong> <a href="${referenceInfo.videoUrl}" target="_blank" rel="noopener noreferrer">${referenceInfo.videoUrl}</a>`
   );
-
-  parts.push("</p>", "<p></p>"); // Add empty paragraph after quote
+  parts.push("</p>", "<p></p>");
 
   return parts.join("");
+};
+
+// Animation variants
+const pageVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 },
+};
+
+const cardVariants = {
+  initial: { opacity: 0, scale: 0.95 },
+  animate: { opacity: 1, scale: 1 },
 };
 
 export default function CreateNote() {
@@ -64,14 +71,10 @@ export default function CreateNote() {
   const [showImportModal, setShowImportModal] = useState(false);
   const [importedData, setImportedData] = useState<YouTubeImportResult | null>(null);
 
-  /**
-   * Handle YouTube import success
-   */
   const handleImportSuccess = (result: YouTubeImportResult) => {
     setImportedData(result);
-    setInputMode("youtube"); // Switch to YouTube tab
+    setInputMode("youtube");
 
-    // Check if tags were stripped due to limit
     const suggestedTags = generateSuggestedTags(result.content, 3);
     const wasStripped = suggestedTags.length > 0 && usage && usage.tagsUsed >= usage.tagsLimit;
 
@@ -79,21 +82,15 @@ export default function CreateNote() {
       description: result.metadata.has_ai_summary
         ? "Ringkasan AI siap untuk ditinjau"
         : "Transcript lengkap siap untuk diedit",
-      duration: 4000,
     });
 
-    // Warning if tags were stripped
     if (wasStripped) {
       toast.warning("Tag otomatis dinonaktifkan", {
-        description: `Anda sudah mencapai batas ${usage.tagsLimit} tag. Upgrade untuk menambah lebih banyak tag.`,
-        duration: 5000,
+        description: `Anda sudah mencapai batas ${usage.tagsLimit} tag.`,
       });
     }
   };
 
-  /**
-   * Handle form submit
-   */
   const handleSubmit = async (data: CreateNoteFormData) => {
     if (!user?.id) {
       toast.error("Sesi berakhir. Silakan login kembali.");
@@ -111,7 +108,6 @@ export default function CreateNote() {
         tags: data.tags || [],
       };
 
-      // Add YouTube source metadata if imported
       if (importedData && inputMode === "youtube") {
         Object.assign(noteData, {
           sourceType: "youtube" as const,
@@ -137,91 +133,95 @@ export default function CreateNote() {
     }
   };
 
-  /**
-   * Handle cancel
-   */
   const handleCancel = () => {
     navigate("/notes");
   };
 
-  /**
-   * Get initial form values - WITH REFERENCE QUOTE INJECTION
-   */
   const getInitialFormValues = () => {
     if (!importedData || inputMode === "manual") {
       return undefined;
     }
 
-    // Convert plain text content to HTML
     const formattedContent = convertTextToHtml(importedData.content);
-    
-    // Generate reference quote if available
     const referenceQuote = generateReferenceQuote(importedData);
-
-    // Inject reference quote at the beginning
     const finalContent = referenceQuote ? `${formattedContent}${referenceQuote}` : formattedContent;
-
-    // Don't auto-fill tags if user at tag limit
-    let suggestedTags: string[] = [];
-
-    if (usage && usage.tagsUsed < usage.tagsLimit) {
-      suggestedTags = generateSuggestedTags(importedData.content, 3);
-    }
 
     return {
       title: importedData.title,
-      content: finalContent, // Content with reference quote injected
+      content: finalContent,
       isPublic: false,
     };
   };
 
-  // Check if user is at tag limit
   const isAtTagLimit = usage ? usage.tagsUsed >= usage.tagsLimit : false;
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Page Header */}
-      <PageHeader
-        badgeIcon={PenLine}
-        badgeText="Create New Note"
-        title="Buat Catatan Baru"
-        description="Tulis catatan manual atau import dari video YouTube"
-        showBackButton
-        backTo="/notes"
-        backLabel="Kembali ke Daftar"
-      />
+    <motion.div
+      className="min-h-screen bg-gradient-to-b from-background to-muted/20"
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={pageVariants}
+      transition={{ duration: 0.3 }}
+    >
+      {/* Compact Header */}
+      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b border-border">
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex items-center justify-between max-w-4xl mx-auto">
+            <Button variant="ghost" size="sm" onClick={() => navigate("/notes")} className="gap-2 hover:bg-muted/50">
+              <ChevronLeft className="w-4 h-4" />
+              <span className="hidden sm:inline">Kembali</span>
+            </Button>
+
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="gap-1.5 bg-indigo-500/10 text-indigo-600 border-indigo-500/20">
+                <PenLine className="w-3 h-3" />
+                <span className="hidden sm:inline">Buat Catatan</span>
+              </Badge>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6 md:py-8">
-        <div className="max-w-4xl mx-auto space-y-6">
-          {/* Input Mode Selector - Tab Style */}
-          <Card className="border-2">
-            <CardContent className="p-6">
-              <div className="flex flex-col sm:flex-row gap-3">
+        <div className="max-w-4xl mx-auto space-y-4">
+          {/* Input Mode Selector - Compact */}
+          <motion.div variants={cardVariants} transition={{ delay: 0.1 }}>
+            <Card className="p-4 border-muted bg-card/50 backdrop-blur-sm">
+              <div className="flex flex-col sm:flex-row gap-2">
                 {/* Manual Tab */}
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => setInputMode("manual")}
-                  className={`flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-lg border-2 transition-all ${
+                  className={`flex-1 flex items-center gap-3 px-4 py-3 rounded-lg border transition-all ${
                     inputMode === "manual"
-                      ? "border-primary bg-primary/10 shadow-sm"
-                      : "border-border hover:border-primary/50 hover:bg-accent"
+                      ? "border-indigo-500/50 bg-indigo-500/10 shadow-sm shadow-indigo-500/20"
+                      : "border-border hover:border-indigo-500/30 hover:bg-muted/50"
                   }`}
                 >
-                  <div className={`p-2 rounded-lg ${inputMode === "manual" ? "bg-primary/20" : "bg-accent"}`}>
+                  <div className={`p-2 rounded-md ${inputMode === "manual" ? "bg-indigo-500/20" : "bg-muted"}`}>
                     <PenLine
-                      className={`w-5 h-5 ${inputMode === "manual" ? "text-primary" : "text-muted-foreground"}`}
+                      className={`w-4 h-4 ${inputMode === "manual" ? "text-indigo-500" : "text-muted-foreground"}`}
                     />
                   </div>
                   <div className="text-left">
-                    <p className={`font-semibold ${inputMode === "manual" ? "text-primary" : "text-foreground"}`}>
+                    <p
+                      className={`text-sm font-semibold ${
+                        inputMode === "manual" ? "text-indigo-500" : "text-foreground"
+                      }`}
+                    >
                       Tulis Manual
                     </p>
-                    <p className="text-xs text-muted-foreground">Buat catatan dari awal</p>
+                    <p className="text-xs text-muted-foreground hidden sm:block">Buat dari awal</p>
                   </div>
-                </button>
+                </motion.button>
 
                 {/* YouTube Tab */}
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => {
                     if (!importedData) {
                       setShowImportModal(true);
@@ -229,196 +229,163 @@ export default function CreateNote() {
                       setInputMode("youtube");
                     }
                   }}
-                  className={`flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-lg border-2 transition-all ${
+                  className={`flex-1 flex items-center gap-3 px-4 py-3 rounded-lg border transition-all ${
                     inputMode === "youtube"
-                      ? "border-red-500 bg-red-500/10 shadow-sm"
-                      : "border-border hover:border-red-500/50 hover:bg-red-500/5"
+                      ? "border-red-500/50 bg-red-500/10 shadow-sm shadow-red-500/20"
+                      : "border-border hover:border-red-500/30 hover:bg-red-500/5"
                   }`}
                 >
-                  <div className={`p-2 rounded-lg ${inputMode === "youtube" ? "bg-red-500/20" : "bg-accent"}`}>
+                  <div className={`p-2 rounded-md ${inputMode === "youtube" ? "bg-red-500/20" : "bg-muted"}`}>
                     <Youtube
-                      className={`w-5 h-5 ${inputMode === "youtube" ? "text-red-500" : "text-muted-foreground"}`}
+                      className={`w-4 h-4 ${inputMode === "youtube" ? "text-red-500" : "text-muted-foreground"}`}
                     />
                   </div>
                   <div className="text-left">
-                    <p className={`font-semibold ${inputMode === "youtube" ? "text-red-500" : "text-foreground"}`}>
+                    <p
+                      className={`text-sm font-semibold ${
+                        inputMode === "youtube" ? "text-red-500" : "text-foreground"
+                      }`}
+                    >
                       Import YouTube
                     </p>
-                    <p className="text-xs text-muted-foreground">
-                      {importedData ? "Video diimpor ✓" : "Import dari video"}
+                    <p className="text-xs text-muted-foreground hidden sm:block">
+                      {importedData ? "Video diimpor ✓" : "Import video"}
                     </p>
                   </div>
-                </button>
+                </motion.button>
               </div>
 
-              {/* Import Button for YouTube Tab */}
+              {/* Import Button - Compact */}
               {inputMode === "youtube" && !importedData && (
-                <div className="mt-4 pt-4 border-t">
-                  <Button onClick={() => setShowImportModal(true)} className="w-full" size="lg">
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  className="mt-3 pt-3 border-t border-border"
+                >
+                  <Button
+                    onClick={() => setShowImportModal(true)}
+                    className="w-full bg-red-500 hover:bg-red-600 text-white"
+                    size="sm"
+                  >
                     <Youtube className="w-4 h-4 mr-2" />
                     Pilih Video YouTube
                   </Button>
-                </div>
+                </motion.div>
               )}
-            </CardContent>
-          </Card>
+            </Card>
+          </motion.div>
 
-          {/* YouTube Import Info Card */}
-          {importedData && inputMode === "youtube" && (
-            <Card className="border-2 border-red-500/20 bg-linear-to-br from-red-500/5 to-orange-500/5">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  {/* Icon */}
-                  <div className="shrink-0 p-3 bg-red-500/10 rounded-xl border border-red-500/20">
-                    <Video className="w-6 h-6 text-red-500" />
-                  </div>
-
-                  {/* Info */}
-                  <div className="flex-1 space-y-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <h3 className="font-semibold text-lg flex items-center gap-2">
-                          Video YouTube Diimpor
-                          <CheckCircle2 className="w-5 h-5 text-green-500" />
-                        </h3>
-                        <p className="text-sm text-muted-foreground mt-1">Konten siap untuk ditinjau dan diedit</p>
-                      </div>
-                      <Button variant="ghost" size="sm" onClick={() => setShowImportModal(true)}>
-                        Ganti Video
-                      </Button>
+          {/* YouTube Import Info - Compact */}
+          <AnimatePresence>
+            {importedData && inputMode === "youtube" && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Card className="p-4 border-red-500/20 bg-gradient-to-br from-red-500/5 to-orange-500/5">
+                  <div className="flex items-start gap-3">
+                    <div className="shrink-0 p-2 bg-red-500/10 rounded-lg border border-red-500/20">
+                      <Video className="w-5 h-5 text-red-500" />
                     </div>
 
-                    {/* Metadata */}
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant="secondary" className="gap-1.5">
-                        <FileText className="w-3 h-3" />
-                        Video ID: {importedData.videoId}
-                      </Badge>
-
-                      {importedData.metadata.has_ai_summary ? (
-                        <Badge
-                          variant="secondary"
-                          className="gap-1.5 bg-yellow-500/10 text-yellow-700 border-yellow-500/20"
+                    <div className="flex-1 min-w-0 space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <h3 className="text-sm font-semibold flex items-center gap-2">
+                            Video Diimpor
+                            <CheckCircle2 className="w-4 h-4 text-green-500" />
+                          </h3>
+                          <p className="text-xs text-muted-foreground mt-0.5">Konten siap ditinjau</p>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setShowImportModal(true)}
+                          className="text-xs h-7 px-2"
                         >
-                          <Sparkles className="w-3 h-3" />
-                          AI Summary
+                          Ganti
+                        </Button>
+                      </div>
+
+                      {/* Compact Metadata */}
+                      <div className="flex flex-wrap gap-1.5">
+                        {importedData.metadata.has_ai_summary ? (
+                          <Badge
+                            variant="secondary"
+                            className="text-xs gap-1 bg-yellow-500/10 text-yellow-600 border-yellow-500/20"
+                          >
+                            <Sparkles className="w-3 h-3" />
+                            AI Summary
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary" className="text-xs gap-1">
+                            <FileText className="w-3 h-3" />
+                            Transcript
+                          </Badge>
+                        )}
+                        <Badge variant="secondary" className="text-xs gap-1">
+                          <Clock className="w-3 h-3" />
+                          {importedData.metadata.total_segments} segmen
                         </Badge>
-                      ) : (
-                        <Badge variant="secondary" className="gap-1.5">
-                          <FileText className="w-3 h-3" />
-                          Full Transcript
-                        </Badge>
+                      </div>
+
+                      {/* Reference Info - Compact */}
+                      {importedData.referenceInfo && (
+                        <div className="p-2 bg-green-500/10 border border-green-500/20 rounded-md">
+                          <p className="text-xs font-medium text-green-600 mb-1 flex items-center gap-1">
+                            <CheckCircle2 className="w-3 h-3" />
+                            Referensi ditambahkan
+                          </p>
+                          <p className="text-xs text-muted-foreground truncate">
+                            {importedData.referenceInfo.materialTitle ||
+                              importedData.referenceInfo.speaker ||
+                              "Info lengkap"}
+                          </p>
+                        </div>
                       )}
 
-                      <Badge variant="secondary" className="gap-1.5">
-                        <Clock className="w-3 h-3" />
-                        {importedData.metadata.total_segments} segmen
-                      </Badge>
-
-                      <Badge variant="secondary" className="gap-1.5">
-                        🌐 {importedData.metadata.language_used.toUpperCase()}
-                      </Badge>
-                    </div>
-
-                    {/* Reference Info Display */}
-                    {importedData.referenceInfo && (
-                      <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
-                        <p className="text-xs font-semibold text-green-700 dark:text-green-400 mb-2">
-                          📚 Info Referensi ditambahkan di catatan
-                        </p>
-                        <div className="text-xs text-muted-foreground space-y-1">
-                          {importedData.referenceInfo.materialTitle && (
-                            <div>• Judul: {importedData.referenceInfo.materialTitle}</div>
-                          )}
-                          {importedData.referenceInfo.speaker && (
-                            <div>• Narasumber: {importedData.referenceInfo.speaker}</div>
-                          )}
-                          {importedData.referenceInfo.channelName && (
-                            <div>• Channel: {importedData.referenceInfo.channelName}</div>
-                          )}
+                      {/* Tag Limit Warning - Compact */}
+                      {isAtTagLimit && (
+                        <div className="p-2 bg-amber-500/10 border border-amber-500/20 rounded-md">
+                          <p className="text-xs text-amber-600">Tag otomatis dinonaktifkan (batas tercapai)</p>
                         </div>
-                      </div>
-                    )}
-
-                    {/* Tag Limit Warning */}
-                    {isAtTagLimit && (
-                      <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                        <div className="flex items-start gap-2">
-                          <AlertTriangle className="w-4 h-4 text-yellow-600 mt-0.5 flex-shrink-0" />
-                          <div className="text-sm text-yellow-700">
-                            <strong>Tag otomatis dinonaktifkan.</strong> Anda sudah mencapai batas {usage?.tagsLimit}{" "}
-                            tag. Field tag akan disembunyikan. Upgrade untuk menambah lebih banyak tag.
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Video URL */}
-                    <div className="p-3 bg-background/50 rounded-lg border">
-                      <p className="text-xs text-muted-foreground mb-1">Video URL:</p>
-                      <a
-                        href={importedData.videoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm text-primary hover:underline font-mono break-all"
-                      >
-                        {importedData.videoUrl}
-                      </a>
+                      )}
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+                </Card>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Note Form */}
-          <Card className="border-2">
-            <CardContent className="p-6">
-              <NoteForm
-                key={importedData?.videoId || "new"}
-                note={importedData && inputMode === "youtube" ? (getInitialFormValues() as any) : undefined}
-                onSubmit={handleSubmit}
-                onCancel={handleCancel}
-                isSubmitting={isSubmitting}
-              />
-            </CardContent>
-          </Card>
+          <motion.div variants={cardVariants} transition={{ delay: 0.2 }}>
+            <NoteForm
+              key={importedData?.videoId || "new"}
+              note={importedData && inputMode === "youtube" ? (getInitialFormValues() as any) : undefined}
+              onSubmit={handleSubmit}
+              onCancel={handleCancel}
+              isSubmitting={isSubmitting}
+            />
+          </motion.div>
 
-          {/* Help Card */}
-          <Card className="border-dashed border-2 border-muted bg-muted/30">
-            <CardContent className="p-6">
-              <h3 className="font-semibold mb-3 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-primary" />
-                Tips Membuat Catatan
-              </h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-0.5">•</span>
-                  <span>
-                    Gunakan <strong>tag</strong> untuk organisir catatan (contoh: sholat, puasa, akhlak)
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-0.5">•</span>
-                  <span>
-                    Aktifkan <strong>publik</strong> untuk berbagi dengan member lain
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-0.5">•</span>
-                  <span>
-                    Import dari <strong>YouTube</strong> untuk menghemat waktu mencatat
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-0.5">•</span>
-                  <span>
-                    Isi <strong>informasi referensi</strong> saat import untuk dokumentasi sumber yang lebih baik
-                  </span>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
+          {/* Tips - Collapsible & Compact */}
+          <motion.div variants={cardVariants} transition={{ delay: 0.3 }}>
+            <Card className="p-4 border-dashed bg-muted/30">
+              <div className="flex items-start gap-2">
+                <Info className="w-4 h-4 text-indigo-500 mt-0.5 shrink-0" />
+                <div>
+                  <h4 className="text-sm font-semibold mb-2">Tips Singkat</h4>
+                  <ul className="space-y-1 text-xs text-muted-foreground">
+                    <li>• Gunakan tag untuk organisir catatan</li>
+                    <li>• Aktifkan publik untuk berbagi</li>
+                    <li>• Import YouTube untuk hemat waktu</li>
+                  </ul>
+                </div>
+              </div>
+            </Card>
+          </motion.div>
         </div>
       </div>
 
@@ -428,6 +395,6 @@ export default function CreateNote() {
         onOpenChange={setShowImportModal}
         onImportSuccess={handleImportSuccess}
       />
-    </div>
+    </motion.div>
   );
 }

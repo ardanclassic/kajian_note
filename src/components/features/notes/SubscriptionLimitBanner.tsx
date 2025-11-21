@@ -53,11 +53,11 @@ export function SubscriptionLimitBanner({ usage, compact = false }: Subscription
   // Compact version
   if (compact) {
     return (
-      <Card className="py-2 bg-orange-800 dark:bg-orange-950/20 text-white">
+      <Card className="py-2 text-white shadow-yellow-400">
         <CardContent className="px-4">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <AlertCircle className="w-5 h-5 text-orange-600 shrink-0" />
+              <AlertCircle className="w-5 h-5 text-orange-300 shrink-0" />
               <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-2">
                   <FileText className="w-4 h-4" />
@@ -74,8 +74,8 @@ export function SubscriptionLimitBanner({ usage, compact = false }: Subscription
               </div>
             </div>
 
-            <Button size="sm" asChild>
-              <Link to="/subscription">
+            <Button size="sm" asChild variant="secondary">
+              <Link to="/subscription" className="text-yellow-300!">
                 Upgrade
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
