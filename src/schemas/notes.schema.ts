@@ -91,7 +91,7 @@ export type NoteFilterFormData = z.infer<typeof noteFilterSchema>;
  * Note export form schema
  */
 export const noteExportSchema = z.object({
-  format: z.enum(["pdf", "word", "markdown", "text"]),
+  format: z.enum(["pdf", "markdown", "text"]),
   includeMetadata: z.boolean().optional().default(true),
 });
 

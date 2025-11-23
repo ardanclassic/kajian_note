@@ -13,7 +13,7 @@
 - 🏷️ **Smart Tags** - Categorize notes with tags
 - 👥 **Role-Based Access** - Admin, Panitia, Ustadz, Jamaah
 - 💳 **Subscription Tiers** - Free, Premium, Advance
-- 📄 **Export** - PDF & Word export (Premium+)
+- 📄 **Export** - PDF export (Premium+)
 - 🔒 **Privacy First** - Private notes by default
 
 ## 🚀 Tech Stack
@@ -60,7 +60,7 @@ VITE_LYNK_WEBHOOK_SECRET=your_lynk_webhook_secret
 |---------|------------|-----------|-----------|----------------------------|
 | Free    | Rp 0       | 10        | 3         | Basic features             |
 | Premium | Rp 50K/mo  | 100       | 10        | Public notes, PDF export   |
-| Advance | Rp 100K/mo | Unlimited | Unlimited | All features + Word export |
+| Advance | Rp 100K/mo | Unlimited | Unlimited | All features               |
 
 ## 🏗️ Project Structure
 

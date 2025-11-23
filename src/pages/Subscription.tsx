@@ -492,7 +492,6 @@ export default function Subscription() {
                           },
                           { enabled: features.publicNotes, text: "Catatan publik" },
                           { enabled: features.exportPdf, text: "Export PDF" },
-                          { enabled: features.exportWord, text: "Export Word" },
                         ].map((feature, i) => (
                           <div key={i} className="flex items-start gap-3">
                             <div className={`p-1 rounded-full ${feature.enabled ? "bg-green-500/10" : "bg-gray-200"}`}>

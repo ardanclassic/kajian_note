@@ -2,6 +2,8 @@
  * CreateNote Page - ENHANCED UI/UX
  * Compact, clean, beautiful, interactive design
  * With Framer Motion animations & mobile responsive
+ *
+ * UPDATED: Auto-fill materialTitle from reference info to title field
  */
 
 import { useState } from "react";
@@ -146,8 +148,11 @@ export default function CreateNote() {
     const referenceQuote = generateReferenceQuote(importedData);
     const finalContent = referenceQuote ? `${formattedContent}${referenceQuote}` : formattedContent;
 
+    // Priority: materialTitle → importedData.title → empty string
+    const title = importedData.referenceInfo?.materialTitle || importedData.title || "";
+
     return {
-      title: importedData.title,
+      title,
       content: finalContent,
       isPublic: false,
     };
@@ -157,7 +162,7 @@ export default function CreateNote() {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-b from-background to-muted/20"
+      className="min-h-screen bg-linear-to-b from-background to-muted/20"
       initial="initial"
       animate="animate"
       exit="exit"
@@ -174,7 +179,7 @@ export default function CreateNote() {
             </Button>
 
             <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="gap-1.5 bg-indigo-500/10 text-indigo-600 border-indigo-500/20">
+              <Badge variant="secondary" className="gap-1.5 bg-indigo-500/10 text-amber-400 border-indigo-500/20">
                 <PenLine className="w-3 h-3" />
                 <span className="hidden sm:inline">Buat Catatan</span>
               </Badge>
@@ -188,36 +193,8 @@ export default function CreateNote() {
         <div className="max-w-4xl mx-auto space-y-4">
           {/* Input Mode Selector - Compact */}
           <motion.div variants={cardVariants} transition={{ delay: 0.1 }}>
-            <Card className="p-4 border-muted bg-card/50 backdrop-blur-sm">
+            <div className="backdrop-blur-sm">
               <div className="flex flex-col sm:flex-row gap-2">
-                {/* Manual Tab */}
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setInputMode("manual")}
-                  className={`flex-1 flex items-center gap-3 px-4 py-3 rounded-lg border transition-all ${
-                    inputMode === "manual"
-                      ? "border-indigo-500/50 bg-indigo-500/10 shadow-sm shadow-indigo-500/20"
-                      : "border-border hover:border-indigo-500/30 hover:bg-muted/50"
-                  }`}
-                >
-                  <div className={`p-2 rounded-md ${inputMode === "manual" ? "bg-indigo-500/20" : "bg-muted"}`}>
-                    <PenLine
-                      className={`w-4 h-4 ${inputMode === "manual" ? "text-indigo-500" : "text-muted-foreground"}`}
-                    />
-                  </div>
-                  <div className="text-left">
-                    <p
-                      className={`text-sm font-semibold ${
-                        inputMode === "manual" ? "text-indigo-500" : "text-foreground"
-                      }`}
-                    >
-                      Tulis Manual
-                    </p>
-                    <p className="text-xs text-muted-foreground hidden sm:block">Buat dari awal</p>
-                  </div>
-                </motion.button>
-
                 {/* YouTube Tab */}
                 <motion.button
                   whileHover={{ scale: 1.02 }}
@@ -272,7 +249,7 @@ export default function CreateNote() {
                   </Button>
                 </motion.div>
               )}
-            </Card>
+            </div>
           </motion.div>
 
           {/* YouTube Import Info - Compact */}
@@ -284,7 +261,7 @@ export default function CreateNote() {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className="p-4 border-red-500/20 bg-gradient-to-br from-red-500/5 to-orange-500/5">
+                <Card className="p-4 border-red-500/20 bg-linear-to-br from-red-500/5 to-orange-500/5">
                   <div className="flex items-start gap-3">
                     <div className="shrink-0 p-2 bg-red-500/10 rounded-lg border border-red-500/20">
                       <Video className="w-5 h-5 text-red-500" />
@@ -374,7 +351,7 @@ export default function CreateNote() {
           <motion.div variants={cardVariants} transition={{ delay: 0.3 }}>
             <Card className="p-4 border-dashed bg-muted/30">
               <div className="flex items-start gap-2">
-                <Info className="w-4 h-4 text-indigo-500 mt-0.5 shrink-0" />
+                <Info className="w-4 h-4 text-indigo-300 mt-0.5 shrink-0" />
                 <div>
                   <h4 className="text-sm font-semibold mb-2">Tips Singkat</h4>
                   <ul className="space-y-1 text-xs text-muted-foreground">

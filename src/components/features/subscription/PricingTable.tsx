@@ -103,15 +103,6 @@ export function PricingTable({ currentTier, onSelectPlan }: PricingTableProps) {
                   />
                   <span className={`text-sm ${features.exportPdf ? "" : "text-muted-foreground"}`}>Export PDF</span>
                 </div>
-
-                <div className="flex items-start gap-2">
-                  <Check
-                    className={`h-5 w-5 mt-0.5 flex-shrink-0 ${
-                      features.exportWord ? "text-green-500" : "text-gray-300"
-                    }`}
-                  />
-                  <span className={`text-sm ${features.exportWord ? "" : "text-muted-foreground"}`}>Export Word</span>
-                </div>
               </div>
 
               {/* Action Button */}

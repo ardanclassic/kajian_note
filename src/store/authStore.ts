@@ -34,7 +34,7 @@ const setupAuthListener = (set: any) => {
   const {
     data: { subscription },
   } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session: Session | null) => {
-    console.log("🔔 Auth event:", event);
+    // console.log("🔔 Auth event:", event);
 
     if (event === "SIGNED_OUT") {
       set({ user: null, isAuthenticated: false });
@@ -63,7 +63,7 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
    * Initialize - Check session once
    */
   initialize: async () => {
-    console.log("🚀 Initializing auth...");
+    // console.log("🚀 Initializing auth...");
 
     try {
       const {

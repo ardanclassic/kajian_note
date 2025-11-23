@@ -10,7 +10,6 @@ export interface SubscriptionLimits {
   maxTags: number;
   canPublicNotes: boolean;
   canExportPDF: boolean;
-  canExportWord: boolean;
 }
 
 /**
@@ -22,7 +21,6 @@ export const SUBSCRIPTION_LIMITS: Record<SubscriptionTier, SubscriptionLimits> =
     maxTags: 3,
     canPublicNotes: false,
     canExportPDF: false,
-    canExportWord: false,
   },
 
   premium: {
@@ -30,7 +28,6 @@ export const SUBSCRIPTION_LIMITS: Record<SubscriptionTier, SubscriptionLimits> =
     maxTags: 10,
     canPublicNotes: true,
     canExportPDF: true,
-    canExportWord: false,
   },
 
   advance: {
@@ -38,7 +35,6 @@ export const SUBSCRIPTION_LIMITS: Record<SubscriptionTier, SubscriptionLimits> =
     maxTags: Infinity,
     canPublicNotes: true,
     canExportPDF: true,
-    canExportWord: true,
   },
 };
 
@@ -97,14 +93,6 @@ export const canCreatePublicNote = (tier: SubscriptionTier): boolean => {
 export const canExportPDF = (tier: SubscriptionTier): boolean => {
   const limits = getSubscriptionLimits(tier);
   return limits.canExportPDF;
-};
-
-/**
- * Check if user can export to Word
- */
-export const canExportWord = (tier: SubscriptionTier): boolean => {
-  const limits = getSubscriptionLimits(tier);
-  return limits.canExportWord;
 };
 
 /**
@@ -180,13 +168,12 @@ export const formatPrice = (price: number): string => {
 /**
  * Get upgrade message based on action
  */
-export const getUpgradeMessage = (action: "notes" | "tags" | "public" | "pdf" | "word"): string => {
+export const getUpgradeMessage = (action: "notes" | "tags" | "public" | "pdf"): string => {
   const messages = {
     notes: "Anda telah mencapai batas maksimal catatan. Upgrade untuk menambah catatan lebih banyak.",
     tags: "Anda telah mencapai batas maksimal tag. Upgrade untuk menambah tag lebih banyak.",
     public: "Fitur catatan publik hanya tersedia untuk pengguna Premium dan Advance.",
     pdf: "Fitur export PDF hanya tersedia untuk pengguna Premium dan Advance.",
-    word: "Fitur export Word hanya tersedia untuk pengguna Advance.",
   };
 
   return messages[action];

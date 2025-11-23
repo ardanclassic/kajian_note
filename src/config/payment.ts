@@ -17,21 +17,18 @@ export const PAYMENT_CONFIG = {
       maxTags: 3,
       publicNotes: false,
       exportPdf: false,
-      exportWord: false,
     },
     premium: {
       maxNotes: 100,
       maxTags: 10,
       publicNotes: true,
       exportPdf: true,
-      exportWord: false,
     },
     advance: {
       maxNotes: -1, // unlimited
       maxTags: -1, // unlimited
       publicNotes: true,
       exportPdf: true,
-      exportWord: true,
     },
   },
   duration: {

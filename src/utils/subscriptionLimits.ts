@@ -117,26 +117,6 @@ export const checkCanExportPDF = (tier: SubscriptionTier): LimitCheckResult => {
 };
 
 /**
- * Check if user can export Word
- */
-export const checkCanExportWord = (tier: SubscriptionTier): LimitCheckResult => {
-  const limits = SUBSCRIPTION_LIMITS[tier];
-
-  if (!limits.canExportWord) {
-    return {
-      allowed: false,
-      message: "Export Word hanya tersedia untuk Advance.",
-      upgradeRequired: true,
-      recommendedTier: "advance",
-    };
-  }
-
-  return {
-    allowed: true,
-  };
-};
-
-/**
  * Get usage percentage
  */
 export const getUsagePercentage = (current: number, limit: number): number => {
@@ -217,12 +197,6 @@ export const getFeatureComparison = () => {
         premium: SUBSCRIPTION_LIMITS.premium.canExportPDF ? "✓" : "✗",
         advance: SUBSCRIPTION_LIMITS.advance.canExportPDF ? "✓" : "✗",
       },
-      {
-        name: "Export Word",
-        free: SUBSCRIPTION_LIMITS.free.canExportWord ? "✓" : "✗",
-        premium: SUBSCRIPTION_LIMITS.premium.canExportWord ? "✓" : "✗",
-        advance: SUBSCRIPTION_LIMITS.advance.canExportWord ? "✓" : "✗",
-      },
     ],
   };
 };
@@ -245,7 +219,6 @@ export const getUpgradeBenefits = (currentTier: SubscriptionTier): string[] => {
     return [
       "Catatan unlimited (tidak terbatas)",
       "Tag unlimited (tidak terbatas)",
-      "Export catatan ke Word",
       "Fitur premium eksklusif",
       "Prioritas support tertinggi",
     ];

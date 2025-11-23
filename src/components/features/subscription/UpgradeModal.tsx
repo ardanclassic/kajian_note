@@ -106,11 +106,6 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail }: Upgrade
       enabled: features.exportPdf,
     },
     {
-      icon: FileText,
-      text: "Export ke Word",
-      enabled: features.exportWord,
-    },
-    {
       icon: Calendar,
       text: "Berlaku selama 30 hari",
       enabled: true,

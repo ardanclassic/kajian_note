@@ -43,7 +43,6 @@ interface SubscriptionStore {
   checkCanAddTag: (userId: string) => Promise<SubscriptionCheckResult>;
   checkCanCreatePublicNote: (userId: string) => Promise<SubscriptionCheckResult>;
   checkCanExportPDF: (userId: string) => Promise<SubscriptionCheckResult>;
-  checkCanExportWord: (userId: string) => Promise<SubscriptionCheckResult>;
 
   // Actions - Admin
   manualGrantSubscription: (data: ManualGrantSubscriptionData, grantedBy: string) => Promise<void>;
@@ -239,18 +238,6 @@ export const useSubscriptionStore = create<SubscriptionStore>((set, get) => ({
   checkCanExportPDF: async (userId: string) => {
     try {
       return await subscriptionService.canExportPDF(userId);
-    } catch (error: any) {
-      return {
-        allowed: false,
-        message: error.message || "Gagal memeriksa limit",
-      };
-    }
-  },
-
-  // Check can export Word
-  checkCanExportWord: async (userId: string) => {
-    try {
-      return await subscriptionService.canExportWord(userId);
     } catch (error: any) {
       return {
         allowed: false,

@@ -82,7 +82,7 @@ export const getSubscriptionTiers = async (currentTier?: SubscriptionTier): Prom
       price: 100000,
       priceFormatted: "Rp 100.000",
       duration: 30,
-      features: ["Catatan unlimited", "Tags unlimited", "Buat catatan public", "Export PDF & Word"],
+      features: ["Catatan unlimited", "Tags unlimited", "Buat catatan public", "Export PDF"],
       limits: SUBSCRIPTION_LIMITS.advance,
       isCurrent: currentTier === "advance",
       isRecommended: false,
@@ -322,7 +322,6 @@ export const getSubscriptionUsage = async (userId: string): Promise<Subscription
       tagsRemaining: limits.maxTags === Infinity ? Infinity : Math.max(0, limits.maxTags - tagsUsed),
       publicNotesAllowed: limits.canPublicNotes,
       pdfExportAllowed: limits.canExportPDF,
-      wordExportAllowed: limits.canExportWord,
     };
   } catch (error: any) {
     console.error("Error getting subscription usage:", error);
@@ -435,34 +434,6 @@ export const canExportPDF = async (userId: string): Promise<SubscriptionCheckRes
     };
   } catch (error: any) {
     console.error("Error checking can export PDF:", error);
-    return {
-      allowed: false,
-      message: "Gagal memeriksa batas",
-    };
-  }
-};
-
-/**
- * Check if user can export Word
- */
-export const canExportWord = async (userId: string): Promise<SubscriptionCheckResult> => {
-  try {
-    const usage = await getSubscriptionUsage(userId);
-
-    if (!usage.wordExportAllowed) {
-      return {
-        allowed: false,
-        message: "Export Word hanya untuk Advance.",
-        upgradeRequired: true,
-        recommendedTier: "advance",
-      };
-    }
-
-    return {
-      allowed: true,
-    };
-  } catch (error: any) {
-    console.error("Error checking can export Word:", error);
     return {
       allowed: false,
       message: "Gagal memeriksa batas",

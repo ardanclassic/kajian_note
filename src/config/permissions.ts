@@ -104,7 +104,6 @@ export const PERMISSIONS: Record<UserRole, Permission[]> = {
     "notes:pin",
     "notes:create_public",
     "notes:export_pdf",
-    "notes:export_word",
 
     // Settings - Own only
     "settings:read_own",
@@ -130,7 +129,6 @@ export const PERMISSIONS: Record<UserRole, Permission[]> = {
     "notes:delete_own",
     "notes:create_public",
     "notes:export_pdf",
-    "notes:export_word",
 
     // Settings - Own only
     "settings:read_own",
@@ -154,7 +152,6 @@ export const PERMISSIONS: Record<UserRole, Permission[]> = {
     "notes:update_own",
     "notes:delete_own",
     // Public notes, PDF export - Premium/Advance only
-    // Word export - Advance only
 
     // Settings - Own only
     "settings:read_own",

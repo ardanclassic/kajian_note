@@ -58,7 +58,6 @@ export interface SubscriptionTierInfo {
     maxTags: number;
     canPublicNotes: boolean;
     canExportPDF: boolean;
-    canExportWord: boolean;
   };
   isCurrent: boolean;
   isRecommended: boolean;
@@ -109,7 +108,6 @@ export interface SubscriptionUsage {
   tagsRemaining: number;
   publicNotesAllowed: boolean;
   pdfExportAllowed: boolean;
-  wordExportAllowed: boolean;
   currentNotes?: any;
   maxNotes?: any;
   currentTags?: any;

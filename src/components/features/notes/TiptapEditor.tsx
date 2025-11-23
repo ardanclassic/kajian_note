@@ -1,7 +1,7 @@
 /**
- * TiptapEditor Component
- * Rich text editor with elderly-friendly UI
- * Features: Bold, Italic, Headings, Lists, Links
+ * TiptapEditor Component - ENHANCED UI/UX
+ * Compact, clean, beautiful rich text editor
+ * With smooth animations & mobile responsive
  */
 
 import { useEffect } from "react";
@@ -9,6 +9,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Link from "@tiptap/extension-link";
+import { motion } from "framer-motion";
 import {
   Bold,
   Italic,
@@ -44,7 +45,7 @@ export function TiptapEditor({
     extensions: [
       StarterKit.configure({
         heading: {
-          levels: [2, 3], // Only H2 and H3 for simplicity
+          levels: [2, 3],
         },
       }),
       Placeholder.configure({
@@ -53,7 +54,7 @@ export function TiptapEditor({
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class: "text-primary underline hover:text-primary/80",
+          class: "text-indigo-300 underline hover:text-amber-400 transition-colors",
         },
       }),
     ],
@@ -62,7 +63,11 @@ export function TiptapEditor({
       attributes: {
         class: cn(
           "prose prose-sm sm:prose-base max-w-none focus:outline-none p-4 rounded-md",
-          "min-h-[250px]" // Default min height
+          "prose-headings:text-foreground prose-p:text-foreground",
+          "prose-strong:text-foreground prose-em:text-foreground",
+          "prose-ul:text-foreground prose-ol:text-foreground prose-li:text-foreground",
+          "prose-blockquote:border-indigo-500 prose-blockquote:text-muted-foreground",
+          `min-h-[${minHeight}]`
         ),
       },
     },
@@ -95,7 +100,7 @@ export function TiptapEditor({
     const previousUrl = editor.getAttributes("link").href;
     const url = window.prompt("URL:", previousUrl);
 
-    if (url === null) return; // Cancelled
+    if (url === null) return;
 
     if (url === "") {
       editor.chain().focus().extendMarkRange("link").unsetLink().run();
@@ -105,160 +110,148 @@ export function TiptapEditor({
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
   };
 
+  // Toolbar button component
+  const ToolbarButton = ({
+    onClick,
+    isActive,
+    disabled,
+    icon: Icon,
+    title,
+  }: {
+    onClick: () => void;
+    isActive?: boolean;
+    disabled?: boolean;
+    icon: any;
+    title: string;
+  }) => (
+    <motion.div whileHover={{ scale: disabled ? 1 : 1.05 }} whileTap={{ scale: disabled ? 1 : 0.95 }}>
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={onClick}
+        disabled={disabled}
+        className={cn(
+          "h-8 w-8 p-0 transition-colors",
+          isActive ? "bg-indigo-500/20 text-amber-400 hover:bg-indigo-500/30" : "hover:bg-muted/80"
+        )}
+        title={title}
+      >
+        <Icon className="w-4 h-4" />
+      </Button>
+    </motion.div>
+  );
+
   return (
-    <div className="border rounded-md overflow-hidden bg-background">
-      {/* Toolbar */}
-      <div className="border-b bg-muted/30 p-2 flex flex-wrap gap-1">
+    <div className="border-0 rounded-lg overflow-hidden bg-background">
+      {/* Toolbar - Compact & Clean */}
+      <div className="border-b bg-muted/30 backdrop-blur-sm p-2 flex flex-wrap gap-1">
         {/* Text Formatting */}
-        <div className="flex gap-1 border-r pr-2 mr-1">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
+        <div className="flex gap-0.5 pr-2 mr-1 border-r border-border">
+          <ToolbarButton
             onClick={() => editor.chain().focus().toggleBold().run()}
+            isActive={editor.isActive("bold")}
             disabled={disabled || !editor.can().chain().focus().toggleBold().run()}
-            className={editor.isActive("bold") ? "bg-muted" : ""}
+            icon={Bold}
             title="Bold (Ctrl+B)"
-          >
-            <Bold className="w-4 h-4" />
-          </Button>
-
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
+          />
+          <ToolbarButton
             onClick={() => editor.chain().focus().toggleItalic().run()}
+            isActive={editor.isActive("italic")}
             disabled={disabled || !editor.can().chain().focus().toggleItalic().run()}
-            className={editor.isActive("italic") ? "bg-muted" : ""}
+            icon={Italic}
             title="Italic (Ctrl+I)"
-          >
-            <Italic className="w-4 h-4" />
-          </Button>
-
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
+          />
+          <ToolbarButton
             onClick={() => editor.chain().focus().toggleStrike().run()}
+            isActive={editor.isActive("strike")}
             disabled={disabled || !editor.can().chain().focus().toggleStrike().run()}
-            className={editor.isActive("strike") ? "bg-muted" : ""}
+            icon={Strikethrough}
             title="Strikethrough"
-          >
-            <Strikethrough className="w-4 h-4" />
-          </Button>
+          />
         </div>
 
         {/* Headings */}
-        <div className="flex gap-1 border-r pr-2 mr-1">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
+        <div className="flex gap-0.5 pr-2 mr-1 border-r border-border">
+          <ToolbarButton
             onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+            isActive={editor.isActive("heading", { level: 2 })}
             disabled={disabled}
-            className={editor.isActive("heading", { level: 2 }) ? "bg-muted" : ""}
+            icon={Heading2}
             title="Heading 2"
-          >
-            <Heading2 className="w-4 h-4" />
-          </Button>
+          />
         </div>
 
         {/* Lists */}
-        <div className="flex gap-1 border-r pr-2 mr-1">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
+        <div className="flex gap-0.5 pr-2 mr-1 border-r border-border">
+          <ToolbarButton
             onClick={() => editor.chain().focus().toggleBulletList().run()}
+            isActive={editor.isActive("bulletList")}
             disabled={disabled}
-            className={editor.isActive("bulletList") ? "bg-muted" : ""}
+            icon={List}
             title="Bullet List"
-          >
-            <List className="w-4 h-4" />
-          </Button>
-
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
+          />
+          <ToolbarButton
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            isActive={editor.isActive("orderedList")}
             disabled={disabled}
-            className={editor.isActive("orderedList") ? "bg-muted" : ""}
+            icon={ListOrdered}
             title="Numbered List"
-          >
-            <ListOrdered className="w-4 h-4" />
-          </Button>
+          />
         </div>
 
         {/* Blockquote */}
-        <div className="flex gap-1 border-r pr-2 mr-1">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
+        <div className="flex gap-0.5 pr-2 mr-1 border-r border-border">
+          <ToolbarButton
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            isActive={editor.isActive("blockquote")}
             disabled={disabled}
-            className={editor.isActive("blockquote") ? "bg-muted" : ""}
+            icon={Quote}
             title="Quote"
-          >
-            <Quote className="w-4 h-4" />
-          </Button>
+          />
         </div>
 
         {/* Link */}
-        <div className="flex gap-1 border-r pr-2 mr-1">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
+        <div className="flex gap-0.5 pr-2 mr-1 border-r border-border">
+          <ToolbarButton
             onClick={setLink}
+            isActive={editor.isActive("link")}
             disabled={disabled}
-            className={editor.isActive("link") ? "bg-muted" : ""}
+            icon={Link2}
             title="Add Link"
-          >
-            <Link2 className="w-4 h-4" />
-          </Button>
-
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
+          />
+          <ToolbarButton
             onClick={() => editor.chain().focus().unsetLink().run()}
             disabled={disabled || !editor.isActive("link")}
+            icon={Link2Off}
             title="Remove Link"
-          >
-            <Link2Off className="w-4 h-4" />
-          </Button>
+          />
         </div>
 
         {/* Undo/Redo */}
-        <div className="flex gap-1">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
+        <div className="flex gap-0.5">
+          <ToolbarButton
             onClick={() => editor.chain().focus().undo().run()}
             disabled={disabled || !editor.can().chain().focus().undo().run()}
+            icon={Undo}
             title="Undo (Ctrl+Z)"
-          >
-            <Undo className="w-4 h-4" />
-          </Button>
-
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
+          />
+          <ToolbarButton
             onClick={() => editor.chain().focus().redo().run()}
             disabled={disabled || !editor.can().chain().focus().redo().run()}
+            icon={Redo}
             title="Redo (Ctrl+Y)"
-          >
-            <Redo className="w-4 h-4" />
-          </Button>
+          />
         </div>
       </div>
 
       {/* Editor Content */}
-      <EditorContent editor={editor} className="prose-editor" style={{ minHeight }} />
+      <div
+        className={cn("prose-editor transition-opacity", disabled && "opacity-60 cursor-not-allowed")}
+        style={{ minHeight }}
+      >
+        <EditorContent editor={editor} />
+      </div>
     </div>
   );
 }

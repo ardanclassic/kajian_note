@@ -100,13 +100,6 @@ export function SubscriptionCard({
               <span className="text-sm">Export PDF</span>
             </div>
           )}
-
-          {features.exportWord && (
-            <div className="flex items-center gap-2">
-              <Check className="h-4 w-4 text-green-500" />
-              <span className="text-sm">Export Word</span>
-            </div>
-          )}
         </div>
 
         {/* Upgrade Button */}

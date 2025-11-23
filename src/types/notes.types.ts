@@ -137,7 +137,7 @@ export interface PaginatedNotes {
 /**
  * Note export format
  */
-export type NoteExportFormat = "pdf" | "word" | "markdown" | "text";
+export type NoteExportFormat = "pdf" | "markdown" | "text";
 
 /**
  * Note export options

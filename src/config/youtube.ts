@@ -39,7 +39,8 @@ const getEnvVar = (key: string, fallback: string = ""): string => {
  */
 export const youtubeConfig: YouTubeConfig = {
   // YouTube Transcript API URL
-  apiUrl: getEnvVar("VITE_YOUTUBE_API_URL", "http://localhost:8001"),
+  // apiUrl: getEnvVar("VITE_YOUTUBE_API_URL", "http://localhost:8001"),
+  apiUrl: getEnvVar("VITE_YOUTUBE_API_URL", "https://kajian-note-api.derrylab.com"),
 
   // OpenRouter for AI Summary
   openRouter: {

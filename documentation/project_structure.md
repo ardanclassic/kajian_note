@@ -146,7 +146,6 @@ kajian_note/
 │   │   ├── 📄 index.tsx
 │   │   ├── 📄 ProtectedRoute.tsx
 │   │   ├── 📄 RoleBasedRoute.tsx
-│   │   └── 📄 route.config.ts
 │   │
 │   ├── 📁 schemas/
 │   │   ├── 📄 auth.schema.ts
@@ -172,6 +171,7 @@ kajian_note/
 │   │
 │   ├── 📁 styles/
 │   │   └── 📄 globals.css
+│   │   └── 📄 print.css
 │   │
 │   ├── 📁 types/
 │   │   ├── 📄 auth.types.ts
@@ -184,6 +184,7 @@ kajian_note/
 │   │   └── 📄 youtube.types.ts
 │   │
 │   ├── 📁 utils/
+│   │   ├── 📄 exportUtils.ts
 │   │   ├── 📄 paymentMatching.ts
 │   │   ├── 📄 subscriptionLimits.ts
 │   │   ├── 📄 textToHtml.ts

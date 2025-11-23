@@ -58,8 +58,8 @@ export const Home: React.FC = () => {
     },
     {
       icon: FileText,
-      title: "Export PDF/Word",
-      description: "Simpan catatan ke file PDF atau Word untuk backup offline dan cetak (Premium/Advance).",
+      title: "Export PDF",
+      description: "Simpan catatan ke file PDF untuk backup offline dan cetak (Premium/Advance).",
       color: "text-orange-500",
       bgColor: "bg-orange-500/10",
     },
