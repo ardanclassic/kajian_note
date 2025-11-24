@@ -1,7 +1,11 @@
 /**
  * YouTube API Configuration
  * Settings for YouTube Transcript API integration
+ *
+ * UPDATED: Uses centralized env config instead of hardcoded values
  */
+
+import { env } from "@/config/env";
 
 interface YouTubeConfig {
   // API Base URL
@@ -28,24 +32,16 @@ interface YouTubeConfig {
 }
 
 /**
- * Get environment variable with fallback
- */
-const getEnvVar = (key: string, fallback: string = ""): string => {
-  return import.meta.env[key] || fallback;
-};
-
-/**
  * YouTube API Configuration
  */
 export const youtubeConfig: YouTubeConfig = {
-  // YouTube Transcript API URL
-  // apiUrl: getEnvVar("VITE_YOUTUBE_API_URL", "http://localhost:8001"),
-  apiUrl: getEnvVar("VITE_YOUTUBE_API_URL", "https://kajian-note-api.derrylab.com"),
+  // YouTube Transcript API URL (from env)
+  apiUrl: env.youtube.apiUrl,
 
-  // OpenRouter for AI Summary
+  // OpenRouter for AI Summary (from env)
   openRouter: {
-    apiKey: getEnvVar("VITE_OPENROUTER_API_KEY", ""),
-    defaultModel: getEnvVar("VITE_OPENROUTER_DEFAULT_MODEL", "qwen/qwen3-8b"),
+    apiKey: env.openRouter.apiKey,
+    defaultModel: env.openRouter.defaultModel,
     maxTokens: 50000,
   },
 
@@ -55,7 +51,7 @@ export const youtubeConfig: YouTubeConfig = {
     includeTimestamps: true,
   },
 
-  // Feature flags (all enabled for testing)
+  // Feature flags
   features: {
     enableAISummary: true,
     enableBatchImport: false, // Future feature
@@ -64,6 +60,8 @@ export const youtubeConfig: YouTubeConfig = {
 
 /**
  * YouTube API Endpoints
+ * Note: These are now handled by the axios instance in @/lib/axios
+ * Keep this for backward compatibility only
  */
 export const youtubeEndpoints = {
   urlToId: `${youtubeConfig.apiUrl}/url-to-id`,

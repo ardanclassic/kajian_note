@@ -260,7 +260,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
           </Card>
 
           {/* Timestamp Mode Option - Compact (Only show if AI available) */}
-          {/* {aiAvailable && (
+          {aiAvailable && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
@@ -287,7 +287,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
                 </div>
               </label>
             </motion.div>
-          )} */}
+          )}
 
           {/* Info Box - Compact */}
           <Alert className="border-indigo-500/20 bg-indigo-500/5">

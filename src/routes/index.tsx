@@ -23,6 +23,7 @@ import UserManagement from "@/pages/admin/UserManagement";
 // Route Guards
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleBasedRoute } from "./RoleBasedRoute";
+import APITest from "@/pages/APITest";
 
 export const AppRoutes = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -98,6 +99,14 @@ export const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <EditNote />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/api-test"
+        element={
+          <ProtectedRoute>
+            <APITest />
           </ProtectedRoute>
         }
       />

@@ -1,10 +1,12 @@
 /**
  * YouTube Transcript Service
  * Handles YouTube Transcript API operations
+ *
+ * UPDATED: Uses dedicated YouTube API axios instance with authentication
  */
 
-import axios, { AxiosError } from "axios";
-import { youtubeEndpoints, youtubeConfig } from "@/config/youtube";
+import { AxiosError } from "axios";
+import { youtubeAPI } from "@/lib/axios";
 import type {
   YouTubeUrlToIdRequest,
   YouTubeUrlToIdResponse,
@@ -18,13 +20,33 @@ import type {
   YouTubeImportResult,
   YouTubeAPIError,
 } from "@/types/youtube.types";
+import { env } from "@/config/env";
+
+/**
+ * YouTube API Endpoints (relative paths)
+ */
+const endpoints = {
+  urlToId: "/url-to-id",
+  transcript: "/transcript",
+  transcriptText: "/transcript/text",
+  transcriptSummarize: "/transcript/summarize",
+  health: "/health",
+} as const;
+
+/**
+ * Default configuration
+ */
+const defaultConfig = {
+  languages: "id,en", // Try Indonesian first, then English
+  maxTokens: 50000,
+};
 
 /**
  * Extract video ID from YouTube URL
  */
 export const extractVideoId = async (url: string): Promise<string> => {
   try {
-    const response = await axios.post<YouTubeUrlToIdResponse>(youtubeEndpoints.urlToId, {
+    const response = await youtubeAPI.post<YouTubeUrlToIdResponse>(endpoints.urlToId, {
       url,
     } as YouTubeUrlToIdRequest);
 
@@ -40,10 +62,10 @@ export const extractVideoId = async (url: string): Promise<string> => {
  */
 export const fetchTranscript = async (
   videoId: string,
-  languages: string = youtubeConfig.transcript.defaultLanguages
+  languages: string = defaultConfig.languages
 ): Promise<TranscriptResponse> => {
   try {
-    const response = await axios.post<TranscriptResponse>(youtubeEndpoints.transcript, {
+    const response = await youtubeAPI.post<TranscriptResponse>(endpoints.transcript, {
       video_id: videoId,
       languages,
     } as TranscriptRequest);
@@ -60,11 +82,11 @@ export const fetchTranscript = async (
  */
 export const fetchTranscriptText = async (
   videoId: string,
-  languages: string = youtubeConfig.transcript.defaultLanguages,
+  languages: string = defaultConfig.languages,
   includeTimestamps: boolean = true
 ): Promise<string> => {
   try {
-    const response = await axios.post<TranscriptTextResponse>(youtubeEndpoints.transcriptText, {
+    const response = await youtubeAPI.post<TranscriptTextResponse>(endpoints.transcriptText, {
       video_id: videoId,
       languages,
       include_timestamps: includeTimestamps,
@@ -82,12 +104,12 @@ export const fetchTranscriptText = async (
  */
 export const fetchTranscriptSummary = async (
   videoId: string,
-  languages: string = youtubeConfig.transcript.defaultLanguages,
-  model: string = youtubeConfig.openRouter.defaultModel,
-  maxTokens: number = youtubeConfig.openRouter.maxTokens
+  languages: string = defaultConfig.languages,
+  model: string = env.openRouter.defaultModel,
+  maxTokens: number = defaultConfig.maxTokens
 ): Promise<TranscriptSummarizeResponse> => {
   try {
-    const response = await axios.post<TranscriptSummarizeResponse>(youtubeEndpoints.transcriptSummarize, {
+    const response = await youtubeAPI.post<TranscriptSummarizeResponse>(endpoints.transcriptSummarize, {
       video_id: videoId,
       languages,
       model,
@@ -215,7 +237,7 @@ const generateTitle = (content: string, videoUrl: string): string => {
  */
 export const checkAPIHealth = async (): Promise<boolean> => {
   try {
-    const response = await axios.get(youtubeEndpoints.health, {
+    const response = await youtubeAPI.get(endpoints.health, {
       timeout: 5000,
     });
     return response.status === 200;
@@ -229,19 +251,23 @@ export const checkAPIHealth = async (): Promise<boolean> => {
  * Handle API errors
  */
 const handleAPIError = (error: unknown): Error => {
-  if (axios.isAxiosError(error)) {
+  // If error is already processed by axios interceptor
+  if (error instanceof Error) {
+    return error;
+  }
+
+  // Fallback for AxiosError
+  if (error && typeof error === "object" && "isAxiosError" in error) {
     const axiosError = error as AxiosError<YouTubeAPIError>;
 
     if (axiosError.response) {
-      // Server responded with error
       const message = axiosError.response.data?.detail || axiosError.message;
       return new Error(message);
     } else if (axiosError.request) {
-      // Request made but no response
       return new Error("Tidak dapat terhubung ke server. Pastikan YouTube API berjalan.");
     }
   }
 
   // Generic error
-  return error instanceof Error ? error : new Error("Terjadi kesalahan tidak diketahui");
+  return new Error("Terjadi kesalahan tidak diketahui");
 };

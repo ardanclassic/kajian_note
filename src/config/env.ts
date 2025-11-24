@@ -29,6 +29,18 @@ interface EnvConfig {
   api: {
     url: string;
   };
+
+  // YouTube API
+  youtube: {
+    apiUrl: string;
+    apiHeaderKey: string;
+  };
+
+  // OpenRouter (AI Summary)
+  openRouter: {
+    apiKey: string;
+    defaultModel: string;
+  };
 }
 
 /**
@@ -87,6 +99,16 @@ export const env: EnvConfig = {
 
   api: {
     url: getEnvVar("VITE_API_URL", false) || "http://localhost:3000/api",
+  },
+
+  youtube: {
+    apiUrl: getEnvVar("VITE_YOUTUBE_API_URL", false) || "https://kajian-note-api.derrylab.com",
+    apiHeaderKey: getEnvVar("VITE_API_HEADER_KEY", false) || "",
+  },
+
+  openRouter: {
+    apiKey: getEnvVar("VITE_OPENROUTER_API_KEY", false) || "",
+    defaultModel: getEnvVar("VITE_OPENROUTER_DEFAULT_MODEL", false) || "qwen/qwen3-8b",
   },
 };
 
