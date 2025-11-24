@@ -162,12 +162,6 @@ export default function Notes() {
                   label: "Pribadi",
                   color: "orange",
                 },
-                {
-                  icon: TagIcon,
-                  value: statistics.totalTags,
-                  label: "Total Tag",
-                  color: "purple",
-                },
               ]
             : undefined
         }
@@ -185,11 +179,7 @@ export default function Notes() {
 
           {/* Search & Filter Bar */}
           <div className="animate-in fade-in slide-in-from-top-4 duration-500 delay-100">
-            <Card className="shadow-md hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
-                <NoteSearch availableTags={tags} onSearch={handleSearch} onClear={handleClearSearch} />
-              </CardContent>
-            </Card>
+            <NoteSearch availableTags={tags} onSearch={handleSearch} onClear={handleClearSearch} />
           </div>
 
           {/* Error Message */}
@@ -261,7 +251,7 @@ export default function Notes() {
 
                   <Button
                     onClick={handleCreateNote}
-                    size="xl"
+                    size="lg"
                     className="mb-8 shadow-lg hover:shadow-xl transition-all hover:scale-105"
                   >
                     <Plus className="w-5 h-5" />
@@ -290,14 +280,12 @@ export default function Notes() {
           {/* Quick Stats - Show when has notes */}
           {userNotes.length > 0 && statistics && (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-300">
-              <Card className="bg-linear-to-r from-primary/5 to-primary/10 py-3">
+              <Card className="bg-linear-to-r from-primary/5 to-primary/10 border-primary/20 py-2">
                 <CardContent>
                   <div className="flex items-center justify-between gap-4 flex-wrap">
                     <div className="flex items-center gap-2">
                       <TrendingUp className="w-5 h-5 text-primary" />
-                      <span className="text-sm font-medium">
-                        Total {statistics.totalNotes} catatan dengan {statistics.totalTags} tag
-                      </span>
+                      <span className="text-sm font-medium">Total {statistics.totalNotes} catatan</span>
                     </div>
                     <Button variant="ghost" size="sm" onClick={handleRefresh} disabled={isRefreshing}>
                       <Loader2 className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`} />

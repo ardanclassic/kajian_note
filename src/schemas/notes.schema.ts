@@ -4,6 +4,7 @@
  */
 
 import { z } from "zod";
+import { SYSTEM_LIMITS } from "@/config/subscriptionLimits";
 
 /**
  * Note title validation rules
@@ -42,9 +43,13 @@ export const tagSchema = z
 /**
  * Tags array validation
  * - Optional
- * - Max items based on subscription tier (validated in service layer)
+ * - Max 5 tags per note (system limit)
  */
-export const tagsSchema = z.array(tagSchema).optional().default([]);
+export const tagsSchema = z
+  .array(tagSchema)
+  .max(SYSTEM_LIMITS.maxTagsPerNote, `Maksimal ${SYSTEM_LIMITS.maxTagsPerNote} tag per catatan`)
+  .optional()
+  .default([]);
 
 /**
  * Create note form schema

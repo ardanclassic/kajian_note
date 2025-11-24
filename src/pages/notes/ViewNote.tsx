@@ -59,6 +59,9 @@ export default function ViewNote() {
   const canEdit = isOwner;
   const canDelete = isOwner || isAdmin || isPanitia;
 
+  // Check if user can export (Premium or Advance only)
+  const canExport = user?.subscriptionTier === "premium" || user?.subscriptionTier === "advance";
+
   // Handle back
   const handleBack = () => {
     navigate("/notes");
@@ -230,53 +233,55 @@ export default function ViewNote() {
                 </Button>
               )}
 
-              {/* Export Button */}
-              <div className="relative">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowExportMenu(!showExportMenu)}
-                  className="gap-2"
-                  disabled={isExporting}
-                >
-                  <Download className="w-4 h-4" />
-                  <span className="hidden sm:inline">Export</span>
-                  <ChevronDown className="w-3 h-3" />
-                </Button>
+              {/* Export Button - Only for Premium/Advance */}
+              {canExport && (
+                <div className="relative">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowExportMenu(!showExportMenu)}
+                    className="gap-2"
+                    disabled={isExporting}
+                  >
+                    <Download className="w-4 h-4" />
+                    <span className="hidden sm:inline">Export</span>
+                    <ChevronDown className="w-3 h-3" />
+                  </Button>
 
-                {/* Export Dropdown */}
-                <AnimatePresence>
-                  {showExportMenu && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-48 bg-background border rounded-lg shadow-lg overflow-hidden"
-                    >
-                      <button
-                        onClick={handleExportPDF}
-                        className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left"
+                  {/* Export Dropdown */}
+                  <AnimatePresence>
+                    {showExportMenu && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="absolute right-0 mt-2 w-48 bg-background border rounded-lg shadow-lg overflow-hidden z-50"
                       >
-                        <FileText className="w-4 h-4" />
-                        <div>
-                          <div className="font-medium text-sm">Export PDF</div>
-                          <div className="text-xs text-muted-foreground">Via print dialog</div>
-                        </div>
-                      </button>
-                      <button
-                        onClick={handleExportMarkdown}
-                        className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t"
-                      >
-                        <FileDown className="w-4 h-4" />
-                        <div>
-                          <div className="font-medium text-sm">Export Markdown</div>
-                          <div className="text-xs text-muted-foreground">Unduh sebagai .md</div>
-                        </div>
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                        <button
+                          onClick={handleExportPDF}
+                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left"
+                        >
+                          <FileText className="w-4 h-4" />
+                          <div>
+                            <div className="font-medium text-sm">Export PDF</div>
+                            <div className="text-xs text-muted-foreground">Via print dialog</div>
+                          </div>
+                        </button>
+                        <button
+                          onClick={handleExportMarkdown}
+                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t"
+                        >
+                          <FileDown className="w-4 h-4" />
+                          <div>
+                            <div className="font-medium text-sm">Export Markdown</div>
+                            <div className="text-xs text-muted-foreground">Unduh sebagai .md</div>
+                          </div>
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
 
               {/* Edit Button (owner only) */}
               {canEdit && (
@@ -298,7 +303,7 @@ export default function ViewNote() {
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-48 bg-background border rounded-lg shadow-lg overflow-hidden"
+                      className="absolute right-0 mt-2 w-48 bg-background border rounded-lg shadow-lg overflow-hidden z-50"
                     >
                       {canEdit && (
                         <button

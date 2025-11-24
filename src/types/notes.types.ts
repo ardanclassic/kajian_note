@@ -156,8 +156,6 @@ export interface NoteStatistics {
   publicNotes: number;
   privateNotes: number;
   pinnedNotes: number;
-  totalTags: number;
-  uniqueTags: string[];
   // Source statistics
   manualNotes: number;
   youtubeNotes: number;

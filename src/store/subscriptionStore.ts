@@ -40,9 +40,8 @@ interface SubscriptionStore {
 
   // Actions - Limit Checks
   checkCanCreateNote: (userId: string) => Promise<SubscriptionCheckResult>;
-  checkCanAddTag: (userId: string) => Promise<SubscriptionCheckResult>;
   checkCanCreatePublicNote: (userId: string) => Promise<SubscriptionCheckResult>;
-  checkCanExportPDF: (userId: string) => Promise<SubscriptionCheckResult>;
+  checkCanExport: (userId: string) => Promise<SubscriptionCheckResult>;
 
   // Actions - Admin
   manualGrantSubscription: (data: ManualGrantSubscriptionData, grantedBy: string) => Promise<void>;
@@ -210,18 +209,6 @@ export const useSubscriptionStore = create<SubscriptionStore>((set, get) => ({
     }
   },
 
-  // Check can add tag
-  checkCanAddTag: async (userId: string) => {
-    try {
-      return await subscriptionService.canAddTag(userId);
-    } catch (error: any) {
-      return {
-        allowed: false,
-        message: error.message || "Gagal memeriksa limit",
-      };
-    }
-  },
-
   // Check can create public note
   checkCanCreatePublicNote: async (userId: string) => {
     try {
@@ -234,10 +221,10 @@ export const useSubscriptionStore = create<SubscriptionStore>((set, get) => ({
     }
   },
 
-  // Check can export PDF
-  checkCanExportPDF: async (userId: string) => {
+  // Check can export (PDF/Markdown)
+  checkCanExport: async (userId: string) => {
     try {
-      return await subscriptionService.canExportPDF(userId);
+      return await subscriptionService.canExport(userId);
     } catch (error: any) {
       return {
         allowed: false,

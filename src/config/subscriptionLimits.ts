@@ -7,9 +7,8 @@ export type SubscriptionTier = "free" | "premium" | "advance";
 
 export interface SubscriptionLimits {
   maxNotes: number;
-  maxTags: number;
   canPublicNotes: boolean;
-  canExportPDF: boolean;
+  canExport: boolean;
 }
 
 /**
@@ -18,25 +17,29 @@ export interface SubscriptionLimits {
 export const SUBSCRIPTION_LIMITS: Record<SubscriptionTier, SubscriptionLimits> = {
   free: {
     maxNotes: 10,
-    maxTags: 3,
     canPublicNotes: false,
-    canExportPDF: false,
+    canExport: false,
   },
 
   premium: {
     maxNotes: 100,
-    maxTags: 10,
     canPublicNotes: true,
-    canExportPDF: true,
+    canExport: true,
   },
 
   advance: {
     maxNotes: Infinity,
-    maxTags: Infinity,
     canPublicNotes: true,
-    canExportPDF: true,
+    canExport: true,
   },
 };
+
+/**
+ * System-wide limits (not tier-based)
+ */
+export const SYSTEM_LIMITS = {
+  maxTagsPerNote: 5,
+} as const;
 
 /**
  * Subscription pricing (in IDR)
@@ -72,14 +75,6 @@ export const canCreateNote = (tier: SubscriptionTier, currentNotesCount: number)
 };
 
 /**
- * Check if user can add more tags
- */
-export const canAddTag = (tier: SubscriptionTier, currentTagsCount: number): boolean => {
-  const limits = getSubscriptionLimits(tier);
-  return currentTagsCount < limits.maxTags;
-};
-
-/**
  * Check if user can create public notes
  */
 export const canCreatePublicNote = (tier: SubscriptionTier): boolean => {
@@ -88,11 +83,11 @@ export const canCreatePublicNote = (tier: SubscriptionTier): boolean => {
 };
 
 /**
- * Check if user can export to PDF
+ * Check if user can export (PDF/Markdown)
  */
-export const canExportPDF = (tier: SubscriptionTier): boolean => {
+export const canExport = (tier: SubscriptionTier): boolean => {
   const limits = getSubscriptionLimits(tier);
-  return limits.canExportPDF;
+  return limits.canExport;
 };
 
 /**
@@ -102,15 +97,6 @@ export const getRemainingNotes = (tier: SubscriptionTier, currentNotesCount: num
   const limits = getSubscriptionLimits(tier);
   if (limits.maxNotes === Infinity) return Infinity;
   return Math.max(0, limits.maxNotes - currentNotesCount);
-};
-
-/**
- * Get remaining tags quota
- */
-export const getRemainingTags = (tier: SubscriptionTier, currentTagsCount: number): number => {
-  const limits = getSubscriptionLimits(tier);
-  if (limits.maxTags === Infinity) return Infinity;
-  return Math.max(0, limits.maxTags - currentTagsCount);
 };
 
 /**
@@ -168,12 +154,11 @@ export const formatPrice = (price: number): string => {
 /**
  * Get upgrade message based on action
  */
-export const getUpgradeMessage = (action: "notes" | "tags" | "public" | "pdf"): string => {
+export const getUpgradeMessage = (action: "notes" | "public" | "export"): string => {
   const messages = {
     notes: "Anda telah mencapai batas maksimal catatan. Upgrade untuk menambah catatan lebih banyak.",
-    tags: "Anda telah mencapai batas maksimal tag. Upgrade untuk menambah tag lebih banyak.",
     public: "Fitur catatan publik hanya tersedia untuk pengguna Premium dan Advance.",
-    pdf: "Fitur export PDF hanya tersedia untuk pengguna Premium dan Advance.",
+    export: "Fitur export (PDF & Markdown) hanya tersedia untuk pengguna Premium dan Advance.",
   };
 
   return messages[action];

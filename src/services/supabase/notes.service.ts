@@ -1,7 +1,6 @@
 /**
- * Notes Service - FIXED TAG VALIDATION
+ * Notes Service
  * Handles notes-related operations
- * FIX: Correct tag limit validation (only check NEW tags)
  */
 
 import { supabase } from "@/lib/supabase";
@@ -97,7 +96,7 @@ export const getNoteWithUser = async (noteId: string): Promise<NoteWithUser | nu
 };
 
 /**
- * Create note - FIXED TAG VALIDATION
+ * Create note
  */
 export const createNote = async (userId: string, data: CreateNoteData): Promise<Note> => {
   try {
@@ -115,27 +114,8 @@ export const createNote = async (userId: string, data: CreateNoteData): Promise<
       }
     }
 
-    // FIX: Check tag limit ONLY if there are NEW tags
-    if (data.tags && data.tags.length > 0) {
-      const usage = await subscriptionService.getSubscriptionUsage(userId);
-      const notes = await db.getWhere("notes", { user_id: userId });
-      const existingTags = notes.flatMap((note) => note.tags || []);
-      const existingUniqueTags = new Set(existingTags);
-
-      // Find NEW tags (tags that don't exist yet)
-      const newTags = data.tags.filter((tag) => !existingUniqueTags.has(tag));
-
-      // Only validate if there are NEW tags
-      if (newTags.length > 0) {
-        const totalUniqueTagsAfter = existingUniqueTags.size + newTags.length;
-
-        if (totalUniqueTagsAfter > usage.tagsLimit) {
-          throw new Error(
-            `Batas tag tercapai. Anda sudah menggunakan ${existingUniqueTags.size} tag unik. Maksimal ${usage.tagsLimit} tag untuk tier ${usage.tier}.`
-          );
-        }
-      }
-    }
+    // Tags validation is handled by Zod schema (max 5 tags per note)
+    // No need to check total tags limit as it's unlimited for all tiers
 
     // Prepare note data with proper snake_case mapping
     const noteData: any = {
@@ -171,7 +151,7 @@ export const createNote = async (userId: string, data: CreateNoteData): Promise<
 };
 
 /**
- * Update note - FIXED TAG VALIDATION
+ * Update note
  */
 export const updateNote = async (noteId: string, userId: string, data: UpdateNoteData): Promise<Note> => {
   try {
@@ -188,29 +168,8 @@ export const updateNote = async (noteId: string, userId: string, data: UpdateNot
       }
     }
 
-    // FIX: Check tag limit ONLY if there are NEW tags
-    if (data.tags && data.tags.length > 0) {
-      const usage = await subscriptionService.getSubscriptionUsage(userId);
-      const notes = await db.getWhere("notes", { user_id: userId });
-
-      // Exclude current note's tags from existing tags
-      const existingTags = notes.filter((note) => note.id !== noteId).flatMap((note) => note.tags || []);
-      const existingUniqueTags = new Set(existingTags);
-
-      // Find NEW tags (tags that don't exist yet)
-      const newTags = data.tags.filter((tag) => !existingUniqueTags.has(tag));
-
-      // Only validate if there are NEW tags
-      if (newTags.length > 0) {
-        const totalUniqueTagsAfter = existingUniqueTags.size + newTags.length;
-
-        if (totalUniqueTagsAfter > usage.tagsLimit) {
-          throw new Error(
-            `Batas tag tercapai. Anda sudah menggunakan ${existingUniqueTags.size} tag unik. Maksimal ${usage.tagsLimit} tag untuk tier ${usage.tier}.`
-          );
-        }
-      }
-    }
+    // Tags validation is handled by Zod schema (max 5 tags per note)
+    // No need to check total tags limit as it's unlimited for all tiers
 
     // Update note with proper snake_case mapping
     const updateData: any = {};
@@ -499,8 +458,6 @@ export const getNoteStatistics = async (userId: string): Promise<NoteStatistics>
     const manualNotes = await db.count("notes", { user_id: userId, source_type: "manual" });
     const youtubeNotes = await db.count("notes", { user_id: userId, source_type: "youtube" });
 
-    const tags = await getUserTags(userId);
-
     // Get AI summary count
     const allNotes = await db.getWhere("notes", { user_id: userId });
     const aiSummaryNotes = allNotes.filter(
@@ -512,8 +469,6 @@ export const getNoteStatistics = async (userId: string): Promise<NoteStatistics>
       publicNotes,
       privateNotes,
       pinnedNotes,
-      totalTags: tags.length,
-      uniqueTags: tags,
       manualNotes,
       youtubeNotes,
       aiSummaryNotes,
@@ -525,8 +480,6 @@ export const getNoteStatistics = async (userId: string): Promise<NoteStatistics>
       publicNotes: 0,
       privateNotes: 0,
       pinnedNotes: 0,
-      totalTags: 0,
-      uniqueTags: [],
       manualNotes: 0,
       youtubeNotes: 0,
       aiSummaryNotes: 0,

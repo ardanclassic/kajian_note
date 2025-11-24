@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { AlertCircle, TrendingUp, FileText, Tag, ArrowRight, Sparkles } from "lucide-react";
+import { AlertCircle, TrendingUp, FileText, ArrowRight, Sparkles } from "lucide-react";
 import type { SubscriptionUsage } from "@/types/subscription.types";
 import {
   getUsagePercentage,
@@ -24,12 +24,9 @@ interface SubscriptionLimitBannerProps {
 
 export function SubscriptionLimitBanner({ usage, compact = false }: SubscriptionLimitBannerProps) {
   const notesPercentage = getUsagePercentage(usage.notesCount, usage.notesLimit);
-  const tagsPercentage = getUsagePercentage(usage.tagsCount, usage.tagsLimit);
-
   const notesColor = getUsageColor(notesPercentage);
-  const tagsColor = getUsageColor(tagsPercentage);
 
-  const shouldUpgrade = shouldShowUpgradePrompt(usage.tier, usage.notesCount, usage.tagsCount);
+  const shouldUpgrade = shouldShowUpgradePrompt(usage.tier, usage.notesCount);
 
   // Don't show if advance tier or no warning needed
   if (usage.tier === "advance" || (!shouldUpgrade && compact)) {
@@ -53,31 +50,25 @@ export function SubscriptionLimitBanner({ usage, compact = false }: Subscription
   // Compact version
   if (compact) {
     return (
-      <Card className="py-2 text-white shadow-yellow-400">
+      <Card className="shadow-md py-2">
         <CardContent className="px-4">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <AlertCircle className="w-5 h-5 text-orange-300 shrink-0" />
+              <AlertCircle className="w-5 h-5 text-orange-500 shrink-0" />
               <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-2">
-                  <FileText className="w-4 h-4" />
-                  <span className="font-medium">
-                    {usage.notesCount}/{formatLimitText(usage.notesLimit)}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Tag className="w-4 h-4" />
-                  <span className="font-medium">
-                    {usage.tagsCount}/{formatLimitText(usage.tagsLimit)}
+                  <FileText className="w-4 h-4 text-orange-300" />
+                  <span className="font-medium text-orange-400">
+                    {usage.notesCount}/{formatLimitText(usage.notesLimit)} catatan
                   </span>
                 </div>
               </div>
             </div>
 
-            <Button size="sm" asChild variant="secondary">
-              <Link to="/subscription" className="text-yellow-300!">
+            <Button size="sm" asChild variant="default" className="shrink-0">
+              <Link to="/subscription">
                 Upgrade
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="w-4 h-4 ml-1" />
               </Link>
             </Button>
           </div>
@@ -110,49 +101,32 @@ export function SubscriptionLimitBanner({ usage, compact = false }: Subscription
             </Badge>
           </div>
 
-          {/* Usage Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Notes Usage */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="flex items-center gap-2">
-                  <FileText className="w-4 h-4" />
-                  Catatan
-                </span>
-                <span className="font-medium">
-                  {usage.notesCount}/{formatLimitText(usage.notesLimit)}
-                </span>
-              </div>
-              {usage.notesLimit !== Infinity && (
-                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full ${getColorClass(notesColor)} transition-all`}
-                    style={{ width: `${notesPercentage}%` }}
-                  />
-                </div>
-              )}
+          {/* Usage Stats - Notes Only */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <span className="flex items-center gap-2 font-medium">
+                <FileText className="w-4 h-4" />
+                Catatan
+              </span>
+              <span className="font-semibold">
+                {usage.notesCount}/{formatLimitText(usage.notesLimit)}
+              </span>
             </div>
-
-            {/* Tags Usage */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="flex items-center gap-2">
-                  <Tag className="w-4 h-4" />
-                  Tag
-                </span>
-                <span className="font-medium">
-                  {usage.tagsCount}/{formatLimitText(usage.tagsLimit)}
-                </span>
+            {usage.notesLimit !== Infinity && (
+              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                <div
+                  className={`h-full ${getColorClass(notesColor)} transition-all`}
+                  style={{ width: `${notesPercentage}%` }}
+                />
               </div>
-              {usage.tagsLimit !== Infinity && (
-                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full ${getColorClass(tagsColor)} transition-all`}
-                    style={{ width: `${tagsPercentage}%` }}
-                  />
-                </div>
-              )}
-            </div>
+            )}
+            {notesPercentage >= 80 && (
+              <p className="text-xs text-orange-600 dark:text-orange-400">
+                {usage.notesRemaining === 0
+                  ? "⚠️ Batas catatan tercapai!"
+                  : `⚠️ Sisa ${usage.notesRemaining} catatan lagi`}
+              </p>
+            )}
           </div>
 
           {/* Benefits Preview */}

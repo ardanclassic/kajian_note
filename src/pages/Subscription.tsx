@@ -481,15 +481,6 @@ export default function Subscription() {
                                 `Maksimal ${features.maxNotes} catatan`
                               ),
                           },
-                          {
-                            enabled: true,
-                            text:
-                              features.maxTags === -1 ? (
-                                <span className="font-semibold text-primary">Unlimited tags</span>
-                              ) : (
-                                `Maksimal ${features.maxTags} tags`
-                              ),
-                          },
                           { enabled: features.publicNotes, text: "Catatan publik" },
                           { enabled: features.exportPdf, text: "Export PDF" },
                         ].map((feature, i) => (

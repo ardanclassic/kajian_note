@@ -55,9 +55,8 @@ export interface SubscriptionTierInfo {
   features: string[];
   limits: {
     maxNotes: number;
-    maxTags: number;
     canPublicNotes: boolean;
-    canExportPDF: boolean;
+    canExport: boolean;
   };
   isCurrent: boolean;
   isRecommended: boolean;
@@ -103,18 +102,12 @@ export interface SubscriptionUsage {
   notesUsed: number;
   notesLimit: number;
   notesRemaining: number;
-  tagsUsed: number;
-  tagsLimit: number;
-  tagsRemaining: number;
   publicNotesAllowed: boolean;
-  pdfExportAllowed: boolean;
+  exportAllowed: boolean;
   currentNotes?: any;
   maxNotes?: any;
-  currentTags?: any;
-  maxTags?: any;
   tier: "free" | "premium" | "advance";
   notesCount: any;
-  tagsCount: any;
 }
 
 /**

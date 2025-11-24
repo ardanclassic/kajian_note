@@ -58,7 +58,7 @@ export const getSubscriptionTiers = async (currentTier?: SubscriptionTier): Prom
       price: 0,
       priceFormatted: "Rp 0",
       duration: 0,
-      features: ["Maksimal 10 catatan", "Maksimal 3 tags per catatan", "Catatan private saja", "Tidak ada export"],
+      features: ["Maksimal 10 catatan", "Catatan private saja", "Tidak ada export"],
       limits: SUBSCRIPTION_LIMITS.free,
       isCurrent: currentTier === "free",
       isRecommended: false,
@@ -70,7 +70,7 @@ export const getSubscriptionTiers = async (currentTier?: SubscriptionTier): Prom
       price: 50000,
       priceFormatted: "Rp 50.000",
       duration: 30,
-      features: ["Maksimal 100 catatan", "Maksimal 10 tags per catatan", "Bisa buat catatan public", "Export PDF"],
+      features: ["Maksimal 100 catatan", "Bisa buat catatan public", "Export PDF & Markdown"],
       limits: SUBSCRIPTION_LIMITS.premium,
       isCurrent: currentTier === "premium",
       isRecommended: true,
@@ -82,7 +82,7 @@ export const getSubscriptionTiers = async (currentTier?: SubscriptionTier): Prom
       price: 100000,
       priceFormatted: "Rp 100.000",
       duration: 30,
-      features: ["Catatan unlimited", "Tags unlimited", "Buat catatan public", "Export PDF"],
+      features: ["Catatan unlimited", "Buat catatan public", "Export PDF & Markdown"],
       limits: SUBSCRIPTION_LIMITS.advance,
       isCurrent: currentTier === "advance",
       isRecommended: false,
@@ -304,24 +304,14 @@ export const getSubscriptionUsage = async (userId: string): Promise<Subscription
     // Count notes
     const notesUsed = await db.count("notes", { user_id: userId });
 
-    // Count tags
-    const notes = await db.getWhere("notes", { user_id: userId });
-    const allTags = notes.flatMap((note) => note.tags || []);
-    const uniqueTags = [...new Set(allTags)];
-    const tagsUsed = uniqueTags.length;
-
     return {
       tier,
       notesCount: notesUsed,
       notesUsed,
       notesLimit: limits.maxNotes,
       notesRemaining: limits.maxNotes === Infinity ? Infinity : Math.max(0, limits.maxNotes - notesUsed),
-      tagsCount: tagsUsed,
-      tagsUsed,
-      tagsLimit: limits.maxTags,
-      tagsRemaining: limits.maxTags === Infinity ? Infinity : Math.max(0, limits.maxTags - tagsUsed),
       publicNotesAllowed: limits.canPublicNotes,
-      pdfExportAllowed: limits.canExportPDF,
+      exportAllowed: limits.canExport,
     };
   } catch (error: any) {
     console.error("Error getting subscription usage:", error);
@@ -358,34 +348,6 @@ export const canCreateNote = async (userId: string): Promise<SubscriptionCheckRe
 };
 
 /**
- * Check if user can add tag
- */
-export const canAddTag = async (userId: string): Promise<SubscriptionCheckResult> => {
-  try {
-    const usage = await getSubscriptionUsage(userId);
-
-    if (usage.tagsUsed >= usage.tagsLimit) {
-      return {
-        allowed: false,
-        message: "Batas tag tercapai. Upgrade untuk menambah lebih banyak tag.",
-        upgradeRequired: true,
-        recommendedTier: usage.tagsLimit === 3 ? "premium" : "advance",
-      };
-    }
-
-    return {
-      allowed: true,
-    };
-  } catch (error: any) {
-    console.error("Error checking can add tag:", error);
-    return {
-      allowed: false,
-      message: "Gagal memeriksa batas",
-    };
-  }
-};
-
-/**
  * Check if user can create public note
  */
 export const canCreatePublicNote = async (userId: string): Promise<SubscriptionCheckResult> => {
@@ -414,16 +376,16 @@ export const canCreatePublicNote = async (userId: string): Promise<SubscriptionC
 };
 
 /**
- * Check if user can export PDF
+ * Check if user can export (PDF/Markdown)
  */
-export const canExportPDF = async (userId: string): Promise<SubscriptionCheckResult> => {
+export const canExport = async (userId: string): Promise<SubscriptionCheckResult> => {
   try {
     const usage = await getSubscriptionUsage(userId);
 
-    if (!usage.pdfExportAllowed) {
+    if (!usage.exportAllowed) {
       return {
         allowed: false,
-        message: "Export PDF hanya untuk Premium & Advance.",
+        message: "Export (PDF & Markdown) hanya untuk Premium & Advance.",
         upgradeRequired: true,
         recommendedTier: "premium",
       };
@@ -433,7 +395,7 @@ export const canExportPDF = async (userId: string): Promise<SubscriptionCheckRes
       allowed: true,
     };
   } catch (error: any) {
-    console.error("Error checking can export PDF:", error);
+    console.error("Error checking can export:", error);
     return {
       allowed: false,
       message: "Gagal memeriksa batas",
