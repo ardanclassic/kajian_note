@@ -16,11 +16,9 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAuthStore } from "@/store/authStore";
-import { useSubscriptionStore } from "@/store/subscriptionStore";
 import { createNote } from "@/services/supabase/notes.service";
 import type { CreateNoteFormData } from "@/schemas/notes.schema";
 import type { YouTubeImportResult } from "@/types/youtube.types";
-import { generateSuggestedTags } from "@/utils/youtubeHelpers";
 import { convertTextToHtml } from "@/utils/textToHtml";
 import { PenLine, Youtube, Sparkles, FileText, Clock, Video, ChevronLeft, Info, CheckCircle2 } from "lucide-react";
 
@@ -67,7 +65,6 @@ const cardVariants = {
 export default function CreateNote() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const { usage } = useSubscriptionStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [inputMode, setInputMode] = useState<InputMode>("manual");
   const [showImportModal, setShowImportModal] = useState(false);
@@ -77,20 +74,11 @@ export default function CreateNote() {
     setImportedData(result);
     setInputMode("youtube");
 
-    const suggestedTags = generateSuggestedTags(result.content, 3);
-    const wasStripped = suggestedTags.length > 0 && usage && usage.tagsUsed >= usage.tagsLimit;
-
     toast.success("Video berhasil diimpor!", {
       description: result.metadata.has_ai_summary
         ? "Ringkasan AI siap untuk ditinjau"
         : "Transcript lengkap siap untuk diedit",
     });
-
-    if (wasStripped) {
-      toast.warning("Tag otomatis dinonaktifkan", {
-        description: `Anda sudah mencapai batas ${usage.tagsLimit} tag.`,
-      });
-    }
   };
 
   const handleSubmit = async (data: CreateNoteFormData) => {
@@ -158,11 +146,9 @@ export default function CreateNote() {
     };
   };
 
-  const isAtTagLimit = usage ? usage.tagsUsed >= usage.tagsLimit : false;
-
   return (
     <motion.div
-      className="min-h-screen bg-linear-to-b from-background to-muted/20"
+      className="min-h-screen bg-gradient-to-b from-background to-muted/20"
       initial="initial"
       animate="animate"
       exit="exit"
@@ -179,7 +165,7 @@ export default function CreateNote() {
             </Button>
 
             <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="gap-1.5 bg-indigo-500/10 text-amber-400 border-indigo-500/20">
+              <Badge variant="secondary" className="gap-1.5 bg-primary/10 text-primary border-primary/20">
                 <PenLine className="w-3 h-3" />
                 <span className="hidden sm:inline">Buat Catatan</span>
               </Badge>
@@ -261,7 +247,7 @@ export default function CreateNote() {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className="p-4 border-red-500/20 bg-linear-to-br from-red-500/5 to-orange-500/5">
+                <Card className="p-4 border-red-500/20 bg-gradient-to-br from-red-500/5 to-orange-500/5">
                   <div className="flex items-start gap-3">
                     <div className="shrink-0 p-2 bg-red-500/10 rounded-lg border border-red-500/20">
                       <Video className="w-5 h-5 text-red-500" />
@@ -322,13 +308,6 @@ export default function CreateNote() {
                           </p>
                         </div>
                       )}
-
-                      {/* Tag Limit Warning - Compact */}
-                      {isAtTagLimit && (
-                        <div className="p-2 bg-amber-500/10 border border-amber-500/20 rounded-md">
-                          <p className="text-xs text-amber-600">Tag otomatis dinonaktifkan (batas tercapai)</p>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </Card>
@@ -351,11 +330,11 @@ export default function CreateNote() {
           <motion.div variants={cardVariants} transition={{ delay: 0.3 }}>
             <Card className="p-4 border-dashed bg-muted/30">
               <div className="flex items-start gap-2">
-                <Info className="w-4 h-4 text-indigo-300 mt-0.5 shrink-0" />
+                <Info className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                 <div>
                   <h4 className="text-sm font-semibold mb-2">Tips Singkat</h4>
                   <ul className="space-y-1 text-xs text-muted-foreground">
-                    <li>• Gunakan tag untuk organisir catatan</li>
+                    <li>• Gunakan tag untuk organisir catatan (max 5 per catatan)</li>
                     <li>• Aktifkan publik untuk berbagi</li>
                     <li>• Import YouTube untuk hemat waktu</li>
                   </ul>

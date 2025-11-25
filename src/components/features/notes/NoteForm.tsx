@@ -2,6 +2,7 @@
  * NoteForm Component - ENHANCED UI/UX
  * Compact, clean, beautiful with Tiptap editor
  * With Framer Motion animations & mobile responsive
+ * UPDATED: Max 5 tags per note (no tier-based limit)
  */
 
 import { useState, useEffect } from "react";
@@ -17,8 +18,8 @@ import { Badge } from "@/components/ui/badge";
 import { TiptapEditor } from "@/components/features/notes/TiptapEditor";
 import { Save, Plus, Globe, Lock, Loader2, Tag as TagIcon, Type, FileText, X, Check, AlertCircle } from "lucide-react";
 import { createNoteSchema, type CreateNoteFormData } from "@/schemas/notes.schema";
+import { SYSTEM_LIMITS } from "@/config/subscriptionLimits";
 import type { Note } from "@/types/notes.types";
-import { useSubscriptionStore } from "@/store/subscriptionStore";
 import { useAuthStore } from "@/store/authStore";
 
 interface NoteFormProps {
@@ -42,14 +43,12 @@ const tagVariants = {
 
 export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: NoteFormProps) {
   const { user } = useAuthStore();
-  const { usage, fetchUsage } = useSubscriptionStore();
   const [tagInput, setTagInput] = useState("");
-
-  // FIXED: Initialize with note values directly, not empty
   const [tags, setTags] = useState<string[]>(note?.tags || []);
   const [content, setContent] = useState(note?.content || "");
 
   const isEditMode = !!note;
+  const maxTagsPerNote = SYSTEM_LIMITS.maxTagsPerNote;
 
   const {
     register,
@@ -77,13 +76,6 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
   }, [note?.content]);
 
   const isPublic = watch("isPublic");
-
-  // Fetch usage on mount
-  useEffect(() => {
-    if (user?.id) {
-      fetchUsage(user.id);
-    }
-  }, [user?.id]);
 
   // Update form tags when state changes
   useEffect(() => {
@@ -141,9 +133,9 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
       return;
     }
 
-    if (usage && tags.length >= usage.tagsLimit) {
+    if (tags.length >= maxTagsPerNote) {
       toast.error("Batas tag tercapai", {
-        description: `Maksimal ${usage.tagsLimit} tag untuk tier ${usage.tier}`,
+        description: `Maksimal ${maxTagsPerNote} tag per catatan`,
         duration: 5000,
       });
       return;
@@ -181,12 +173,10 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
     }
   });
 
-  const canPublic = usage?.tier !== "free";
-  const tagLimitPercentage = usage ? (tags.length / usage.tagsLimit) * 100 : 0;
+  const canPublic = user?.subscriptionTier !== "free";
+  const tagLimitPercentage = (tags.length / maxTagsPerNote) * 100;
   const isNearLimit = tagLimitPercentage >= 80;
-  const isAtLimit = usage ? tags.length >= usage.tagsLimit : false;
-  const isUserAtTagLimit = usage ? usage.tagsUsed >= usage.tagsLimit : false;
-  const canAddMoreTags = !isUserAtTagLimit || (isEditMode && tags.length > 0);
+  const isAtLimit = tags.length >= maxTagsPerNote;
 
   return (
     <motion.form
@@ -201,7 +191,7 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
           {/* Title Field - Compact */}
           <div className="space-y-2">
             <Label htmlFor="title" className="text-sm flex items-center gap-2">
-              <Type className="w-4 h-4 text-indigo-300" />
+              <Type className="w-4 h-4 text-primary" />
               Judul <span className="text-red-500">*</span>
             </Label>
             <Input
@@ -209,7 +199,7 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
               placeholder="Masukkan judul catatan..."
               {...register("title")}
               disabled={isSubmitting}
-              className="border-muted focus:border-indigo-500/50 transition-colors"
+              className="border-muted focus:border-primary/50 transition-colors"
             />
             {errors.title && (
               <motion.p
@@ -226,10 +216,10 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
           {/* Content Field - Tiptap Editor */}
           <div className="space-y-2">
             <Label htmlFor="content" className="text-sm flex items-center gap-2">
-              <FileText className="w-4 h-4 text-indigo-300" />
+              <FileText className="w-4 h-4 text-primary" />
               Konten <span className="text-red-500">*</span>
             </Label>
-            <div className="border border-muted rounded-lg overflow-hidden focus-within:border-indigo-500/50 transition-colors">
+            <div className="border border-muted rounded-lg overflow-hidden focus-within:border-primary/50 transition-colors">
               <TiptapEditor
                 content={content}
                 onChange={handleContentChange}
@@ -252,118 +242,103 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
           </div>
 
           {/* Tags Field - Compact */}
-          {canAddMoreTags ? (
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="tags" className="text-sm flex items-center gap-2">
-                  <TagIcon className="w-4 h-4 text-indigo-300" />
-                  Tag
-                </Label>
-                {usage && (
-                  <Badge
-                    variant={isAtLimit ? "destructive" : isNearLimit ? "secondary" : "outline"}
-                    className="text-xs gap-1"
-                  >
-                    {tags.length}/{usage.tagsLimit === Infinity ? "∞" : usage.tagsLimit}
-                    {isNearLimit && !isAtLimit && <AlertCircle className="w-3 h-3" />}
-                  </Badge>
-                )}
-              </div>
-
-              {/* Tag Input - Compact */}
-              <div className="flex gap-2">
-                <Input
-                  id="tags"
-                  placeholder="tambah-tag"
-                  value={tagInput}
-                  onChange={(e) => setTagInput(e.target.value)}
-                  onKeyPress={handleTagKeyPress}
-                  disabled={isSubmitting || isAtLimit}
-                  className="border-muted focus:border-indigo-500/50 transition-colors text-sm"
-                />
-                <Button
-                  type="button"
-                  onClick={handleAddTag}
-                  disabled={isSubmitting || isAtLimit || !tagInput.trim()}
-                  variant="secondary"
-                  size="sm"
-                  className="px-3"
-                >
-                  <Plus className="w-4 h-4" />
-                </Button>
-              </div>
-
-              {/* Tag Limit Warnings - Compact */}
-              <AnimatePresence>
-                {isAtLimit && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="p-2 bg-amber-500/10 border border-amber-500/20 rounded-md"
-                  >
-                    <p className="text-xs text-amber-600 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      <strong>Batas tag tercapai!</strong> Maksimal {usage?.tagsLimit} tag.
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Tags List - Animated */}
-              {tags.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
-                  <AnimatePresence>
-                    {tags.map((tag) => (
-                      <motion.div
-                        key={tag}
-                        variants={tagVariants}
-                        initial="initial"
-                        animate="animate"
-                        exit="exit"
-                        transition={{ duration: 0.2 }}
-                      >
-                        <Badge
-                          variant="secondary"
-                          className="gap-1 pl-2 pr-1 bg-indigo-500/10 text-amber-400 border-indigo-500/20 hover:bg-indigo-500/20 transition-colors"
-                        >
-                          #{tag}
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveTag(tag)}
-                            className="ml-1 hover:text-red-500 transition-colors p-0.5 rounded-sm hover:bg-red-500/10"
-                            disabled={isSubmitting}
-                          >
-                            <X className="w-3 h-3" />
-                          </button>
-                        </Badge>
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                </div>
-              )}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="tags" className="text-sm flex items-center gap-2">
+                <TagIcon className="w-4 h-4 text-primary" />
+                Tag
+              </Label>
+              <Badge
+                variant={isAtLimit ? "destructive" : isNearLimit ? "secondary" : "outline"}
+                className="text-xs gap-1"
+              >
+                {tags.length}/{maxTagsPerNote}
+                {isNearLimit && !isAtLimit && <AlertCircle className="w-3 h-3" />}
+              </Badge>
             </div>
-          ) : (
-            // Tag field hidden alert
-            <motion.div
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg"
-            >
-              <p className="text-xs text-amber-600 flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
-                <span>
-                  <strong>Field tag disembunyikan.</strong> Anda sudah mencapai batas {usage?.tagsLimit} tag unik. Hapus
-                  tag yang tidak digunakan atau upgrade ke Premium.
-                </span>
-              </p>
-            </motion.div>
-          )}
+
+            {/* Tag Input - Compact */}
+            <div className="flex gap-2">
+              <Input
+                id="tags"
+                placeholder="tambah-tag"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                onKeyPress={handleTagKeyPress}
+                disabled={isSubmitting || isAtLimit}
+                className="border-muted focus:border-primary/50 transition-colors text-sm"
+              />
+              <Button
+                type="button"
+                onClick={handleAddTag}
+                disabled={isSubmitting || isAtLimit || !tagInput.trim()}
+                variant="secondary"
+                size="sm"
+                className="px-3"
+              >
+                <Plus className="w-4 h-4" />
+              </Button>
+            </div>
+
+            {/* Tag Limit Warnings - Compact */}
+            <AnimatePresence>
+              {isAtLimit && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="p-2 bg-amber-500/10 border border-amber-500/20 rounded-md"
+                >
+                  <p className="text-xs text-amber-600 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" />
+                    <strong>Batas tag tercapai!</strong> Maksimal {maxTagsPerNote} tag per catatan.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Tags List - Animated */}
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                <AnimatePresence>
+                  {tags.map((tag) => (
+                    <motion.div
+                      key={tag}
+                      variants={tagVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Badge
+                        variant="secondary"
+                        className="gap-1 pl-2 pr-1 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 transition-colors"
+                      >
+                        #{tag}
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveTag(tag)}
+                          className="ml-1 hover:text-red-500 transition-colors p-0.5 rounded-sm hover:bg-red-500/10"
+                          disabled={isSubmitting}
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </Badge>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            )}
+
+            <p className="text-xs text-muted-foreground">
+              Maksimal {maxTagsPerNote} tag per catatan. Tag membantu organisir catatan.
+            </p>
+          </div>
 
           {/* Visibility Toggle - Compact */}
           <div className="space-y-2">
             <Label className="text-sm flex items-center gap-2">
-              <Globe className="w-4 h-4 text-indigo-300" />
+              <Globe className="w-4 h-4 text-primary" />
               Visibilitas
             </Label>
             <div className="flex gap-3">
@@ -373,8 +348,8 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
                 whileTap={{ scale: 0.98 }}
                 className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg border cursor-pointer transition-all ${
                   !isPublic
-                    ? "border-indigo-500/50 bg-indigo-500/10 shadow-sm"
-                    : "border-border hover:border-indigo-500/30 hover:bg-muted/50"
+                    ? "border-primary/50 bg-primary/10 shadow-sm"
+                    : "border-border hover:border-primary/30 hover:bg-muted/50"
                 }`}
               >
                 <input
@@ -385,11 +360,9 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
                   disabled={isSubmitting}
                   className="sr-only"
                 />
-                <Lock className={`w-4 h-4 ${!isPublic ? "text-indigo-300" : "text-muted-foreground"}`} />
-                <span className={`text-sm font-medium ${!isPublic ? "text-indigo-300" : "text-foreground"}`}>
-                  Pribadi
-                </span>
-                {!isPublic && <Check className="w-4 h-4 text-indigo-300" />}
+                <Lock className={`w-4 h-4 ${!isPublic ? "text-primary" : "text-muted-foreground"}`} />
+                <span className={`text-sm font-medium ${!isPublic ? "text-primary" : "text-foreground"}`}>Pribadi</span>
+                {!isPublic && <Check className="w-4 h-4 text-primary" />}
               </motion.label>
 
               {/* Public */}
@@ -429,11 +402,7 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
 
           {/* Action Buttons - Compact */}
           <div className="flex gap-2 pt-2">
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white"
-            >
+            <Button type="submit" disabled={isSubmitting} className="flex-1 bg-primary hover:bg-primary/90 text-white">
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />

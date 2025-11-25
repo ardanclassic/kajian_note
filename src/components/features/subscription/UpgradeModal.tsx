@@ -2,6 +2,7 @@
  * UpgradeModal Component - MODERN REDESIGN WITH FRAMER MOTION
  * Beautiful, mobile-friendly upgrade modal with smooth animations
  * FIXED: Mobile responsiveness + close button double issue
+ * UPDATED: Remove tags from features
  */
 
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,7 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { PaymentButton } from "./PaymentButton";
 import { PAYMENT_CONFIG, formatPrice, type SubscriptionTier } from "@/config/payment";
-import { Check, Info, Sparkles, Crown, Star, FileText, X, Zap, Shield, Calendar } from "lucide-react";
+import { Check, Info, Sparkles, Crown, Star, FileText, X, Shield, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface UpgradeModalProps {
@@ -91,18 +92,13 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail }: Upgrade
       enabled: true,
     },
     {
-      icon: Zap,
-      text: features.maxTags === -1 ? "Unlimited tags" : `Maksimal ${features.maxTags} tags`,
-      enabled: true,
-    },
-    {
       icon: Shield,
       text: "Bagikan catatan secara publik",
       enabled: features.publicNotes,
     },
     {
       icon: FileText,
-      text: "Export ke PDF",
+      text: "Export ke PDF & Markdown",
       enabled: features.exportPdf,
     },
     {
@@ -128,7 +124,7 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail }: Upgrade
               className="relative flex flex-col max-h-[100vh]"
             >
               {/* Header with Gradient Background - OPTIMIZED FOR MOBILE */}
-              <div className={`relative overflow-hidden bg-linear-to-br ${config.gradient} p-4 md:p-6 shrink-0`}>
+              <div className={`relative overflow-hidden bg-gradient-to-br ${config.gradient} p-4 md:p-6 shrink-0`}>
                 {/* Animated background pattern */}
                 <div className="absolute inset-0 opacity-20">
                   <div className="absolute inset-0 bg-grid-white/10 mask-[linear-gradient(0deg,transparent,black)]" />
@@ -174,6 +170,7 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail }: Upgrade
                     <div className="inline-flex items-baseline gap-1.5 px-4 md:px-6 py-2 md:py-3 bg-white/20 backdrop-blur-sm rounded-full border-2 border-white/30">
                       <motion.span
                         animate={{ scale: [1, 1.05, 1] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
                         className="text-3xl md:text-4xl font-bold"
                       >
                         {formatPrice(price)}
@@ -274,7 +271,7 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail }: Upgrade
                   <PaymentButton
                     tier={selectedTier}
                     userEmail={userEmail}
-                    className={`w-full h-11 md:h-12 text-sm md:text-base font-semibold shadow-lg bg-linear-to-r ${config.gradient} hover:opacity-90 border-0`}
+                    className={`w-full h-11 md:h-12 text-sm md:text-base font-semibold shadow-lg bg-gradient-to-r ${config.gradient} hover:opacity-90 border-0`}
                   >
                     <Sparkles className="h-4 w-4 md:h-5 md:w-5 mr-2" />
                     Lanjutkan ke Pembayaran

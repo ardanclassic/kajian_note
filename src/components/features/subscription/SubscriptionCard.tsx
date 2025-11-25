@@ -80,13 +80,6 @@ export function SubscriptionCard({
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Check className="h-4 w-4 text-green-500" />
-            <span className="text-sm">
-              {features.maxTags === -1 ? "Unlimited tags" : `Max ${features.maxTags} tags`}
-            </span>
-          </div>
-
           {features.publicNotes && (
             <div className="flex items-center gap-2">
               <Check className="h-4 w-4 text-green-500" />
@@ -97,7 +90,7 @@ export function SubscriptionCard({
           {features.exportPdf && (
             <div className="flex items-center gap-2">
               <Check className="h-4 w-4 text-green-500" />
-              <span className="text-sm">Export PDF</span>
+              <span className="text-sm">Export PDF & Markdown</span>
             </div>
           )}
         </div>

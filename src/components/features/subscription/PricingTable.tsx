@@ -78,13 +78,6 @@ export function PricingTable({ currentTier, onSelectPlan }: PricingTableProps) {
                 </div>
 
                 <div className="flex items-start gap-2">
-                  <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">
-                    {features.maxTags === -1 ? "Unlimited tags" : `Maksimal ${features.maxTags} tags`}
-                  </span>
-                </div>
-
-                <div className="flex items-start gap-2">
                   <Check
                     className={`h-5 w-5 mt-0.5 flex-shrink-0 ${
                       features.publicNotes ? "text-green-500" : "text-gray-300"
@@ -101,7 +94,9 @@ export function PricingTable({ currentTier, onSelectPlan }: PricingTableProps) {
                       features.exportPdf ? "text-green-500" : "text-gray-300"
                     }`}
                   />
-                  <span className={`text-sm ${features.exportPdf ? "" : "text-muted-foreground"}`}>Export PDF</span>
+                  <span className={`text-sm ${features.exportPdf ? "" : "text-muted-foreground"}`}>
+                    Export PDF & Markdown
+                  </span>
                 </div>
               </div>
 
