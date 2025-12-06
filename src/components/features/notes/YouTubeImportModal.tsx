@@ -3,10 +3,11 @@
  * Compact, clean, beautiful modal for YouTube import
  * With smooth animations & mobile responsive
  *
+ * UPDATED: Async task support with AbortController cleanup
  * DEFAULT MODE: AI Summary (useTimestampMode = false)
  */
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Dialog,
@@ -22,7 +23,17 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Loader2, Youtube, Sparkles, FileText, AlertCircle, CheckCircle, Info, Clock } from "lucide-react";
+import {
+  Loader2,
+  Youtube,
+  Sparkles,
+  FileText,
+  AlertCircle,
+  CheckCircle,
+  Info,
+  Clock,
+  AlertTriangle,
+} from "lucide-react";
 import { isValidYouTubeUrl } from "@/utils/youtubeHelpers";
 import { importYouTubeVideo } from "@/services/youtube/transcript.service";
 import { isAISummaryAvailable } from "@/config/youtube";
@@ -52,7 +63,20 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
   const [speaker, setSpeaker] = useState("");
   const [channelName, setChannelName] = useState("");
 
+  // AbortController ref for cleanup
+  const abortControllerRef = useRef<AbortController | null>(null);
+
   const aiAvailable = isAISummaryAvailable();
+
+  // Cleanup on unmount or modal close
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+        abortControllerRef.current = null;
+      }
+    };
+  }, []);
 
   // Handle URL change
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,6 +105,9 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
     setIsLoading(true);
     setError(null);
 
+    // Create new AbortController for this request
+    abortControllerRef.current = new AbortController();
+
     try {
       const referenceInfo: YouTubeReferenceInfo | undefined =
         materialTitle || speaker || channelName
@@ -96,41 +123,60 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
         url: url.trim(),
         useAISummary: !useTimestampMode && aiAvailable, // Invert logic: AI is default
         referenceInfo,
+        signal: abortControllerRef.current.signal, // Pass abort signal
       });
 
       if (result.success) {
         onImportSuccess(result);
-        setUrl("");
-        setUseTimestampMode(false); // Reset to default (AI mode)
-        setMaterialTitle("");
-        setSpeaker("");
-        setChannelName("");
-        setError(null);
-        setUrlError(null);
+        handleReset();
         onOpenChange(false);
       } else {
-        setError(result.error || "Gagal mengimpor video YouTube");
+        // Check if cancelled
+        if (result.error === "Proses dibatalkan") {
+          setError(null); // Don't show error for cancellation
+        } else {
+          setError(result.error || "Gagal mengimpor video YouTube");
+        }
       }
     } catch (err) {
       console.error("Import error:", err);
-      setError(err instanceof Error ? err.message : "Gagal mengimpor video YouTube");
+
+      // Don't show error if aborted
+      if (err instanceof Error && err.message === "Proses dibatalkan") {
+        setError(null);
+      } else {
+        setError(err instanceof Error ? err.message : "Gagal mengimpor video YouTube");
+      }
     } finally {
       setIsLoading(false);
+      abortControllerRef.current = null;
     }
   };
 
   // Handle cancel
   const handleCancel = () => {
+    if (isLoading && abortControllerRef.current) {
+      // Abort ongoing request
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+      setIsLoading(false);
+    }
+
     if (!isLoading) {
-      setUrl("");
-      setUseTimestampMode(false); // Reset to default (AI mode)
-      setMaterialTitle("");
-      setSpeaker("");
-      setChannelName("");
-      setError(null);
-      setUrlError(null);
+      handleReset();
       onOpenChange(false);
     }
+  };
+
+  // Reset form
+  const handleReset = () => {
+    setUrl("");
+    setUseTimestampMode(false); // Reset to default (AI mode)
+    setMaterialTitle("");
+    setSpeaker("");
+    setChannelName("");
+    setError(null);
+    setUrlError(null);
   };
 
   // Custom onOpenChange handler that blocks closing during loading
@@ -319,14 +365,24 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
             )}
           </AnimatePresence>
 
-          {/* Loading Info Alert */}
+          {/* Loading Warning Alert - ENHANCED */}
           <AnimatePresence>
             {isLoading && (
               <motion.div variants={fadeInVariants} initial="initial" animate="animate" exit="exit">
-                <Alert className="border-blue-500/50 bg-blue-500/5">
-                  <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
-                  <AlertDescription className="text-sm text-blue-600">
-                    <strong>Sedang memproses...</strong> Mohon tunggu sebentar.
+                <Alert className="border-yellow-500/50 bg-yellow-500/5">
+                  <AlertTriangle className="w-4 h-4 text-yellow-600" />
+                  <AlertDescription className="text-sm">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="w-4 h-4 animate-spin text-yellow-600" />
+                        <strong className="text-yellow-600">Sedang memproses...</strong>
+                      </div>
+                      <p className="text-xs text-yellow-700">
+                        {useTimestampMode || !aiAvailable
+                          ? "Mengambil transcript..."
+                          : "Meringkas transcript menggunakan AI... Proses ini bisa memakan waktu 1-3 menit. Jangan refresh atau tutup halaman ini! ⚠️"}
+                      </p>
+                    </div>
                   </AlertDescription>
                 </Alert>
               </motion.div>
@@ -339,10 +395,10 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
             type="button"
             variant="outline"
             onClick={handleCancel}
-            disabled={isLoading}
+            disabled={false} // Always enabled to allow cancellation
             className="flex-1 sm:flex-initial"
           >
-            Batal
+            {isLoading ? "Batalkan" : "Batal"}
           </Button>
           <Button
             type="button"

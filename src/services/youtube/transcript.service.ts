@@ -2,7 +2,7 @@
  * YouTube Transcript Service
  * Handles YouTube Transcript API operations
  *
- * UPDATED: Uses dedicated YouTube API axios instance with authentication
+ * UPDATED: Added async task-based summarization with polling
  */
 
 import { AxiosError } from "axios";
@@ -16,6 +16,9 @@ import type {
   TranscriptTextResponse,
   TranscriptSummarizeRequest,
   TranscriptSummarizeResponse,
+  SubmitSummarizeTaskRequest,
+  SubmitSummarizeTaskResponse,
+  PollTaskStatusResponse,
   YouTubeImportOptions,
   YouTubeImportResult,
   YouTubeAPIError,
@@ -29,7 +32,9 @@ const endpoints = {
   urlToId: "/url-to-id",
   transcript: "/transcript",
   transcriptText: "/transcript/text",
-  transcriptSummarize: "/transcript/summarize",
+  transcriptSummarize: "/transcript/summarize", // OLD - Sync
+  transcriptSummarizeTask: "/transcript/summarize-task", // NEW - Async
+  taskStatus: "/tasks", // NEW - Polling endpoint
   health: "/health",
 } as const;
 
@@ -39,6 +44,12 @@ const endpoints = {
 const defaultConfig = {
   languages: "id,en", // Try Indonesian first, then English
   maxTokens: 50000,
+  polling: {
+    interval: 2000, // 2 seconds
+    maxAttempts: 150, // 150 * 2s = 300s = 5 minutes
+    retryDelay: 3000, // Initial retry delay: 3s
+    maxRetries: 3, // Max retry attempts on error
+  },
 };
 
 /**
@@ -100,7 +111,8 @@ export const fetchTranscriptText = async (
 };
 
 /**
- * Fetch transcript with AI summarization
+ * Fetch transcript with AI summarization (OLD - SYNC)
+ * @deprecated Use fetchTranscriptSummaryAsync instead
  */
 export const fetchTranscriptSummary = async (
   videoId: string,
@@ -124,7 +136,156 @@ export const fetchTranscriptSummary = async (
 };
 
 /**
- * Import YouTube video and prepare note data
+ * ========================================
+ * ASYNC TASK FUNCTIONS (NEW)
+ * ========================================
+ */
+
+/**
+ * Submit summarize task (NEW - ASYNC)
+ * Returns task_id for polling
+ */
+export const submitSummarizeTask = async (
+  videoId: string,
+  languages: string = defaultConfig.languages,
+  model: string = env.openRouter.defaultModel,
+  maxTokens: number = defaultConfig.maxTokens
+): Promise<SubmitSummarizeTaskResponse> => {
+  try {
+    const response = await youtubeAPI.post<SubmitSummarizeTaskResponse>(endpoints.transcriptSummarizeTask, {
+      video_id: videoId,
+      languages,
+      model,
+      max_tokens: maxTokens,
+    } as SubmitSummarizeTaskRequest);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error submitting summarize task:", error);
+    throw handleAPIError(error);
+  }
+};
+
+/**
+ * Poll task status (NEW - ASYNC)
+ * Check if task is completed
+ */
+export const pollTaskStatus = async (taskId: string, signal?: AbortSignal): Promise<PollTaskStatusResponse> => {
+  try {
+    const response = await youtubeAPI.get<PollTaskStatusResponse>(`${endpoints.taskStatus}/${taskId}`, {
+      signal,
+    });
+
+    return response.data;
+  } catch (error) {
+    // Don't log if request was aborted
+    if (signal?.aborted) {
+      throw new Error("Request aborted");
+    }
+    console.error("Error polling task status:", error);
+    throw handleAPIError(error);
+  }
+};
+
+/**
+ * Poll task with retry and exponential backoff (NEW - ASYNC)
+ * Polls until completed/failed or timeout
+ */
+const pollWithRetry = async (
+  taskId: string,
+  signal?: AbortSignal,
+  onProgress?: (attempt: number, maxAttempts: number) => void
+): Promise<TranscriptSummarizeResponse> => {
+  let attempts = 0;
+  let retryCount = 0;
+
+  while (attempts < defaultConfig.polling.maxAttempts) {
+    // Check if aborted
+    if (signal?.aborted) {
+      throw new Error("Proses dibatalkan");
+    }
+
+    try {
+      attempts++;
+
+      // Call progress callback if provided
+      if (onProgress) {
+        onProgress(attempts, defaultConfig.polling.maxAttempts);
+      }
+
+      const status = await pollTaskStatus(taskId, signal);
+
+      if (status.status === "completed") {
+        if (!status.result) {
+          throw new Error("Hasil summary tidak ditemukan");
+        }
+        return status.result;
+      }
+
+      if (status.status === "failed") {
+        throw new Error(status.error || "Task gagal diproses");
+      }
+
+      // Reset retry count on successful poll
+      retryCount = 0;
+
+      // Wait before next poll
+      await sleep(defaultConfig.polling.interval, signal);
+    } catch (error) {
+      // If aborted, throw immediately
+      if (signal?.aborted || (error instanceof Error && error.message === "Proses dibatalkan")) {
+        throw error;
+      }
+
+      // Retry with exponential backoff
+      retryCount++;
+      if (retryCount >= defaultConfig.polling.maxRetries) {
+        throw new Error("Gagal mengecek status task setelah beberapa kali percobaan");
+      }
+
+      const backoffDelay = defaultConfig.polling.retryDelay * Math.pow(2, retryCount - 1);
+      console.warn(`Retry attempt ${retryCount}/${defaultConfig.polling.maxRetries} after ${backoffDelay}ms`);
+      await sleep(backoffDelay, signal);
+    }
+  }
+
+  throw new Error("Timeout: Proses summarisasi memakan waktu terlalu lama (>5 menit)");
+};
+
+/**
+ * Fetch transcript with AI summarization (NEW - ASYNC)
+ * Complete flow: submit task → poll → return result
+ */
+export const fetchTranscriptSummaryAsync = async (
+  videoId: string,
+  languages: string = defaultConfig.languages,
+  model: string = env.openRouter.defaultModel,
+  maxTokens: number = defaultConfig.maxTokens,
+  signal?: AbortSignal,
+  onProgress?: (attempt: number, maxAttempts: number) => void
+): Promise<TranscriptSummarizeResponse> => {
+  try {
+    // Step 1: Submit task
+    const taskResponse = await submitSummarizeTask(videoId, languages, model, maxTokens);
+
+    // Step 2: Poll until completed/failed
+    const result = await pollWithRetry(taskResponse.task_id, signal, onProgress);
+
+    return result;
+  } catch (error) {
+    console.error("Error fetching transcript summary (async):", error);
+    throw error instanceof Error ? error : handleAPIError(error);
+  }
+};
+
+/**
+ * ========================================
+ * END ASYNC TASK FUNCTIONS
+ * ========================================
+ */
+
+/**
+ * Import YouTube video and prepare note data (UPDATED - Uses async flow)
  */
 export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise<YouTubeImportResult> => {
   try {
@@ -134,8 +295,14 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
 
     // Step 2: Fetch transcript (with or without AI summary)
     if (options.useAISummary) {
-      // Use AI summarization
-      const summaryData = await fetchTranscriptSummary(videoId, options.languages, options.model);
+      // Use AI summarization (ASYNC)
+      const summaryData = await fetchTranscriptSummaryAsync(
+        videoId,
+        options.languages,
+        options.model,
+        undefined,
+        options.signal
+      );
 
       // Generate title from video URL or first part of summary
       const title = generateTitle(summaryData.summary, videoUrl);
@@ -191,6 +358,29 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
     }
   } catch (error) {
     console.error("Error importing YouTube video:", error);
+
+    // Check if error is abort
+    if (error instanceof Error && error.message === "Proses dibatalkan") {
+      return {
+        success: false,
+        videoId: "",
+        videoUrl: options.url,
+        title: "",
+        content: "",
+        language: "",
+        referenceInfo: options.referenceInfo,
+        metadata: {
+          source_type: "youtube",
+          source_url: options.url,
+          video_id: "",
+          language_used: "",
+          total_segments: 0,
+          has_ai_summary: false,
+          imported_at: new Date().toISOString(),
+        },
+        error: "Proses dibatalkan",
+      };
+    }
 
     return {
       success: false,
@@ -270,4 +460,26 @@ const handleAPIError = (error: unknown): Error => {
 
   // Generic error
   return new Error("Terjadi kesalahan tidak diketahui");
+};
+
+/**
+ * Sleep utility with abort signal support
+ */
+const sleep = (ms: number, signal?: AbortSignal): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) {
+      reject(new Error("Proses dibatalkan"));
+      return;
+    }
+
+    const timeout = setTimeout(resolve, ms);
+
+    // Listen for abort
+    if (signal) {
+      signal.addEventListener("abort", () => {
+        clearTimeout(timeout);
+        reject(new Error("Proses dibatalkan"));
+      });
+    }
+  });
 };

@@ -65,7 +65,7 @@ export interface TranscriptTextResponse {
 }
 
 /**
- * Transcript Summarize Request
+ * Transcript Summarize Request (SYNC - OLD)
  */
 export interface TranscriptSummarizeRequest {
   video_id: string;
@@ -75,7 +75,7 @@ export interface TranscriptSummarizeRequest {
 }
 
 /**
- * Transcript Summarize Response
+ * Transcript Summarize Response (SYNC - OLD)
  */
 export interface TranscriptSummarizeResponse {
   video_id: string;
@@ -87,7 +87,53 @@ export interface TranscriptSummarizeResponse {
 }
 
 /**
- * YouTube Reference Info (NEW - Optional fields for source citation)
+ * ========================================
+ * ASYNC TASK TYPES (NEW)
+ * ========================================
+ */
+
+/**
+ * Task Status
+ */
+export type TaskStatus = "pending" | "processing" | "completed" | "failed";
+
+/**
+ * Submit Summarize Task Request (ASYNC)
+ */
+export interface SubmitSummarizeTaskRequest {
+  video_id: string;
+  languages?: string;
+  model?: string;
+  max_tokens?: number;
+}
+
+/**
+ * Submit Summarize Task Response (ASYNC)
+ */
+export interface SubmitSummarizeTaskResponse {
+  task_id: string;
+  status: TaskStatus;
+  message: string;
+}
+
+/**
+ * Poll Task Status Response (ASYNC)
+ */
+export interface PollTaskStatusResponse {
+  task_id: string;
+  status: TaskStatus;
+  result?: TranscriptSummarizeResponse; // Available when status is "completed"
+  error?: string; // Available when status is "failed"
+}
+
+/**
+ * ========================================
+ * END ASYNC TASK TYPES
+ * ========================================
+ */
+
+/**
+ * YouTube Reference Info (Optional fields for source citation)
  */
 export interface YouTubeReferenceInfo {
   materialTitle?: string; // Judul materi
@@ -104,8 +150,10 @@ export interface YouTubeImportOptions {
   useAISummary: boolean;
   languages?: string;
   model?: string;
-  // NEW: Optional reference info
+  // Optional reference info
   referenceInfo?: YouTubeReferenceInfo;
+  // Optional abort signal for cancellation
+  signal?: AbortSignal;
 }
 
 /**
@@ -129,7 +177,7 @@ export interface YouTubeImportResult {
     model_used?: string;
     imported_at: string;
   };
-  // NEW: Reference info for citation
+  // Reference info for citation
   referenceInfo?: YouTubeReferenceInfo;
   error?: string;
 }

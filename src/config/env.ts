@@ -102,8 +102,10 @@ export const env: EnvConfig = {
   },
 
   youtube: {
-    apiUrl: getEnvVar("VITE_YOUTUBE_API_URL", false) || "https://kajian-note-api.derrylab.com",
-    apiHeaderKey: getEnvVar("VITE_API_HEADER_KEY", false) || "",
+    // apiUrl: getEnvVar("VITE_YOUTUBE_API_URL", false) || "https://kajian-note-api.derrylab.com",
+    // apiHeaderKey: getEnvVar("VITE_API_HEADER_KEY", false) || "",
+    apiUrl: "https://kajian-note-api.derrylab.com",
+    apiHeaderKey: "Bearer kullubid'atindholaalah",
   },
 
   openRouter: {
