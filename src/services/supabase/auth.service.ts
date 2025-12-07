@@ -104,6 +104,8 @@ export const register = async (data: RegisterData): Promise<RegisterResponse> =>
         createdAt: userProfile.created_at,
         updatedAt: userProfile.updated_at,
         lastLoginAt: userProfile.last_login_at,
+        telegramChatId: userProfile.telegram_chat_id,
+        telegramVerifiedAt: userProfile.telegram_verified_at,
       },
       session: authData.session!,
     };
@@ -184,6 +186,8 @@ export const login = async (credentials: LoginCredentials): Promise<LoginRespons
         createdAt: userProfile.created_at,
         updatedAt: userProfile.updated_at,
         lastLoginAt: new Date().toISOString(),
+        telegramChatId: userProfile.telegram_chat_id,
+        telegramVerifiedAt: userProfile.telegram_verified_at,
       },
       session: authData.session,
     };
@@ -263,6 +267,8 @@ export const getCurrentUserProfile = async (): Promise<UserProfile | null> => {
       createdAt: profile.created_at,
       updatedAt: profile.updated_at,
       lastLoginAt: profile.last_login_at,
+      telegramChatId: profile.telegram_chat_id,
+      telegramVerifiedAt: profile.telegram_verified_at,
     };
   } catch (error: any) {
     console.error("Get current user error:", error);

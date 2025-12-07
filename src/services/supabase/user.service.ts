@@ -31,7 +31,7 @@ const mapDbUserToUser = (dbUser: any): User => {
     username: dbUser.username,
     fullName: dbUser.full_name,
     phone: dbUser.phone,
-    paymentEmail: dbUser.payment_email, // NEW: Map payment_email from database
+    paymentEmail: dbUser.payment_email,
     role: dbUser.role,
     subscriptionTier: dbUser.subscription_tier,
     subscriptionStatus: dbUser.subscription_status,
@@ -50,6 +50,8 @@ const mapDbUserToUser = (dbUser: any): User => {
     createdAt: dbUser.created_at,
     updatedAt: dbUser.updated_at,
     lastLoginAt: dbUser.last_login_at,
+    telegramChatId: dbUser.telegram_chat_id,
+    telegramVerifiedAt: dbUser.telegram_verified_at,
   };
 };
 

@@ -16,7 +16,7 @@ export interface User {
   username: string;
   fullName: string;
   phone: string | null;
-  paymentEmail: string | null; // NEW: Email for Lynk.id payment matching
+  paymentEmail: string | null; // Email for Lynk.id payment matching
   role: UserRole;
   subscriptionTier: SubscriptionTier;
   subscriptionStatus: "active" | "expired" | "cancelled";
@@ -35,6 +35,9 @@ export interface User {
   createdAt: string;
   updatedAt: string;
   lastLoginAt: string | null;
+  // NEW: Telegram fields
+  telegramChatId: string | null;
+  telegramVerifiedAt: string | null;
 }
 
 /**
@@ -58,9 +61,11 @@ export interface UserSummary {
 export interface UpdateProfileData {
   fullName?: string;
   phone?: string;
-  paymentEmail?: string; // NEW: Allow updating payment email
+  paymentEmail?: string;
   bio?: string;
   avatarUrl?: string;
+  // NEW: Allow updating telegram chat_id (for verification)
+  telegramChatId?: string;
   resolver?: any;
 }
 
@@ -71,11 +76,14 @@ export interface UpdateUserData {
   fullName?: string;
   username?: string;
   phone?: string;
-  paymentEmail?: string; // NEW: Admin can update payment email
+  paymentEmail?: string;
   role?: UserRole;
   bio?: string;
   avatarUrl?: string;
   isActive?: boolean;
+  // NEW: Admin can reset Telegram verification
+  telegramChatId?: string | null;
+  telegramVerifiedAt?: string | null;
 }
 
 /**
@@ -86,7 +94,7 @@ export interface CreateUserData {
   username: string;
   pin: string;
   phone?: string;
-  paymentEmail?: string; // NEW: Optional payment email on creation
+  paymentEmail?: string;
   role?: UserRole;
   bio?: string;
 }

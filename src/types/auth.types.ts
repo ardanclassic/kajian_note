@@ -72,6 +72,8 @@ export interface UserProfile {
   updatedAt: string;
   lastLoginAt: string | null;
   paymentEmail: any;
+  telegramChatId: string | null;
+  telegramVerifiedAt: string | null;
 }
 
 /**

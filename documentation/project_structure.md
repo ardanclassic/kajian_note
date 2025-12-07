@@ -73,11 +73,14 @@ kajian_note/
 │   │   │   │   └── 📄 DashboardCard.tsx
 │   │   │   │
 │   │   │   ├── 📁 notes/
+│   │   │   │   ├── 📄 ExportActionsDropdown.tsx
 │   │   │   │   ├── 📄 NoteCard.tsx
 │   │   │   │   ├── 📄 NoteForm.tsx
 │   │   │   │   ├── 📄 NoteList.tsx
 │   │   │   │   ├── 📄 NoteSearch.tsx
 │   │   │   │   ├── 📄 NoteViewer.tsx
+│   │   │   │   ├── 📄 SendToTelegramButton.tsx
+│   │   │   │   ├── 📄 SendToWhatsAppButton.tsx
 │   │   │   │   ├── 📄 SubscriptionLimitBanner.tsx
 │   │   │   │   ├── 📄 TiptapEditor.tsx
 │   │   │   │   ├── 📄 YouTubeImportButton.tsx
@@ -118,6 +121,8 @@ kajian_note/
 │   ├── 📁 lib/
 │   │   ├── 📄 axios.ts
 │   │   ├── 📄 constants.ts
+│   │   ├── 📄 imagekit.ts
+│   │   ├── 📄 imagekitDelete.ts
 │   │   ├── 📄 supabase.ts
 │   │   └── 📄 utils.ts
 │   │
@@ -154,6 +159,8 @@ kajian_note/
 │   │   └── 📄 user.schema.ts
 │   │
 │   ├── 📁 services/
+│   │   └── 📁 storage/
+│   │       └── 📄 imagekitStorage.ts
 │   │   ├── 📁 supabase/
 │   │   │   ├── 📄 auth.service.ts
 │   │   │   ├── 📄 database.service.ts
@@ -179,15 +186,16 @@ kajian_note/
 │   │   ├── 📄 notes.types.ts
 │   │   ├── 📄 payment.types.ts
 │   │   ├── 📄 subscription.types.ts
-│   │   ├── 📄 supabase.types.ts
 │   │   ├── 📄 user.types.ts
 │   │   └── 📄 youtube.types.ts
 │   │
 │   ├── 📁 utils/
 │   │   ├── 📄 exportUtils.ts
 │   │   ├── 📄 paymentMatching.ts
+│   │   ├── 📄 pdfGenerator.ts
 │   │   ├── 📄 subscriptionLimits.ts
 │   │   ├── 📄 textToHtml.ts
+│   │   ├── 📄 whatsappHelper.ts
 │   │   └── 📄 youtubeHelpers.ts
 │   │
 │   ├── 📄 App.tsx
@@ -197,9 +205,6 @@ kajian_note/
 │   └── 📁 functions/
 │       └── 📁 lynk-webhook/
 │           └── 📄 index.ts
-│
-├── 📁 migrations/                                   
-│   └── 📄 add_youtube_source_fields.sql
 │
 ├── 📄 .env
 ├── 📄 .env.example

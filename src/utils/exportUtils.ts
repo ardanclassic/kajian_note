@@ -13,7 +13,7 @@ export interface Note {
   content: string;
   tags: string[];
   sourceType?: string;
-  sourceUrl?: string;
+  sourceUrl?: string | null | undefined;
   isPublic: boolean;
   createdAt: string;
   updatedAt: string;

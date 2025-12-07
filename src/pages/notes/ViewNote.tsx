@@ -1,33 +1,21 @@
 /**
- * ViewNote Page - UPDATED FOR NATIVE PRINT
+ * ViewNote Page - UPDATED WITH EXPORT ACTIONS DROPDOWN
  * Uses native browser print API for PDF export
+ * Added Telegram & WhatsApp send features
  */
 
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { NoteViewer } from "@/components/features/notes/NoteViewer";
+import { ExportActionsDropdown } from "@/components/features/notes/ExportActionsDropdown";
 import { useAuthStore } from "@/store/authStore";
 import { useNotesStore } from "@/store/notesStore";
-import {
-  BookOpen,
-  Loader2,
-  AlertCircle,
-  ArrowLeft,
-  Edit,
-  Trash2,
-  Share2,
-  Download,
-  FileText,
-  FileDown,
-  MoreVertical,
-  ChevronDown,
-} from "lucide-react";
+import { BookOpen, Loader2, AlertCircle, ArrowLeft, Edit, Trash2, Share2, MoreVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { exportNoteToPDF, exportNoteToMarkdown } from "@/utils/exportUtils";
 
 export default function ViewNote() {
   const { id } = useParams<{ id: string }>();
@@ -37,8 +25,6 @@ export default function ViewNote() {
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [showActions, setShowActions] = useState(false);
-  const [showExportMenu, setShowExportMenu] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
 
   // Fetch note on mount
   useEffect(() => {
@@ -58,9 +44,6 @@ export default function ViewNote() {
   const isAdmin = user?.role === "admin";
   const canEdit = isOwner;
   const canDelete = isOwner || isAdmin || isPanitia;
-
-  // Check if user can export (Premium or Advance only)
-  const canExport = user?.subscriptionTier === "premium" || user?.subscriptionTier === "advance";
 
   // Handle back
   const handleBack = () => {
@@ -102,53 +85,6 @@ export default function ViewNote() {
     toast.success("Link berhasil disalin!", {
       description: "Link catatan telah disalin ke clipboard",
     });
-  };
-
-  // Export to PDF (Native Print)
-  const handleExportPDF = async () => {
-    if (!currentNote) return;
-
-    setIsExporting(true);
-    toast.info("Membuka dialog cetak...", {
-      description: "Pilih 'Save as PDF' untuk menyimpan",
-    });
-
-    try {
-      await exportNoteToPDF(currentNote);
-      // Note: No success toast here because print dialog is modal
-      // User feedback comes from the print dialog itself
-    } catch (error) {
-      console.error("Export PDF error:", error);
-      toast.error("Gagal membuka dialog cetak", {
-        description: "Terjadi kesalahan",
-      });
-    } finally {
-      setIsExporting(false);
-      setShowExportMenu(false);
-    }
-  };
-
-  // Export to Markdown
-  const handleExportMarkdown = () => {
-    if (!currentNote) return;
-
-    setIsExporting(true);
-    toast.loading("Membuat Markdown...");
-
-    try {
-      exportNoteToMarkdown(currentNote);
-      toast.dismiss();
-      toast.success("Markdown berhasil diunduh!");
-    } catch (error) {
-      console.error("Export Markdown error:", error);
-      toast.dismiss();
-      toast.error("Gagal export Markdown", {
-        description: "Terjadi kesalahan saat membuat file",
-      });
-    } finally {
-      setIsExporting(false);
-      setShowExportMenu(false);
-    }
   };
 
   // Loading state
@@ -233,55 +169,8 @@ export default function ViewNote() {
                 </Button>
               )}
 
-              {/* Export Button - Only for Premium/Advance */}
-              {canExport && (
-                <div className="relative">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowExportMenu(!showExportMenu)}
-                    className="gap-2"
-                    disabled={isExporting}
-                  >
-                    <Download className="w-4 h-4" />
-                    <span className="hidden sm:inline">Export</span>
-                    <ChevronDown className="w-3 h-3" />
-                  </Button>
-
-                  {/* Export Dropdown */}
-                  <AnimatePresence>
-                    {showExportMenu && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="absolute right-0 mt-2 w-48 bg-background border rounded-lg shadow-lg overflow-hidden z-50"
-                      >
-                        <button
-                          onClick={handleExportPDF}
-                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left"
-                        >
-                          <FileText className="w-4 h-4" />
-                          <div>
-                            <div className="font-medium text-sm">Export PDF</div>
-                            <div className="text-xs text-muted-foreground">Via print dialog</div>
-                          </div>
-                        </button>
-                        <button
-                          onClick={handleExportMarkdown}
-                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t"
-                        >
-                          <FileDown className="w-4 h-4" />
-                          <div>
-                            <div className="font-medium text-sm">Export Markdown</div>
-                            <div className="text-xs text-muted-foreground">Unduh sebagai .md</div>
-                          </div>
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )}
+              {/* Export Actions Dropdown - NEW */}
+              <ExportActionsDropdown note={currentNote} />
 
               {/* Edit Button (owner only) */}
               {canEdit && (

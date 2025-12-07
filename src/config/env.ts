@@ -41,6 +41,23 @@ interface EnvConfig {
     apiKey: string;
     defaultModel: string;
   };
+
+  // Telegram Bot
+  telegram: {
+    botToken: string;
+  };
+
+  // PDF Generator
+  pdf: {
+    api2pdfKey: string;
+  };
+
+  // ImageKit (Storage CDN)
+  imagekit: {
+    publicKey: string;
+    privateKey: string;
+    urlEndpoint: string;
+  };
 }
 
 /**
@@ -102,8 +119,6 @@ export const env: EnvConfig = {
   },
 
   youtube: {
-    // apiUrl: getEnvVar("VITE_YOUTUBE_API_URL", false) || "https://kajian-note-api.derrylab.com",
-    // apiHeaderKey: getEnvVar("VITE_API_HEADER_KEY", false) || "",
     apiUrl: "https://kajian-note-api.derrylab.com",
     apiHeaderKey: "Bearer kullubid'atindholaalah",
   },
@@ -111,6 +126,23 @@ export const env: EnvConfig = {
   openRouter: {
     apiKey: getEnvVar("VITE_OPENROUTER_API_KEY", false) || "",
     defaultModel: getEnvVar("VITE_OPENROUTER_DEFAULT_MODEL", false) || "qwen/qwen3-8b",
+  },
+
+  // NEW: Telegram Bot Configuration
+  telegram: {
+    botToken: getEnvVar("VITE_TELEGRAM_BOT_TOKEN", false) || "",
+  },
+
+  // NEW: PDF Generator Configuration
+  pdf: {
+    api2pdfKey: getEnvVar("VITE_API2PDF_API_KEY", false) || "",
+  },
+
+  // NEW: ImageKit Configuration
+  imagekit: {
+    publicKey: getEnvVar("VITE_IMAGEKIT_PUBLIC_KEY", false) || "",
+    privateKey: getEnvVar("VITE_IMAGEKIT_PRIVATE_KEY", false) || "",
+    urlEndpoint: getEnvVar("VITE_IMAGEKIT_URL_ENDPOINT", false) || "",
   },
 };
 
@@ -128,3 +160,31 @@ export const isProd = env.app.env === "production";
  * Check if running in test mode
  */
 export const isTest = env.app.env === "test";
+
+/**
+ * Check if Telegram bot is configured
+ */
+export const isTelegramConfigured = (): boolean => {
+  return env.telegram.botToken !== "";
+};
+
+/**
+ * Check if PDF generation is configured
+ */
+export const isPDFGeneratorConfigured = (): boolean => {
+  return env.pdf.api2pdfKey !== "";
+};
+
+/**
+ * Check if ImageKit is configured
+ */
+export const isImageKitConfigured = (): boolean => {
+  return env.imagekit.publicKey !== "" && env.imagekit.privateKey !== "" && env.imagekit.urlEndpoint !== "";
+};
+
+/**
+ * Check if send to Telegram/WhatsApp features are available
+ */
+export const isSendPDFAvailable = (): boolean => {
+  return isTelegramConfigured() && isPDFGeneratorConfigured() && isImageKitConfigured();
+};

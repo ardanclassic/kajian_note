@@ -36,7 +36,7 @@ export interface Note {
   updatedAt: string;
   // YouTube source fields
   sourceType: NoteSourceType;
-  sourceUrl?: string | null;
+  sourceUrl?: string | null | undefined;
   sourceMetadata?: NoteSourceMetadata | null;
 }
 
