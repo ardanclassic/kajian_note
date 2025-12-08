@@ -243,7 +243,7 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail }: Upgrade
                   <Alert className="border-2 border-blue-500/20 bg-blue-500/5">
                     <div className="flex gap-2.5">
                       <div className="p-1.5 md:p-2 bg-blue-500/10 rounded-lg shrink-0">
-                        <Info className="h-3.5 w-3.5 md:h-4 md:w-4 text-blue-600" />
+                        <Info className="h-3.5 w-3.5 md:h-4 md:w-4 text-blue-300" />
                       </div>
                       <AlertDescription className="w-full text-sm space-y-1">
                         <div className="font-semibold text-foreground">Penting untuk Diperhatikan</div>

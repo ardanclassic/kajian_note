@@ -214,9 +214,9 @@ export default function EditProfileForm() {
               // Unverified State - Instructions
               <div className="space-y-4">
                 <Alert className="border-blue-500/50 bg-blue-500/10">
-                  <AlertCircle className="w-4 h-4 text-blue-600" />
+                  <AlertCircle className="w-4 h-4 text-blue-300" />
                   <AlertDescription className="text-sm">
-                    <strong className="text-blue-600">
+                    <strong className="text-blue-300">
                       Verifikasi Telegram untuk menggunakan fitur Send to Telegram
                     </strong>
                     <p className="mt-1 text-muted-foreground">

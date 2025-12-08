@@ -92,14 +92,14 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute right-0 mt-2 w-64 bg-background border rounded-lg shadow-lg overflow-hidden z-50"
+            className="absolute -right-[90%] md:right-0 mt-2 w-64 bg-background/80 rounded-lg shadow-lg overflow-hidden z-50"
           >
             {/* Export PDF (Native) */}
             <button
               onClick={handleExportPDF}
-              className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left"
+              className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left mb-1"
             >
-              <FileText className="w-4 h-4 text-blue-500" />
+              <FileText className="w-4 h-4 text-yellow-500" />
               <div className="flex-1">
                 <div className="font-medium text-sm">Export PDF</div>
                 <div className="text-xs text-muted-foreground">Via print dialog</div>
@@ -109,24 +109,21 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
             {/* Export Markdown */}
             <button
               onClick={handleExportMarkdown}
-              className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t"
+              className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t mb-1"
             >
-              <FileDown className="w-4 h-4 text-green-500" />
+              <FileDown className="w-4 h-4 text-fuchsia-500" />
               <div className="flex-1">
                 <div className="font-medium text-sm">Export Markdown</div>
                 <div className="text-xs text-muted-foreground">Download sebagai .md</div>
               </div>
             </button>
 
-            {/* Divider */}
-            <div className="border-t my-1" />
-
             {/* Send to Telegram */}
             {sendPDFConfigured ? (
               canExport ? (
                 <button
                   onClick={handleTelegramClick}
-                  className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left"
+                  className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left mb-1"
                 >
                   <Send className="w-4 h-4 text-blue-400" />
                   <div className="flex-1">
@@ -153,7 +150,7 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
               canExport ? (
                 <button
                   onClick={handleWhatsAppClick}
-                  className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t"
+                  className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t mb-1"
                 >
                   <MessageCircle className="w-4 h-4 text-green-500" />
                   <div className="flex-1">
@@ -196,20 +193,15 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute right-0 mt-2 w-80 z-50"
+            className="absolute -right-full md:right-0 mt-2 w-80 z-50"
           >
-            <div className="bg-background border rounded-lg shadow-lg p-4">
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="font-semibold text-sm">Send to Telegram</h4>
-                <Button variant="ghost" size="sm" onClick={() => setShowTelegramButton(false)} className="h-6 w-6 p-0">
-                  ×
-                </Button>
-              </div>
+            <div className="bg-background rounded-lg shadow-lg p-4">
               <SendToTelegramButton
                 note={note}
                 variant="default"
                 size="sm"
                 className="w-full"
+                onExit={() => setShowTelegramButton(false)}
                 onSuccess={() => {
                   setTimeout(() => setShowTelegramButton(false), 3000);
                 }}
@@ -226,20 +218,15 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute right-0 mt-2 w-80 z-50"
+            className="absolute -right-full md:right-0 mt-2 w-80 z-50"
           >
-            <div className="bg-background border rounded-lg shadow-lg p-4">
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="font-semibold text-sm">Send to WhatsApp</h4>
-                <Button variant="ghost" size="sm" onClick={() => setShowWhatsAppButton(false)} className="h-6 w-6 p-0">
-                  ×
-                </Button>
-              </div>
+            <div className="bg-background rounded-lg shadow-lg p-4">
               <SendToWhatsAppButton
                 note={note}
                 variant="default"
                 size="sm"
                 className="w-full"
+                onExit={() => setShowWhatsAppButton(false)}
                 onSuccess={() => {
                   setTimeout(() => setShowWhatsAppButton(false), 5000);
                 }}

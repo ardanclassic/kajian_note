@@ -108,7 +108,7 @@ export default function APITest() {
       return (
         <Alert className="bg-blue-500/10 border-blue-500/20">
           <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
-          <AlertDescription className="text-sm text-blue-600">Testing endpoint...</AlertDescription>
+          <AlertDescription className="text-sm text-blue-300">Testing endpoint...</AlertDescription>
         </Alert>
       );
     }

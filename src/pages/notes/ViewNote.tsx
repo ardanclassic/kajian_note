@@ -248,8 +248,8 @@ export default function ViewNote() {
       {/* Main Content - PRINTABLE */}
       <div className="container mx-auto px-4 py-8 max-w-4xl print:px-0 print:py-0 print:max-w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <Card className="printable-content border-none md:border-2 p-0 overflow-hidden print:!border-none print:!shadow-none print:!bg-white">
-            <div className="p-0 md:p-8 lg:p-12 bg-background print:!bg-white print:!p-0 print:!border-none">
+          <Card className="printable-content border-none md:border-2 p-0 overflow-hidden print:border-none! print:shadow-none! print:bg-white!">
+            <div className="p-0 md:p-8 lg:p-12 bg-background print:bg-white! print:p-0! print:border-none!">
               <NoteViewer
                 note={currentNote}
                 showMetadata={true}

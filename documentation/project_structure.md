@@ -201,11 +201,6 @@ kajian_note/
 │   ├── 📄 App.tsx
 │   └── 📄 main.tsx
 │
-├── 📁 supabase/
-│   └── 📁 functions/
-│       └── 📁 lynk-webhook/
-│           └── 📄 index.ts
-│
 ├── 📄 .env
 ├── 📄 .env.example
 ├── 📄 .gitignore

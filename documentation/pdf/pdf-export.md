@@ -131,7 +131,7 @@ const { handlePrint, isPrinting } = usePrint();
   px-8 bg-gray-50 shadow-xl rounded-xl
   print:px-0 print:bg-white print:shadow-none print:rounded-none
 ">
-  <h1 className="text-4xl text-blue-600 print:text-2xl print:text-black">
+  <h1 className="text-4xl text-blue-300 print:text-2xl print:text-black">
     Title
   </h1>
 </article>
