@@ -8,7 +8,7 @@ import { useState } from "react";
 import { MessageCircle, Loader2, AlertCircle, CheckCircle2, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ConfirmDialog } from "@/components/common/confirmDialog";
+import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { useAuthStore } from "@/store/authStore";
 import { uploadNotePDFWithRetry } from "@/services/storage/imagekitStorage";
 import { isValidPhoneNumber, getExpiryTimeText } from "@/utils/whatsappHelper";

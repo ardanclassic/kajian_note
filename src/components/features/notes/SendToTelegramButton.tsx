@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Send, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ConfirmDialog } from "@/components/common/confirmDialog";
+import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { useAuthStore } from "@/store/authStore";
 import { uploadNotePDFWithRetry } from "@/services/storage/imagekitStorage";
 import type { Note } from "@/types/notes.types";

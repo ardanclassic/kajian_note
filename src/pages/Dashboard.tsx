@@ -11,7 +11,7 @@ import { useAuthStore } from "@/store/authStore";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
 import { useNotesStore } from "@/store/notesStore";
 import { MobileMenu } from "@/components/features/dashboard/MobileMenu";
-import { ConfirmDialog } from "@/components/common/confirmDialog";
+import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/common/Loading";

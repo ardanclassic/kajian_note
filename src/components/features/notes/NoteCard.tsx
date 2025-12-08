@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ConfirmDialog } from "@/components/common/confirmDialog";
+import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { Pin, Trash2, Edit, Calendar, Lock, Globe, Eye } from "lucide-react";
 import type { NoteSummary } from "@/types/notes.types";
 import { formatDistanceToNow } from "date-fns";
