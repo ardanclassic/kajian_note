@@ -1,0 +1,173 @@
+/* ============================================
+   ARABIC FONT IMPORTS - ALL ENABLED
+   ============================================ */
+
+/* OPTION 1: Amiri - Traditional Naskh (Paling Populer untuk Teks Klasik) */
+@import url("https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap");
+
+/* OPTION 2: Cairo - Modern Sans-Serif (Populer untuk Web & App) */
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap");
+
+/* OPTION 3: Tajawal - Modern & Clean (Digunakan banyak startup Arab) */
+@import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap");
+
+/* OPTION 4: Almarai - Geometric Modern (Populer untuk branding) */
+@import url("https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&display=swap");
+
+/* OPTION 5: IBM Plex Sans Arabic - Corporate & Professional */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap");
+
+/* OPTION 6: Noto Naskh Arabic - Traditional Serif */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap");
+
+/* OPTION 7: Scheherazade New - Classical Naskh */
+@import url("https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap");
+
+/* OPTION 8: Lateef - Sindhi Naskh Style */
+@import url("https://fonts.googleapis.com/css2?family=Lateef:wght@400;700&display=swap");
+
+/* ============================================
+   ARABIC FONT CLASSES - INDIVIDUAL
+   ============================================ */
+
+/* Class untuk Amiri */
+.arabic-amiri {
+  font-family: "Amiri", serif !important;
+  font-weight: 400 !important;
+  direction: rtl !important;
+  unicode-bidi: embed;
+  display: inline-block;
+  letter-spacing: normal !important;
+  font-style: normal !important;
+  line-height: 1.6 !important;
+}
+
+/* Class untuk Cairo */
+.arabic-cairo {
+  font-family: "Cairo", sans-serif !important;
+  font-weight: 400 !important;
+  direction: rtl !important;
+  unicode-bidi: embed;
+  display: inline-block;
+  letter-spacing: normal !important;
+  font-style: normal !important;
+  line-height: 1.6 !important;
+}
+
+/* Class untuk Tajawal */
+.arabic-tajawal {
+  font-family: "Tajawal", sans-serif !important;
+  /* font-weight: 400 !important; */
+  direction: rtl !important;
+  unicode-bidi: embed;
+  display: inline-block;
+  letter-spacing: normal !important;
+  font-style: normal !important;
+  line-height: 1.6 !important;
+}
+
+/* Class untuk Almarai */
+.arabic-almarai {
+  font-family: "Almarai", sans-serif !important;
+  font-weight: 400 !important;
+  direction: rtl !important;
+  unicode-bidi: embed;
+  display: inline-block;
+  letter-spacing: normal !important;
+  font-style: normal !important;
+  line-height: 1.6 !important;
+}
+
+/* Class untuk IBM Plex Sans Arabic */
+.arabic-ibm {
+  font-family: "IBM Plex Sans Arabic", sans-serif !important;
+  font-weight: 400 !important;
+  direction: rtl !important;
+  unicode-bidi: embed;
+  display: inline-block;
+  letter-spacing: normal !important;
+  font-style: normal !important;
+  line-height: 1.6 !important;
+}
+
+/* Class untuk Noto Naskh Arabic */
+.arabic-noto-naskh {
+  font-family: "Noto Naskh Arabic", serif !important;
+  font-weight: 400 !important;
+  direction: rtl !important;
+  unicode-bidi: embed;
+  display: inline-block;
+  letter-spacing: normal !important;
+  font-style: normal !important;
+  line-height: 1.6 !important;
+}
+
+/* Class untuk Scheherazade New */
+.arabic-scheherazade {
+  font-family: "Scheherazade New", serif !important;
+  font-weight: 400 !important;
+  direction: rtl !important;
+  unicode-bidi: embed;
+  display: inline-block;
+  letter-spacing: normal !important;
+  font-style: normal !important;
+  line-height: 1.6 !important;
+}
+
+/* Class untuk Lateef */
+.arabic-lateef {
+  font-family: "Lateef", serif !important;
+  font-weight: 400 !important;
+  direction: rtl !important;
+  unicode-bidi: embed;
+  display: inline-block;
+  letter-spacing: normal !important;
+  font-style: normal !important;
+  line-height: 1.6 !important;
+}
+
+/* Default class untuk backward compatibility */
+.arabic,
+.noto-kufi-arabic {
+  font-family: "Amiri", serif !important;
+  font-weight: 400 !important;
+  direction: rtl !important;
+  unicode-bidi: embed;
+  display: inline-block;
+  letter-spacing: normal !important;
+  font-style: normal !important;
+  line-height: 1.6 !important;
+}
+
+/* ============================================
+   CARA PENGGUNAAN:
+   ============================================
+   
+   Gunakan class sesuai font yang diinginkan:
+   
+   <span className="arabic-amiri">السلام عليكم</span>
+   <span className="arabic-cairo">السلام عليكم</span>
+   <span className="arabic-tajawal">السلام عليكم</span>
+   <span className="arabic-almarai">السلام عليكم</span>
+   <span className="arabic-ibm">السلام عليكم</span>
+   <span className="arabic-noto-naskh">السلام عليكم</span>
+   <span className="arabic-scheherazade">السلام عليكم</span>
+   <span className="arabic-lateef">السلام عليكم</span>
+   
+   Atau gunakan .arabic untuk default (Amiri):
+   <span className="arabic">السلام عليكم</span>
+   
+   
+   DAFTAR CLASS YANG TERSEDIA:
+   
+   .arabic-amiri           → Amiri (Traditional Naskh)
+   .arabic-cairo           → Cairo (Modern Sans)
+   .arabic-tajawal         → Tajawal (Clean Modern)
+   .arabic-almarai         → Almarai (Geometric)
+   .arabic-ibm             → IBM Plex Sans Arabic (Corporate)
+   .arabic-noto-naskh      → Noto Naskh Arabic (Traditional)
+   .arabic-scheherazade    → Scheherazade New (Classical)
+   .arabic-lateef          → Lateef (Sindhi Style)
+   .arabic                 → Default (Amiri)
+   
+   ============================================ */

@@ -31,6 +31,7 @@ import {
   ArrowRight,
   Sparkles,
 } from "lucide-react";
+import "@/styles/arabic-font.css";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -127,7 +128,7 @@ export default function Dashboard() {
         {/* Header - Dark with emerald accent */}
         <header className="sticky top-0 z-40 w-full border-b border-gray-800 bg-black/95 backdrop-blur">
           <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/")}>
               <div className="w-10 h-10 rounded-xl bg-gray-900 border border-emerald-500/50 flex items-center justify-center shadow-lg shadow-emerald-500/20">
                 <BookOpen className="h-5 w-5 text-emerald-400" />
               </div>
@@ -162,8 +163,8 @@ export default function Dashboard() {
                 </span>
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white">
-                Assalamu'alaikum, <br className="sm:hidden" />
-                <span className="text-emerald-400">{user.fullName}</span>
+                <span className="arabic-tajawal ">السلام عليكم</span>, <br className="sm:hidden" />
+                <span className="arabic-tajawal text-emerald-400">{user.fullName}</span>
               </h1>
             </motion.div>
 

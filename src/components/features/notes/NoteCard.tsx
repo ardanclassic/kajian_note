@@ -1,29 +1,19 @@
 /**
- * NoteCard Component - Dark Mode with Emerald Glow
- * Refactored: Following design-guidelines.md
- * ✅ Pure black background
- * ✅ Emerald glow on hover
- * ✅ Sharp corner highlights
- *
- * Note: This component uses date-fns which is available in the main project
+ * NoteCard Component - IMPROVED UI/UX
+ * Modern card design with hover effects and smooth interactions
+ * ✅ FIXED: Proper delete confirmation dialog
  */
 
 import { useState } from "react";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
-import { Pin, Trash2, Edit, Calendar, Lock, Globe } from "lucide-react";
-
-// Types (akan diimport dari project)
-interface NoteSummary {
-  id: string;
-  title: string;
-  content: string;
-  tags: string[];
-  isPublic: boolean;
-  isPinned: boolean;
-  createdAt: string;
-  userId: string;
-}
+import { Pin, Trash2, Edit, Calendar, Lock, Globe, Eye } from "lucide-react";
+import type { NoteSummary } from "@/types/notes.types";
+import { formatDistanceToNow } from "date-fns";
+import { id as idLocale } from "date-fns/locale";
+import { stripHtml } from "@/utils/textToHtml";
 
 interface NoteCardProps {
   note: NoteSummary;
@@ -36,21 +26,6 @@ interface NoteCardProps {
   onDelete?: (noteId: string) => void;
   onTogglePin?: (noteId: string, isPinned: boolean) => void;
 }
-
-// Helper functions (akan diimport dari project)
-const stripHtml = (html: string) => html.replace(/<[^>]*>/g, "");
-const formatDate = (dateStr: string) => {
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diff = now.getTime() - date.getTime();
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-  if (days === 0) return "hari ini";
-  if (days === 1) return "kemarin";
-  if (days < 7) return `${days} hari yang lalu`;
-  if (days < 30) return `${Math.floor(days / 7)} minggu yang lalu`;
-  return `${Math.floor(days / 30)} bulan yang lalu`;
-};
 
 export function NoteCard({
   note,
@@ -65,22 +40,32 @@ export function NoteCard({
 }: NoteCardProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPinning, setIsPinning] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  const formattedDate = formatDate(note.createdAt);
+  // Format date
+  const formattedDate = formatDistanceToNow(new Date(note.createdAt), {
+    addSuffix: true,
+    locale: idLocale,
+  });
+
+  // Strip HTML tags from content for preview
   const plainTextContent = stripHtml(note.content);
 
+  // Handle card click
   const handleCardClick = () => {
     if (onClick) {
       onClick(note);
     }
   };
 
+  // Handle delete - Show dialog first
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowDeleteDialog(true);
   };
 
+  // Confirm delete
   const handleConfirmDelete = async () => {
     if (!onDelete) return;
 
@@ -96,6 +81,7 @@ export function NoteCard({
     }
   };
 
+  // Handle toggle pin
   const handleTogglePin = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!onTogglePin) return;
@@ -111,6 +97,7 @@ export function NoteCard({
     }
   };
 
+  // Handle edit
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (onEdit) {
@@ -120,87 +107,96 @@ export function NoteCard({
 
   return (
     <>
-      <div
+      <Card
+        className="group h-full flex flex-col cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:border-primary/50 relative overflow-hidden p-3"
         onClick={handleCardClick}
-        className="group relative bg-black rounded-2xl p-6 border border-gray-800 hover:border-emerald-500/30 cursor-pointer transition-all duration-500 hover:-translate-y-1 overflow-hidden h-full flex flex-col"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Glow Effect */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <div className="absolute inset-0 bg-emerald-500/5 blur-xl" />
-        </div>
+        {/* Hover gradient overlay */}
+        <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-        {/* Pinned Indicator */}
+        {/* Pinned indicator stripe */}
         {note.isPinned && (
-          <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-emerald-500 via-emerald-400 to-emerald-500" />
+          <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-primary via-primary/80 to-primary/60" />
         )}
 
-        {/* Content */}
-        <div className="relative z-10 flex-1 space-y-4">
-          {/* Header */}
+        <CardHeader className="space-y-3 relative px-2">
           <div className="flex items-start justify-between gap-3">
-            <h3 className="text-lg font-bold text-white line-clamp-2 flex-1 group-hover:text-emerald-400 transition-colors">
+            <CardTitle className="text-lg line-clamp-2 flex-1 group-hover:text-primary transition-colors">
               {note.title}
-            </h3>
+            </CardTitle>
 
+            {/* Pinned Badge */}
             {note.isPinned && (
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gray-900 border border-emerald-500/50 text-emerald-400 rounded-lg text-xs font-bold shrink-0">
-                <Pin className="w-3 h-3 fill-current" />
-                PIN
-              </div>
+              <Badge variant="default" className="shrink-0 shadow-sm bg-primary/90">
+                <Pin className="w-3 h-3 mr-1 fill-current" />
+                Pin
+              </Badge>
             )}
           </div>
 
-          {/* Badges */}
+          {/* Visibility & Tags */}
           <div className="flex items-center gap-2 flex-wrap">
-            {/* Visibility */}
-            <div
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold ${
-                note.isPublic
-                  ? "bg-green-500/20 border border-green-500/50 text-green-400"
-                  : "bg-orange-500/20 border border-orange-500/50 text-orange-400"
+            {/* Visibility Badge */}
+            <Badge
+              variant={note.isPublic ? "default" : "secondary"}
+              className={`shrink-0 shadow-sm ${
+                note.isPublic ? "bg-green-500/90 hover:bg-green-600" : "bg-orange-500/90 hover:bg-orange-600"
               }`}
             >
               {note.isPublic ? (
                 <>
-                  <Globe className="w-3 h-3" />
+                  <Globe className="w-3 h-3 mr-1" />
                   Publik
                 </>
               ) : (
                 <>
-                  <Lock className="w-3 h-3" />
+                  <Lock className="w-3 h-3 mr-1" />
                   Pribadi
                 </>
               )}
-            </div>
+            </Badge>
 
             {/* Tags */}
             {note.tags.length > 0 && (
               <div className="flex gap-1.5 flex-wrap">
                 {note.tags.slice(0, 2).map((tag) => (
-                  <div
+                  <Badge
                     key={tag}
-                    className="px-2.5 py-1 bg-gray-900 border border-gray-800 text-gray-400 rounded-lg text-xs font-medium"
+                    variant="outline"
+                    className="text-xs border-primary/30 hover:border-primary/60 transition-colors"
                   >
                     #{tag}
-                  </div>
+                  </Badge>
                 ))}
                 {note.tags.length > 2 && (
-                  <div className="px-2.5 py-1 bg-gray-900 border border-gray-800 text-gray-400 rounded-lg text-xs font-medium">
+                  <Badge variant="outline" className="text-xs border-primary/30">
                     +{note.tags.length - 2}
-                  </div>
+                  </Badge>
                 )}
               </div>
             )}
           </div>
+        </CardHeader>
 
-          {/* Preview */}
-          <p className="text-sm text-gray-400 line-clamp-3 leading-relaxed">{plainTextContent}</p>
-        </div>
+        <CardContent className="hidden md:block flex-1 relative">
+          <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">{plainTextContent}</p>
 
-        {/* Footer */}
-        <div className="relative z-10 flex items-center justify-between gap-3 pt-4 mt-4 border-t border-gray-800">
+          {/* Read more indicator on hover */}
+          {isHovered && (
+            <div className="absolute bottom-0 left-0 right-0 h-12 bg-linear-to-t from-card to-transparent flex items-end justify-center pb-2 animate-in fade-in duration-200">
+              <div className="flex items-center gap-1 text-xs text-primary font-medium">
+                <Eye className="w-3 h-3" />
+                Klik untuk baca
+              </div>
+            </div>
+          )}
+        </CardContent>
+
+        <CardFooter className="flex items-center justify-between gap-2 border-t relative px-2 pt-2!">
           {/* Date */}
-          <div className="flex items-center gap-2 text-xs text-gray-500">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <Calendar className="w-3.5 h-3.5" />
             <span>{formattedDate}</span>
           </div>
@@ -208,56 +204,54 @@ export function NoteCard({
           {/* Actions */}
           {showActions && (isOwner || isPinnable) && (
             <div className="flex items-center gap-1">
+              {/* Edit (Owner only) */}
               {isOwner && onEdit && (
                 <Button
-                  size="sm"
+                  size="icon-sm"
                   variant="ghost"
                   onClick={handleEdit}
-                  className="h-8 w-8 p-0 text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10"
+                  className="h-8 w-8 hover:bg-primary/10 hover:text-primary transition-all"
+                  title="Edit"
                 >
                   <Edit className="w-4 h-4" />
                 </Button>
               )}
 
+              {/* Pin (Admin/Panitia only) */}
               {isPinnable && onTogglePin && (
                 <Button
-                  size="sm"
+                  size="icon-sm"
                   variant="ghost"
                   onClick={handleTogglePin}
                   disabled={isPinning}
-                  className={`h-8 w-8 p-0 ${
-                    note.isPinned
-                      ? "text-emerald-400 hover:bg-emerald-500/10"
-                      : "text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10"
+                  className={`h-8 w-8 transition-all ${
+                    note.isPinned ? "text-primary hover:bg-primary/10" : "hover:bg-primary/10 hover:text-primary"
                   }`}
+                  title={note.isPinned ? "Unpin" : "Pin"}
                 >
                   <Pin className={`w-4 h-4 ${note.isPinned ? "fill-current" : ""}`} />
                 </Button>
               )}
 
+              {/* Delete */}
               {isOwner && onDelete && (
                 <Button
-                  size="sm"
+                  size="icon-sm"
                   variant="ghost"
                   onClick={handleDeleteClick}
                   disabled={isDeleting}
-                  className="h-8 w-8 p-0 text-gray-400 hover:text-red-400 hover:bg-red-500/10"
+                  className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive transition-all"
+                  title="Hapus"
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>
               )}
             </div>
           )}
-        </div>
+        </CardFooter>
+      </Card>
 
-        {/* Corner Highlights */}
-        <div className="absolute top-0 right-0 w-24 h-24 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <div className="absolute top-0 right-0 w-px h-12 bg-linear-to-b from-emerald-500/50 to-transparent" />
-          <div className="absolute top-0 right-0 h-px w-12 bg-linear-to-l from-emerald-500/50 to-transparent" />
-        </div>
-      </div>
-
-      {/* Delete Dialog */}
+      {/* Delete Confirmation Dialog */}
       <ConfirmDialog
         open={showDeleteDialog}
         onOpenChange={setShowDeleteDialog}
