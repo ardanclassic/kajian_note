@@ -1,7 +1,9 @@
 /**
- * Dashboard Page - Mobile First Design
- * Updated: Compact Recent Notes Section
- * ✅ FIXED: Proper logout confirmation dialog
+ * Dashboard Page - Dark Mode with Emerald Glow
+ * Refactored: Following design-guidelines.md
+ * ✅ Pure black background
+ * ✅ Emerald glow accents
+ * ✅ Consistent spacing & animations
  */
 
 import { useEffect, useState } from "react";
@@ -12,7 +14,6 @@ import { useSubscriptionStore } from "@/store/subscriptionStore";
 import { useNotesStore } from "@/store/notesStore";
 import { MobileMenu } from "@/components/features/dashboard/MobileMenu";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/common/Loading";
 import {
@@ -28,7 +29,7 @@ import {
   Menu,
   Calendar,
   ArrowRight,
-  ChevronRight,
+  Sparkles,
 } from "lucide-react";
 
 export default function Dashboard() {
@@ -50,7 +51,7 @@ export default function Dashboard() {
 
   const handleLogoutClick = () => {
     setShowLogoutDialog(true);
-    setIsMenuOpen(false); // Close menu when showing logout dialog
+    setIsMenuOpen(false);
   };
 
   const handleConfirmLogout = async () => {
@@ -83,21 +84,19 @@ export default function Dashboard() {
       value: statistics?.totalNotes ?? 0,
       limit: usage?.notesLimit === Infinity ? "∞" : usage?.notesLimit ?? 0,
       icon: BookOpen,
-      gradient: "from-blue-500 to-cyan-500",
     },
     {
       title: "Catatan Publik",
       value: statistics?.publicNotes ?? 0,
       icon: Share2,
-      gradient: "from-green-500 to-emerald-500",
     },
   ];
 
   const quickActions = [
-    { icon: Plus, label: "Catatan Baru", path: "/notes/new", gradient: "from-blue-500 to-cyan-500" },
-    { icon: BookOpen, label: "Lihat Catatan", path: "/notes", gradient: "from-purple-500 to-pink-500" },
-    { icon: Crown, label: "Subscription", path: "/subscription", gradient: "from-orange-500 to-red-500" },
-    { icon: Settings, label: "Pengaturan", path: "/settings", gradient: "from-gray-500 to-gray-600" },
+    { icon: Plus, label: "Catatan Baru", path: "/notes/new" },
+    { icon: BookOpen, label: "Lihat Catatan", path: "/notes" },
+    { icon: Crown, label: "Subscription", path: "/subscription" },
+    { icon: Settings, label: "Pengaturan", path: "/settings" },
   ];
 
   const container = {
@@ -109,13 +108,13 @@ export default function Dashboard() {
   };
 
   const item = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 30 },
     show: { opacity: 1, y: 0 },
   };
 
   return (
     <>
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-black">
         <MobileMenu
           isOpen={isMenuOpen}
           onClose={() => setIsMenuOpen(false)}
@@ -125,28 +124,33 @@ export default function Dashboard() {
           menuItems={menuItems}
         />
 
-        {/* Header - Simple & Clean */}
-        <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-          <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 mx-auto">
+        {/* Header - Dark with emerald accent */}
+        <header className="sticky top-0 z-40 w-full border-b border-gray-800 bg-black/95 backdrop-blur">
+          <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-linear-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                <BookOpen className="h-5 w-5" />
+              <div className="w-10 h-10 rounded-xl bg-gray-900 border border-emerald-500/50 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                <BookOpen className="h-5 w-5 text-emerald-400" />
               </div>
-              <span className="text-lg font-bold hidden sm:inline">Kajian Notes</span>
+              <span className="text-lg font-bold text-white hidden sm:inline">Kajian Notes</span>
             </div>
 
-            <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(true)}>
-              <Menu className="h-6 w-6" />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMenuOpen(true)}
+              className="hover:bg-gray-900 hover:border-emerald-500/30 border border-gray-800"
+            >
+              <Menu className="h-6 w-6 text-white" />
             </Button>
           </div>
         </header>
 
         {/* Main Content */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-          <motion.div variants={container} initial="hidden" animate="show" className="space-y-6">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <motion.div variants={container} initial="hidden" animate="show" className="space-y-8">
             {/* Welcome Section */}
-            <motion.div variants={item} className="space-y-3">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <motion.div variants={item} className="space-y-4">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 border border-emerald-500/50 text-emerald-400 rounded-full text-sm font-semibold shadow-lg shadow-emerald-500/20">
                 <Calendar className="h-4 w-4" />
                 <span>
                   {new Date().toLocaleDateString("id-ID", {
@@ -157,32 +161,42 @@ export default function Dashboard() {
                   })}
                 </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white">
                 Assalamu'alaikum, <br className="sm:hidden" />
-                {user.fullName}
+                <span className="text-emerald-400">{user.fullName}</span>
               </h1>
             </motion.div>
 
-            {/* Stats Grid - Mobile Optimized */}
-            <motion.div variants={item} className="grid gap-4 sm:grid-cols-2">
+            {/* Stats Grid */}
+            <motion.div variants={item} className="grid gap-8 sm:grid-cols-2">
               {stats.map((stat, index) => (
-                <Card key={index} className="relative overflow-hidden">
-                  <div className={`absolute inset-0 bg-linear-to-br ${stat.gradient} opacity-5`} />
-                  <CardContent className="pt-6">
-                    <div className="flex items-start justify-between mb-4">
+                <div
+                  key={index}
+                  className="group relative bg-black rounded-2xl p-8 border border-gray-800 hover:border-emerald-500/30 transition-all duration-500 hover:-translate-y-1 overflow-hidden"
+                >
+                  {/* Glow Effect */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="absolute inset-0 bg-emerald-500/5 blur-xl" />
+                  </div>
+
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <div className="flex items-start justify-between mb-6">
                       <div>
-                        <p className="text-sm text-muted-foreground mb-2">{stat.title}</p>
+                        <p className="text-sm text-gray-400 mb-3">{stat.title}</p>
                         <div className="flex items-baseline gap-2">
-                          <span className="text-4xl font-bold">{stat.value}</span>
-                          {stat.limit && <span className="text-xl text-muted-foreground">/ {stat.limit}</span>}
+                          <span className="text-5xl font-black text-white">{stat.value}</span>
+                          {stat.limit && <span className="text-2xl text-gray-500">/ {stat.limit}</span>}
                         </div>
                       </div>
-                      <div className={`p-3 rounded-xl bg-linear-to-br ${stat.gradient}`}>
-                        <stat.icon className="h-6 w-6 text-white" />
+                      <div className="p-4 rounded-xl bg-gray-900 border border-emerald-500/30">
+                        <stat.icon className="h-6 w-6 text-emerald-400" />
                       </div>
                     </div>
+
+                    {/* Progress Bar */}
                     {stat.limit && (
-                      <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div className="h-2 bg-gray-900 rounded-full overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{
@@ -192,130 +206,181 @@ export default function Dashboard() {
                             )}%`,
                           }}
                           transition={{ duration: 1, ease: "easeOut" }}
-                          className={`h-full bg-linear-to-r ${stat.gradient}`}
+                          className="h-full bg-linear-to-r from-emerald-500 to-emerald-400 shadow-lg shadow-emerald-500/50"
                         />
                       </div>
                     )}
-                  </CardContent>
-                </Card>
+                  </div>
+
+                  {/* Corner Highlights */}
+                  <div className="absolute top-0 right-0 w-24 h-24 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="absolute top-0 right-0 w-px h-12 bg-linear-to-b from-emerald-500/50 to-transparent" />
+                    <div className="absolute top-0 right-0 h-px w-12 bg-linear-to-l from-emerald-500/50 to-transparent" />
+                  </div>
+                </div>
               ))}
             </motion.div>
 
-            {/* Quick Actions - Compact Grid */}
-            <motion.div variants={item}>
-              <div className="space-y-3">
-                <h2 className="text-lg font-semibold px-1">Navigasi Cepat</h2>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                  {quickActions.map((action, idx) => (
-                    <motion.button
-                      key={idx}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => navigate(action.path)}
-                      className="relative overflow-hidden rounded-xl bg-card border p-4 text-left transition-all hover:shadow-md hover:border-primary/30 group"
-                    >
-                      <div className="md:flex items-center gap-3">
-                        <div
-                          className={`w-10 h-10 rounded-lg bg-linear-to-br ${action.gradient} flex items-center justify-center shrink-0`}
-                        >
-                          <action.icon className="h-5 w-5 text-white" />
-                        </div>
-                        <p className="font-medium text-sm leading-tight mt-3 md:mt-0">{action.label}</p>
+            {/* Quick Actions */}
+            <motion.div variants={item} className="space-y-4">
+              <h2 className="text-xl font-bold text-white">Navigasi Cepat</h2>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {quickActions.map((action, idx) => (
+                  <motion.button
+                    key={idx}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => navigate(action.path)}
+                    className="group relative bg-black rounded-2xl p-6 border border-gray-800 hover:border-emerald-500/30 transition-all duration-500 hover:-translate-y-1 overflow-hidden text-left"
+                  >
+                    {/* Glow Effect */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <div className="absolute inset-0 bg-emerald-500/5 blur-xl" />
+                    </div>
+
+                    {/* Content */}
+                    <div className="relative z-10 space-y-3">
+                      <div className="w-12 h-12 rounded-xl bg-gray-900 border border-emerald-500/30 flex items-center justify-center">
+                        <action.icon className="h-6 w-6 text-emerald-400" />
                       </div>
-                    </motion.button>
-                  ))}
-                </div>
+                      <p className="font-semibold text-white text-sm">{action.label}</p>
+                    </div>
+
+                    {/* Corner Highlights */}
+                    <div className="absolute top-0 right-0 w-16 h-16 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <div className="absolute top-0 right-0 w-px h-8 bg-linear-to-b from-emerald-500/50 to-transparent" />
+                      <div className="absolute top-0 right-0 h-px w-8 bg-linear-to-l from-emerald-500/50 to-transparent" />
+                    </div>
+                  </motion.button>
+                ))}
               </div>
             </motion.div>
 
             {/* Recent Notes */}
             <motion.div variants={item}>
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle>Catatan Terbaru</CardTitle>
-                      <CardDescription>Aktivitas terkini Anda</CardDescription>
-                    </div>
-                    <Button variant="ghost" size="sm" onClick={() => navigate("/notes")}>
-                      <span className="hidden sm:inline">Semua</span>
-                      <ArrowRight className="h-4 w-4 sm:ml-1" />
-                    </Button>
+              <div className="relative bg-black rounded-2xl sm:p-8 sm:border sm:border-gray-800 overflow-hidden">
+                {/* Grid Pattern */}
+                <div className="absolute inset-0 opacity-[0.015]">
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(rgba(16,185,129,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.5) 1px, transparent 1px)",
+                      backgroundSize: "80px 80px",
+                    }}
+                  />
+                </div>
+
+                {/* Header */}
+                <div className="relative z-10 flex items-center justify-between mb-8">
+                  <div>
+                    <h2 className="text-2xl font-bold text-white mb-1">Catatan Terbaru</h2>
+                    <p className="text-gray-400">Aktivitas terkini Anda</p>
                   </div>
-                </CardHeader>
-                <CardContent className="px-3">
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate("/notes")}
+                    className="text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10"
+                  >
+                    <span className="hidden sm:inline">Lihat Semua</span>
+                    <ArrowRight className="h-4 w-4 sm:ml-2" />
+                  </Button>
+                </div>
+
+                {/* Notes List */}
+                <div className="relative z-10">
                   {userNotes.length > 0 ? (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                       {userNotes.slice(0, 6).map((note, idx) => (
                         <motion.div
                           key={note.id}
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: idx * 0.05 }}
+                          transition={{ delay: idx * 0.05, duration: 0.3 }}
                           onClick={() => navigate(`/notes/${note.id}`)}
-                          className="group flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-accent cursor-pointer transition-all"
+                          className="group relative bg-gray-900 rounded-xl p-4 border border-gray-800 hover:border-emerald-500/30 cursor-pointer transition-all duration-300 overflow-hidden"
                         >
-                          {/* Icon */}
-                          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
-                            <FileText className="h-4 w-4 text-primary" />
+                          {/* Subtle Glow on Hover */}
+                          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div className="absolute inset-0 bg-emerald-500/5" />
                           </div>
 
                           {/* Content */}
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-sm font-medium truncate group-hover:text-primary transition-colors">
-                              {note.title}
-                            </h4>
-                            {note.tags.length > 0 && (
-                              <div className="flex items-center gap-1 mt-1">
-                                {note.tags.slice(0, 2).map((tag) => (
-                                  <span key={tag} className="text-[10px] text-muted-foreground">
-                                    #{tag}
-                                  </span>
-                                ))}
-                                {note.tags.length > 2 && (
-                                  <span className="text-[10px] text-muted-foreground">+{note.tags.length - 2}</span>
-                                )}
-                              </div>
-                            )}
+                          <div className="relative z-10 flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-lg bg-black border border-emerald-500/30 flex items-center justify-center shrink-0">
+                              <FileText className="h-5 w-5 text-emerald-400" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-sm font-semibold text-white truncate group-hover:text-emerald-400 transition-colors">
+                                {note.title}
+                              </h4>
+                              {note.tags.length > 0 && (
+                                <div className="flex items-center gap-1 mt-1">
+                                  {note.tags.slice(0, 2).map((tag) => (
+                                    <span key={tag} className="text-xs text-gray-500">
+                                      #{tag}
+                                    </span>
+                                  ))}
+                                  {note.tags.length > 2 && (
+                                    <span className="text-xs text-gray-500">+{note.tags.length - 2}</span>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                            <ArrowRight className="h-4 w-4 text-gray-600 group-hover:text-emerald-400 transition-colors shrink-0" />
                           </div>
-
-                          {/* Arrow */}
-                          <ChevronRight className="hidden md:block h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
                         </motion.div>
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-12">
-                      <div className="w-16 h-16 mx-auto bg-muted rounded-full flex items-center justify-center mb-4">
-                        <BookOpen className="h-8 w-8 text-muted-foreground" />
+                    <div className="text-center py-16">
+                      <div className="w-20 h-20 mx-auto bg-gray-900 border border-gray-800 rounded-2xl flex items-center justify-center mb-6">
+                        <BookOpen className="h-10 w-10 text-gray-600" />
                       </div>
-                      <p className="text-muted-foreground mb-2">Belum ada catatan</p>
-                      <p className="text-sm text-muted-foreground mb-4">Mulai buat catatan kajian pertama Anda</p>
-                      <Button onClick={() => navigate("/notes/new")}>
+                      <p className="text-gray-300 font-semibold mb-2">Belum ada catatan</p>
+                      <p className="text-sm text-gray-500 mb-6">Mulai buat catatan kajian pertama Anda</p>
+                      <Button
+                        onClick={() => navigate("/notes/new")}
+                        className="bg-gray-900 text-white border border-emerald-500/50 hover:bg-emerald-500/10 shadow-lg shadow-emerald-500/20"
+                      >
                         <Plus className="h-4 w-4 mr-2" />
                         Buat Catatan
                       </Button>
                     </div>
                   )}
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </motion.div>
 
-            {/* Subscription CTA */}
+            {/* Premium CTA */}
             {user.subscriptionTier === "free" && (
               <motion.div variants={item}>
                 <div
-                  className="relative overflow-hidden rounded-xl border border-primary/50 bg-linear-to-br from-primary/5 to-transparent p-4 cursor-pointer"
                   onClick={() => navigate("/subscription")}
+                  className="group relative bg-black rounded-2xl p-8 border border-emerald-500/50 hover:border-emerald-500 transition-all duration-500 cursor-pointer overflow-hidden"
                 >
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-primary/20 to-transparent rounded-full blur-2xl" />
-                  <div className="relative flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-linear-to-br from-primary/30 to-primary/10 flex items-center justify-center shrink-0">
-                      <Crown className="h-5 w-5 text-primary" />
+                  {/* Glow Orbs */}
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
+                  <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
+
+                  {/* Content */}
+                  <div className="relative z-10 flex items-center gap-6">
+                    <div className="w-16 h-16 rounded-2xl bg-gray-900 border border-emerald-500/50 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
+                      <Crown className="h-8 w-8 text-emerald-400" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-sm mb-0.5">Upgrade Premium</h3>
-                      <p className="text-xs text-muted-foreground">Unlimited catatan & fitur eksklusif</p>
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="text-xl font-bold text-white">Upgrade ke Premium</h3>
+                        <Sparkles className="h-5 w-5 text-emerald-400" />
+                      </div>
+                      <p className="text-gray-400">Unlimited catatan & fitur eksklusif menanti Anda</p>
                     </div>
+                    <ArrowRight className="h-6 w-6 text-emerald-400 hidden md:block shrink-0 group-hover:translate-x-1 transition-transform" />
+                  </div>
+
+                  {/* Corner Highlights */}
+                  <div className="absolute top-0 right-0 w-24 h-24 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="absolute top-0 right-0 w-px h-12 bg-linear-to-b from-emerald-500/50 to-transparent" />
+                    <div className="absolute top-0 right-0 h-px w-12 bg-linear-to-l from-emerald-500/50 to-transparent" />
                   </div>
                 </div>
               </motion.div>
@@ -324,7 +389,7 @@ export default function Dashboard() {
         </main>
       </div>
 
-      {/* Logout Confirmation Dialog */}
+      {/* Logout Dialog */}
       <ConfirmDialog
         open={showLogoutDialog}
         onOpenChange={setShowLogoutDialog}

@@ -341,7 +341,7 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
               <Globe className="w-4 h-4 text-primary" />
               Visibilitas
             </Label>
-            <div className="flex gap-3">
+            <div className="flex flex-col md:flex-row gap-3">
               {/* Private */}
               <motion.label
                 whileHover={{ scale: 1.02 }}

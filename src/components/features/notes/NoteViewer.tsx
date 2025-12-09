@@ -7,7 +7,7 @@
 import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, User, Globe, Lock, Tag as TagIcon, Clock, Youtube } from "lucide-react";
+import { Calendar, User, Globe, Lock, Tag as TagIcon, Clock, TvMinimalPlay } from "lucide-react";
 import type { Note } from "@/types/notes.types";
 import { formatDistanceToNow, format } from "date-fns";
 import { id as idLocale } from "date-fns/locale";
@@ -77,7 +77,7 @@ export function NoteViewer({
       {/* Title Section - Adaptive for Screen & Print */}
       <div className="space-y-4 print:px-8">
         {/* Main Title */}
-        <h1 className="text-[3xl] md:text-[36px] font-bold leading-tight print:!text-[36pt] print:!font-bold print:!text-black print:!mb-6 print:!mt-[40%]">
+        <h1 className="text-[32px] md:text-[36px] font-bold leading-tight print:!text-[36pt] print:!font-bold print:!text-black print:!mb-6 print:!mt-[40%]">
           {note.title}
         </h1>
 
@@ -159,15 +159,15 @@ export function NoteViewer({
 
         {/* YouTube Source Badge - Screen Version */}
         {isFromYouTube && (
-          <div className="flex items-center gap-4 p-3 px-6 bg-green-500/10 rounded-lg no-print">
-            <Youtube className="w-8 h-8 text-red-500" />
+          <div className="flex items-center gap-4 p-3 px-6 bg-gray-400/10 rounded-lg no-print">
+            <TvMinimalPlay className="w-8 h-8 text-red-500" />
             <div className="flex-1">
-              <p className="text-sm font-medium text-green-500 dark:text-green-400">Diimpor dari YouTube</p>
+              <p className="text-sm font-medium text-rose-200 dark:text-rose-300">Diimpor dari YouTube</p>
               <a
                 href={note.sourceUrl!}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[13px] font-normal text-blue-300 dark:text-blue-300 hover:underline"
+                className="text-[13px] font-normal text-sky-300! dark:text-sky-300! hover:underline"
               >
                 Lihat video sumber
               </a>
@@ -175,7 +175,7 @@ export function NoteViewer({
             {note.sourceMetadata?.has_ai_summary && (
               <Badge
                 variant="outline"
-                className="hidden md:block text-xs border-yellow-300/50 text-yellow-500 dark:text-yellow-400"
+                className="hidden md:block text-xs border-teal-300/50 text-teal-400 dark:text-teal-400"
               >
                 AI Summary
               </Badge>

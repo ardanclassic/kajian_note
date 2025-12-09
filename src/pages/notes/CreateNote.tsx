@@ -3,7 +3,10 @@
  * Compact, clean, beautiful, interactive design
  * With Framer Motion animations & mobile responsive
  *
- * UPDATED: Auto-fill materialTitle from reference info to title field
+ * UPDATED:
+ * - Fixed content not appearing in Tiptap (convertTextToHtml issue)
+ * - Added manual speaker input when speaker_name is "unknown"
+ * - Better content + reference combination
  */
 
 import { useState } from "react";
@@ -20,32 +23,63 @@ import { createNote } from "@/services/supabase/notes.service";
 import type { CreateNoteFormData } from "@/schemas/notes.schema";
 import type { YouTubeImportResult } from "@/types/youtube.types";
 import { convertTextToHtml } from "@/utils/textToHtml";
-import { PenLine, Youtube, Sparkles, FileText, Clock, Video, ChevronLeft, Info, CheckCircle2 } from "lucide-react";
+import { PenLine, Youtube, Sparkles, FileText, ChevronLeft, Info } from "lucide-react";
 
 type InputMode = "manual" | "youtube";
 
 /**
- * Generate reference quote block from YouTube import result
+ * Generate enhanced reference block from YouTube import result
+ * Speaker already included from modal input if it was unknown
  */
 const generateReferenceQuote = (result: YouTubeImportResult): string => {
-  const { referenceInfo } = result;
+  const { referenceInfo, metadata } = result;
   if (!referenceInfo) return "";
 
-  const parts: string[] = ["<p><strong>📚 Sumber Referensi:</strong></p>", "<p>"];
+  const parts: string[] = [];
 
-  if (referenceInfo.materialTitle) {
-    parts.push(`<strong>Judul:</strong> ${referenceInfo.materialTitle}<br>`);
-  }
-  if (referenceInfo.speaker) {
-    parts.push(`<strong>Narasumber:</strong> ${referenceInfo.speaker}<br>`);
-  }
-  if (referenceInfo.channelName) {
-    parts.push(`<strong>Channel:</strong> ${referenceInfo.channelName}<br>`);
-  }
+  // Start reference section with horizontal line separator
+  parts.push("<hr>", "<br>");
+
+  // Header
+  parts.push('<h2>📚 Sumber Referensi</h2>');
+
+  // Create card-like container
   parts.push(
-    `<strong>Link:</strong> <a href="${referenceInfo.videoUrl}" target="_blank" rel="noopener noreferrer">${referenceInfo.videoUrl}</a>`
+    '<div style="padding: 16px; margin-bottom: 16px;">'
   );
-  parts.push("</p>", "<p></p>");
+
+  // Thumbnail (if available)
+  if (referenceInfo.thumbnailUrl) {
+    parts.push(
+      `<div style="margin-bottom: 12px;">`,
+      `<img src="${referenceInfo.thumbnailUrl}" alt="${referenceInfo.title}" />`,
+      `</div>`
+    );
+  }
+
+  // Video Title
+  parts.push(
+    `<p style="margin-bottom: 5px;"><strong>Judul:</strong> ${referenceInfo.title}</p>`
+  );
+
+  // Speaker/Pemateri - Already processed from modal
+  const speakerName = referenceInfo.speaker;
+  if (speakerName && speakerName !== "Unknown") {
+    parts.push(`<p style="margin-bottom: 5px;"><strong>Pemateri:</strong> ${speakerName}</p>`);
+  }
+
+  // Channel
+  parts.push(
+    `<p style="margin-bottom: 5px;"><strong>Channel:</strong> ${referenceInfo.channelName}</p>`
+  );
+
+  // Link
+  parts.push(
+    `<p style="margin-bottom: 0;"><strong>Link:</strong> <a href="${referenceInfo.videoUrl}" target="_blank" rel="noopener noreferrer" style="color: #ef4444; text-decoration: underline;">${referenceInfo.videoUrl}</a></p>`
+  );
+
+  // Close container
+  parts.push("</div>");
 
   return parts.join("");
 };
@@ -70,15 +104,21 @@ export default function CreateNote() {
   const [showImportModal, setShowImportModal] = useState(false);
   const [importedData, setImportedData] = useState<YouTubeImportResult | null>(null);
 
-  const handleImportSuccess = (result: YouTubeImportResult) => {
+  const handleImportSuccess = async (result: YouTubeImportResult) => {
+    // Validate content
+    if (!result.content || result.content.trim().length < 10) {
+      toast.error("Content kosong dari API");
+      console.error("Empty content:", result);
+      return;
+    }
+
     setImportedData(result);
     setInputMode("youtube");
 
-    toast.success("Video berhasil diimpor!", {
-      description: result.metadata.has_ai_summary
-        ? "Ringkasan AI siap untuk ditinjau"
-        : "Transcript lengkap siap untuk diedit",
-    });
+    // Force re-render dengan small delay
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    toast.success("Video berhasil diimpor!");
   };
 
   const handleSubmit = async (data: CreateNoteFormData) => {
@@ -132,12 +172,27 @@ export default function CreateNote() {
       return undefined;
     }
 
-    const formattedContent = convertTextToHtml(importedData.content);
-    const referenceQuote = generateReferenceQuote(importedData);
-    const finalContent = referenceQuote ? `${formattedContent}${referenceQuote}` : formattedContent;
+    // FIXED: Handle content properly
+    let formattedContent = "";
 
-    // Priority: materialTitle → importedData.title → empty string
-    const title = importedData.referenceInfo?.materialTitle || importedData.title || "";
+    // Check if content is already HTML or plain text
+    if (importedData.content.includes("<p>") || importedData.content.includes("<br>")) {
+      // Already HTML, use as-is
+      formattedContent = importedData.content;
+    } else {
+      // Plain text, convert to HTML
+      formattedContent = convertTextToHtml(importedData.content);
+    }
+
+    // Generate reference block (at the end)
+    const referenceQuote = generateReferenceQuote(importedData);
+
+    // FIXED: Ensure both content and reference are included
+    // Add double line break between content and reference
+    const finalContent = referenceQuote ? `${formattedContent}<br><br>${referenceQuote}` : formattedContent;
+
+    // Priority: metadata title → fallback title
+    const title = importedData.referenceInfo?.title || importedData.title || "";
 
     return {
       title,
@@ -155,7 +210,7 @@ export default function CreateNote() {
       variants={pageVariants}
       transition={{ duration: 0.3 }}
     >
-      {/* Compact Header */}
+      {/* Header */}
       <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between max-w-4xl mx-auto">
@@ -177,8 +232,12 @@ export default function CreateNote() {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6 md:py-8">
         <div className="max-w-4xl mx-auto space-y-4">
-          {/* Input Mode Selector - Compact */}
-          <motion.div variants={cardVariants} transition={{ delay: 0.1 }}>
+          {/* Input Mode Selector */}
+          <motion.div
+            variants={cardVariants}
+            transition={{ delay: 0.1 }}
+            className={`${!importedData ? "block" : "hidden"}`}
+          >
             <div className="backdrop-blur-sm">
               <div className="flex flex-col sm:flex-row gap-2">
                 {/* YouTube Tab */}
@@ -218,7 +277,7 @@ export default function CreateNote() {
                 </motion.button>
               </div>
 
-              {/* Import Button - Compact */}
+              {/* Import Button */}
               {inputMode === "youtube" && !importedData && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
@@ -238,7 +297,7 @@ export default function CreateNote() {
             </div>
           </motion.div>
 
-          {/* YouTube Import Info - Compact */}
+          {/* YouTube Import Info */}
           <AnimatePresence>
             {importedData && inputMode === "youtube" && (
               <motion.div
@@ -247,37 +306,34 @@ export default function CreateNote() {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className="p-4 border-red-500/20 bg-gradient-to-br from-red-500/5 to-orange-500/5">
-                  <div className="flex items-start gap-3">
-                    <div className="shrink-0 p-2 bg-red-500/10 rounded-lg border border-red-500/20">
-                      <Video className="w-5 h-5 text-red-500" />
-                    </div>
+                <Card className="p-4 border-none bg-gray-500/20">
+                  <div className="flex flex-col sm:flex-row items-start gap-3">
+                    {/* Thumbnail */}
+                    {importedData.referenceInfo?.thumbnailUrl && (
+                      <div className="shrink-0 w-full sm:w-24 sm:h-16 rounded-md overflow-hidden">
+                        <img
+                          src={importedData.referenceInfo.thumbnailUrl}
+                          alt={importedData.referenceInfo.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
 
                     <div className="flex-1 min-w-0 space-y-2">
-                      <div className="flex items-start justify-between gap-2">
+                      <div className="flex flex-col sm:flex-row items-start justify-between gap-2">
                         <div>
-                          <h3 className="text-sm font-semibold flex items-center gap-2">
-                            Video Diimpor
-                            <CheckCircle2 className="w-4 h-4 text-green-500" />
-                          </h3>
-                          <p className="text-xs text-muted-foreground mt-0.5">Konten siap ditinjau</p>
+                          <p className="mt-0.5 text-[14px] sm:text-base font-semibold leading-tight">
+                            {importedData.referenceInfo?.title || "Konten siap ditinjau"}
+                          </p>
                         </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setShowImportModal(true)}
-                          className="text-xs h-7 px-2"
-                        >
-                          Ganti
-                        </Button>
                       </div>
 
-                      {/* Compact Metadata */}
+                      {/* Metadata */}
                       <div className="flex flex-wrap gap-1.5">
                         {importedData.metadata.has_ai_summary ? (
                           <Badge
                             variant="secondary"
-                            className="text-xs gap-1 bg-yellow-500/10 text-yellow-600 border-yellow-500/20"
+                            className="text-xs gap-1 bg-yellow-500/10 text-teal-300 border-yellow-500/20"
                           >
                             <Sparkles className="w-3 h-3" />
                             AI Summary
@@ -288,26 +344,15 @@ export default function CreateNote() {
                             Transcript
                           </Badge>
                         )}
-                        <Badge variant="secondary" className="text-xs gap-1">
-                          <Clock className="w-3 h-3" />
-                          {importedData.metadata.total_segments} segmen
-                        </Badge>
+                        <Button
+                          variant="default"
+                          size="sm"
+                          onClick={() => setShowImportModal(true)}
+                          className="border-yellow-500! text-yellow-300 text-[14px]! h-7 px-2 rounded-full!"
+                        >
+                          Ganti
+                        </Button>
                       </div>
-
-                      {/* Reference Info - Compact */}
-                      {importedData.referenceInfo && (
-                        <div className="p-2 bg-green-500/10 border border-green-500/20 rounded-md">
-                          <p className="text-xs font-medium text-green-600 mb-1 flex items-center gap-1">
-                            <CheckCircle2 className="w-3 h-3" />
-                            Referensi ditambahkan
-                          </p>
-                          <p className="text-xs text-muted-foreground truncate">
-                            {importedData.referenceInfo.materialTitle ||
-                              importedData.referenceInfo.speaker ||
-                              "Info lengkap"}
-                          </p>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </Card>
@@ -326,20 +371,19 @@ export default function CreateNote() {
             />
           </motion.div>
 
-          {/* Tips - Collapsible & Compact */}
+          {/* Tips */}
           <motion.div variants={cardVariants} transition={{ delay: 0.3 }}>
-            <Card className="p-4 border-dashed bg-muted/30">
-              <div className="flex items-start gap-2">
+            <Card className="p-4 border-dashed bg-muted/30 gap-3">
+              <h4 className="text-sm font-semibold flex items-center gap-2">
                 <Info className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                <div>
-                  <h4 className="text-sm font-semibold mb-2">Tips Singkat</h4>
-                  <ul className="space-y-1 text-xs text-muted-foreground">
-                    <li>• Gunakan tag untuk organisir catatan (max 5 per catatan)</li>
-                    <li>• Aktifkan publik untuk berbagi</li>
-                    <li>• Import YouTube untuk hemat waktu</li>
-                  </ul>
-                </div>
-              </div>
+                Tips Singkat
+              </h4>
+              <ul className="space-y-1 text-xs text-muted-foreground">
+                <li>• Gunakan tag untuk organisir catatan (max 5 per catatan)</li>
+                <li>• Aktifkan publik untuk berbagi (Premium/Advance)</li>
+                <li>• Import YouTube dengan auto-metadata untuk hemat waktu</li>
+                <li>• Referensi video akan otomatis muncul di akhir catatan</li>
+              </ul>
             </Card>
           </motion.div>
         </div>

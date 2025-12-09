@@ -1,6 +1,6 @@
 /**
- * App Component - MINIMAL VERSION
- * Only handle auth initialization, no data loading
+ * App Component - CLEAN VERSION
+ * Only handle auth initialization, no extra monitoring
  */
 
 import { useEffect } from "react";

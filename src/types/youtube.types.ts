@@ -1,6 +1,8 @@
 /**
  * YouTube Type Definitions
  * Types for YouTube Transcript API integration
+ *
+ * UPDATED: Added Video Metadata types for auto-fetch feature
  */
 
 /**
@@ -17,6 +19,44 @@ export interface YouTubeUrlToIdResponse {
   video_id: string;
   original_url: string;
 }
+
+/**
+ * ========================================
+ * VIDEO METADATA TYPES (NEW)
+ * ========================================
+ */
+
+/**
+ * Video Metadata Request
+ */
+export interface VideoMetadataRequest {
+  url: string;
+  extract_speaker?: boolean; // Whether to extract speaker name using LLM (optional, defaults to True)
+  model?: string; // Model to use for speaker extraction (optional, defaults to "qwen/qwen3-8b")
+}
+
+/**
+ * Video Metadata Response
+ */
+export interface VideoMetadataResponse {
+  video_id: string;
+  video_url: string;
+  title: string;
+  channel_name: string;
+  description: string;
+  duration: number; // in seconds
+  upload_date: string; // ISO format
+  view_count: number;
+  thumbnail_url: string;
+  speaker_name: string; // Extracted by LLM or "unknown"
+  speaker_extraction_method: string; // e.g., "llm" or "none"
+}
+
+/**
+ * ========================================
+ * END VIDEO METADATA TYPES
+ * ========================================
+ */
 
 /**
  * Transcript Request (with body)
@@ -133,37 +173,44 @@ export interface PollTaskStatusResponse {
  */
 
 /**
- * YouTube Reference Info (Optional fields for source citation)
+ * YouTube Reference Info (Auto-fetched from metadata)
+ * UPDATED: Now auto-populated from VideoMetadataResponse
  */
 export interface YouTubeReferenceInfo {
-  materialTitle?: string; // Judul materi
-  speaker?: string; // Narasumber/Ustadz
-  channelName?: string; // Nama channel
+  title: string; // Video title
+  speaker: string; // Speaker/Ustadz name
+  channelName: string; // Channel name
   videoUrl: string; // YouTube URL
+  thumbnailUrl: string; // Video thumbnail
+  duration?: number; // Video duration in seconds
+  uploadDate?: string; // Upload date
+  viewCount?: number; // View count
 }
 
 /**
  * YouTube Import Options
+ * UPDATED: referenceInfo now auto-fetched, not manually entered
  */
 export interface YouTubeImportOptions {
   url: string;
   useAISummary: boolean;
   languages?: string;
   model?: string;
-  // Optional reference info
-  referenceInfo?: YouTubeReferenceInfo;
+  // Auto-fetched metadata (no longer manual input)
+  metadata?: VideoMetadataResponse;
   // Optional abort signal for cancellation
   signal?: AbortSignal;
 }
 
 /**
  * YouTube Import Result
+ * UPDATED: includes metadata
  */
 export interface YouTubeImportResult {
   success: boolean;
   videoId: string;
   videoUrl: string;
-  title: string; // Generated from summary or first segment
+  title: string; // Generated from metadata.title
   content: string; // Full transcript or AI summary
   transcript?: TranscriptSegment[]; // Raw transcript (optional)
   language: string;
@@ -176,8 +223,10 @@ export interface YouTubeImportResult {
     has_ai_summary: boolean;
     model_used?: string;
     imported_at: string;
+    // Video metadata
+    video_metadata?: VideoMetadataResponse;
   };
-  // Reference info for citation
+  // Reference info for citation (auto-generated from metadata)
   referenceInfo?: YouTubeReferenceInfo;
   error?: string;
 }
@@ -193,6 +242,8 @@ export interface YouTubeSourceMetadata {
   has_ai_summary: boolean;
   model_used?: string;
   imported_at: string;
+  // Video metadata
+  video_metadata?: VideoMetadataResponse;
 }
 
 /**

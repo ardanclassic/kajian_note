@@ -60,6 +60,7 @@ kajian_note/
 │   ├── 📁 components/
 │   │   │
 │   │   ├── 📁 common/
+│   │   │   ├── 📄 ConfirmDialog.tsx
 │   │   │   ├── 📄 Loading.tsx
 │   │   │   └── 📄 PageHeader.tsx
 │   │   │
@@ -99,6 +100,17 @@ kajian_note/
 │   │   │       ├── 📄 PricingTable.tsx
 │   │   │       ├── 📄 SubscriptionCard.tsx
 │   │   │       └── 📄 UpgradeModal.tsx
+│   │   │
+│   │   ├── 📁 home/
+│   │   │   │
+│   │   |   ├── 📄 CTASection.tsx
+│   │   |   ├── 📄 FeaturesSection.tsx
+│   │   |   ├── 📄 Footer.tsx
+│   │   |   ├── 📄 HeroSection.tsx
+│   │   |   ├── 📄 HowItWorksSection.tsx
+│   │   |   ├── 📄 index.tsx
+│   │   |   ├── 📄 PricingSection.tsx
+│   │   |   └── 📄 StatsSection.tsx
 │   │   │
 │   │   └── 📁 ui/
 │   │       ├── 📄 alert.tsx

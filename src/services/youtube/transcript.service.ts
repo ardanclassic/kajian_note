@@ -2,7 +2,7 @@
  * YouTube Transcript Service
  * Handles YouTube Transcript API operations
  *
- * UPDATED: Added async task-based summarization with polling
+ * UPDATED: Added video metadata fetching for auto-reference
  */
 
 import { AxiosError } from "axios";
@@ -10,6 +10,8 @@ import { youtubeAPI } from "@/lib/axios";
 import type {
   YouTubeUrlToIdRequest,
   YouTubeUrlToIdResponse,
+  VideoMetadataRequest,
+  VideoMetadataResponse,
   TranscriptRequest,
   TranscriptResponse,
   TranscriptTextRequest,
@@ -21,6 +23,7 @@ import type {
   PollTaskStatusResponse,
   YouTubeImportOptions,
   YouTubeImportResult,
+  YouTubeReferenceInfo,
   YouTubeAPIError,
 } from "@/types/youtube.types";
 import { env } from "@/config/env";
@@ -30,6 +33,7 @@ import { env } from "@/config/env";
  */
 const endpoints = {
   urlToId: "/url-to-id",
+  videoMetadata: "/video-metadata", // NEW
   transcript: "/transcript",
   transcriptText: "/transcript/text",
   transcriptSummarize: "/transcript/summarize", // OLD - Sync
@@ -50,7 +54,46 @@ const defaultConfig = {
     retryDelay: 3000, // Initial retry delay: 3s
     maxRetries: 3, // Max retry attempts on error
   },
+  metadata: {
+    extractSpeaker: true, // Extract speaker using LLM by default
+    defaultModel: "qwen/qwen3-8b", // Default model for speaker extraction
+  },
 };
+
+/**
+ * ========================================
+ * VIDEO METADATA FUNCTIONS (NEW)
+ * ========================================
+ */
+
+/**
+ * Fetch video metadata including title, channel, speaker, thumbnail
+ * NEW: Auto-fetch metadata for reference citation
+ */
+export const fetchVideoMetadata = async (
+  url: string,
+  extractSpeaker: boolean = defaultConfig.metadata.extractSpeaker,
+  model: string = defaultConfig.metadata.defaultModel
+): Promise<VideoMetadataResponse> => {
+  try {
+    const response = await youtubeAPI.post<VideoMetadataResponse>(endpoints.videoMetadata, {
+      url,
+      extract_speaker: extractSpeaker,
+      model,
+    } as VideoMetadataRequest);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching video metadata:", error);
+    throw handleAPIError(error);
+  }
+};
+
+/**
+ * ========================================
+ * END VIDEO METADATA FUNCTIONS
+ * ========================================
+ */
 
 /**
  * Extract video ID from YouTube URL
@@ -219,6 +262,13 @@ const pollWithRetry = async (
         if (!status.result) {
           throw new Error("Hasil summary tidak ditemukan");
         }
+
+        // ✅ ADD THIS
+        if (!status.result.summary || status.result.summary.trim().length === 0) {
+          console.error("Empty summary:", status.result);
+          throw new Error("Summary kosong dari API. Coba gunakan mode timestamp.");
+        }
+
         return status.result;
       }
 
@@ -285,7 +335,8 @@ export const fetchTranscriptSummaryAsync = async (
  */
 
 /**
- * Import YouTube video and prepare note data (UPDATED - Uses async flow)
+ * Import YouTube video and prepare note data
+ * UPDATED: Auto-fetch metadata and generate reference
  */
 export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise<YouTubeImportResult> => {
   try {
@@ -293,7 +344,38 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
     const videoId = await extractVideoId(options.url);
     const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
-    // Step 2: Fetch transcript (with or without AI summary)
+    // Step 2: Fetch metadata (NEW - auto-fetch)
+    let metadata: VideoMetadataResponse | undefined;
+    let referenceInfo: YouTubeReferenceInfo | undefined;
+
+    if (options.metadata) {
+      // Use provided metadata if available
+      metadata = options.metadata;
+    } else {
+      // Fetch metadata automatically
+      try {
+        metadata = await fetchVideoMetadata(options.url);
+      } catch (error) {
+        console.warn("Failed to fetch video metadata, continuing without it:", error);
+        // Continue without metadata
+      }
+    }
+
+    // Build reference info from metadata
+    if (metadata) {
+      referenceInfo = {
+        title: metadata.title,
+        speaker: metadata.speaker_name !== "unknown" ? metadata.speaker_name : "Tidak diketahui",
+        channelName: metadata.channel_name,
+        videoUrl: metadata.video_url,
+        thumbnailUrl: metadata.thumbnail_url,
+        duration: metadata.duration,
+        uploadDate: metadata.upload_date,
+        viewCount: metadata.view_count,
+      };
+    }
+
+    // Step 3: Fetch transcript (with or without AI summary)
     if (options.useAISummary) {
       // Use AI summarization (ASYNC)
       const summaryData = await fetchTranscriptSummaryAsync(
@@ -304,8 +386,8 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
         options.signal
       );
 
-      // Generate title from video URL or first part of summary
-      const title = generateTitle(summaryData.summary, videoUrl);
+      // Use metadata title, fallback to generated title
+      const title = metadata?.title || generateTitle(summaryData.summary, videoUrl);
 
       return {
         success: true,
@@ -314,7 +396,7 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
         title,
         content: summaryData.summary,
         language: summaryData.language_used,
-        referenceInfo: options.referenceInfo,
+        referenceInfo,
         metadata: {
           source_type: "youtube",
           source_url: videoUrl,
@@ -324,14 +406,15 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
           has_ai_summary: true,
           model_used: summaryData.model_used,
           imported_at: new Date().toISOString(),
+          video_metadata: metadata,
         },
       };
     } else {
       // Use plain transcript
       const transcriptData = await fetchTranscript(videoId, options.languages);
 
-      // Generate title from video URL
-      const title = generateTitle(transcriptData.transcript[0]?.text || "", videoUrl);
+      // Use metadata title, fallback to generated title
+      const title = metadata?.title || generateTitle(transcriptData.transcript[0]?.text || "", videoUrl);
 
       // Combine transcript segments into content
       const content = transcriptData.transcript.map((seg) => `[${seg.formatted_time}] ${seg.text}`).join("\n");
@@ -344,7 +427,7 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
         content,
         transcript: transcriptData.transcript,
         language: transcriptData.language_used,
-        referenceInfo: options.referenceInfo,
+        referenceInfo,
         metadata: {
           source_type: "youtube",
           source_url: videoUrl,
@@ -353,6 +436,7 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
           total_segments: transcriptData.total_segments,
           has_ai_summary: false,
           imported_at: new Date().toISOString(),
+          video_metadata: metadata,
         },
       };
     }
@@ -368,7 +452,7 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
         title: "",
         content: "",
         language: "",
-        referenceInfo: options.referenceInfo,
+        referenceInfo: undefined,
         metadata: {
           source_type: "youtube",
           source_url: options.url,
@@ -389,7 +473,7 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
       title: "",
       content: "",
       language: "",
-      referenceInfo: options.referenceInfo,
+      referenceInfo: undefined,
       metadata: {
         source_type: "youtube",
         source_url: options.url,
@@ -405,7 +489,7 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
 };
 
 /**
- * Generate title from content
+ * Generate title from content (fallback)
  */
 const generateTitle = (content: string, videoUrl: string): string => {
   if (!content) {

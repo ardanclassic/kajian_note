@@ -247,10 +247,10 @@ button:focus-visible {
 }
 
 /* Paragraphs */
-.prose-editor .ProseMirror p {
+/* .prose-editor .ProseMirror p {
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
-}
+} */
 
 .prose-editor .ProseMirror p:first-child {
   margin-top: 0;

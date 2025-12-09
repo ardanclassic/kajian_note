@@ -31,10 +31,10 @@ export const youtubeAPI: AxiosInstance = axios.create({
  */
 youtubeAPI.interceptors.request.use(
   (config) => {
-    if (env.app.env === "development") {
-      console.log(`[YouTube API Request] ${config.method?.toUpperCase()} ${config.url}`);
-      console.log(`[YouTube API] Auth Header: ${config.headers.Authorization ? "✓ Present" : "✗ Not Set"}`);
-    }
+    // if (env.app.env === "development") {
+    //   console.log(`[YouTube API Request] ${config.method?.toUpperCase()} ${config.url}`);
+    //   console.log(`[YouTube API] Auth Header: ${config.headers.Authorization ? "✓ Present" : "✗ Not Set"}`);
+    // }
     return config;
   },
   (error) => {
@@ -49,12 +49,12 @@ youtubeAPI.interceptors.request.use(
  */
 youtubeAPI.interceptors.response.use(
   (response) => {
-    if (env.app.env === "development") {
-      console.log(
-        `[YouTube API Response] ${response.config.method?.toUpperCase()} ${response.config.url}`,
-        response.data
-      );
-    }
+    // if (env.app.env === "development") {
+    //   console.log(
+    //     `[YouTube API Response] ${response.config.method?.toUpperCase()} ${response.config.url}`,
+    //     response.data
+    //   );
+    // }
     return response;
   },
   (error: AxiosError) => {

@@ -1,13 +1,13 @@
 /**
- * Supabase Client Configuration - SIMPLE VERSION
- * Back to basics, no complex reconnect logic
+ * Supabase Client Configuration - MINIMAL & CORRECT
+ * Back to basics with proper configuration
  */
 
 import { createClient } from "@supabase/supabase-js";
 import { env } from "@/config/env";
 
 /**
- * Create Supabase client - SIMPLE
+ * Create Supabase client with proper session persistence
  */
 export const supabase = createClient(env.supabase.url, env.supabase.anonKey, {
   auth: {

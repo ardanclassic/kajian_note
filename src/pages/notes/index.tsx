@@ -1,22 +1,46 @@
 /**
- * Notes Page - IMPROVED UI/UX
- * Modern, clean, interactive, and mobile-responsive
+ * Notes Page - Dark Mode with Emerald Glow
+ * Refactored: Following design-guidelines.md
+ * ✅ Pure black background
+ * ✅ Emerald glow accents
+ * ✅ Modern, clean interface
  */
 
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { PageHeader } from "@/components/common/PageHeader";
 import { NoteList } from "@/components/features/notes/NoteList";
 import { NoteSearch } from "@/components/features/notes/NoteSearch";
 import { SubscriptionLimitBanner } from "@/components/features/notes/SubscriptionLimitBanner";
-import { Plus, FileText, Loader2, X, Sparkles, BookOpen, Globe, Lock, Tag as TagIcon, TrendingUp } from "lucide-react";
+import { Plus, FileText, Loader2, X, Sparkles, BookOpen, Globe, Lock, Tag, TrendingUp, RefreshCw } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { useNotesStore } from "@/store/notesStore";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
-import type { NoteFilterOptions, NoteSortOptions, NoteSummary } from "@/types/notes.types";
+
+// Types (akan diimport dari project)
+interface NoteFilterOptions {
+  search?: string;
+  tags?: string[];
+  isPublic?: boolean;
+  isPinned?: boolean;
+}
+
+interface NoteSortOptions {
+  field: string;
+  order: "asc" | "desc";
+}
+
+interface NoteSummary {
+  id: string;
+  title: string;
+  content: string;
+  tags: string[];
+  isPublic: boolean;
+  isPinned: boolean;
+  createdAt: string;
+  userId: string;
+}
 
 export default function Notes() {
   const navigate = useNavigate();
@@ -99,8 +123,6 @@ export default function Notes() {
 
     try {
       await deleteNote(noteId, user.id);
-
-      // Refresh data
       await Promise.all([fetchUserTags(user.id), fetchStatistics(user.id), fetchUsage(user.id)]);
     } catch (error: any) {
       alert(error.message || "Gagal menghapus catatan");
@@ -125,7 +147,7 @@ export default function Notes() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-background via-background to-primary/5">
+    <div className="min-h-screen bg-black">
       {/* Page Header with Stats */}
       <PageHeader
         badgeIcon={BookOpen}
@@ -136,8 +158,11 @@ export default function Notes() {
         backTo="/dashboard"
         backLabel="Dashboard"
         actions={
-          <Button onClick={handleCreateNote} size="lg" className="shadow-lg hover:shadow-xl transition-shadow">
-            <Plus className="w-4 h-4" />
+          <Button
+            onClick={handleCreateNote}
+            className="bg-gray-900 text-white border border-emerald-500/50 hover:bg-emerald-500/10 shadow-lg shadow-emerald-500/20 transition-all"
+          >
+            <Plus className="w-4 h-4 mr-2" />
             <span className="hidden sm:inline">Buat Catatan</span>
           </Button>
         }
@@ -168,55 +193,59 @@ export default function Notes() {
       />
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-6 md:py-8">
-        <div className="max-w-7xl mx-auto space-y-6">
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <div className="max-w-7xl mx-auto space-y-8">
           {/* Usage Banner */}
           {usage && (
-            <div className="animate-in fade-in slide-in-from-top-4 duration-500">
+            <div>
               <SubscriptionLimitBanner usage={usage} compact />
             </div>
           )}
 
           {/* Search & Filter Bar */}
-          <div className="animate-in fade-in slide-in-from-top-4 duration-500 delay-100">
+          <div>
             <NoteSearch availableTags={tags} onSearch={handleSearch} onClear={handleClearSearch} />
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="animate-in fade-in slide-in-from-top-4 duration-500">
-              <Card className="border-destructive/50 bg-destructive/5">
-                <CardContent className="py-4">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-destructive/10 rounded-full">
-                        <X className="w-5 h-5 text-destructive" />
-                      </div>
-                      <p className="text-sm font-medium text-destructive">{error}</p>
-                    </div>
-                    <Button variant="ghost" size="sm" onClick={clearError}>
-                      <X className="w-4 h-4" />
-                    </Button>
+            <div className="relative bg-black rounded-2xl p-6 border border-red-500/50 overflow-hidden">
+              <div className="absolute inset-0 bg-red-500/5" />
+              <div className="relative z-10 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-red-500/20 border border-red-500/50 rounded-xl flex items-center justify-center">
+                    <X className="w-5 h-5 text-red-400" />
                   </div>
-                </CardContent>
-              </Card>
+                  <p className="text-sm font-medium text-red-400">{error}</p>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearError}
+                  className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
           )}
 
           {/* Loading State */}
           {isLoading && !userNotes.length && (
-            <div className="flex flex-col items-center justify-center py-20 animate-in fade-in duration-500">
-              <div className="relative">
-                <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full animate-pulse" />
-                <Loader2 className="w-12 h-12 animate-spin text-primary relative" />
+            <div className="relative bg-black rounded-2xl p-20 border border-gray-800 overflow-hidden">
+              {/* Glow Orb */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl animate-pulse" />
+
+              <div className="relative z-10 flex flex-col items-center justify-center text-center">
+                <Loader2 className="w-12 h-12 animate-spin text-emerald-400 mb-6" />
+                <p className="text-gray-400 font-medium">Memuat catatan...</p>
               </div>
-              <p className="text-muted-foreground mt-6 font-medium">Memuat catatan...</p>
             </div>
           )}
 
           {/* Notes List */}
           {!isLoading || userNotes.length > 0 ? (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-200">
+            <div>
               <NoteList
                 notes={userNotes}
                 currentUserId={user?.id}
@@ -234,66 +263,86 @@ export default function Notes() {
 
           {/* Empty State - First Time User */}
           {userNotes.length === 0 && !isLoading && (
-            <div className="animate-in fade-in zoom-in-95 duration-700 delay-300">
-              <Card className="border-2 border-dashed border-primary/30 bg-linear-to-br from-primary/5 via-background to-primary/10 shadow-lg hover:shadow-xl transition-all hover:border-primary/50">
-                <CardContent className="p-8 md:p-12 text-center">
-                  <div className="inline-flex p-6 bg-linear-to-br from-primary/20 to-primary/10 rounded-full mb-6 animate-pulse">
-                    <Sparkles className="w-12 h-12 text-primary" />
+            <div className="relative bg-black rounded-2xl p-12 md:p-16 border border-gray-800 border-dashed overflow-hidden">
+              {/* Grid Pattern */}
+              <div className="absolute inset-0 opacity-[0.015]">
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(rgba(16,185,129,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.5) 1px, transparent 1px)",
+                    backgroundSize: "80px 80px",
+                  }}
+                />
+              </div>
+
+              {/* Glow Orbs */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
+
+              {/* Content */}
+              <div className="relative z-10 text-center">
+                <div className="inline-flex w-20 h-20 bg-gray-900 border border-emerald-500/50 rounded-2xl items-center justify-center mb-6 shadow-lg shadow-emerald-500/20">
+                  <Sparkles className="w-10 h-10 text-emerald-400" />
+                </div>
+
+                <h3 className="text-3xl font-black text-white mb-3">Mulai Mencatat!</h3>
+
+                <p className="text-gray-400 mb-8 max-w-md mx-auto">
+                  Belum ada catatan. Klik tombol "Buat Catatan" di atas untuk membuat catatan kajian pertama Anda.
+                </p>
+
+                <Button
+                  onClick={handleCreateNote}
+                  className="mb-8 bg-gray-900 text-white border border-emerald-500/50 hover:bg-emerald-500/10 shadow-lg shadow-emerald-500/20 px-8 py-6 text-base"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Buat Catatan Pertama
+                </Button>
+
+                <div className="flex flex-wrap gap-3 justify-center pt-6 border-t border-gray-800">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 border border-gray-800 text-gray-400 rounded-lg text-sm">
+                    <Tag className="w-4 h-4" />
+                    Gunakan tags
                   </div>
-
-                  <h3 className="text-2xl font-bold mb-3 bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                    Mulai Mencatat!
-                  </h3>
-
-                  <p className="text-muted-foreground mb-8 max-w-md mx-auto text-base">
-                    Belum ada catatan. Klik tombol "Buat Catatan" di atas untuk membuat catatan kajian pertama Anda.
-                  </p>
-
-                  <Button
-                    onClick={handleCreateNote}
-                    size="lg"
-                    className="mb-8 shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                  >
-                    <Plus className="w-5 h-5" />
-                    Buat Catatan Pertama
-                  </Button>
-
-                  <div className="flex flex-wrap gap-3 justify-center pt-6 border-t border-primary/10">
-                    <Badge variant="secondary" className="gap-2 px-4 py-2 text-sm">
-                      <TagIcon className="w-4 h-4" />
-                      Gunakan tags
-                    </Badge>
-                    <Badge variant="secondary" className="gap-2 px-4 py-2 text-sm">
-                      <Globe className="w-4 h-4" />
-                      Bagikan publik
-                    </Badge>
-                    <Badge variant="secondary" className="gap-2 px-4 py-2 text-sm">
-                      <FileText className="w-4 h-4" />
-                      Export PDF
-                    </Badge>
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 border border-gray-800 text-gray-400 rounded-lg text-sm">
+                    <Globe className="w-4 h-4" />
+                    Bagikan publik
                   </div>
-                </CardContent>
-              </Card>
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 border border-gray-800 text-gray-400 rounded-lg text-sm">
+                    <FileText className="w-4 h-4" />
+                    Export PDF
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
-          {/* Quick Stats - Show when has notes */}
+          {/* Quick Stats */}
           {userNotes.length > 0 && statistics && (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-300">
-              <Card className="bg-linear-to-r from-primary/5 to-primary/10 border-primary/20 py-2">
-                <CardContent>
-                  <div className="flex items-center justify-between gap-4 flex-wrap">
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="w-5 h-5 text-primary" />
-                      <span className="text-sm font-medium">Total {statistics.totalNotes} catatan</span>
-                    </div>
-                    <Button variant="ghost" size="sm" onClick={handleRefresh} disabled={isRefreshing}>
-                      <Loader2 className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`} />
-                      Refresh
-                    </Button>
+            <div className="relative bg-gray-900 rounded-2xl p-6 border border-gray-800 overflow-hidden">
+              {/* Content */}
+              <div className="relative z-10 flex items-center justify-between gap-4 flex-wrap">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-black border border-emerald-500/50 flex items-center justify-center">
+                    <TrendingUp className="w-5 h-5 text-emerald-400" />
                   </div>
-                </CardContent>
-              </Card>
+                  <div>
+                    <p className="text-sm font-bold text-white">Total {statistics.totalNotes} catatan</p>
+                    <p className="text-xs text-gray-500">Terus berkembang</p>
+                  </div>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleRefresh}
+                  disabled={isRefreshing}
+                  className="text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10"
+                >
+                  <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`} />
+                  Refresh
+                </Button>
+              </div>
             </div>
           )}
         </div>

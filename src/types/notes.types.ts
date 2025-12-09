@@ -115,7 +115,7 @@ export interface NoteFilterOptions {
 /**
  * Note sort options
  */
-export type NoteSortField = "title" | "createdAt" | "updatedAt";
+export type NoteSortField = "title" | "createdAt" | "updatedAt" | string;
 export type NoteSortOrder = "asc" | "desc";
 
 export interface NoteSortOptions {
