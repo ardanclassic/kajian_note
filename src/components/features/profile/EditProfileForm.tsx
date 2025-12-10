@@ -172,15 +172,15 @@ export default function EditProfileForm() {
 
       {/* Telegram Verification Section */}
       {telegramConfigured && (
-        <Card className="p-6 border-2 border-dashed">
+        <Card className="md:p-6 border-none bg-transparent md:border-2 md:border-dashed">
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row gap-2 items-start justify-between">
               <div className="flex items-center gap-2">
                 <Send className="w-5 h-5 text-blue-500" />
                 <h3 className="font-semibold text-lg">Verifikasi Telegram</h3>
               </div>
               {isTelegramVerified ? (
-                <Badge variant="default" className="gap-1 bg-green-500">
+                <Badge variant="default" className="gap-1 bg-sky-500">
                   <CheckCircle2 className="w-3 h-3" />
                   Terverifikasi
                 </Badge>
@@ -194,10 +194,9 @@ export default function EditProfileForm() {
 
             {isTelegramVerified ? (
               // Verified State
-              <Alert className="border-green-500/50 bg-green-500/10">
-                <CheckCircle2 className="w-4 h-4 text-green-600" />
+              <Alert className="border-sky-500/50 bg-sky-500/10">
                 <AlertDescription className="text-sm">
-                  <strong className="text-green-600">Telegram Anda sudah terverifikasi!</strong>
+                  <strong className="text-sky-300">Telegram Anda sudah terverifikasi!</strong>
                   <p className="mt-1 text-muted-foreground">
                     Anda dapat menggunakan fitur "Send to Telegram" untuk menerima PDF catatan langsung di Telegram.
                   </p>

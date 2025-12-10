@@ -343,17 +343,17 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
       >
-        <DialogHeader>
+        <DialogHeader className=" h-fit">
           <DialogTitle className="flex items-center gap-2 text-lg">
             <Youtube className="w-5 h-5 text-red-500" />
             Import dari YouTube
           </DialogTitle>
-          <DialogDescription className="text-sm">
-            Link Video YouTube untuk membuat catatan kajian secara otomatis.
+          <DialogDescription className="text-sm text-left">
+            Link video youTube untuk membuat catatan secara otomatis
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
+        <div className="space-y-4 py-4 h-fit">
           {/* URL Input */}
           <div className="space-y-2">
             <Label htmlFor="youtube-url" className="text-sm font-medium">
@@ -555,7 +555,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
             variant="outline"
             onClick={handleCancel}
             disabled={isFetchingMetadata}
-            className="flex-1 sm:flex-initial"
+            className="flex-initial"
           >
             {isLoading ? "Batalkan" : "Batal"}
           </Button>
@@ -564,7 +564,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
             size={"sm"}
             onClick={handleImport}
             disabled={isLoading || isFetchingMetadata || !!urlError || !url.trim()}
-            className="flex-1 sm:flex-initial bg-red-500 hover:bg-red-600 text-white"
+            className="flex-initial bg-red-500 hover:bg-red-600 text-white"
           >
             {isLoading ? (
               <>

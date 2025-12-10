@@ -36,6 +36,7 @@ import {
   getTimeSinceLastSave,
 } from "@/utils/formPersistence";
 import { PenLine, Youtube, Sparkles, FileText, ChevronLeft, RotateCcw, AlertTriangle } from "lucide-react";
+import { ScrollToTopButton } from "@/components/common/ScrollToTopButton";
 
 type InputMode = "manual" | "youtube";
 
@@ -316,9 +317,9 @@ export default function CreateNote() {
     }
   };
 
-  // Handle cancel (from UI button - no confirmation)
+  // Handle back button
   const handleCancel = () => {
-    navigate("/notes");
+    navigate(-1);
   };
 
   // Handle confirmed back (from confirmation dialog)
@@ -621,6 +622,9 @@ export default function CreateNote() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Floating Scroll to Top Button */}
+      <ScrollToTopButton bottomPosition="bottom-20" />
     </motion.div>
   );
 }

@@ -86,11 +86,6 @@ export default function Dashboard() {
       limit: usage?.notesLimit === Infinity ? "∞" : usage?.notesLimit ?? 0,
       icon: BookOpen,
     },
-    {
-      title: "Catatan Publik",
-      value: statistics?.publicNotes ?? 0,
-      icon: Share2,
-    },
   ];
 
   const quickActions = [
@@ -231,7 +226,7 @@ export default function Dashboard() {
                     key={idx}
                     whileTap={{ scale: 0.97 }}
                     onClick={() => navigate(action.path)}
-                    className="group relative bg-black rounded-2xl p-6 border border-gray-800 hover:border-emerald-500/30 transition-all duration-500 hover:-translate-y-1 overflow-hidden text-left"
+                    className="group relative bg-[#2e8b57]/30! rounded-2xl p-6 border border-gray-800 hover:border-emerald-500/30 transition-all duration-500 hover:-translate-y-1 overflow-hidden text-left"
                   >
                     {/* Glow Effect */}
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">

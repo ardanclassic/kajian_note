@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { BookOpen, Twitter, Instagram, Mail, Heart, Quote } from "lucide-react";
-import '@/styles/arabic-font.css';
+import "@/styles/arabic-font.css";
 
 interface FooterProps {
   onNavigate: (path: string) => void;
@@ -43,7 +43,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         />
       </div>
 
-      <div className="relative container mx-auto px-4 max-w-7xl">
+      <div className="relative container mx-auto px-16 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
           {/* Brand Section */}
           <motion.div
@@ -70,11 +70,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </p>
 
             {/* Social Media */}
-            <div className="flex gap-3 pt-2">
+            {/* <div className="flex gap-3 pt-2">
               <SocialIcon icon={Twitter} href="#" delay={0} />
               <SocialIcon icon={Instagram} href="#" delay={0.1} />
               <SocialIcon icon={Mail} href="#" delay={0.2} />
-            </div>
+            </div> */}
           </motion.div>
 
           {/* Islamic Quote Section */}

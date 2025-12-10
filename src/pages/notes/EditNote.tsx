@@ -175,8 +175,8 @@ export default function EditNote() {
       <PageHeader
         badgeIcon={Edit3}
         badgeText="Edit Note"
-        title="Edit Catatan"
-        description="Perbarui catatan kajian Anda"
+        title=""
+        description=""
         actions={
           <Button variant="outline" onClick={handleBack}>
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -189,33 +189,12 @@ export default function EditNote() {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Edit Form */}
-          <div className="bg-linear-to-br from-blue-500/5 to-card border-2 border-blue-500/20 rounded-lg p-6 md:p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-3 bg-blue-500/10 rounded-lg">
-                <Edit3 className="w-6 h-6 text-blue-500" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h2 className="text-xl font-semibold">Edit Catatan</h2>
-                <p className="text-sm text-muted-foreground truncate">{currentNote.title}</p>
-              </div>
-            </div>
-
             <NoteForm
               note={currentNote}
               onSubmit={handleUpdateNote}
               onCancel={handleCancel}
               isSubmitting={isSubmitting}
             />
-          </div>
-
-          {/* Info Card */}
-          <div className="bg-muted/50 border border-border rounded-lg p-6">
-            <h3 className="font-semibold mb-3">ℹ️ Informasi</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>• Perubahan akan langsung tersimpan setelah Anda klik "Simpan"</li>
-              <li>• Tag yang dihapus tidak dapat dikembalikan</li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>

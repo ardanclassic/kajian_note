@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
+import { ScrollToTopButton } from '@/components/common/ScrollToTopButton';
 
 export default function ViewNote() {
   const { id } = useParams<{ id: string }>();
@@ -260,6 +261,9 @@ export default function ViewNote() {
           </Card>
         </motion.div>
       </div>
+
+      {/* Floating Scroll to Top Button */}
+      <ScrollToTopButton />
     </div>
   );
 }

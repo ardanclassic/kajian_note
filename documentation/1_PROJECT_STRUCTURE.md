@@ -63,6 +63,7 @@ kajian_note/
 │   │   │   ├── 📄 ConfirmDialog.tsx
 │   │   │   ├── 📄 Loading.tsx
 │   │   │   └── 📄 PageHeader.tsx
+│   │   │   └── 📄 ScrollToTopButton.tsx
 │   │   │
 │   │   ├── 📁 features/
 │   │   │   │

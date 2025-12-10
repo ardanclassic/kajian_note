@@ -64,25 +64,29 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
         {/* Content */}
         <div className="relative z-10 h-full flex flex-col">
-          {/* Icon with Glow */}
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            className={`relative inline-flex w-14 h-14 rounded-xl ${
-              popular ? "bg-gray-900 border border-emerald-500/30" : "bg-gray-900 border border-gray-800"
-            } items-center justify-center mb-6 shadow-lg group-hover:shadow-emerald-500/30 transition-shadow`}
-          >
-            <div className="absolute inset-0 bg-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
-            <Icon className={`relative h-7 w-7 ${popular ? "text-emerald-400" : "text-emerald-400"}`} />
-          </motion.div>
+          <div className="flex gap-3">
+            {/* Icon with Glow */}
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              className={`relative inline-flex w-14 h-14 rounded-xl ${
+                popular ? "bg-gray-900 border border-emerald-500/30" : "bg-gray-900 border border-gray-800"
+              } items-center justify-center mb-6 shadow-lg group-hover:shadow-emerald-500/30 transition-shadow`}
+            >
+              <div className="absolute inset-0 bg-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
+              <Icon className={`relative h-7 w-7 ${popular ? "text-emerald-400" : "text-emerald-400"}`} />
+            </motion.div>
 
-          {/* Tier Info */}
-          <h3 className="text-2xl font-bold text-white mb-2">{name}</h3>
-          <p className="text-gray-400 text-sm mb-4">{description}</p>
+            {/* Tier Info */}
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-2">{name}</h3>
+              <p className="text-gray-400 text-sm mb-4">{description}</p>
+            </div>
+          </div>
 
           {/* Price */}
           <div className="mb-6">
             <div className="flex items-baseline gap-2">
-              <span className={`text-5xl font-black ${popular ? "text-emerald-400" : "text-white"}`}>{price}</span>
+              <span className={`text-3xl md:text-5xl font-black ${popular ? "text-emerald-400" : "text-white"}`}>{price}</span>
               <span className="text-gray-400">{period}</span>
             </div>
           </div>
@@ -166,7 +170,6 @@ export const PricingSection: React.FC<{ isAuthenticated: boolean; onNavigate: (p
         "Username + PIN login",
         "Akses via web & mobile",
         "AI Summary",
-        "Import dari YouTube",
       ],
       notIncluded: ["Export PDF", "Kirim ke Telegram", "Bagikan via WhatsApp"],
       icon: BookOpen,

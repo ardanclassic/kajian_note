@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
 import { HeroSection, FeaturesSection, HowItWorksSection, PricingSection, CTASection, Footer } from "@/components/home";
+import { ScrollToTopButton } from "@/components/common/ScrollToTopButton";
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ export const Home: React.FC = () => {
       <FeaturesSection />
 
       {/* How It Works Section - REFACTORED */}
-      <HowItWorksSection />
+      <HowItWorksSection isAuthenticated={isAuthenticated} />
 
       {/* Pricing Section */}
       <PricingSection isAuthenticated={isAuthenticated} onNavigate={handleNavigate} />
@@ -40,6 +41,9 @@ export const Home: React.FC = () => {
 
       {/* Footer - REFACTORED */}
       <Footer onNavigate={handleNavigate} />
+
+      {/* Floating Scroll to Top Button */}
+      <ScrollToTopButton />
     </div>
   );
 };

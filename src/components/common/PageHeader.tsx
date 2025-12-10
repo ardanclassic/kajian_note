@@ -99,7 +99,7 @@ export function PageHeader({
         className
       )}
     >
-      <div className="container mx-auto px-4 py-8 md:py-12">
+      <div className="container mx-auto px-4 py-4 md:py-6">
         <div className="max-w-7xl mx-auto">
           {/* Back Button */}
           {showBackButton && (
@@ -112,11 +112,11 @@ export function PageHeader({
           )}
 
           {/* Title Section */}
-          <div className="flex items-start justify-between gap-4 mb-6">
+          <div className="flex items-center justify-between gap-4">
             <div className="space-y-2">
               {/* Badge */}
               {(BadgeIcon || badgeText) && (
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full mb-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full mb-0">
                   {BadgeIcon && <BadgeIcon className="h-3.5 w-3.5 text-primary" />}
                   {badgeText && <span className="text-xs font-medium">{badgeText}</span>}
                 </div>
@@ -203,7 +203,7 @@ export function SimplePageHeader({
         className
       )}
     >
-      <div className="container mx-auto px-4 py-8 md:py-12">
+      <div className="container mx-auto px-4 py-4 md:py-6">
         <div className="max-w-7xl mx-auto">
           {/* Back Button */}
           {showBackButton && (
@@ -219,7 +219,7 @@ export function SimplePageHeader({
             <div className="space-y-2">
               {/* Badge */}
               {(BadgeIcon || badgeText) && (
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full mb-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full">
                   {BadgeIcon && <BadgeIcon className="h-3.5 w-3.5 text-primary" />}
                   {badgeText && <span className="text-xs font-medium">{badgeText}</span>}
                 </div>

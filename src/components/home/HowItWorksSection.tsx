@@ -10,6 +10,9 @@ interface StepCardProps {
   index: number;
   isLast?: boolean;
 }
+interface HowItWorksSectionProps {
+  isAuthenticated: boolean;
+}
 
 const StepCard: React.FC<StepCardProps> = ({ number, icon: Icon, title, description, index, isLast = false }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -79,7 +82,7 @@ const StepCard: React.FC<StepCardProps> = ({ number, icon: Icon, title, descript
   );
 };
 
-export const HowItWorksSection: React.FC = () => {
+export const HowItWorksSection: React.FC<HowItWorksSectionProps> = ({ isAuthenticated }) => {
   const steps = [
     {
       number: "1",
@@ -150,27 +153,28 @@ export const HowItWorksSection: React.FC = () => {
           ))}
         </div>
 
-        {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-20 text-center"
-        >
-          <div className="inline-flex flex-col items-center gap-6 p-10 bg-black rounded-2xl border border-gray-800 max-w-2xl hover:border-emerald-500/30 transition-colors">
-            <h3 className="text-2xl md:text-3xl font-bold text-white">Siap Memulai?</h3>
-            <p className="text-gray-400">Bergabunglah dengan jamaah yang sudah merasakan kemudahan mencatat kajian</p>
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-gray-900 border border-emerald-500/50 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all flex items-center gap-2"
-            >
-              Daftar Gratis Sekarang
-              <ArrowRight className="h-5 w-5" />
-            </motion.button>
-          </div>
-        </motion.div>
+        {isAuthenticated ? null : (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-20 text-center"
+          >
+            <div className="inline-flex flex-col items-center gap-6 p-10 bg-black rounded-2xl border border-gray-800 max-w-2xl hover:border-emerald-500/30 transition-colors">
+              <h3 className="text-2xl md:text-3xl font-bold text-white">Siap Memulai?</h3>
+              <p className="text-gray-400">Bergabunglah dengan jamaah yang sudah merasakan kemudahan mencatat kajian</p>
+              <motion.button
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-4 bg-gray-900 border border-emerald-500/50 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all flex items-center gap-2"
+              >
+                Daftar Gratis Sekarang
+                <ArrowRight className="h-5 w-5" />
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
       </div>
     </section>
   );

@@ -1,10 +1,11 @@
 /**
- * TiptapEditor Component - ENHANCED UI/UX
- * Compact, clean, beautiful rich text editor
- * With smooth animations & mobile responsive
+ * TiptapEditor Component - ENHANCED with STICKY TOOLBAR (Page Scroll)
+ * - Toolbar sticky relatif terhadap viewport
+ * - Editor content expand natural (NO internal scroll)
+ * - Scrollbar di window/page level
  */
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -41,6 +42,8 @@ export function TiptapEditor({
   disabled = false,
   minHeight = "250px",
 }: TiptapEditorProps) {
+  const [isScrolled, setIsScrolled] = useState(false);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -90,6 +93,16 @@ export function TiptapEditor({
       editor.setEditable(!disabled);
     }
   }, [disabled, editor]);
+
+  // Detect window scroll for toolbar shadow effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   if (!editor) {
     return null;
@@ -143,9 +156,18 @@ export function TiptapEditor({
   );
 
   return (
-    <div className="border-0 rounded-lg overflow-hidden bg-background">
-      {/* Toolbar - Compact & Clean */}
-      <div className="border-b bg-muted/30 backdrop-blur-sm p-2 flex flex-wrap gap-1">
+    <div className="border-0 rounded-lg overflow-visible bg-background">
+      {/* Toolbar - STICKY (relatif terhadap viewport) */}
+      <div
+        className={cn(
+          "sticky top-16 z-10",
+          "border-b bg-muted/95 backdrop-blur-md",
+          "p-2 flex flex-wrap gap-1",
+          "transition-all duration-200",
+          "rounded-t-lg",
+          isScrolled && "shadow-lg shadow-black/10"
+        )}
+      >
         {/* Text Formatting */}
         <div className="flex gap-0.5 pr-2 mr-1 border-r border-border">
           <ToolbarButton
@@ -245,9 +267,9 @@ export function TiptapEditor({
         </div>
       </div>
 
-      {/* Editor Content */}
+      {/* Editor Content - Natural Expansion (NO internal scroll) */}
       <div
-        className={cn("prose-editor transition-opacity", disabled && "opacity-60 cursor-not-allowed")}
+        className={cn("prose-editor transition-opacity p-3 md:px-0", disabled && "opacity-60 cursor-not-allowed")}
         style={{ minHeight }}
       >
         <EditorContent editor={editor} />

@@ -1,20 +1,17 @@
 /**
  * SubscriptionLimitBanner Component
- * Display subscription usage and limits warning
+ * Compact & Beautiful Design - Dark Mode with Emerald Accents
  */
 
 import { Link } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { AlertCircle, TrendingUp, FileText, ArrowRight, Sparkles } from "lucide-react";
+import { AlertCircle, FileText, ArrowRight, Sparkles } from "lucide-react";
 import type { SubscriptionUsage } from "@/types/subscription.types";
 import {
   getUsagePercentage,
   getUsageColor,
   formatLimitText,
   shouldShowUpgradePrompt,
-  getUpgradeBenefits,
 } from "@/utils/subscriptionLimits";
 
 interface SubscriptionLimitBannerProps {
@@ -25,7 +22,6 @@ interface SubscriptionLimitBannerProps {
 export function SubscriptionLimitBanner({ usage, compact = false }: SubscriptionLimitBannerProps) {
   const notesPercentage = getUsagePercentage(usage.notesCount, usage.notesLimit);
   const notesColor = getUsageColor(notesPercentage);
-
   const shouldUpgrade = shouldShowUpgradePrompt(usage.tier, usage.notesCount);
 
   // Don't show if advance tier or no warning needed
@@ -33,7 +29,7 @@ export function SubscriptionLimitBanner({ usage, compact = false }: Subscription
     return null;
   }
 
-  // Progress bar colors
+  // Progress bar colors with emerald theme
   const getColorClass = (color: string) => {
     switch (color) {
       case "red":
@@ -43,85 +39,144 @@ export function SubscriptionLimitBanner({ usage, compact = false }: Subscription
       case "yellow":
         return "bg-yellow-500";
       default:
-        return "bg-green-500";
+        return "bg-emerald-500";
     }
   };
 
-  // Compact version
+  const getTextColor = (color: string) => {
+    switch (color) {
+      case "red":
+        return "text-red-400";
+      case "orange":
+        return "text-orange-400";
+      case "yellow":
+        return "text-yellow-400";
+      default:
+        return "text-emerald-400";
+    }
+  };
+
+  const getBorderColor = (color: string) => {
+    switch (color) {
+      case "red":
+        return "border-red-500/50";
+      case "orange":
+        return "border-orange-500/50";
+      case "yellow":
+        return "border-yellow-500/50";
+      default:
+        return "border-emerald-500/50";
+    }
+  };
+
+  // Compact version - Ultra streamlined
   if (compact) {
     return (
-      <Card className="shadow-md py-2">
-        <CardContent className="px-4">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <AlertCircle className="w-5 h-5 text-orange-500 shrink-0" />
-              <div className="flex items-center gap-4 text-sm">
-                <div className="flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-orange-300" />
-                  <span className="font-medium text-orange-400">
-                    {usage.notesCount}/{formatLimitText(usage.notesLimit)} catatan
+      <div
+        className={`relative bg-gray-900/50 backdrop-blur-sm rounded-xl border ${getBorderColor(
+          notesColor
+        )} overflow-hidden`}
+      >
+        {/* Subtle glow effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-500/5 to-transparent" />
+
+        <div className="relative z-10 px-4 py-3">
+          <div className="flex items-center justify-between gap-3">
+            {/* Left: Usage Info */}
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <AlertCircle className={`w-4 h-4 ${getTextColor(notesColor)} flex-shrink-0`} />
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <FileText className="w-3.5 h-3.5 text-gray-500" />
+                  <span className={`text-sm font-bold ${getTextColor(notesColor)}`}>
+                    {usage.notesCount}/{formatLimitText(usage.notesLimit)}
                   </span>
+                  <span className="text-xs text-gray-500">catatan</span>
                 </div>
+
+                {/* Compact Progress Bar */}
+                {usage.notesLimit !== Infinity && (
+                  <div className="h-1 bg-gray-800 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full ${getColorClass(notesColor)} transition-all`}
+                      style={{ width: `${notesPercentage}%` }}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
-            <Button size="sm" asChild variant="default" className="shrink-0">
+            {/* Right: Upgrade Button */}
+            <Button
+              size="sm"
+              asChild
+              className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/50 hover:bg-emerald-500/20 hover:border-emerald-500 shadow-lg shadow-emerald-500/10 flex-shrink-0"
+            >
               <Link to="/subscription">
-                Upgrade
-                <ArrowRight className="w-4 h-4 ml-1" />
+                <Sparkles className="w-3.5 h-3.5 md:mr-1.5" />
+                <span className="hidden md:inline">Upgrade</span>
+                <ArrowRight className="w-3.5 h-3.5 ml-1 hidden md:inline" />
               </Link>
             </Button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     );
   }
 
-  // Full version with progress bars
+  // Full version - Still compact but with more info
   return (
-    <Card className="border-orange-200 bg-linear-to-r from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20">
-      <CardContent className="py-4 px-6">
+    <div
+      className={`relative bg-gray-900/50 backdrop-blur-sm rounded-xl border ${getBorderColor(
+        notesColor
+      )} overflow-hidden`}
+    >
+      {/* Glow effect */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl" />
+
+      <div className="relative z-10 p-4 md:p-5">
         <div className="space-y-4">
           {/* Header */}
           <div className="flex items-start justify-between gap-4">
-            <div className="flex items-start gap-3">
-              <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
-                <TrendingUp className="w-5 h-5 text-orange-600" />
+            <div className="flex items-start gap-3 flex-1">
+              <div className="w-10 h-10 bg-emerald-500/10 border border-emerald-500/50 rounded-lg flex items-center justify-center flex-shrink-0">
+                <AlertCircle className="w-5 h-5 text-emerald-400" />
               </div>
-              <div>
-                <h3 className="font-semibold text-orange-900 dark:text-orange-100">Penggunaan Mendekati Batas</h3>
-                <p className="text-sm text-orange-700 dark:text-orange-300 mt-1">
-                  Upgrade untuk mendapatkan lebih banyak catatan dan fitur premium
-                </p>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-bold text-white text-base">Tingkatkan Kapasitas</h3>
+                <p className="text-sm text-gray-400 mt-0.5">Upgrade untuk lebih banyak catatan & fitur premium</p>
               </div>
             </div>
 
-            <Badge variant="secondary" className="shrink-0">
+            <div className="px-2.5 py-1 bg-gray-800 border border-gray-700 rounded-md text-xs font-semibold text-gray-400 flex-shrink-0">
               {usage.tier === "free" ? "Free" : usage.tier === "premium" ? "Premium" : "Advance"}
-            </Badge>
+            </div>
           </div>
 
-          {/* Usage Stats - Notes Only */}
+          {/* Usage Progress */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="flex items-center gap-2 font-medium">
-                <FileText className="w-4 h-4" />
+              <span className="flex items-center gap-2 font-medium text-gray-300">
+                <FileText className="w-4 h-4 text-gray-500" />
                 Catatan
               </span>
-              <span className="font-semibold">
+              <span className={`font-bold ${getTextColor(notesColor)}`}>
                 {usage.notesCount}/{formatLimitText(usage.notesLimit)}
               </span>
             </div>
+
             {usage.notesLimit !== Infinity && (
-              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+              <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
                 <div
                   className={`h-full ${getColorClass(notesColor)} transition-all`}
                   style={{ width: `${notesPercentage}%` }}
                 />
               </div>
             )}
+
             {notesPercentage >= 80 && (
-              <p className="text-xs text-orange-600 dark:text-orange-400">
+              <p className={`text-xs ${getTextColor(notesColor)} font-medium`}>
                 {usage.notesRemaining === 0
                   ? "⚠️ Batas catatan tercapai!"
                   : `⚠️ Sisa ${usage.notesRemaining} catatan lagi`}
@@ -129,26 +184,11 @@ export function SubscriptionLimitBanner({ usage, compact = false }: Subscription
             )}
           </div>
 
-          {/* Benefits Preview */}
-          <div className="pt-3 border-t border-orange-200 dark:border-orange-800">
-            <p className="text-sm font-medium mb-2 flex items-center gap-2">
-              <Sparkles className="w-4 h-4" />
-              Keuntungan Upgrade:
-            </p>
-            <ul className="text-sm space-y-1 text-orange-800 dark:text-orange-200">
-              {getUpgradeBenefits(usage.tier)
-                .slice(0, 3)
-                .map((benefit, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <span className="text-orange-500 mt-0.5">•</span>
-                    <span>{benefit}</span>
-                  </li>
-                ))}
-            </ul>
-          </div>
-
-          {/* CTA */}
-          <Button className="w-full" size="lg" asChild>
+          {/* CTA Button */}
+          <Button
+            className="w-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/50 hover:bg-emerald-500/20 hover:border-emerald-500 shadow-lg shadow-emerald-500/20"
+            asChild
+          >
             <Link to="/subscription">
               <Sparkles className="w-4 h-4 mr-2" />
               Upgrade Sekarang
@@ -156,7 +196,7 @@ export function SubscriptionLimitBanner({ usage, compact = false }: Subscription
             </Link>
           </Button>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

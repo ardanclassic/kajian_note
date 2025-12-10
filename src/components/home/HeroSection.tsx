@@ -64,10 +64,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isAuthenticated, onNav
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-wrap justify-center gap-3 text-sm font-medium"
           >
-            <FeaturePill icon={Youtube} text="Import dari YouTube" />
-            <FeaturePill icon={Sparkles} text="AI Summary" />
-            <FeaturePill icon={Download} text="Export PDF" />
-            <FeaturePill icon={Zap} text="Username + PIN Only" />
+            <FeaturePill icon={Sparkles} text="AI Note Summary" />
+            <FeaturePill icon={Download} text="Mudah Digunakan" />
+            <FeaturePill icon={Zap} text="Tanpa Email" />
           </motion.div>
 
           {/* CTA Buttons */}
@@ -124,32 +123,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isAuthenticated, onNav
                 </motion.button>
               </>
             )}
-          </motion.div>
-
-          {/* Trust Indicators */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="pt-12 text-sm text-gray-400"
-          >
-            <p className="mb-4 text-gray-500">Dipercaya oleh jamaah di seluruh Indonesia</p>
-            <div className="flex flex-wrap justify-center gap-8 items-center">
-              <span className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4 text-emerald-400" />
-                <span className="font-semibold text-gray-300">Mudah Digunakan</span>
-              </span>
-              <span className="text-gray-600">•</span>
-              <span className="flex items-center gap-2">
-                <Zap className="h-4 w-4 text-emerald-400" />
-                <span className="font-semibold text-gray-300">Tanpa Email</span>
-              </span>
-              <span className="text-gray-600">•</span>
-              <span className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-emerald-400" />
-                <span className="font-semibold text-gray-300">AI Powered</span>
-              </span>
-            </div>
           </motion.div>
         </div>
       </div>
