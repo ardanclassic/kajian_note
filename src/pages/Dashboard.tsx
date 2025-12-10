@@ -75,7 +75,7 @@ export default function Dashboard() {
     { icon: Crown, label: "Subscription", onClick: () => navigate("/subscription") },
     { icon: User, label: "Profile", onClick: () => navigate("/profile") },
     { icon: Users, label: "Kelola Users", onClick: () => navigate("/admin/users"), adminOnly: true },
-    { icon: Settings, label: "Pengaturan", onClick: () => navigate("/settings") },
+    // { icon: Settings, label: "Pengaturan", onClick: () => navigate("/settings") },
     { icon: LogOut, label: "Logout", onClick: handleLogoutClick },
   ];
 
@@ -158,7 +158,7 @@ export default function Dashboard() {
                 </span>
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white">
-                <span className="arabic-tajawal ">السلام عليكم</span>, <br className="sm:hidden" />
+                <span className="arabic-tajawal ">أهلا وسهلا</span>, <br className="sm:hidden" />
                 <span className="arabic-tajawal text-emerald-400">{user.fullName}</span>
               </h1>
             </motion.div>

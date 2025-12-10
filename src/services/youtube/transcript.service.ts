@@ -223,7 +223,7 @@ export const pollTaskStatus = async (taskId: string, signal?: AbortSignal): Prom
   } catch (error) {
     // Don't log if request was aborted
     if (signal?.aborted) {
-      throw new Error("Request aborted");
+      throw new Error("Request dibatalkan");
     }
     console.error("Error polling task status:", error);
     throw handleAPIError(error);

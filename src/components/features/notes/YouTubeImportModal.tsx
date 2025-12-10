@@ -43,6 +43,7 @@ import { isAISummaryAvailable } from "@/config/youtube";
 import { debounce } from "@/lib/utils";
 import { loadFormData, saveModalData } from "@/utils/formPersistence";
 import type { YouTubeImportResult, VideoMetadataResponse } from "@/types/youtube.types";
+import CatLoading from "@/components/common/CatLoading";
 
 interface YouTubeImportModalProps {
   open: boolean;
@@ -353,200 +354,206 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 py-4 h-fit">
-          {/* URL Input */}
-          <div className="space-y-2">
-            <Label htmlFor="youtube-url" className="text-sm font-medium">
-              URL YouTube <span className="text-red-500">*</span>
-            </Label>
-            <div className="relative">
-              <Input
-                id="youtube-url"
-                placeholder="https://www.youtube.com/watch?v=..."
-                value={url}
-                onChange={handleUrlChange}
-                disabled={isLoading || isFetchingMetadata}
-                className={cn(
-                  "transition-colors pr-10",
-                  urlError ? "border-red-500 focus:border-red-500" : "focus:border-indigo-500"
-                )}
-              />
-              {isFetchingMetadata && (
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
-                </div>
-              )}
-            </div>
+        {isLoading ? (
+          <>
+            <CatLoading />
             <AnimatePresence>
-              {urlError && (
-                <motion.p
-                  variants={fadeInVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  className="text-xs text-red-500 flex items-center gap-1"
-                >
-                  <AlertCircle className="w-3 h-3" />
-                  {urlError}
-                </motion.p>
+              {isLoading && (
+                <motion.div variants={fadeInVariants} initial="initial" animate="animate" exit="exit">
+                  <div className="max-w-[350px] mx-auto text-center space-y-2 mb-8">
+                    <div className="title-load text-lg flex gap-2 items-center justify-center text-[#87cefa] font-semibold">
+                      <Loader2 className="w-4 h-4 animate-spin text-[#87cefa]" />
+                      Bentar ya... Lagi Proses!
+                    </div>
+                    <p className="text-[14px] text-emerald-300">
+                      {useTimestampMode || !aiAvailable
+                        ? "Mengambil transcript..."
+                        : "AI-nya lagi baca & meringkas catatanmu pelan-pelan nih... Kira-kira 1-3 menit. Stay di sini ya, jangan refresh atau tutup halamannya! 🌙"}
+                    </p>
+                  </div>
+                </motion.div>
               )}
             </AnimatePresence>
-          </div>
-
-          {/* Fetching Metadata Alert */}
-          <AnimatePresence>
-            {isFetchingMetadata && (
-              <motion.div
-                variants={fadeInVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                transition={{ duration: 0.2 }}
-              >
-                <Alert className="border-blue-500/50 bg-blue-500/5">
-                  <AlertDescription className="text-sm">
-                    <div className="flex items-center gap-2">
-                      <Loader2 className="w-4 h-4 animate-spin text-blue-300" />
-                      <strong className="text-blue-300">Memuat informasi video...</strong>
-                    </div>
-                    <p className="text-xs text-blue-300 mt-1">
-                      Sistem sedang memuat informasi dari YouTube. Mohon tunggu sebentar.
-                    </p>
-                  </AlertDescription>
-                </Alert>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Metadata Preview Card */}
-          <AnimatePresence>
-            {metadata && !isFetchingMetadata && (
-              <motion.div
-                variants={fadeInVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                transition={{ duration: 0.3 }}
-              >
-                <Card className="p-4 border-none bg-gray-500/20">
-                  <div className="flex flex-col sm:flex-row items-start gap-3">
-                    {metadata.thumbnail_url && (
-                      <div className="shrink-0 w-full sm:w-24 sm:h-16 rounded-md overflow-hidden">
-                        <img src={metadata.thumbnail_url} alt={metadata.title} className="w-full h-full object-cover" />
-                      </div>
+          </>
+        ) : (
+          <>
+            <div className="space-y-4 py-4 h-fit">
+              {/* URL Input */}
+              <div className="space-y-2">
+                <Label htmlFor="youtube-url" className="text-sm font-medium">
+                  URL YouTube <span className="text-red-500">*</span>
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="youtube-url"
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    value={url}
+                    onChange={handleUrlChange}
+                    disabled={isLoading || isFetchingMetadata}
+                    className={cn(
+                      "transition-colors pr-10",
+                      urlError ? "border-red-500 focus:border-red-500" : "focus:border-indigo-500"
                     )}
+                  />
+                  {isFetchingMetadata && (
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                      <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+                    </div>
+                  )}
+                </div>
+                <AnimatePresence>
+                  {urlError && (
+                    <motion.p
+                      variants={fadeInVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      className="text-xs text-red-500 flex items-center gap-1"
+                    >
+                      <AlertCircle className="w-3 h-3" />
+                      {urlError}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
 
-                    <div className="flex-1 min-w-0 space-y-2">
-                      <div className="flex items-start gap-2">
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-sm font-semibold line-clamp-2 leading-tight">{metadata.title}</h3>
+              {/* Fetching Metadata Alert */}
+              <AnimatePresence>
+                {isFetchingMetadata && (
+                  <motion.div
+                    variants={fadeInVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Alert className="border-blue-500/50 bg-blue-500/5">
+                      <AlertDescription className="text-sm">
+                        <div className="flex items-center gap-2">
+                          <Loader2 className="w-4 h-4 animate-spin text-blue-300" />
+                          <strong className="text-blue-300">Memuat informasi video...</strong>
                         </div>
-                      </div>
+                        <p className="text-xs text-blue-300 mt-1">
+                          Sistem sedang memuat informasi dari YouTube. Mohon tunggu sebentar.
+                        </p>
+                      </AlertDescription>
+                    </Alert>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <Youtube className="w-3 h-3 shrink-0" />
-                          <span className="truncate">{metadata.channel_name}</span>
-                        </div>
-                        {metadata.speaker_name && metadata.speaker_name !== "Unknown" && (
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <User className="w-3 h-3 shrink-0" />
-                            <span className="truncate">Pemateri: {metadata.speaker_name}</span>
+              {/* Metadata Preview Card */}
+              <AnimatePresence>
+                {metadata && !isFetchingMetadata && (
+                  <motion.div
+                    variants={fadeInVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Card className="p-4 border-none bg-gray-500/20">
+                      <div className="flex flex-col sm:flex-row items-start gap-3">
+                        {metadata.thumbnail_url && (
+                          <div className="shrink-0 w-full sm:w-24 sm:h-16 rounded-md overflow-hidden">
+                            <img
+                              src={metadata.thumbnail_url}
+                              alt={metadata.title}
+                              className="w-full h-full object-cover"
+                            />
                           </div>
                         )}
+
+                        <div className="flex-1 min-w-0 space-y-2">
+                          <div className="flex items-start gap-2">
+                            <div className="flex-1 min-w-0">
+                              <h3 className="text-sm font-semibold line-clamp-2 leading-tight">{metadata.title}</h3>
+                            </div>
+                          </div>
+
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <Youtube className="w-3 h-3 shrink-0" />
+                              <span className="truncate">{metadata.channel_name}</span>
+                            </div>
+                            {metadata.speaker_name && metadata.speaker_name !== "Unknown" && (
+                              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                <User className="w-3 h-3 shrink-0" />
+                                <span className="truncate">Pemateri: {metadata.speaker_name}</span>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="flex flex-wrap gap-1.5">
+                            <Badge
+                              variant="secondary"
+                              className="text-xs gap-1 bg-blue-500/10 text-blue-300 border-blue-500/20"
+                            >
+                              <Clock className="w-3 h-3" />
+                              {formatDuration(metadata.duration)}
+                            </Badge>
+                            <Badge variant="secondary" className="text-xs gap-1">
+                              <Eye className="w-3 h-3" />
+                              {formatViewCount(metadata.view_count)}
+                            </Badge>
+                            <Badge variant="secondary" className="text-xs gap-1">
+                              <Calendar className="w-3 h-3" />
+                              {formatUploadDate(metadata.upload_date)}
+                            </Badge>
+                          </div>
+                        </div>
                       </div>
+                    </Card>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-                      <div className="flex flex-wrap gap-1.5">
-                        <Badge
-                          variant="secondary"
-                          className="text-xs gap-1 bg-blue-500/10 text-blue-300 border-blue-500/20"
-                        >
-                          <Clock className="w-3 h-3" />
-                          {formatDuration(metadata.duration)}
-                        </Badge>
-                        <Badge variant="secondary" className="text-xs gap-1">
-                          <Eye className="w-3 h-3" />
-                          {formatViewCount(metadata.view_count)}
-                        </Badge>
-                        <Badge variant="secondary" className="text-xs gap-1">
-                          <Calendar className="w-3 h-3" />
-                          {formatUploadDate(metadata.upload_date)}
-                        </Badge>
+              {/* Narasumber Input */}
+              <AnimatePresence>
+                {metadata && !isFetchingMetadata && metadata.speaker_name === "Unknown" && (
+                  <motion.div
+                    variants={fadeInVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    transition={{ duration: 0.3, delay: 0.1 }}
+                  >
+                    <Card className="p-4 border-gray-500/30 bg-gray-500/5">
+                      <div className="space-y-3">
+                        <div className="space-y-2">
+                          <Label htmlFor="manual-speaker" className="text-sm flex items-center gap-2">
+                            <User className="w-3 h-3" />
+                            Narasumber (Opsional)
+                          </Label>
+                          <Input
+                            id="manual-speaker"
+                            placeholder="Syaikh Abdurrahman As-Sudais"
+                            value={manualSpeaker}
+                            onChange={handleManualSpeakerChange}
+                            disabled={isLoading || isFetchingMetadata}
+                            className="h-9 text-sm"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                    </Card>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-          {/* Manual Speaker Input */}
-          <AnimatePresence>
-            {metadata && !isFetchingMetadata && metadata.speaker_name === "Unknown" && (
-              <motion.div
-                variants={fadeInVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                transition={{ duration: 0.3, delay: 0.1 }}
-              >
-                <Card className="p-4 border-gray-500/30 bg-gray-500/5">
-                  <div className="space-y-3">
-                    <div className="space-y-2">
-                      <Label htmlFor="manual-speaker" className="text-sm flex items-center gap-2">
-                        <User className="w-3 h-3" />
-                        Narasumber (Opsional)
-                      </Label>
-                      <Input
-                        id="manual-speaker"
-                        placeholder="Syaikh Abdurrahman As-Sudais"
-                        value={manualSpeaker}
-                        onChange={handleManualSpeakerChange}
-                        disabled={isLoading || isFetchingMetadata}
-                        className="h-9 text-sm"
-                      />
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Error Alert */}
-          <AnimatePresence>
-            {error && (
-              <motion.div variants={fadeInVariants} initial="initial" animate="animate" exit="exit">
-                <Alert variant="destructive" className="border-red-500/50">
-                  <AlertCircle className="w-4 h-4" />
-                  <AlertDescription className="text-sm">{error}</AlertDescription>
-                </Alert>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Loading Alert */}
-          <AnimatePresence>
-            {isLoading && (
-              <motion.div variants={fadeInVariants} initial="initial" animate="animate" exit="exit">
-                <Alert className="border-none bg-yellow-500/10">
-                  <AlertDescription className="text-sm">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <Loader2 className="w-4 h-4 animate-spin text-[#87cefa]" />
-                        <strong className="text-[#87cefa]">Sedang memproses...</strong>
-                      </div>
-                      <p className="text-xs text-[#87cefa]">
-                        {useTimestampMode || !aiAvailable
-                          ? "Mengambil transcript..."
-                          : "Meringkas transcript menggunakan AI... Proses ini bisa memakan waktu 1-3 menit. Jangan refresh atau tutup halaman ini! ⚠️"}
-                      </p>
-                    </div>
-                  </AlertDescription>
-                </Alert>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+              {/* Error Alert */}
+              <AnimatePresence>
+                {error && (
+                  <motion.div variants={fadeInVariants} initial="initial" animate="animate" exit="exit">
+                    <Alert variant="destructive" className="border-yellow-300/50">
+                      <AlertCircle className="w-4 h-4 text-yellow-300!" />
+                      <AlertDescription className="text-sm text-yellow-300!">{error}</AlertDescription>
+                    </Alert>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </>
+        )}
 
         <DialogFooter className="gap-2">
           <Button
@@ -569,7 +576,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
             {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Memproses...
+                Mohon Bersabar ...
               </>
             ) : (
               <>

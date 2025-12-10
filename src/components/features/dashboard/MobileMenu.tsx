@@ -105,11 +105,8 @@ export function MobileMenu({
               <div className="relative flex items-center justify-between p-6 border-b border-gray-800 overflow-hidden">
                 {/* Glow Orb */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl" />
+                <h2 className="text-lg font-bold text-white">Menu</h2>
 
-                <div className="relative z-10">
-                  <h2 className="text-lg font-bold text-white">Menu</h2>
-                  <p className="text-sm text-gray-400 mt-0.5">{userName}</p>
-                </div>
                 <Button
                   variant="ghost"
                   size="icon"
