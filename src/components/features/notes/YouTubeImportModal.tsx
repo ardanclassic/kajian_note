@@ -1,13 +1,9 @@
 /**
- * YouTubeImportModal Component - ENHANCED with Auto-Metadata Fetch
- * Compact, clean, beautiful modal for YouTube import
- * With automatic metadata fetching and preview
- *
- * UPDATED:
+ * YouTubeImportModal Component - ENHANCED with Persistence
  * - Auto-fetch video metadata (title, speaker, channel, thumbnail)
- * - Removed manual "Informasi Sumber" fields
- * - Added metadata preview card
- * - Debounced URL input for better UX
+ * - Form persistence with localStorage
+ * - Prevent close outside in ALL conditions
+ * - Auto-save modal data (debounced)
  */
 
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -44,6 +40,8 @@ import {
 import { isValidYouTubeUrl } from "@/utils/youtubeHelpers";
 import { importYouTubeVideo, fetchVideoMetadata } from "@/services/youtube/transcript.service";
 import { isAISummaryAvailable } from "@/config/youtube";
+import { debounce } from "@/lib/utils";
+import { loadFormData, saveModalData } from "@/utils/formPersistence";
 import type { YouTubeImportResult, VideoMetadataResponse } from "@/types/youtube.types";
 
 interface YouTubeImportModalProps {
@@ -58,24 +56,52 @@ const fadeInVariants = {
   exit: { opacity: 0, y: -10 },
 };
 
+function cn(...classes: any[]) {
+  return classes.filter(Boolean).join(" ");
+}
+
 export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouTubeImportModalProps) {
   const [url, setUrl] = useState("");
-  const [useTimestampMode, setUseTimestampMode] = useState(false); // Default: AI Summary mode
+  const [useTimestampMode, setUseTimestampMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isFetchingMetadata, setIsFetchingMetadata] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [urlError, setUrlError] = useState<string | null>(null);
   const [metadata, setMetadata] = useState<VideoMetadataResponse | null>(null);
-  const [manualSpeaker, setManualSpeaker] = useState(""); // NEW: Manual speaker input
+  const [manualSpeaker, setManualSpeaker] = useState("");
 
-  // AbortController ref for cleanup
   const abortControllerRef = useRef<AbortController | null>(null);
   const metadataAbortControllerRef = useRef<AbortController | null>(null);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const aiAvailable = isAISummaryAvailable();
 
-  // Cleanup on unmount or modal close
+  // Load persisted data on mount
+  useEffect(() => {
+    if (open) {
+      const persisted = loadFormData();
+      if (persisted?.modalData) {
+        const { url: savedUrl, metadata: savedMetadata, manualSpeaker: savedSpeaker } = persisted.modalData;
+
+        if (savedUrl) {
+          setUrl(savedUrl);
+          console.log("[YouTubeModal] URL dipulihkan:", savedUrl);
+        }
+
+        if (savedMetadata) {
+          setMetadata(savedMetadata);
+          console.log("[YouTubeModal] Metadata dipulihkan");
+        }
+
+        if (savedSpeaker) {
+          setManualSpeaker(savedSpeaker);
+          console.log("[YouTubeModal] Manual speaker dipulihkan:", savedSpeaker);
+        }
+      }
+    }
+  }, [open]);
+
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (abortControllerRef.current) {
@@ -93,48 +119,57 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
     };
   }, []);
 
+  // Debounced save to localStorage
+  const debouncedSave = useCallback(
+    debounce((url: string, metadata: VideoMetadataResponse | null, speaker: string) => {
+      saveModalData(url, metadata, speaker);
+    }, 500),
+    []
+  );
+
   // Auto-fetch metadata with debounce
-  const fetchMetadataDebounced = useCallback(async (videoUrl: string) => {
-    // Clear existing timer
-    if (debounceTimerRef.current) {
-      clearTimeout(debounceTimerRef.current);
-    }
-
-    // Clear previous metadata
-    setMetadata(null);
-
-    // Validate URL first
-    if (!isValidYouTubeUrl(videoUrl)) {
-      return;
-    }
-
-    // Debounce: wait 800ms before fetching
-    debounceTimerRef.current = setTimeout(async () => {
-      setIsFetchingMetadata(true);
-      setError(null);
-
-      // Create new AbortController for metadata fetch
-      if (metadataAbortControllerRef.current) {
-        metadataAbortControllerRef.current.abort();
+  const fetchMetadataDebounced = useCallback(
+    async (videoUrl: string) => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
       }
-      metadataAbortControllerRef.current = new AbortController();
 
-      try {
-        const metadataResult = await fetchVideoMetadata(videoUrl, true);
-        setMetadata(metadataResult);
-      } catch (err) {
-        console.error("Failed to fetch metadata:", err);
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Gagal mengambil informasi video. Coba lagi atau lanjutkan tanpa metadata."
-        );
-      } finally {
-        setIsFetchingMetadata(false);
-        metadataAbortControllerRef.current = null;
+      setMetadata(null);
+
+      if (!isValidYouTubeUrl(videoUrl)) {
+        return;
       }
-    }, 800); // 800ms debounce
-  }, []);
+
+      debounceTimerRef.current = setTimeout(async () => {
+        setIsFetchingMetadata(true);
+        setError(null);
+
+        if (metadataAbortControllerRef.current) {
+          metadataAbortControllerRef.current.abort();
+        }
+        metadataAbortControllerRef.current = new AbortController();
+
+        try {
+          const metadataResult = await fetchVideoMetadata(videoUrl, true);
+          setMetadata(metadataResult);
+
+          // Save to localStorage
+          debouncedSave(videoUrl, metadataResult, manualSpeaker);
+        } catch (err) {
+          console.error("Failed to fetch metadata:", err);
+          setError(
+            err instanceof Error
+              ? err.message
+              : "Gagal mengambil informasi video. Coba lagi atau lanjutkan tanpa metadata."
+          );
+        } finally {
+          setIsFetchingMetadata(false);
+          metadataAbortControllerRef.current = null;
+        }
+      }, 800);
+    },
+    [manualSpeaker, debouncedSave]
+  );
 
   // Handle URL change
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -147,12 +182,22 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
       setUrlError("URL YouTube tidak valid");
       setMetadata(null);
     } else if (value) {
-      // Auto-fetch metadata
       fetchMetadataDebounced(value);
     } else {
-      // Clear metadata if URL is empty
       setMetadata(null);
     }
+
+    // Save URL immediately
+    debouncedSave(value, metadata, manualSpeaker);
+  };
+
+  // Handle manual speaker change
+  const handleManualSpeakerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setManualSpeaker(value);
+
+    // Save to localStorage
+    debouncedSave(url, metadata, value);
   };
 
   // Handle import
@@ -170,15 +215,14 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
     setIsLoading(true);
     setError(null);
 
-    // Create new AbortController for this request
     abortControllerRef.current = new AbortController();
 
     try {
       const result = await importYouTubeVideo({
         url: url.trim(),
-        useAISummary: !useTimestampMode && aiAvailable, // Invert logic: AI is default
-        metadata: metadata || undefined, // Pass fetched metadata
-        signal: abortControllerRef.current.signal, // Pass abort signal
+        useAISummary: !useTimestampMode && aiAvailable,
+        metadata: metadata || undefined,
+        signal: abortControllerRef.current.signal,
       });
 
       if (result.success) {
@@ -191,9 +235,8 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
         handleReset();
         onOpenChange(false);
       } else {
-        // Check if cancelled
         if (result.error === "Proses dibatalkan") {
-          setError(null); // Don't show error for cancellation
+          setError(null);
         } else {
           setError(result.error || "Gagal mengimpor video YouTube");
         }
@@ -201,7 +244,6 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
     } catch (err) {
       console.error("Import error:", err);
 
-      // Don't show error if aborted
       if (err instanceof Error && err.message === "Proses dibatalkan") {
         setError(null);
       } else {
@@ -215,52 +257,54 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
 
   // Handle cancel
   const handleCancel = () => {
-    if (isLoading && abortControllerRef.current) {
-      // Abort ongoing request
-      abortControllerRef.current.abort();
-      abortControllerRef.current = null;
-      setIsLoading(false);
-    }
-
-    if (!isLoading) {
-      handleReset();
-      onOpenChange(false);
-    }
+    handleModalClose();
   };
 
-  // Reset form
+  // Reset form (but keep localStorage)
   const handleReset = () => {
     setUrl("");
-    setUseTimestampMode(false); // Reset to default (AI mode)
+    setUseTimestampMode(false);
     setMetadata(null);
-    setManualSpeaker(""); // Reset manual speaker
+    setManualSpeaker("");
     setError(null);
     setUrlError(null);
 
-    // Clear timers
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
       debounceTimerRef.current = null;
     }
 
-    // Abort metadata fetch if in progress
     if (metadataAbortControllerRef.current) {
       metadataAbortControllerRef.current.abort();
       metadataAbortControllerRef.current = null;
     }
   };
 
-  // Custom onOpenChange handler that blocks closing during loading OR metadata fetch
+  // Handle modal close
+  const handleModalClose = () => {
+    if (isLoading && abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+      setIsLoading(false);
+    }
+
+    if (!isLoading) {
+      onOpenChange(false);
+    }
+  };
+
+  // CRITICAL: Prevent close outside, but allow close via X button
   const handleOpenChange = (newOpen: boolean) => {
-    if (isLoading || isFetchingMetadata) return; // Block if loading or fetching metadata
+    // Modal can ONLY be closed via explicit button click (Batal or X)
+    // This is called by shadcn's Dialog when X is clicked
     if (!newOpen) {
-      handleCancel();
+      handleModalClose();
     } else {
       onOpenChange(newOpen);
     }
   };
 
-  // Format duration (seconds to MM:SS or HH:MM:SS)
+  // Format helpers
   const formatDuration = (seconds: number): string => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -272,7 +316,6 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
     return `${minutes}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // Format view count (e.g., 1.2K, 1.5M)
   const formatViewCount = (count: number): string => {
     if (count >= 1000000) {
       return `${(count / 1000000).toFixed(1)}M`;
@@ -283,7 +326,6 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
     return count.toString();
   };
 
-  // Format upload date
   const formatUploadDate = (dateString: string): string => {
     try {
       const date = new Date(dateString);
@@ -297,15 +339,9 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
         className="max-w-full h-full sm:max-w-[600px] sm:h-fit sm:max-h-[90vh] overflow-y-auto"
-        onEscapeKeyDown={(e) => {
-          if (isLoading || isFetchingMetadata) e.preventDefault();
-        }}
-        onPointerDownOutside={(e) => {
-          if (isLoading || isFetchingMetadata) e.preventDefault();
-        }}
-        onInteractOutside={(e) => {
-          if (isLoading || isFetchingMetadata) e.preventDefault();
-        }}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
       >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg">
@@ -313,7 +349,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
             Import dari YouTube
           </DialogTitle>
           <DialogDescription className="text-sm">
-            Masukkan URL video YouTube untuk mengimpor transcript sebagai catatan
+            Link Video YouTube untuk membuat catatan kajian secara otomatis.
           </DialogDescription>
         </DialogHeader>
 
@@ -357,7 +393,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
             </AnimatePresence>
           </div>
 
-          {/* Fetching Metadata Info Alert */}
+          {/* Fetching Metadata Alert */}
           <AnimatePresence>
             {isFetchingMetadata && (
               <motion.div
@@ -394,14 +430,12 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
               >
                 <Card className="p-4 border-none bg-gray-500/20">
                   <div className="flex flex-col sm:flex-row items-start gap-3">
-                    {/* Thumbnail */}
                     {metadata.thumbnail_url && (
                       <div className="shrink-0 w-full sm:w-24 sm:h-16 rounded-md overflow-hidden">
                         <img src={metadata.thumbnail_url} alt={metadata.title} className="w-full h-full object-cover" />
                       </div>
                     )}
 
-                    {/* Metadata Info */}
                     <div className="flex-1 min-w-0 space-y-2">
                       <div className="flex items-start gap-2">
                         <div className="flex-1 min-w-0">
@@ -409,7 +443,6 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
                         </div>
                       </div>
 
-                      {/* Channel & Speaker */}
                       <div className="space-y-1">
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Youtube className="w-3 h-3 shrink-0" />
@@ -423,7 +456,6 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
                         )}
                       </div>
 
-                      {/* Stats */}
                       <div className="flex flex-wrap gap-1.5">
                         <Badge
                           variant="secondary"
@@ -448,7 +480,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
             )}
           </AnimatePresence>
 
-          {/* Manual Speaker Input (Show if speaker is Unknown) */}
+          {/* Manual Speaker Input */}
           <AnimatePresence>
             {metadata && !isFetchingMetadata && metadata.speaker_name === "Unknown" && (
               <motion.div
@@ -469,7 +501,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
                         id="manual-speaker"
                         placeholder="Syaikh Abdurrahman As-Sudais"
                         value={manualSpeaker}
-                        onChange={(e) => setManualSpeaker(e.target.value)}
+                        onChange={handleManualSpeakerChange}
                         disabled={isLoading || isFetchingMetadata}
                         className="h-9 text-sm"
                       />
@@ -479,54 +511,6 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
               </motion.div>
             )}
           </AnimatePresence>
-
-          {/* Timestamp Mode Option (Only show if AI available) */}
-          {aiAvailable && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              className="space-y-2"
-            >
-              <label className="flex items-start gap-3 p-3 rounded-lg border border-border hover:border-blue-500/30 hover:bg-blue-500/5 cursor-pointer transition-colors">
-                <input
-                  type="checkbox"
-                  checked={useTimestampMode}
-                  onChange={(e) => setUseTimestampMode(e.target.checked)}
-                  disabled={isLoading || isFetchingMetadata}
-                  className="mt-0.5 cursor-pointer disabled:cursor-not-allowed"
-                />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Clock className="w-4 h-4 text-blue-500" />
-                    <span className="text-sm font-medium">Mode Timestamp</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {useTimestampMode
-                      ? "Transcript lengkap dengan timestamps akan diimpor"
-                      : "Transcript akan diringkas menggunakan AI (lebih cepat dibaca)"}
-                  </p>
-                </div>
-              </label>
-            </motion.div>
-          )}
-
-          {/* Info Box */}
-          <Alert className="border-indigo-500/20 bg-indigo-500/5">
-            <FileText className="w-4 h-4 text-indigo-300" />
-            <AlertDescription className="text-xs">
-              <strong className="text-sm">Yang akan diimpor:</strong>
-              <ul className="list-disc list-inside mt-1.5 space-y-0.5 text-muted-foreground">
-                <li>Judul dari video YouTube</li>
-                <li>
-                  {useTimestampMode || !aiAvailable
-                    ? "Transcript lengkap dengan timestamps"
-                    : "Ringkasan AI dari transcript"}
-                </li>
-                {metadata && <li>Sumber Referensi</li>}
-                <li>Link video YouTube</li>
-              </ul>
-            </AlertDescription>
-          </Alert>
 
           {/* Error Alert */}
           <AnimatePresence>
@@ -540,7 +524,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
             )}
           </AnimatePresence>
 
-          {/* Loading Warning Alert - ENHANCED */}
+          {/* Loading Alert */}
           <AnimatePresence>
             {isLoading && (
               <motion.div variants={fadeInVariants} initial="initial" animate="animate" exit="exit">
@@ -570,7 +554,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
             size={"sm"}
             variant="outline"
             onClick={handleCancel}
-            disabled={isFetchingMetadata} // Disabled during metadata fetch, but allow cancel during import
+            disabled={isFetchingMetadata}
             className="flex-1 sm:flex-initial"
           >
             {isLoading ? "Batalkan" : "Batal"}
@@ -598,9 +582,4 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
       </DialogContent>
     </Dialog>
   );
-}
-
-// Helper function for className utility
-function cn(...classes: any[]) {
-  return classes.filter(Boolean).join(" ");
 }

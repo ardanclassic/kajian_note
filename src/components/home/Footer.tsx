@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { BookOpen, Twitter, Instagram, Mail, Heart, Quote } from "lucide-react";
+import '@/styles/arabic-font.css';
 
 interface FooterProps {
   onNavigate: (path: string) => void;
@@ -101,7 +102,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </div>
 
                 {/* Arabic Text */}
-                <p className="text-2xl text-white font-arabic leading-loose mb-4 text-right" dir="rtl">
+                <p className="text-2xl text-white arabic-tajawal leading-loose mb-4 text-right" dir="rtl">
                   {selectedQuote.arabic}
                 </p>
 

@@ -136,28 +136,8 @@ export function NoteCard({
             )}
           </div>
 
-          {/* Visibility & Tags */}
+          {/* Tags */}
           <div className="flex items-center gap-2 flex-wrap">
-            {/* Visibility Badge */}
-            <Badge
-              variant={note.isPublic ? "default" : "secondary"}
-              className={`shrink-0 shadow-sm ${
-                note.isPublic ? "bg-green-500/90 hover:bg-green-600" : "bg-orange-500/90 hover:bg-orange-600"
-              }`}
-            >
-              {note.isPublic ? (
-                <>
-                  <Globe className="w-3 h-3 mr-1" />
-                  Publik
-                </>
-              ) : (
-                <>
-                  <Lock className="w-3 h-3 mr-1" />
-                  Pribadi
-                </>
-              )}
-            </Badge>
-
             {/* Tags */}
             {note.tags.length > 0 && (
               <div className="flex gap-1.5 flex-wrap">

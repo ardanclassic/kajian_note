@@ -166,51 +166,6 @@ export function NoteSearch({ availableTags = [], onSearch, onClear }: NoteSearch
               </div>
             </div>
 
-            {/* Visibility Filter */}
-            <div className="space-y-3">
-              <Label className="text-sm font-bold text-white flex items-center gap-2">
-                <Globe className="w-4 h-4 text-emerald-400" />
-                Visibilitas
-              </Label>
-              <div className="flex gap-2 flex-wrap">
-                <Button
-                  size="sm"
-                  onClick={() => setIsPublicFilter(undefined)}
-                  className={`${
-                    isPublicFilter === undefined
-                      ? "bg-gray-900 text-white border-emerald-500/50"
-                      : "bg-transparent text-gray-400 border-gray-800 hover:border-emerald-500/30 hover:text-white"
-                  } border transition-all`}
-                >
-                  Semua
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => setIsPublicFilter(true)}
-                  className={`${
-                    isPublicFilter === true
-                      ? "bg-gray-900 text-white border-emerald-500/50"
-                      : "bg-transparent text-gray-400 border-gray-800 hover:border-emerald-500/30 hover:text-white"
-                  } border transition-all`}
-                >
-                  <Globe className="w-4 h-4 mr-2" />
-                  Publik
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => setIsPublicFilter(false)}
-                  className={`${
-                    isPublicFilter === false
-                      ? "bg-gray-900 text-white border-emerald-500/50"
-                      : "bg-transparent text-gray-400 border-gray-800 hover:border-emerald-500/30 hover:text-white"
-                  } border transition-all`}
-                >
-                  <Lock className="w-4 h-4 mr-2" />
-                  Pribadi
-                </Button>
-              </div>
-            </div>
-
             {/* Pinned Filter */}
             <div className="space-y-3">
               <Label className="text-sm font-bold text-white flex items-center gap-2">

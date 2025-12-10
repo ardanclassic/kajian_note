@@ -214,7 +214,6 @@ export default function EditNote() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>• Perubahan akan langsung tersimpan setelah Anda klik "Simpan"</li>
               <li>• Tag yang dihapus tidak dapat dikembalikan</li>
-              <li>• Mengubah visibilitas akan mempengaruhi siapa saja yang dapat melihat catatan</li>
             </ul>
           </div>
         </div>

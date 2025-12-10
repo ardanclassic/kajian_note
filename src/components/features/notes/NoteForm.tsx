@@ -1,11 +1,11 @@
 /**
- * NoteForm Component - ENHANCED UI/UX
- * Compact, clean, beautiful with Tiptap editor
- * With Framer Motion animations & mobile responsive
- * UPDATED: Max 5 tags per note (no tier-based limit)
+ * NoteForm Component - ENHANCED with Auto-Save
+ * - Auto-save to localStorage (debounced)
+ * - Load persisted data on mount
+ * - Tiptap editor integration
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -19,6 +19,8 @@ import { TiptapEditor } from "@/components/features/notes/TiptapEditor";
 import { Save, Plus, Globe, Lock, Loader2, Tag as TagIcon, Type, FileText, X, Check, AlertCircle } from "lucide-react";
 import { createNoteSchema, type CreateNoteFormData } from "@/schemas/notes.schema";
 import { SYSTEM_LIMITS } from "@/config/subscriptionLimits";
+import { debounce } from "@/lib/utils";
+import { loadFormData, saveFormFields } from "@/utils/formPersistence";
 import type { Note } from "@/types/notes.types";
 import { useAuthStore } from "@/store/authStore";
 
@@ -68,6 +70,40 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
     },
   });
 
+  const isPublic = watch("isPublic");
+  const title = watch("title");
+
+  // Load persisted data on mount (only for new notes)
+  useEffect(() => {
+    if (!isEditMode) {
+      const persisted = loadFormData();
+      if (persisted?.formData && !note) {
+        const {
+          title: savedTitle,
+          content: savedContent,
+          tags: savedTags,
+          isPublic: savedIsPublic,
+        } = persisted.formData;
+
+        // Only restore if note prop is not provided (i.e., not from YouTube import)
+        if (savedTitle) {
+          setValue("title", savedTitle);
+        }
+        if (savedContent) {
+          setContent(savedContent);
+          setValue("content", savedContent);
+        }
+        if (savedTags && savedTags.length > 0) {
+          setTags(savedTags);
+          setValue("tags", savedTags);
+        }
+        setValue("isPublic", savedIsPublic);
+
+        console.log("[NoteForm] Form data dipulihkan dari localStorage");
+      }
+    }
+  }, [isEditMode, note, setValue]);
+
   // Initialize content state from note prop
   useEffect(() => {
     if (note?.content) {
@@ -75,7 +111,23 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
     }
   }, [note?.content]);
 
-  const isPublic = watch("isPublic");
+  // Debounced auto-save function
+  const debouncedSave = useCallback(
+    debounce((title: string, content: string, tags: string[], isPublic: boolean) => {
+      if (!isEditMode) {
+        saveFormFields(title, content, tags, isPublic);
+        console.log("[NoteForm] Auto-saved to localStorage");
+      }
+    }, 1000), // 1 second debounce
+    [isEditMode]
+  );
+
+  // Auto-save when form fields change
+  useEffect(() => {
+    if (!isEditMode) {
+      debouncedSave(title, content, tags, isPublic);
+    }
+  }, [title, content, tags, isPublic, debouncedSave, isEditMode]);
 
   // Update form tags when state changes
   useEffect(() => {
@@ -187,8 +239,8 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
       transition={{ duration: 0.3 }}
     >
       <Card className="border-muted bg-card/50 backdrop-blur-sm overflow-hidden">
-        <CardContent className="p-4 md:p-6 space-y-4">
-          {/* Title Field - Compact */}
+        <CardContent className="py-0! md:p-6 space-y-4">
+          {/* Title Field */}
           <div className="space-y-2">
             <Label htmlFor="title" className="text-sm flex items-center gap-2">
               <Type className="w-4 h-4 text-primary" />
@@ -241,7 +293,7 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
             <p className="text-xs text-muted-foreground">Gunakan toolbar untuk format teks</p>
           </div>
 
-          {/* Tags Field - Compact */}
+          {/* Tags Field */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="tags" className="text-sm flex items-center gap-2">
@@ -257,7 +309,7 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
               </Badge>
             </div>
 
-            {/* Tag Input - Compact */}
+            {/* Tag Input */}
             <div className="flex gap-2">
               <Input
                 id="tags"
@@ -280,7 +332,7 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
               </Button>
             </div>
 
-            {/* Tag Limit Warnings - Compact */}
+            {/* Tag Limit Warning */}
             <AnimatePresence>
               {isAtLimit && (
                 <motion.div
@@ -297,7 +349,7 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
               )}
             </AnimatePresence>
 
-            {/* Tags List - Animated */}
+            {/* Tags List */}
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-1.5">
                 <AnimatePresence>
@@ -335,72 +387,7 @@ export function NoteForm({ note, onSubmit, onCancel, isSubmitting = false }: Not
             </p>
           </div>
 
-          {/* Visibility Toggle - Compact */}
-          <div className="space-y-2">
-            <Label className="text-sm flex items-center gap-2">
-              <Globe className="w-4 h-4 text-primary" />
-              Visibilitas
-            </Label>
-            <div className="flex flex-col md:flex-row gap-3">
-              {/* Private */}
-              <motion.label
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg border cursor-pointer transition-all ${
-                  !isPublic
-                    ? "border-primary/50 bg-primary/10 shadow-sm"
-                    : "border-border hover:border-primary/30 hover:bg-muted/50"
-                }`}
-              >
-                <input
-                  type="radio"
-                  value=""
-                  checked={!isPublic}
-                  onChange={() => setValue("isPublic", false)}
-                  disabled={isSubmitting}
-                  className="sr-only"
-                />
-                <Lock className={`w-4 h-4 ${!isPublic ? "text-primary" : "text-muted-foreground"}`} />
-                <span className={`text-sm font-medium ${!isPublic ? "text-primary" : "text-foreground"}`}>Pribadi</span>
-                {!isPublic && <Check className="w-4 h-4 text-primary" />}
-              </motion.label>
-
-              {/* Public */}
-              <motion.label
-                whileHover={canPublic ? { scale: 1.02 } : {}}
-                whileTap={canPublic ? { scale: 0.98 } : {}}
-                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg border transition-all ${
-                  !canPublic
-                    ? "opacity-50 cursor-not-allowed"
-                    : isPublic
-                    ? "border-green-500/50 bg-green-500/10 shadow-sm cursor-pointer"
-                    : "border-border hover:border-green-500/30 hover:bg-green-500/5 cursor-pointer"
-                }`}
-              >
-                <input
-                  type="radio"
-                  value=""
-                  checked={isPublic}
-                  onChange={() => setValue("isPublic", true)}
-                  disabled={isSubmitting || !canPublic}
-                  className="sr-only"
-                />
-                <Globe className={`w-4 h-4 ${isPublic ? "text-green-500" : "text-muted-foreground"}`} />
-                <span className={`text-sm font-medium ${isPublic ? "text-green-500" : "text-foreground"}`}>Publik</span>
-                {isPublic && <Check className="w-4 h-4 text-green-500" />}
-                {!canPublic && (
-                  <Badge variant="outline" className="text-xs ml-1">
-                    Premium
-                  </Badge>
-                )}
-              </motion.label>
-            </div>
-            {!canPublic && isPublic && (
-              <p className="text-xs text-muted-foreground">Catatan publik hanya untuk Premium & Advance</p>
-            )}
-          </div>
-
-          {/* Action Buttons - Compact */}
+          {/* Action Buttons */}
           <div className="flex gap-2 pt-2">
             <Button type="submit" disabled={isSubmitting} className="flex-1 bg-primary hover:bg-primary/90 text-white">
               {isSubmitting ? (

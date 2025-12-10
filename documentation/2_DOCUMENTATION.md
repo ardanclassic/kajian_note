@@ -211,8 +211,6 @@ Saat user register, Supabase akan otomatis:
 | Premium | 100 |
 | Advance | Unlimited |
 
-**Note:** ~~Visibility (private/public)~~ dan ~~max tags~~ features telah dihapus.
-
 ---
 
 ## AI Integration
@@ -395,10 +393,6 @@ Via Kajian Note App
 | **Send to Telegram** | ❌ | ✅ | ✅ |
 | **Send to WhatsApp** | ❌ | ✅ | ✅ |
 | **AI Summary** | ❌ | ✅ | ✅ |
-
-**Note:** Features yang dihapus:
-- ~~Visibility (private/public)~~
-- ~~Max tags limit~~
 
 #### Payment Configuration
 
@@ -824,9 +818,6 @@ CREATE TABLE public.notes (
   source_metadata jsonb, -- YouTube metadata (title, channel, speaker, etc)
 );
 ```
-
-**Removed Fields:**
-- ~~`is_public`~~ - Visibility feature dihapus
 
 **Notes:**
 - `tags` - Max 5 per note (validated in frontend)

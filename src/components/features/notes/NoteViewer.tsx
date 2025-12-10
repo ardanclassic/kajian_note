@@ -106,21 +106,6 @@ export function NoteViewer({
                 <span>Diperbarui {updatedRelative}</span>
               </div>
             )}
-
-            {/* Visibility Badge */}
-            <Badge variant={note.isPublic ? "default" : "secondary"} className="gap-1.5 no-print">
-              {note.isPublic ? (
-                <>
-                  <Globe className="w-3 h-3" />
-                  Publik
-                </>
-              ) : (
-                <>
-                  <Lock className="w-3 h-3" />
-                  Pribadi
-                </>
-              )}
-            </Badge>
           </div>
         )}
 
