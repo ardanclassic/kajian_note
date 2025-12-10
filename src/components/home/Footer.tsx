@@ -43,7 +43,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         />
       </div>
 
-      <div className="relative container mx-auto px-16 max-w-7xl">
+      <div className="relative container mx-auto px-4 md:px-16 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
           {/* Brand Section */}
           <motion.div
@@ -54,8 +54,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             className="space-y-6"
           >
             <motion.div
-              className="flex items-center gap-3 group cursor-pointer"
-              whileHover={{ x: 5 }}
+              className="flex items-center justify-baseline md:justify-end gap-3 group cursor-pointer"
+              whileHover={{ x: -5 }}
               onClick={() => onNavigate("/")}
             >
               <div className="w-12 h-12 rounded-xl bg-gray-900 border border-emerald-500/30 flex items-center justify-center shadow-lg group-hover:shadow-emerald-500/30 transition-shadow">
@@ -64,7 +64,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <span className="text-2xl font-bold text-emerald-400">Kajian Note</span>
             </motion.div>
 
-            <p className="text-gray-400 leading-relaxed max-w-md">
+            <p className="md:ml-auto text-left md:text-right text-gray-400 leading-relaxed max-w-md">
               Platform catatan kajian terbaik untuk jamaah masjid di Indonesia. Mudah, cepat, dan powerful untuk
               mencatat ilmu bermanfaat.
             </p>

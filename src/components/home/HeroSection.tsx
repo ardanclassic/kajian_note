@@ -51,10 +51,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isAuthenticated, onNav
             </h1>
 
             <p className="text-xl md:text-2xl lg:text-3xl text-gray-300 font-light leading-relaxed">
-              Catat, Kelola, dan Bagikan Ilmu dari Kajian
+              Catat &sdot; Kelola &sdot; Bagikan Ilmu dari Kajian
             </p>
-
-            <p className="text-2xl md:text-3xl font-bold text-emerald-400">Tanpa Ribet, Tanpa Email!</p>
           </motion.div>
 
           {/* Feature Pills */}
@@ -132,7 +130,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isAuthenticated, onNav
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
+        className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10"
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}
