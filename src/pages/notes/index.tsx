@@ -1,15 +1,16 @@
 /**
  * Notes Page - Dark Mode with Emerald Glow
- * Refactored: Compact Custom Header Design
- * ✅ Pure black background
- * ✅ Emerald glow accents
- * ✅ Compact & mobile-friendly
+ * Updated: Using MasonryNoteList (Gallery Wall View)
+ * Path: src/pages/notes/index.tsx
+ * âœ… Pure black background
+ * âœ… Emerald glow accents
+ * âœ… Gallery Wall layout
  */
 
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { NoteList } from "@/components/features/notes/NoteList";
+import { MasonryNoteList } from "@/components/features/notes/MasonryNoteList";
 import { NoteSearch } from "@/components/features/notes/NoteSearch";
 import { SubscriptionLimitBanner } from "@/components/features/notes/SubscriptionLimitBanner";
 import { ScrollToTopButton } from "@/components/common/ScrollToTopButton";
@@ -261,10 +262,10 @@ export default function Notes() {
             </div>
           )}
 
-          {/* Notes List */}
+          {/* Notes Gallery Wall */}
           {!isLoading || userNotes.length > 0 ? (
             <div>
-              <NoteList
+              <MasonryNoteList
                 notes={userNotes}
                 currentUserId={user?.id}
                 showActions

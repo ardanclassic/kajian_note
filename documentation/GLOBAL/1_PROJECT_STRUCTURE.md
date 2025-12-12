@@ -80,6 +80,13 @@ kajian_note/
 │   │   │   │   └── 📄 DashboardCard.tsx
 │   │   │   │
 │   │   │   ├── 📁 notes/
+│   │   │   │   │
+│   │   │   │   ├── 📁 WaitingExperience
+│   │   │   │   │   ├── 📄 CompletionNotice.tsx
+│   │   │   │   │   ├── 📄 QuizMode.tsx
+│   │   │   │   │   ├── 📄 StoryMode.tsx
+│   │   │   │   │   └── 📄 WaitingExperienceOverlay.tsx
+│   │   │   │   │
 │   │   │   │   ├── 📄 ExportActionsDropdown.tsx
 │   │   │   │   ├── 📄 NoteCard.tsx
 │   │   │   │   ├── 📄 NoteForm.tsx
@@ -135,6 +142,10 @@ kajian_note/
 │   │   ├── 📄 permissions.ts
 │   │   ├── 📄 theme.ts
 │   │   └── 📄 youtube.ts
+│   │
+│   ├── 📁 data/
+│   │   └── 📁 waiting-experience
+│   │       └── 📄 index.ts
 │   │
 │   ├── 📁 lib/
 │   │   ├── 📄 axios.ts
