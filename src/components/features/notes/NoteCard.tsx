@@ -1,15 +1,19 @@
 /**
- * NoteCard Component - IMPROVED UI/UX
- * Modern card design with hover effects and smooth interactions
- * ✅ FIXED: Proper delete confirmation dialog
+ * NoteCard Component - Pinterest-Style Card
+ * Natural height variation based on content
+ * ✨ Dark mode with emerald glow
+ * ✨ Smooth hover lift effect
+ * ✨ Minimal action buttons
+ * ✨ Better visual hierarchy
  */
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
-import { Pin, Trash2, Edit, Calendar, Lock, Globe, Eye } from "lucide-react";
+import { Pin, Trash2, Edit, Calendar, Youtube } from "lucide-react";
 import type { NoteSummary } from "@/types/notes.types";
 import { formatDistanceToNow } from "date-fns";
 import { id as idLocale } from "date-fns/locale";
@@ -40,7 +44,6 @@ export function NoteCard({
 }: NoteCardProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPinning, setIsPinning] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   // Format date
@@ -51,6 +54,18 @@ export function NoteCard({
 
   // Strip HTML tags from content for preview
   const plainTextContent = stripHtml(note.content);
+
+  // Calculate preview length based on content (natural variation)
+  const getPreviewLength = () => {
+    const contentLength = plainTextContent.length;
+    if (contentLength < 100) return contentLength;
+    if (contentLength < 200) return 150;
+    if (contentLength < 300) return 200;
+    return 250; // Max preview
+  };
+
+  const previewContent = plainTextContent.slice(0, getPreviewLength());
+  const hasMoreContent = plainTextContent.length > previewContent.length;
 
   // Handle card click
   const handleCardClick = () => {
@@ -107,129 +122,153 @@ export function NoteCard({
 
   return (
     <>
-      <Card
-        className="group h-full flex flex-col cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:border-primary/50 relative overflow-hidden p-3"
-        onClick={handleCardClick}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+      <motion.div
+        whileHover={{
+          y: -8,
+          transition: { duration: 0.3, ease: "easeOut" },
+        }}
+        whileTap={{ scale: 0.98 }}
+        className="h-full"
       >
-        {/* Hover gradient overlay */}
-        <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        <Card
+          className="group h-full flex flex-col cursor-pointer transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-500/10 hover:border-emerald-500/50 relative overflow-hidden bg-black border-gray-900 px-0 py-3 gap-0 md:gap-6"
+          onClick={handleCardClick}
+        >
+          {/* Hover gradient overlay */}
+          <motion.div
+            className="absolute inset-0 bg-linear-to-br from-emerald-500/5 via-transparent to-transparent pointer-events-none"
+            initial={{ opacity: 0 }}
+            whileHover={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          />
 
-        {/* Pinned indicator stripe */}
-        {note.isPinned && (
-          <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-primary via-primary/80 to-primary/60" />
-        )}
+          {/* Pinned indicator stripe */}
+          {note.isPinned && (
+            <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-emerald-500 via-emerald-500/80 to-emerald-500/60" />
+          )}
 
-        <CardHeader className="space-y-3 relative px-2">
-          <div className="flex items-start justify-between gap-3">
-            <CardTitle className="text-lg line-clamp-2 flex-1 group-hover:text-primary transition-colors">
-              {note.title}
-            </CardTitle>
+          <CardHeader className="space-y-2 sm:space-y-3 relative pb-2 sm:pb-3">
+            <div className="flex items-start justify-between gap-2 sm:gap-3">
+              <CardTitle className="text-base md:text-lg line-clamp-2 flex-1 group-hover:text-emerald-400 transition-colors duration-300 text-white font-bold leading-tight">
+                {note.title}
+              </CardTitle>
 
-            {/* Pinned Badge */}
-            {note.isPinned && (
-              <Badge variant="default" className="shrink-0 shadow-sm bg-primary/90">
-                <Pin className="w-3 h-3 mr-1 fill-current" />
-                Pin
-              </Badge>
-            )}
-          </div>
+              {/* Pinned Badge */}
+              {note.isPinned && (
+                <Badge
+                  variant="default"
+                  className="shrink-0 shadow-sm bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 text-xs"
+                >
+                  <Pin className="w-3 h-3 mr-1 fill-current" />
+                  Pin
+                </Badge>
+              )}
+            </div>
 
-          {/* Tags */}
-          <div className="flex items-center gap-2 flex-wrap">
             {/* Tags */}
             {note.tags.length > 0 && (
               <div className="flex gap-1.5 flex-wrap">
-                {note.tags.slice(0, 2).map((tag) => (
+                {note.tags.slice(0, 3).map((tag) => (
                   <Badge
                     key={tag}
                     variant="outline"
-                    className="text-xs border-primary/30 hover:border-primary/60 transition-colors"
+                    className="text-xs border-gray-800 hover:border-emerald-500/50 transition-colors text-gray-400 bg-gray-900/50"
                   >
                     #{tag}
                   </Badge>
                 ))}
-                {note.tags.length > 2 && (
-                  <Badge variant="outline" className="text-xs border-primary/30">
-                    +{note.tags.length - 2}
+                {note.tags.length > 3 && (
+                  <Badge variant="outline" className="text-xs border-gray-800 text-gray-500 bg-gray-900/50">
+                    +{note.tags.length - 3}
                   </Badge>
                 )}
               </div>
             )}
-          </div>
-        </CardHeader>
+          </CardHeader>
 
-        <CardContent className="hidden md:block flex-1 relative">
-          <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">{plainTextContent}</p>
+          {/* Content - Hidden on mobile, visible on tablet+ */}
+          <CardContent className="hidden sm:block flex-1 relative pb-4">
+            <p className="text-sm text-gray-400 leading-relaxed whitespace-pre-wrap break-words">
+              {previewContent}
+              {hasMoreContent && <span className="text-emerald-400 font-medium ml-1">... baca selengkapnya</span>}
+            </p>
+          </CardContent>
 
-          {/* Read more indicator on hover */}
-          {isHovered && (
-            <div className="absolute bottom-0 left-0 right-0 h-12 bg-linear-to-t from-card to-transparent flex items-end justify-center pb-2 animate-in fade-in duration-200">
-              <div className="flex items-center gap-1 text-xs text-primary font-medium">
-                <Eye className="w-3 h-3" />
-                Klik untuk baca
+          <CardFooter className="flex items-center justify-between gap-2 border-t border-gray-900 pt-3! mt-auto">
+            {/* Left side: Date & Source */}
+            <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                <Calendar className="w-3.5 h-3.5" />
+                <span>{formattedDate}</span>
               </div>
-            </div>
-          )}
-        </CardContent>
 
-        <CardFooter className="flex items-center justify-between gap-2 border-t relative px-2 pt-2!">
-          {/* Date */}
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Calendar className="w-3.5 h-3.5" />
-            <span>{formattedDate}</span>
-          </div>
-
-          {/* Actions */}
-          {showActions && (isOwner || isPinnable) && (
-            <div className="flex items-center gap-1">
-              {/* Edit (Owner only) */}
-              {isOwner && onEdit && (
-                <Button
-                  size="icon-sm"
-                  variant="ghost"
-                  onClick={handleEdit}
-                  className="h-8 w-8 hover:bg-primary/10 hover:text-primary transition-all"
-                  title="Edit"
-                >
-                  <Edit className="w-4 h-4" />
-                </Button>
-              )}
-
-              {/* Pin (Admin/Panitia only) */}
-              {isPinnable && onTogglePin && (
-                <Button
-                  size="icon-sm"
-                  variant="ghost"
-                  onClick={handleTogglePin}
-                  disabled={isPinning}
-                  className={`h-8 w-8 transition-all ${
-                    note.isPinned ? "text-primary hover:bg-primary/10" : "hover:bg-primary/10 hover:text-primary"
-                  }`}
-                  title={note.isPinned ? "Unpin" : "Pin"}
-                >
-                  <Pin className={`w-4 h-4 ${note.isPinned ? "fill-current" : ""}`} />
-                </Button>
-              )}
-
-              {/* Delete */}
-              {isOwner && onDelete && (
-                <Button
-                  size="icon-sm"
-                  variant="ghost"
-                  onClick={handleDeleteClick}
-                  disabled={isDeleting}
-                  className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive transition-all"
-                  title="Hapus"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
+              {/* YouTube Badge */}
+              {note.sourceType === "youtube" && (
+                <Badge variant="outline" className="text-xs border-gray-800 text-gray-500 bg-gray-900/50">
+                  <Youtube className="w-3 h-3 mr-1" />
+                  YT
+                </Badge>
               )}
             </div>
-          )}
-        </CardFooter>
-      </Card>
+
+            {/* Right side: Actions */}
+            {showActions && (isOwner || isPinnable) && (
+              <div className="flex items-center gap-1">
+                {/* Edit (Owner only) */}
+                {isOwner && onEdit && (
+                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={handleEdit}
+                      className="h-7 w-7 p-0 hover:bg-emerald-500/10 hover:text-emerald-400 transition-all text-gray-500"
+                      title="Edit"
+                    >
+                      <Edit className="w-3.5 h-3.5" />
+                    </Button>
+                  </motion.div>
+                )}
+
+                {/* Pin (Admin/Panitia only) */}
+                {isPinnable && onTogglePin && (
+                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={handleTogglePin}
+                      disabled={isPinning}
+                      className={`h-7 w-7 p-0 transition-all ${
+                        note.isPinned
+                          ? "text-emerald-400 hover:bg-emerald-500/10"
+                          : "text-gray-500 hover:bg-emerald-500/10 hover:text-emerald-400"
+                      }`}
+                      title={note.isPinned ? "Unpin" : "Pin"}
+                    >
+                      <Pin className={`w-3.5 h-3.5 ${note.isPinned ? "fill-current" : ""}`} />
+                    </Button>
+                  </motion.div>
+                )}
+
+                {/* Delete */}
+                {isOwner && onDelete && (
+                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={handleDeleteClick}
+                      disabled={isDeleting}
+                      className="h-7 w-7 p-0 text-red-500 hover:bg-red-500/10 hover:text-red-400 transition-all"
+                      title="Hapus"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </Button>
+                  </motion.div>
+                )}
+              </div>
+            )}
+          </CardFooter>
+        </Card>
+      </motion.div>
 
       {/* Delete Confirmation Dialog */}
       <ConfirmDialog

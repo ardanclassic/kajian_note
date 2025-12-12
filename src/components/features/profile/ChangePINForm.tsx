@@ -1,19 +1,24 @@
 /**
- * Change PIN Form Component - Clean Modern Design
+ * Change PIN Form Component - Improved UI/UX
+ * ✅ Better PIN input design with toggle visibility
+ * ✅ Enhanced security visual feedback
+ * ✅ Smooth animations & transitions
+ * ✅ Mobile-optimized layout
  */
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useAuthStore } from "@/store/authStore";
 import { changePINSchema } from "@/schemas/auth.schema";
 import type { ChangePINFormData } from "@/schemas/auth.schema";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Loader2, CheckCircle, AlertCircle, Eye, EyeOff } from "lucide-react";
+import { Loader2, CheckCircle, AlertCircle, Eye, EyeOff, Lock, Shield } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface ChangePINFormProps {
   forced?: boolean;
@@ -71,83 +76,122 @@ export default function ChangePINForm({ forced = false }: ChangePINFormProps) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Forced Change Warning */}
       {forced && (
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-3 p-3 rounded-lg bg-yellow-50 dark:bg-yellow-950/20 text-yellow-800 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800"
+          initial={{ opacity: 0, y: -10, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.2 }}
         >
-          <AlertCircle className="h-5 w-5 shrink-0" />
-          <div>
-            <p className="text-sm font-medium">PIN Anda telah direset</p>
-            <p className="text-xs">Silakan buat PIN baru untuk melanjutkan</p>
-          </div>
+          <Alert className="border-yellow-500/50 bg-yellow-500/10">
+            <Shield className="h-5 w-5 text-yellow-400" />
+            <AlertDescription className="space-y-1">
+              <p className="text-sm font-semibold text-yellow-400">PIN Anda telah direset oleh admin</p>
+              <p className="text-xs text-yellow-500 leading-relaxed">
+                Untuk keamanan akun, silakan buat PIN baru sekarang. Anda akan diarahkan ke dashboard setelah berhasil.
+              </p>
+            </AlertDescription>
+          </Alert>
         </motion.div>
       )}
 
       {/* Success Message */}
-      {success && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-3 p-3 rounded-lg bg-green-50 dark:bg-green-950/20 text-green-800 dark:text-green-400 border border-green-200 dark:border-green-800"
-        >
-          <CheckCircle className="h-5 w-5 shrink-0" />
-          <p className="text-sm font-medium">
-            {forced ? "PIN berhasil diubah! Mengalihkan ke dashboard..." : "PIN berhasil diubah!"}
-          </p>
-        </motion.div>
-      )}
+      <AnimatePresence mode="wait">
+        {success && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Alert className="border-emerald-500/50 bg-emerald-500/10">
+              <CheckCircle className="h-5 w-5 text-emerald-400" />
+              <AlertDescription className="space-y-1">
+                <p className="text-sm font-semibold text-emerald-400">
+                  {forced ? "PIN berhasil diubah! Mengalihkan ke dashboard..." : "PIN berhasil diubah!"}
+                </p>
+                {!forced && <p className="text-xs text-emerald-500">PIN baru Anda telah tersimpan dengan aman.</p>}
+              </AlertDescription>
+            </Alert>
+          </motion.div>
+        )}
 
-      {/* Error Message */}
-      {error && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-3 p-3 rounded-lg bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-400 border border-red-200 dark:border-red-800"
-        >
-          <AlertCircle className="h-5 w-5 shrink-0" />
-          <p className="text-sm font-medium">{error}</p>
-        </motion.div>
-      )}
+        {/* Error Message */}
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Alert className="border-red-500/50 bg-red-500/10">
+              <AlertCircle className="h-5 w-5 text-red-400" />
+              <AlertDescription>
+                <p className="text-sm font-semibold text-red-400">{error}</p>
+              </AlertDescription>
+            </Alert>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
           {/* Old PIN */}
           <FormField
             control={form.control}
             name="oldPin"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>PIN Lama</FormLabel>
+                <FormLabel className="text-sm font-semibold text-white flex items-center gap-2">
+                  <Lock className="w-4 h-4 text-emerald-400" />
+                  PIN Lama
+                </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       type={showOldPIN ? "text" : "password"}
-                      placeholder="Masukkan PIN lama (6 digit)"
+                      placeholder="••••••"
                       maxLength={6}
                       {...field}
                       disabled={isLoading}
-                      className="pr-10"
+                      className="h-11 pr-11 bg-black/50 border-gray-800 focus-visible:border-emerald-500/50 focus-visible:ring-emerald-500/20 font-mono text-lg tracking-widest"
                     />
                     <Button
                       type="button"
                       variant="ghost"
                       size="icon-sm"
-                      className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
+                      className="absolute right-1.5 top-1/2 -translate-y-1/2 h-8 w-8 hover:bg-gray-800"
                       onClick={() => setShowOldPIN(!showOldPIN)}
                       disabled={isLoading}
                     >
-                      {showOldPIN ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      {showOldPIN ? (
+                        <EyeOff className="h-4 w-4 text-gray-400" />
+                      ) : (
+                        <Eye className="h-4 w-4 text-gray-400" />
+                      )}
                     </Button>
                   </div>
                 </FormControl>
-                <FormMessage />
+                {form.formState.errors.oldPin && (
+                  <FormMessage className="text-xs flex items-center gap-1.5">
+                    <AlertCircle className="w-3 h-3" />
+                    <span>{form.formState.errors.oldPin.message}</span>
+                  </FormMessage>
+                )}
               </FormItem>
             )}
           />
+
+          {/* Divider */}
+          <div className="relative py-2">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-800"></div>
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="bg-gray-900 px-3 text-gray-500">PIN Baru</span>
+            </div>
+          </div>
 
           {/* New PIN */}
           <FormField
@@ -155,31 +199,46 @@ export default function ChangePINForm({ forced = false }: ChangePINFormProps) {
             name="newPin"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>PIN Baru</FormLabel>
+                <FormLabel className="text-sm font-semibold text-white flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-emerald-400" />
+                  PIN Baru
+                </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       type={showNewPIN ? "text" : "password"}
-                      placeholder="Masukkan PIN baru (6 digit)"
+                      placeholder="••••••"
                       maxLength={6}
                       {...field}
                       disabled={isLoading}
-                      className="pr-10"
+                      className="h-11 pr-11 bg-black/50 border-gray-800 focus-visible:border-emerald-500/50 focus-visible:ring-emerald-500/20 font-mono text-lg tracking-widest"
                     />
                     <Button
                       type="button"
                       variant="ghost"
                       size="icon-sm"
-                      className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
+                      className="absolute right-1.5 top-1/2 -translate-y-1/2 h-8 w-8 hover:bg-gray-800"
                       onClick={() => setShowNewPIN(!showNewPIN)}
                       disabled={isLoading}
                     >
-                      {showNewPIN ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      {showNewPIN ? (
+                        <EyeOff className="h-4 w-4 text-gray-400" />
+                      ) : (
+                        <Eye className="h-4 w-4 text-gray-400" />
+                      )}
                     </Button>
                   </div>
                 </FormControl>
-                <FormDescription>PIN harus 6 digit angka</FormDescription>
-                <FormMessage />
+                <FormDescription className="text-xs text-gray-500 flex items-start gap-1.5">
+                  <span className="text-emerald-400 mt-0.5">💡</span>
+                  <span>PIN harus 6 digit angka</span>
+                </FormDescription>
+                {form.formState.errors.newPin && (
+                  <FormMessage className="text-xs flex items-center gap-1.5">
+                    <AlertCircle className="w-3 h-3" />
+                    <span>{form.formState.errors.newPin.message}</span>
+                  </FormMessage>
+                )}
               </FormItem>
             )}
           />
@@ -190,47 +249,89 @@ export default function ChangePINForm({ forced = false }: ChangePINFormProps) {
             name="confirmPin"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Konfirmasi PIN Baru</FormLabel>
+                <FormLabel className="text-sm font-semibold text-white flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-emerald-400" />
+                  Konfirmasi PIN Baru
+                </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       type={showConfirmPIN ? "text" : "password"}
-                      placeholder="Masukkan ulang PIN baru"
+                      placeholder="••••••"
                       maxLength={6}
                       {...field}
                       disabled={isLoading}
-                      className="pr-10"
+                      className="h-11 pr-11 bg-black/50 border-gray-800 focus-visible:border-emerald-500/50 focus-visible:ring-emerald-500/20 font-mono text-lg tracking-widest"
                     />
                     <Button
                       type="button"
                       variant="ghost"
                       size="icon-sm"
-                      className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
+                      className="absolute right-1.5 top-1/2 -translate-y-1/2 h-8 w-8 hover:bg-gray-800"
                       onClick={() => setShowConfirmPIN(!showConfirmPIN)}
                       disabled={isLoading}
                     >
-                      {showConfirmPIN ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      {showConfirmPIN ? (
+                        <EyeOff className="h-4 w-4 text-gray-400" />
+                      ) : (
+                        <Eye className="h-4 w-4 text-gray-400" />
+                      )}
                     </Button>
                   </div>
                 </FormControl>
-                <FormMessage />
+                {form.formState.errors.confirmPin && (
+                  <FormMessage className="text-xs flex items-center gap-1.5">
+                    <AlertCircle className="w-3 h-3" />
+                    <span>{form.formState.errors.confirmPin.message}</span>
+                  </FormMessage>
+                )}
               </FormItem>
             )}
           />
 
           {/* Submit Button */}
-          <Button type="submit" disabled={isLoading} className="w-full">
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Mengubah PIN...
-              </>
-            ) : (
-              "Ubah PIN"
-            )}
-          </Button>
+          <div className="pt-2">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full h-11 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold shadow-lg shadow-emerald-500/20 transition-all"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Mengubah PIN...
+                </>
+              ) : (
+                <>
+                  <CheckCircle className="w-4 h-4" />
+                  Ubah PIN
+                </>
+              )}
+            </Button>
+          </div>
         </form>
       </Form>
+
+      {/* Security Note */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="pt-4 border-t border-gray-800"
+      >
+        <div className="flex items-start gap-3 p-4 rounded-lg bg-blue-500/5 border border-blue-500/20">
+          <Shield className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <p className="text-sm font-semibold text-blue-400">Tips Keamanan PIN</p>
+            <ul className="text-xs text-gray-400 space-y-1 list-disc list-inside">
+              <li>Gunakan kombinasi angka yang tidak mudah ditebak</li>
+              <li>Jangan gunakan tanggal lahir atau nomor telepon</li>
+              <li>Ubah PIN secara berkala untuk keamanan maksimal</li>
+              <li>Jangan bagikan PIN Anda kepada siapapun</li>
+            </ul>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }

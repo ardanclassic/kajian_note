@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { useAuthStore } from "@/store/authStore";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
 import { useNotesStore } from "@/store/notesStore";
-import { MobileMenu } from "@/components/features/dashboard/MobileMenu";
+import { MenuArea } from "@/components/features/dashboard/MenuArea";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/common/Loading";
@@ -92,7 +92,7 @@ export default function Dashboard() {
     { icon: Plus, label: "Catatan Baru", path: "/notes/new" },
     { icon: BookOpen, label: "Lihat Catatan", path: "/notes" },
     { icon: Crown, label: "Subscription", path: "/subscription" },
-    { icon: Settings, label: "Pengaturan", path: "/settings" },
+    // { icon: Settings, label: "Pengaturan", path: "/settings" },
   ];
 
   const container = {
@@ -111,7 +111,7 @@ export default function Dashboard() {
   return (
     <>
       <div className="min-h-screen bg-black">
-        <MobileMenu
+        <MenuArea
           isOpen={isMenuOpen}
           onClose={() => setIsMenuOpen(false)}
           userRole={user.role}
@@ -220,7 +220,7 @@ export default function Dashboard() {
             {/* Quick Actions */}
             <motion.div variants={item} className="space-y-4">
               <h2 className="text-xl font-bold text-white">Navigasi Cepat</h2>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
                 {quickActions.map((action, idx) => (
                   <motion.button
                     key={idx}
