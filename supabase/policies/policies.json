@@ -1,0 +1,262 @@
+[
+  {
+    "schemaname": "public",
+    "tablename": "imagekit_temp_uploads",
+    "policyname": "Service role has full access",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "ALL",
+    "qual": "((auth.jwt() ->> 'role'::text) = 'service_role'::text)",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "imagekit_temp_uploads",
+    "policyname": "Users can delete their own uploads",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "DELETE",
+    "qual": "(auth.uid() = user_id)",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "imagekit_temp_uploads",
+    "policyname": "Users can insert their own uploads",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "(auth.uid() = user_id)"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "imagekit_temp_uploads",
+    "policyname": "Users can update their own uploads",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "(auth.uid() = user_id)",
+    "with_check": "(auth.uid() = user_id)"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "imagekit_temp_uploads",
+    "policyname": "Users can view their own uploads",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(auth.uid() = user_id)",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notes",
+    "policyname": "notes_delete_by_staff",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "DELETE",
+    "qual": "((auth.jwt() ->> 'role'::text) = ANY (ARRAY['admin'::text, 'panitia'::text]))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notes",
+    "policyname": "notes_delete_own",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "DELETE",
+    "qual": "(user_id IN ( SELECT u.id\n   FROM users u\n  WHERE (u.auth_user_id = auth.uid())))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notes",
+    "policyname": "notes_insert_own",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "(user_id IN ( SELECT u.id\n   FROM users u\n  WHERE (u.auth_user_id = auth.uid())))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notes",
+    "policyname": "notes_select_own_or_public",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "((user_id IN ( SELECT u.id\n   FROM users u\n  WHERE (u.auth_user_id = auth.uid()))) OR (is_public = true))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notes",
+    "policyname": "notes_update_own",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "(user_id IN ( SELECT u.id\n   FROM users u\n  WHERE (u.auth_user_id = auth.uid())))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "payment_webhooks",
+    "policyname": "Admin view all webhooks",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(EXISTS ( SELECT 1\n   FROM users u\n  WHERE ((u.auth_user_id = auth.uid()) AND (u.role = 'admin'::text))))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "payment_webhooks",
+    "policyname": "System insert webhooks",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "true"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "payment_webhooks",
+    "policyname": "System update webhooks",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "true",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "payment_webhooks",
+    "policyname": "webhooks_insert_system",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "true"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "payment_webhooks",
+    "policyname": "webhooks_select_admin",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "((auth.jwt() ->> 'role'::text) = 'admin'::text)",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "payment_webhooks",
+    "policyname": "webhooks_update_system",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "true",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "profile_changes",
+    "policyname": "profile_changes_insert_system",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "true"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "profile_changes",
+    "policyname": "profile_changes_select_own",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "((user_id IN ( SELECT u.id\n   FROM users u\n  WHERE (u.auth_user_id = auth.uid()))) OR ((auth.jwt() ->> 'role'::text) = 'admin'::text))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "subscriptions",
+    "policyname": "subscriptions_insert_system",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "true"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "subscriptions",
+    "policyname": "subscriptions_select_own",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "((user_id = ( SELECT users.id\n   FROM users\n  WHERE (users.auth_user_id = auth.uid())\n LIMIT 1)) OR ((auth.jwt() ->> 'role'::text) = 'admin'::text))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "subscriptions",
+    "policyname": "subscriptions_update_system",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "true",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "users",
+    "policyname": "users_delete_by_admin",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "DELETE",
+    "qual": "(((auth.jwt() ->> 'role'::text) = 'admin'::text) AND (auth.uid() <> auth_user_id))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "users",
+    "policyname": "users_insert_own",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "(auth.uid() = auth_user_id)"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "users",
+    "policyname": "users_select_unified",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "((auth.uid() = auth_user_id) OR ((auth.jwt() ->> 'role'::text) = ANY (ARRAY['admin'::text, 'panitia'::text, 'ustadz'::text])))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "users",
+    "policyname": "users_update_by_admin",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "(((auth.jwt() ->> 'role'::text) = 'admin'::text) AND (auth.uid() <> auth_user_id))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "users",
+    "policyname": "users_update_own",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "(auth.uid() = auth_user_id)",
+    "with_check": null
+  }
+]

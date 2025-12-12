@@ -1,0 +1,13 @@
+[
+  {
+    "jobid": 2,
+    "schedule": "0 * * * *",
+    "command": "\r\n  SELECT net.http_post(\r\n    url := 'https://rewtyutkcixrmporoomn.supabase.co/functions/v1/imagekit-cleanup',\r\n    headers := '{\"Content-Type\": \"application/json\", \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3R5dXRrY2l4cm1wb3Jvb21uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI2MTc0ODgsImV4cCI6MjA3ODE5MzQ4OH0.8cshHfvEXIKbQ_aHE6a0l_ZFJcefXGQ0p1CXBLyLabo\"}'::jsonb\r\n  ) as request_id;\r\n  ",
+    "nodename": "localhost",
+    "nodeport": 5432,
+    "database": "postgres",
+    "username": "postgres",
+    "active": true,
+    "jobname": "imagekit-cleanup-hourly"
+  }
+]

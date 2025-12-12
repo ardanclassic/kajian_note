@@ -23,8 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
-# Supabase
-.supabase
+# Supabase - Local Development Files
+.supabase/
+supabase/.branches/
+supabase/.temp/
 
 # Environment variables
 .env
@@ -32,8 +34,15 @@ dist-ssr
 .env.development.local
 .env.production.local
 .env.test.local
+.env.backup
 
 # Keep example files
 !.env.example
 !.env.development.example
 !.env.production.example
+
+# Keep Supabase Config & Migrations (These are safe to commit)
+!supabase/config.toml
+!supabase/migrations/
+!supabase/functions/
+!supabase/seed.sql
