@@ -15,7 +15,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, BookOpen, Brain, Loader2, CheckCircle2, Sparkles, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CatLoading from "@/components/common/CatLoading";
-import { CategorySelector } from "./CategorySelector";
+import { ContentSelector } from "./ContentSelector";
 import { StoryMode } from "./StoryMode";
 import { QuizMode } from "./QuizMode";
 
@@ -23,7 +23,7 @@ import { QuizMode } from "./QuizMode";
 // TYPES
 // ============================================
 
-type WaitingMode = "selector" | "story-category" | "quiz-category" | "story" | "quiz" | "wait";
+type WaitingMode = "selector" | "story-list" | "quiz-category" | "story" | "quiz" | "wait";
 
 interface WaitingExperienceOverlayProps {
   open: boolean;
@@ -107,7 +107,9 @@ const completionVariants: any = {
 export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResult }: WaitingExperienceOverlayProps) {
   const [currentMode, setCurrentMode] = useState<WaitingMode>("selector");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedStoryId, setSelectedStoryId] = useState<string>("");
   const [showCompletion, setShowCompletion] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
 
   // Show completion notification when import done
   useEffect(() => {
@@ -128,7 +130,7 @@ export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResu
   // Handle mode selection from main selector
   const handleModeSelect = (mode: WaitingMode) => {
     if (mode === "story") {
-      setCurrentMode("story-category");
+      setCurrentMode("story-list");
     } else if (mode === "quiz") {
       setCurrentMode("quiz-category");
     } else {
@@ -136,32 +138,36 @@ export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResu
     }
   };
 
-  // Handle category selection
+  // Handle story selection
+  const handleStorySelect = (storyId: string) => {
+    console.log("[WaitingExperience] Story selected:", storyId);
+    setSelectedStoryId(storyId);
+    setCurrentMode("story");
+  };
+
+  // Handle category selection (for quiz)
   const handleCategorySelect = (categoryId: string) => {
     setSelectedCategory(categoryId);
-
-    // Navigate to content based on current mode
-    if (currentMode === "story-category") {
-      setCurrentMode("story");
-    } else if (currentMode === "quiz-category") {
-      setCurrentMode("quiz");
-    }
+    setCurrentMode("quiz");
   };
 
   // Handle back to selector
   const handleBackToSelector = () => {
     setCurrentMode("selector");
     setSelectedCategory("");
+    setSelectedStoryId("");
     setShowCompletion(false);
   };
 
-  // Handle back to category selector
+  // Handle back to story list
+  const handleBackToStoryList = () => {
+    setCurrentMode("story-list");
+    setSelectedStoryId("");
+  };
+
+  // Handle back to category selector (for quiz)
   const handleBackToCategorySelector = () => {
-    if (currentMode === "story") {
-      setCurrentMode("story-category");
-    } else if (currentMode === "quiz") {
-      setCurrentMode("quiz-category");
-    }
+    setCurrentMode("quiz-category");
     setSelectedCategory("");
   };
 
@@ -177,6 +183,29 @@ export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResu
     console.log('[WaitingExperience] User clicked "Lanjut Dulu"');
     setShowCompletion(false);
     // Don't close overlay, let user continue story/quiz
+  };
+
+  // Handle close attempt (show confirmation if not complete)
+  const handleCloseAttempt = () => {
+    if (isComplete) {
+      // If already complete, just close
+      onClose();
+    } else {
+      // Show confirmation dialog
+      setShowCancelConfirm(true);
+    }
+  };
+
+  // Handle confirmed cancel
+  const handleConfirmedCancel = () => {
+    console.log("[WaitingExperience] User confirmed cancel");
+    setShowCancelConfirm(false);
+    onClose(); // This will trigger abort in parent component
+  };
+
+  // Handle cancel dismiss
+  const handleCancelDismiss = () => {
+    setShowCancelConfirm(false);
   };
 
   return (
@@ -197,8 +226,9 @@ export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResu
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
-                onClick={onClose}
+                onClick={handleCloseAttempt}
                 className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                title="Tutup"
               >
                 <X className="w-5 h-5 text-white" />
               </motion.button>
@@ -209,32 +239,24 @@ export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResu
               <AnimatePresence mode="wait">
                 {currentMode === "selector" ? (
                   <ModeSelector key="selector" onSelectMode={handleModeSelect} />
-                ) : currentMode === "story-category" ? (
-                  <div key="story-category" className="w-full">
-                    <CategorySelector
-                      mode="story"
-                      onBack={handleBackToSelector}
-                      onSelectCategory={handleCategorySelect}
-                    />
+                ) : currentMode === "story-list" ? (
+                  <div key="story-list" className="w-full">
+                    <ContentSelector mode="story" onBack={handleBackToSelector} onSelect={handleStorySelect} />
                   </div>
                 ) : currentMode === "quiz-category" ? (
                   <div key="quiz-category" className="w-full">
-                    <CategorySelector
-                      mode="quiz"
-                      onBack={handleBackToSelector}
-                      onSelectCategory={handleCategorySelect}
-                    />
+                    <ContentSelector mode="quiz" onBack={handleBackToSelector} onSelect={handleCategorySelect} />
                   </div>
                 ) : currentMode === "story" ? (
                   <div key="story" className="w-full">
-                    <StoryMode categoryId={selectedCategory} onBack={handleBackToCategorySelector} />
+                    <StoryMode storyId={selectedStoryId} onBack={handleBackToStoryList} />
                   </div>
                 ) : currentMode === "quiz" ? (
                   <div key="quiz" className="w-full">
                     <QuizMode categoryId={selectedCategory} onBack={handleBackToCategorySelector} />
                   </div>
                 ) : (
-                  <WaitMode key="wait" onBack={handleBackToSelector} onClose={onClose} />
+                  <WaitMode key="wait" onBack={handleBackToSelector} onClose={handleCloseAttempt} />
                 )}
               </AnimatePresence>
             </div>
@@ -248,11 +270,11 @@ export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResu
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="fixed top-4 left-1/2 -translate-x-1/2 z-[60] w-[90%] max-w-md"
+                className="fixed top-4 left-1/2 -translate-x-1/2 z-60 w-[90%] max-w-md"
               >
-                <div className="bg-gradient-to-br from-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-emerald-500/30 rounded-2xl p-4 shadow-2xl">
+                <div className="bg-linear-to-br from-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-emerald-500/30 rounded-2xl p-4 shadow-2xl">
                   <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                    <div className="shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
                       <CheckCircle2 className="w-5 h-5 text-emerald-400" />
                     </div>
 
@@ -283,6 +305,68 @@ export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResu
                     </motion.button>
                   </div>
                 </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Cancel Confirmation Dialog */}
+          <AnimatePresence>
+            {showCancelConfirm && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-70 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+                onClick={handleCancelDismiss}
+              >
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                  transition={{ type: "spring", damping: 20, stiffness: 300 }}
+                  className="bg-linear-to-br from-gray-900 to-gray-800 border border-red-500/30 rounded-2xl p-6 max-w-md w-full shadow-2xl"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Icon */}
+                  <div className="flex justify-center mb-4">
+                    <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center">
+                      <svg className="w-8 h-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Title & Message */}
+                  <h3 className="text-xl font-bold text-white text-center mb-2">Yakin Mau Batalkan?</h3>
+                  <p className="text-sm text-gray-300 text-center mb-6 leading-relaxed">
+                    Proses summary masih jalan nih. Kalau dibatalin, nanti harus ulang dari awal lagi. Yakin mau stop?
+                  </p>
+
+                  {/* Actions */}
+                  <div className="flex gap-3">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={handleCancelDismiss}
+                      className="flex-1 px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium transition-colors"
+                    >
+                      Gak Jadi
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={handleConfirmedCancel}
+                      className="flex-1 px-4 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium transition-colors"
+                    >
+                      Ya, Batalkan
+                    </motion.button>
+                  </div>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -349,7 +433,7 @@ function ModeSelector({ onSelectMode }: ModeSelectorProps) {
         transition={{ delay: 0.1 }}
         className="text-center space-y-3"
       >
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 mb-2">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-linear-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 mb-2">
           <Sparkles className="w-8 h-8 text-indigo-400" />
         </div>
         <h2 className="text-3xl sm:text-4xl font-bold text-white">🌙 Eh, Sambil Nungguin Nih...</h2>
@@ -370,7 +454,7 @@ function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             onClick={() => onSelectMode(mode.id)}
             className={cn(
               "w-full p-5 rounded-2xl border backdrop-blur-xl transition-all",
-              "bg-gradient-to-br",
+              "bg-linear-to-br",
               mode.gradient,
               mode.borderColor,
               "hover:shadow-xl",
@@ -380,7 +464,7 @@ function ModeSelector({ onSelectMode }: ModeSelectorProps) {
           >
             <div className="flex items-start gap-4">
               {/* Icon */}
-              <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="shrink-0 w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <span className="text-2xl">{mode.emoji}</span>
               </div>
 
@@ -393,7 +477,7 @@ function ModeSelector({ onSelectMode }: ModeSelectorProps) {
               </div>
 
               {/* Arrow */}
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
+              <div className="shrink-0 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
                 <svg
                   className="w-4 h-4 text-white/60 group-hover:text-white/80 group-hover:translate-x-0.5 transition-all"
                   fill="none"

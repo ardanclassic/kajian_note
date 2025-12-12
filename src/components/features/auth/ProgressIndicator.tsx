@@ -17,7 +17,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({ currentSte
   const progress = (currentStep / totalSteps) * 100;
 
   return (
-    <div className={`mb-8 ${className}`}>
+    <div className={`mb-4 ${className}`}>
       {/* Minimalist progress bar */}
       <div className="relative h-0.5 bg-gray-800/30 rounded-full overflow-hidden">
         <motion.div

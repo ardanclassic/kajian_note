@@ -80,7 +80,7 @@ export const TypeformStep: React.FC<TypeformStepProps> = ({
         >
           {/* Header */}
           <div className="space-y-2">
-            <h2 className="text-2xl font-semibold text-white tracking-tight">{title}</h2>
+            <h2 className="text-xl md:text-2xl font-semibold text-white tracking-tight">{title}</h2>
             {subtitle && <p className="text-sm text-gray-400 leading-relaxed">{subtitle}</p>}
           </div>
 

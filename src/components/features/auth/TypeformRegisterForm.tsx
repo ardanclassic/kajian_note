@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Home } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuthStore } from "@/store/authStore";
 import { registerSchema, type RegisterFormData } from "@/schemas/auth.schema";
@@ -150,7 +150,7 @@ export const TypeformRegisterForm: React.FC = () => {
         <TypeformStep
           isActive={currentStep === 2}
           title={`Salam kenal, ${fullName.split(" ")[0]}! 😊`}
-          subtitle="Username ini otomatis dibuat, bisa diubah kok"
+          subtitle="Username ini otomatis dibuat, bisa diubah kok. Kalau bisa pake username yang sama dengan telegram-mu ya!"
           onNext={handleNext}
           onBack={handleBack}
           nextDisabled={!username || !!errors.username}
@@ -170,8 +170,8 @@ export const TypeformRegisterForm: React.FC = () => {
         {/* Step 3: Phone */}
         <TypeformStep
           isActive={currentStep === 3}
-          title="Nomor HP-mu? 📱"
-          subtitle="Opsional kok, buat jaga-jaga aja"
+          title="Nomor WA-mu? 📱"
+          subtitle="Santai, gak wajib! Tapi kalau diisi, sharing catatan ke WA jadi lebih gampang."
           onNext={handleNext}
           onBack={handleBack}
           nextLabel={phone ? "Lanjut" : "Lewati"}
@@ -261,6 +261,26 @@ export const TypeformRegisterForm: React.FC = () => {
           </div>
         </TypeformStep>
       </div>
+
+      {/* Back to Home */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
+        className="text-center pt-2"
+      >
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => navigate("/")}
+          disabled={isLoading}
+          className="group text-muted-foreground hover:text-emerald-400 transition-colors"
+        >
+          <Home className="mr-2 h-4 w-4" />
+          Kembali ke Beranda
+        </Button>
+      </motion.div>
 
       {/* Footer link */}
       <motion.div

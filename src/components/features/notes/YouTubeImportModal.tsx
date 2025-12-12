@@ -296,8 +296,14 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
 
   // 👇 NEW HANDLER - Close Waiting Experience
   const handleCloseWaitingExperience = () => {
-    // CRITICAL: Only close if user explicitly wants to close
-    // Don't auto-trigger success if user is still in story/quiz mode
+    // CRITICAL: Abort the import process if still running
+    if (abortControllerRef.current && !importComplete) {
+      console.log("[YouTubeImport] Aborting import process...");
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+      setIsLoading(false);
+    }
+
     setShowWaitingExperience(false);
 
     // If import was completed AND user closed overlay, trigger success
@@ -307,7 +313,7 @@ export function YouTubeImportModal({ open, onOpenChange, onImportSuccess }: YouT
         handleReset();
       }, 300);
     } else if (!importComplete) {
-      // User closed before completion - reset states
+      // User canceled before completion - reset states
       handleReset();
     }
   };

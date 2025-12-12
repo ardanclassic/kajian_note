@@ -9,3 +9,5 @@ createRoot(document.getElementById("root")!).render(
     <App />
   </StrictMode>
 );
+
+// const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);

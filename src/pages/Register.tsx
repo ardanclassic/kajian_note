@@ -24,79 +24,11 @@ export const Register: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black p-4 overflow-hidden relative">
-      {/* Animated emerald glow background */}
+      {/* Static emerald glow background - mobile friendly */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Main glow orbs */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-emerald-500/20 rounded-full blur-[120px]"
-          animate={{
-            x: [0, 100, -50, 0],
-            y: [0, -80, 60, 0],
-            scale: [1, 1.3, 0.9, 1],
-            opacity: [0.2, 0.4, 0.2, 0.2],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] bg-emerald-400/20 rounded-full blur-[100px]"
-          animate={{
-            x: [0, -80, 100, 0],
-            y: [0, 100, -50, 0],
-            scale: [1, 0.8, 1.4, 1],
-            opacity: [0.3, 0.2, 0.4, 0.3],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-emerald-300/15 rounded-full blur-[80px]"
-          animate={{
-            x: [0, -60, 80, 0],
-            y: [0, 70, -60, 0],
-            scale: [1, 1.2, 0.9, 1],
-            opacity: [0.15, 0.3, 0.15, 0.15],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-
-        {/* Accent glows */}
-        <motion.div
-          className="absolute top-10 right-1/3 w-[300px] h-[300px] bg-emerald-500/10 rounded-full blur-[60px]"
-          animate={{
-            x: [0, 50, -30, 0],
-            y: [0, -40, 50, 0],
-            opacity: [0.1, 0.25, 0.1, 0.1],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-10 left-1/3 w-[350px] h-[350px] bg-emerald-600/10 rounded-full blur-[70px]"
-          animate={{
-            x: [0, -40, 60, 0],
-            y: [0, 50, -40, 0],
-            opacity: [0.1, 0.2, 0.1, 0.1],
-          }}
-          transition={{
-            duration: 14,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] bg-emerald-400/10 rounded-full blur-[100px]" />
+        <div className="absolute top-1/2 right-1/3 w-[400px] h-[400px] bg-emerald-300/8 rounded-full blur-[80px]" />
       </div>
 
       <div className="w-full max-w-3xl space-y-8 relative z-10">
