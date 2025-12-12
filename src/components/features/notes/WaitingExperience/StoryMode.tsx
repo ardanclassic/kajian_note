@@ -5,22 +5,22 @@
  * PATH: src/components/features/notes/WaitingExperience/StoryMode.tsx
  *
  * CHANGES:
- * - Removed skip button (cerita dipilih dari category, jadi gak perlu skip)
- * - Only back and pause/play buttons
- * - Load story by category (not random)
+ * - Use storyId instead of categoryId
+ * - Load specific story by ID
  */
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Pause, Play, BookOpen, Lightbulb } from "lucide-react";
-import { getRandomStoryByCategory, type Story, type StoryParagraph } from "@/data/waiting-experience";
+import { cn } from "@/lib/utils";
+import { getStoryById, type Story, type StoryParagraph } from "@/data/waiting-experience";
 
 // ============================================
 // TYPES
 // ============================================
 
 interface StoryModeProps {
-  categoryId: string; // Category selected by user
+  storyId: string; // Story ID selected by user
   onBack: () => void;
 }
 
@@ -68,7 +68,7 @@ const lessonVariants: any = {
 // COMPONENT
 // ============================================
 
-export function StoryMode({ categoryId, onBack }: StoryModeProps) {
+export function StoryMode({ storyId, onBack }: StoryModeProps) {
   const [story, setStory] = useState<Story | null>(null);
   const [currentParagraphIndex, setCurrentParagraphIndex] = useState(0);
   const [displayedParagraphs, setDisplayedParagraphs] = useState<StoryParagraph[]>([]);
@@ -79,18 +79,18 @@ export function StoryMode({ categoryId, onBack }: StoryModeProps) {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Load story by category on mount
+  // Load story by ID on mount
   useEffect(() => {
-    console.log("[StoryMode] Loading story for category:", categoryId);
-    const categoryStory = getRandomStoryByCategory(categoryId as Story["category"]);
-    console.log("[StoryMode] Story loaded:", categoryStory);
+    console.log("[StoryMode] Loading story with ID:", storyId);
+    const selectedStory = getStoryById(storyId);
+    console.log("[StoryMode] Story loaded:", selectedStory);
 
-    if (categoryStory) {
-      setStory(categoryStory);
+    if (selectedStory) {
+      setStory(selectedStory);
     } else {
-      console.error("[StoryMode] No story found for category:", categoryId);
+      console.error("[StoryMode] Story not found for ID:", storyId);
     }
-  }, [categoryId]);
+  }, [storyId]);
 
   // Auto-scroll paragraphs
   useEffect(() => {
@@ -176,7 +176,7 @@ export function StoryMode({ categoryId, onBack }: StoryModeProps) {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={onBack}
-            className="flex-shrink-0 p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+            className="shrink-0 p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-white" />
           </motion.button>
@@ -196,7 +196,7 @@ export function StoryMode({ categoryId, onBack }: StoryModeProps) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleTogglePause}
-              className="flex-shrink-0 p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+              className="shrink-0 p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
             >
               {isPaused ? <Play className="w-5 h-5 text-emerald-400" /> : <Pause className="w-5 h-5 text-yellow-400" />}
             </motion.button>
@@ -213,7 +213,7 @@ export function StoryMode({ categoryId, onBack }: StoryModeProps) {
                   width: `${(displayedParagraphs.length / story.paragraphs.length) * 100}%`,
                 }}
                 transition={{ duration: 0.3 }}
-                className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
+                className="h-full bg-linear-to-r from-blue-500 to-purple-500"
               />
             </div>
             <div className="flex items-center justify-between mt-1">
@@ -257,7 +257,7 @@ export function StoryMode({ categoryId, onBack }: StoryModeProps) {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.6 }}
-            className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20"
+            className="mt-8 p-6 rounded-2xl bg-linear-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20"
           >
             <div className="flex items-center gap-2 mb-4">
               <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
@@ -276,7 +276,7 @@ export function StoryMode({ categoryId, onBack }: StoryModeProps) {
                   animate="visible"
                   className="flex items-start gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
                 >
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-0.5">
+                  <div className="shrink-0 w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-0.5">
                     <span className="text-xs font-semibold text-emerald-400">{index + 1}</span>
                   </div>
                   <p className="text-sm text-gray-200 leading-relaxed">{lesson}</p>
@@ -292,7 +292,7 @@ export function StoryMode({ categoryId, onBack }: StoryModeProps) {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={onBack}
-              className="w-full mt-6 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-xl font-medium transition-all flex items-center justify-center gap-2"
+              className="w-full mt-6 px-6 py-3 bg-linear-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-xl font-medium transition-all flex items-center justify-center gap-2"
             >
               <ArrowLeft className="w-5 h-5" />
               Kembali ke Kategori

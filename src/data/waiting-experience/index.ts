@@ -59,35 +59,8 @@ export interface CategoryMeta {
 }
 
 // ============================================
-// CATEGORY METADATA
+// QUIZ CATEGORIES (only for quiz)
 // ============================================
-
-export const STORY_CATEGORIES: CategoryMeta[] = [
-  {
-    id: "sirah",
-    name: "Sirah Nabawiyah",
-    emoji: "🌙",
-    description: "Kisah hidup Rasulullah ﷺ",
-    gradient: "from-blue-500/20 to-indigo-500/20",
-    borderColor: "border-blue-500/30",
-  },
-  {
-    id: "shahabat",
-    name: "Kisah Sahabat",
-    emoji: "⭐",
-    description: "Teladan para sahabat Nabi",
-    gradient: "from-emerald-500/20 to-teal-500/20",
-    borderColor: "border-emerald-500/30",
-  },
-  {
-    id: "salaf",
-    name: "Ulama Salaf",
-    emoji: "📚",
-    description: "Keteladanan ulama salaf",
-    gradient: "from-purple-500/20 to-pink-500/20",
-    borderColor: "border-purple-500/30",
-  },
-];
 
 export const QUIZ_CATEGORIES: CategoryMeta[] = [
   {
@@ -235,7 +208,21 @@ export function getRandomStory(): Story {
  * Get story by ID
  */
 export function getStoryById(id: string): Story | undefined {
-  return SAMPLE_STORIES.find((story) => story.id === id);
+  console.log("[DataLoader] Getting story by ID:", id);
+  console.log(
+    "[DataLoader] Available stories:",
+    SAMPLE_STORIES.map((s) => ({ id: s.id, title: s.title }))
+  );
+
+  const story = SAMPLE_STORIES.find((story) => story.id === id);
+
+  if (story) {
+    console.log("[DataLoader] Story found:", story.title);
+  } else {
+    console.error("[DataLoader] Story NOT found for ID:", id);
+  }
+
+  return story;
 }
 
 /**
