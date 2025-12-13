@@ -1,0 +1,194 @@
+[
+  {
+    "id": "quiz_aqidah_001",
+    "category": "aqidah",
+    "question": "Berapa jumlah Asmaul Husna?",
+    "options": [
+      "33",
+      "66",
+      "99",
+      "100"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Rasulullah ﷺ bersabda: 'Sesungguhnya Allah memiliki 99 nama, barangsiapa yang menghafalnya maka akan masuk surga.'",
+    "difficulty": "easy",
+    "points": 10,
+    "emoji": "☝️"
+  },
+  {
+    "id": "quiz_aqidah_002",
+    "category": "aqidah",
+    "question": "Berapa jumlah rukun iman?",
+    "options": [
+      "3",
+      "5",
+      "6",
+      "7"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Rukun iman ada 6: Iman kepada Allah, malaikat, kitab-kitab, rasul-rasul, hari akhir, dan qada & qadar.",
+    "difficulty": "easy",
+    "points": 10,
+    "emoji": "🕌"
+  },
+  {
+    "id": "quiz_aqidah_003",
+    "category": "aqidah",
+    "question": "Siapa malaikat yang bertugas meniup sangkakala pada hari kiamat?",
+    "options": [
+      "Jibril",
+      "Mikail",
+      "Israfil",
+      "Izrail"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Malaikat Israfil bertugas meniup sangkakala (terompet) sebagai tanda datangnya hari kiamat.",
+    "difficulty": "medium",
+    "points": 15,
+    "emoji": "📯"
+  },
+  {
+    "id": "quiz_aqidah_004",
+    "category": "aqidah",
+    "question": "Berapa jumlah kitab Allah yang wajib kita imani?",
+    "options": [
+      "4 kitab",
+      "5 kitab",
+      "25 kitab",
+      "Semua kitab yang Allah turunkan"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Kita wajib beriman kepada semua kitab yang Allah turunkan. Yang disebutkan secara khusus ada Taurat, Zabur, Injil, dan Al-Qur'an, serta Shuhuf Ibrahim dan Musa.",
+    "difficulty": "hard",
+    "points": 20,
+    "emoji": "📚"
+  },
+  {
+    "id": "quiz_aqidah_005",
+    "category": "aqidah",
+    "question": "Apa makna 'La ilaha illallah'?",
+    "options": [
+      "Tidak ada Tuhan",
+      "Tidak ada Tuhan yang berhak disembah kecuali Allah",
+      "Allah Maha Esa",
+      "Hanya Allah yang Maha Kuasa"
+    ],
+    "correctAnswer": 1,
+    "explanation": "'La ilaha illallah' berarti tidak ada tuhan (yang berhak disembah) kecuali Allah. Ini adalah inti dari tauhid dalam Islam.",
+    "difficulty": "easy",
+    "points": 10,
+    "emoji": "☝️"
+  },
+  {
+    "id": "quiz_aqidah_006",
+    "category": "aqidah",
+    "question": "Siapa nabi yang diutus paling akhir (penutup para nabi)?",
+    "options": [
+      "Nabi Isa 'alaihissalam",
+      "Nabi Ibrahim 'alaihissalam",
+      "Nabi Muhammad ﷺ",
+      "Nabi Musa 'alaihissalam"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Nabi Muhammad ﷺ adalah Khatamun Nabiyyin (penutup para nabi). Tidak ada nabi yang akan datang setelah beliau.",
+    "difficulty": "easy",
+    "points": 10,
+    "emoji": "🌟"
+  },
+  {
+    "id": "quiz_aqidah_007",
+    "category": "aqidah",
+    "question": "Berapa jumlah rasul yang wajib kita ketahui?",
+    "options": [
+      "5 rasul",
+      "10 rasul",
+      "25 rasul",
+      "313 rasul"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Ada 25 nama rasul dan nabi yang disebutkan dalam Al-Qur'an yang wajib kita ketahui, meski jumlah nabi dan rasul seluruhnya mencapai ribuan.",
+    "difficulty": "medium",
+    "points": 15,
+    "emoji": "👥"
+  },
+  {
+    "id": "quiz_aqidah_008",
+    "category": "aqidah",
+    "question": "Apa nama malaikat yang bertugas mencatat amal baik manusia?",
+    "options": [
+      "Raqib",
+      "Atid",
+      "Munkar",
+      "Nakir"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Malaikat Raqib bertugas mencatat amal baik (di sebelah kanan), sedangkan malaikat Atid mencatat amal buruk (di sebelah kiri).",
+    "difficulty": "medium",
+    "points": 15,
+    "emoji": "📝"
+  },
+  {
+    "id": "quiz_aqidah_009",
+    "category": "aqidah",
+    "question": "Apa yang dimaksud dengan 'Qadar'?",
+    "options": [
+      "Ketetapan Allah tentang segala sesuatu",
+      "Takdir baik dan buruk dari Allah",
+      "Kehendak Allah yang sudah tertulis",
+      "Semua jawaban benar"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Qadar mencakup semua ketetapan, takdir, dan kehendak Allah yang sudah tertulis di Lauhul Mahfuzh. Kita wajib beriman bahwa segala sesuatu terjadi atas kehendak Allah.",
+    "difficulty": "hard",
+    "points": 20,
+    "emoji": "📜"
+  },
+  {
+    "id": "quiz_aqidah_010",
+    "category": "aqidah",
+    "question": "Siapa nama malaikat yang bertugas menyampaikan wahyu kepada para nabi?",
+    "options": [
+      "Malaikat Jibril",
+      "Malaikat Mikail",
+      "Malaikat Israfil",
+      "Malaikat Izrail"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Malaikat Jibril 'alaihissalam adalah malaikat yang bertugas menyampaikan wahyu dari Allah kepada para nabi dan rasul.",
+    "difficulty": "easy",
+    "points": 10,
+    "emoji": "👼"
+  },
+  {
+    "id": "quiz_aqidah_011",
+    "category": "aqidah",
+    "question": "Apa nama surga tertinggi?",
+    "options": [
+      "Jannatul Na'im",
+      "Jannatul Firdaus",
+      "Jannatul 'Adn",
+      "Jannatul Khuld"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Jannatul Firdaus adalah surga tertinggi dan paling mulia. Rasulullah ﷺ menyuruh kita memohon Firdaus kepada Allah.",
+    "difficulty": "medium",
+    "points": 15,
+    "emoji": "🏰"
+  },
+  {
+    "id": "quiz_aqidah_012",
+    "category": "aqidah",
+    "question": "Berapa tingkatan neraka yang disebutkan dalam Al-Qur'an?",
+    "options": [
+      "3 tingkat",
+      "5 tingkat",
+      "7 tingkat",
+      "9 tingkat"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Neraka memiliki 7 tingkatan: Jahannam, Ladzha, Huthamah, Sa'ir, Saqar, Jahim, dan Hawiyah. Masing-masing untuk tingkat dosa yang berbeda.",
+    "difficulty": "hard",
+    "points": 20,
+    "emoji": "🔥"
+  }
+]

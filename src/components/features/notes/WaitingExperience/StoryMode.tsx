@@ -1,12 +1,12 @@
 /**
- * StoryMode Component - UPDATED
+ * StoryMode Component - MOBILE OPTIMIZED
  * Interactive story reader with auto-scroll and smooth animations
  *
  * PATH: src/components/features/notes/WaitingExperience/StoryMode.tsx
  *
- * CHANGES:
- * - Use storyId instead of categoryId
- * - Load specific story by ID
+ * MOBILE IMPROVEMENTS:
+ * - Header: Hide title on mobile, only show back & pause buttons
+ * - More compact header design for small screens
  */
 
 import { useState, useEffect, useRef } from "react";
@@ -20,7 +20,7 @@ import { getStoryById, type Story, type StoryParagraph } from "@/data/waiting-ex
 // ============================================
 
 interface StoryModeProps {
-  storyId: string; // Story ID selected by user
+  storyId: string;
   onBack: () => void;
 }
 
@@ -75,7 +75,6 @@ export function StoryMode({ storyId, onBack }: StoryModeProps) {
   const [state, setState] = useState<StoryState>("reading");
   const [isPaused, setIsPaused] = useState(false);
 
-  // const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -168,7 +167,7 @@ export function StoryMode({ storyId, onBack }: StoryModeProps) {
       exit="exit"
       className="w-full max-w-3xl mx-auto"
     >
-      {/* Header */}
+      {/* Header - MOBILE OPTIMIZED */}
       <div className="sticky top-0 z-10 bg-black/80 backdrop-blur-xl border-b border-white/10 px-4 sm:px-6 py-4 rounded-t-2xl">
         <div className="flex items-center justify-between gap-4">
           {/* Back Button */}
@@ -181,8 +180,8 @@ export function StoryMode({ storyId, onBack }: StoryModeProps) {
             <ArrowLeft className="w-5 h-5 text-white" />
           </motion.button>
 
-          {/* Title */}
-          <div className="flex-1 min-w-0">
+          {/* Title - HIDDEN ON MOBILE, VISIBLE ON DESKTOP */}
+          <div className="hidden sm:flex flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <span className="text-2xl">{story.emoji}</span>
               <h2 className="text-lg font-semibold text-white truncate">{story.title}</h2>

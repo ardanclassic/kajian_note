@@ -1,0 +1,162 @@
+[
+  {
+    "id": "quiz_fiqih_001",
+    "category": "fiqih",
+    "question": "Berapa rakaat shalat Dhuha yang paling utama?",
+    "options": [
+      "2 rakaat",
+      "4 rakaat",
+      "8 rakaat",
+      "12 rakaat"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Rasulullah ﷺ bersabda: 'Shalat Dhuha yang paling utama adalah 8 rakaat.'",
+    "difficulty": "medium",
+    "points": 15,
+    "emoji": "🕌"
+  },
+  {
+    "id": "quiz_fiqih_002",
+    "category": "fiqih",
+    "question": "Berapa persen zakat yang wajib dikeluarkan dari harta perdagangan?",
+    "options": [
+      "2%",
+      "2.5%",
+      "5%",
+      "10%"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Zakat harta perdagangan adalah 2.5% (1/40) dari nilai harta yang telah mencapai nisab dan haul (satu tahun).",
+    "difficulty": "easy",
+    "points": 10,
+    "emoji": "💰"
+  },
+  {
+    "id": "quiz_fiqih_003",
+    "category": "fiqih",
+    "question": "Kapan waktu pelaksanaan shalat Dhuha?",
+    "options": [
+      "Setelah terbit matahari sampai sebelum Dhuhur",
+      "Setelah Subuh sampai terbit matahari",
+      "Setelah matahari naik setinggi tombak sampai sebelum zawal",
+      "Setelah Dhuhur sampai Ashar"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Waktu shalat Dhuha dimulai ketika matahari naik setinggi tombak (sekitar 15-20 menit setelah terbit) hingga sebelum zawal (waktu Dhuhur).",
+    "difficulty": "hard",
+    "points": 20,
+    "emoji": "☀️"
+  },
+  {
+    "id": "quiz_fiqih_004",
+    "category": "fiqih",
+    "question": "Berapa nisab zakat emas?",
+    "options": [
+      "20 gram",
+      "85 gram",
+      "200 gram",
+      "595 gram"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Nisab zakat emas adalah 85 gram. Jika seseorang memiliki emas 85 gram atau lebih selama satu tahun, wajib mengeluarkan zakat 2.5%.",
+    "difficulty": "medium",
+    "points": 15,
+    "emoji": "📿"
+  },
+  {
+    "id": "quiz_fiqih_005",
+    "category": "fiqih",
+    "question": "Apa hukum membaca Al-Fatihah dalam shalat?",
+    "options": [
+      "Sunnah",
+      "Wajib",
+      "Mustahab",
+      "Mubah"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Membaca Al-Fatihah dalam setiap rakaat shalat hukumnya wajib berdasarkan hadits: 'Tidak sah shalat bagi orang yang tidak membaca Fatihatul Kitab.'",
+    "difficulty": "easy",
+    "points": 10,
+    "emoji": "📖"
+  },
+  {
+    "id": "quiz_fiqih_006",
+    "category": "fiqih",
+    "question": "Berapa jumlah rakaat shalat Tarawih yang paling utama menurut Rasulullah ﷺ?",
+    "options": [
+      "8 rakaat + 3 witir",
+      "11 rakaat",
+      "20 rakaat",
+      "23 rakaat"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Rasulullah ﷺ biasa shalat malam (termasuk Tarawih) sebanyak 11 rakaat. Namun, jumlah rakaat Tarawih bersifat fleksibel.",
+    "difficulty": "medium",
+    "points": 15,
+    "emoji": "🌙"
+  },
+  {
+    "id": "quiz_fiqih_007",
+    "category": "fiqih",
+    "question": "Apa yang membatalkan wudhu?",
+    "options": [
+      "Tidur dalam posisi berbaring",
+      "Menyentuh kulit lawan jenis",
+      "Tertawa dalam shalat",
+      "Semua jawaban benar"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Tidur yang membatalkan wudhu adalah tidur yang tidak terjaga (tidur pulas), terutama dalam posisi berbaring atau bersandar. Pendapat ulama berbeda tentang menyentuh lawan jenis.",
+    "difficulty": "medium",
+    "points": 15,
+    "emoji": "💧"
+  },
+  {
+    "id": "quiz_fiqih_008",
+    "category": "fiqih",
+    "question": "Berapa kali bilal dikumandangkan dalam adzan Subuh?",
+    "options": [
+      "1 kali",
+      "2 kali",
+      "3 kali",
+      "4 kali"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Dalam adzan Subuh, bilal (Ash-shalatu khairun minan naum) dikumandangkan 2 kali setelah hayya 'alal falah.",
+    "difficulty": "easy",
+    "points": 10,
+    "emoji": "🔔"
+  },
+  {
+    "id": "quiz_fiqih_009",
+    "category": "fiqih",
+    "question": "Apa hukum puasa Arafah bagi orang yang sedang berhaji?",
+    "options": [
+      "Wajib",
+      "Sunnah muakkad",
+      "Makruh",
+      "Mubah"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Bagi orang yang sedang wukuf di Arafah (berhaji), hukumnya makruh berpuasa agar memiliki kekuatan untuk beribadah. Namun sunnah bagi yang tidak berhaji.",
+    "difficulty": "hard",
+    "points": 20,
+    "emoji": "🏔️"
+  },
+  {
+    "id": "quiz_fiqih_010",
+    "category": "fiqih",
+    "question": "Berapa nisab zakat perak?",
+    "options": [
+      "85 gram",
+      "200 dirham (595 gram)",
+      "520 gram",
+      "1000 gram"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Nisab zakat perak adalah 200 dirham atau setara 595 gram perak. Jika sudah mencapai nisab dan haul, wajib dikeluarkan zakat 2.5%.",
+    "difficulty": "hard",
+    "points": 20,
+    "emoji": "🪙"
+  }
+]

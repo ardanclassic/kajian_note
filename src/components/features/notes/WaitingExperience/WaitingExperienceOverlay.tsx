@@ -274,10 +274,6 @@ export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResu
               >
                 <div className="bg-linear-to-br from-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-emerald-500/30 rounded-2xl p-4 shadow-2xl">
                   <div className="flex items-start gap-3">
-                    <div className="shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                      <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                    </div>
-
                     <div className="flex-1 min-w-0">
                       <h3 className="text-lg font-semibold text-white mb-1 flex items-center gap-2">
                         🎉 Yeay! Catatanmu Udah Jadi!
@@ -391,7 +387,7 @@ function ModeSelector({ onSelectMode }: ModeSelectorProps) {
       icon: BookOpen,
       emoji: "📖",
       title: "Baca Kisah Seru",
-      description: "Cerita menarik tentang Nabi & Sahabat",
+      description: "",
       gradient: "from-blue-500/20 to-purple-500/20",
       borderColor: "border-blue-500/30",
       hoverGlow: "hover:shadow-blue-500/20",
@@ -400,8 +396,8 @@ function ModeSelector({ onSelectMode }: ModeSelectorProps) {
       id: "quiz" as WaitingMode,
       icon: Brain,
       emoji: "🎯",
-      title: "Main Kuis Asik",
-      description: "Test seberapa jago kamu!",
+      title: "Main Kuis Seru",
+      description: "",
       gradient: "from-emerald-500/20 to-teal-500/20",
       borderColor: "border-emerald-500/30",
       hoverGlow: "hover:shadow-emerald-500/20",
@@ -411,7 +407,7 @@ function ModeSelector({ onSelectMode }: ModeSelectorProps) {
       icon: Loader2,
       emoji: "⏳",
       title: "Santai Aja Dulu",
-      description: "Stay di sini, nonton loading cantik",
+      description: "Stay di sini, sambil nonton loading",
       gradient: "from-gray-500/20 to-slate-500/20",
       borderColor: "border-gray-500/30",
       hoverGlow: "hover:shadow-gray-500/20",
@@ -433,9 +429,6 @@ function ModeSelector({ onSelectMode }: ModeSelectorProps) {
         transition={{ delay: 0.1 }}
         className="text-center space-y-3"
       >
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-linear-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 mb-2">
-          <Sparkles className="w-8 h-8 text-indigo-400" />
-        </div>
         <h2 className="text-3xl sm:text-4xl font-bold text-white">🌙 Eh, Sambil Nungguin Nih...</h2>
         <p className="text-base sm:text-lg text-gray-400">Pilih salah satu biar gak bosen nunggu!</p>
       </motion.div>
@@ -462,7 +455,7 @@ function ModeSelector({ onSelectMode }: ModeSelectorProps) {
               "group"
             )}
           >
-            <div className="flex items-start gap-4">
+            <div className="flex items-center gap-4">
               {/* Icon */}
               <div className="shrink-0 w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <span className="text-2xl">{mode.emoji}</span>
@@ -499,7 +492,7 @@ function ModeSelector({ onSelectMode }: ModeSelectorProps) {
         transition={{ delay: 0.5 }}
         className="text-center text-sm text-gray-500"
       >
-        Proses lagi jalan di background kok, santai aja~ 🌟
+        Proses lagi jalan di background kok, <br /> santai aja~ 🌟
       </motion.p>
     </motion.div>
   );
@@ -555,7 +548,7 @@ function WaitMode({ onBack, onClose }: WaitModeProps) {
           <Loader2 className="w-5 h-5 animate-spin text-blue-400" />
           Bentar Ya, Lagi Proses...
         </h2>
-        <p className="text-sm text-gray-400">Santai aja, AI-nya lagi baca & meringkas catatanmu nih 🌙</p>
+        <p className="text-sm text-gray-400">AI-nya lagi baca & meringkas catatanmu nih 🌙</p>
       </motion.div>
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="pt-4">
@@ -572,7 +565,7 @@ function WaitMode({ onBack, onClose }: WaitModeProps) {
         transition={{ delay: 0.7 }}
         className="text-xs text-gray-500 pt-4"
       >
-        💡 Tip: Bosen nungguin? Balik aja ke menu & pilih Kisah atau Kuis!
+        💡 Bosen nungguin? <br /> Balik aja ke menu & pilih Kisah atau Kuis!
       </motion.p>
     </motion.div>
   );
