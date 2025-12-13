@@ -17,7 +17,7 @@
 
 ---
 
-## �  Tech Stack
+## � Tech Stack
 
 ### Frontend:
 
@@ -65,6 +65,7 @@ kajian_note/
 │   ├── 📁 components/
 │   │   │
 │   │   ├── 📁 common/
+│   │   │   ├── 📄 CatLoading.tsx
 │   │   │   ├── 📄 ConfirmDialog.tsx
 │   │   │   ├── 📄 Loading.tsx
 │   │   │   └── 📄 PageHeader.tsx
@@ -73,13 +74,22 @@ kajian_note/
 │   │   ├── 📁 features/
 │   │   │   │
 │   │   │   ├── 📁 auth/
-│   │   │   │   ├── 📄 LoginForm.tsx
-│   │   │   │   └── 📄 RegisterForm.tsx
+│   │   │   │   ├── 📄 ProgressIndicator.tsx
+│   │   │   │   ├── 📄 TypeformLoginForm.tsx
+│   │   │   │   ├── 📄 TypeformRegisterForm.tsx
+│   │   │   │   └── 📄 TypeformStep.tsx
 │   │   │   │
 │   │   │   ├── 📁 dashboard/
-│   │   │   │   └── 📄 DashboardCard.tsx
+│   │   │   │   └── 📄 MenuArea.tsx
 │   │   │   │
 │   │   │   ├── 📁 notes/
+│   │   │   │   │
+│   │   │   │   ├── 📁 WaitingExperience
+│   │   │   │   │   ├── 📄 ContentSelector.tsx
+│   │   │   │   │   ├── 📄 QuizMode.tsx
+│   │   │   │   │   ├── 📄 StoryMode.tsx
+│   │   │   │   │   └── 📄 WaitingExperienceOverlay.tsx
+│   │   │   │   │
 │   │   │   │   ├── 📄 ExportActionsDropdown.tsx
 │   │   │   │   ├── 📄 NoteCard.tsx
 │   │   │   │   ├── 📄 NoteForm.tsx
@@ -135,6 +145,22 @@ kajian_note/
 │   │   ├── 📄 permissions.ts
 │   │   ├── 📄 theme.ts
 │   │   └── 📄 youtube.ts
+│   │
+│   ├── 📁 data/
+│   │   │
+│   │   └── 📁 waiting-experience
+│   │       │
+│   │       ├── 📁 quizzes
+│   │       │    ├── 📄 quiz_1.json
+│   │       │    ├── 📄 quiz_2.json
+│   │       │    └── 📄 quiz_3.json
+│   │       │
+│   │       ├── 📁 stories
+│   │       │    ├── 📄 story_1.json
+│   │       │    ├── 📄 story_2.json
+│   │       │    └── 📄 story_3.json
+│   │       │
+│   │       └── 📄 index.ts
 │   │
 │   ├── 📁 lib/
 │   │   ├── 📄 axios.ts

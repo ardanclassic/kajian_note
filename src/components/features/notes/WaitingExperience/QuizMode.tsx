@@ -421,21 +421,6 @@ export function QuizMode({ categoryId, onBack }: QuizModeProps) {
         >
           {/* Question */}
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <span className="text-3xl">{currentQuiz.emoji}</span>
-              <span
-                className={cn(
-                  "px-2 py-1 rounded-lg text-xs font-medium",
-                  currentQuiz.difficulty === "easy" &&
-                    "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
-                  currentQuiz.difficulty === "medium" && "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
-                  currentQuiz.difficulty === "hard" && "bg-red-500/10 text-red-400 border border-red-500/20"
-                )}
-              >
-                {currentQuiz.difficulty === "easy" ? "Mudah" : currentQuiz.difficulty === "medium" ? "Sedang" : "Sulit"}
-              </span>
-            </div>
-
             <h3 className="text-xl sm:text-2xl font-semibold text-white leading-tight">{currentQuiz.question}</h3>
           </div>
 

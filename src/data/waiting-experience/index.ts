@@ -96,64 +96,13 @@ export const QUIZ_CATEGORIES: CategoryMeta[] = [
 // Import JSON files
 import sirahHijrah from "./stories/sirah_hijrah.json";
 import sirahBadar from "./stories/sirah_badar.json";
+import quizSirah from "./quizzes/quiz_sirah.json";
+import quizFiqih from "./quizzes/quiz_fiqih.json";
+import quizAqidah from "./quizzes/quiz_aqidah.json";
 
 // Combine all stories
 const SAMPLE_STORIES: Story[] = [sirahHijrah as Story, sirahBadar as Story];
-
-const SAMPLE_QUIZZES: Quiz[] = [
-  {
-    id: "quiz_sirah_001",
-    category: "sirah",
-    question: "Siapa sahabat yang menemani Rasulullah ﷺ bersembunyi di Gua Tsur saat hijrah?",
-    options: [
-      "Abu Bakar As-Siddiq radhiyallahu 'anhu",
-      "Umar bin Khattab radhiyallahu 'anhu",
-      "Utsman bin Affan radhiyallahu 'anhu",
-      "Ali bin Abi Thalib radhiyallahu 'anhu",
-    ],
-    correctAnswer: 0,
-    explanation:
-      "Abu Bakar As-Siddiq radhiyallahu 'anhu adalah sahabat setia yang menemani Rasulullah ﷺ dalam perjalanan hijrah yang penuh bahaya.",
-    difficulty: "easy",
-    points: 10,
-    emoji: "🌙",
-  },
-  {
-    id: "quiz_sirah_002",
-    category: "sirah",
-    question: "Berapa lama Rasulullah ﷺ dan Abu Bakar bersembunyi di Gua Tsur?",
-    options: ["1 hari", "2 hari", "3 hari", "5 hari"],
-    correctAnswer: 2,
-    explanation:
-      "Rasulullah ﷺ dan Abu Bakar radhiyallahu 'anhu bersembunyi di Gua Tsur selama 3 hari untuk mengelabui para pemburu Quraisy.",
-    difficulty: "medium",
-    points: 15,
-    emoji: "⏰",
-  },
-  {
-    id: "quiz_fiqih_001",
-    category: "fiqih",
-    question: "Berapa rakaat shalat Dhuha yang paling utama?",
-    options: ["2 rakaat", "4 rakaat", "8 rakaat", "12 rakaat"],
-    correctAnswer: 2,
-    explanation: 'Rasulullah ﷺ bersabda: "Shalat Dhuha yang paling utama adalah 8 rakaat."',
-    difficulty: "medium",
-    points: 15,
-    emoji: "🕌",
-  },
-  {
-    id: "quiz_aqidah_001",
-    category: "aqidah",
-    question: "Berapa jumlah Asmaul Husna?",
-    options: ["33", "66", "99", "100"],
-    correctAnswer: 2,
-    explanation:
-      'Rasulullah ﷺ bersabda: "Sesungguhnya Allah memiliki 99 nama, barangsiapa yang menghafalnya maka akan masuk surga."',
-    difficulty: "easy",
-    points: 10,
-    emoji: "☝️",
-  },
-];
+const SAMPLE_QUIZZES: Quiz[] = [...(quizSirah as Quiz[]), ...(quizFiqih as Quiz[]), ...(quizAqidah as Quiz[])];
 
 // ============================================
 // LOADER FUNCTIONS

@@ -1,0 +1,162 @@
+[
+  {
+    "id": "quiz_sirah_001",
+    "category": "sirah",
+    "question": "Siapa sahabat yang menemani Rasulullah ﷺ bersembunyi di Gua Tsur saat hijrah?",
+    "options": [
+      "Abu Bakar As-Siddiq radhiyallahu 'anhu",
+      "Umar bin Khattab radhiyallahu 'anhu",
+      "Utsman bin Affan radhiyallahu 'anhu",
+      "Ali bin Abi Thalib radhiyallahu 'anhu"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Abu Bakar As-Siddiq radhiyallahu 'anhu adalah sahabat setia yang menemani Rasulullah ﷺ dalam perjalanan hijrah yang penuh bahaya.",
+    "difficulty": "easy",
+    "points": 10,
+    "emoji": "🌙"
+  },
+  {
+    "id": "quiz_sirah_002",
+    "category": "sirah",
+    "question": "Berapa lama Rasulullah ﷺ dan Abu Bakar bersembunyi di Gua Tsur?",
+    "options": [
+      "1 hari",
+      "2 hari",
+      "3 hari",
+      "5 hari"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Rasulullah ﷺ dan Abu Bakar radhiyallahu 'anhu bersembunyi di Gua Tsur selama 3 hari untuk mengelabui para pemburu Quraisy.",
+    "difficulty": "medium",
+    "points": 15,
+    "emoji": "⏰"
+  },
+  {
+    "id": "quiz_sirah_003",
+    "category": "sirah",
+    "question": "Siapa putri Abu Bakar yang membawakan makanan ke Gua Tsur dan dijuluki 'Dzatun Nithaqain'?",
+    "options": [
+      "Aisyah radhiyallahu 'anha",
+      "Asma' radhiyallahu 'anha",
+      "Fatimah radhiyallahu 'anha",
+      "Hafsah radhiyallahu 'anha"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Asma' binti Abu Bakar radhiyallahu 'anha dijuluki 'Dzatun Nithaqain' (pemilik dua sabuk) karena membelah hijabnya untuk mengikat bekal makanan.",
+    "difficulty": "medium",
+    "points": 15,
+    "emoji": "👧"
+  },
+  {
+    "id": "quiz_sirah_004",
+    "category": "sirah",
+    "question": "Dalam Perang Badar, berapa perbandingan jumlah pasukan Muslim dengan pasukan Quraisy?",
+    "options": [
+      "313 vs 500",
+      "313 vs 1000",
+      "500 vs 1000",
+      "200 vs 1000"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Pasukan Muslim berjumlah sekitar 313 orang sementara pasukan Quraisy lebih dari 1000 orang. Perbandingan 1:3 yang sangat tidak seimbang!",
+    "difficulty": "easy",
+    "points": 10,
+    "emoji": "⚔️"
+  },
+  {
+    "id": "quiz_sirah_005",
+    "category": "sirah",
+    "question": "Kapan Perang Badar terjadi?",
+    "options": [
+      "17 Ramadan 1 Hijriyah",
+      "17 Ramadan 2 Hijriyah",
+      "17 Syawal 2 Hijriyah",
+      "17 Ramadan 3 Hijriyah"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Perang Badar terjadi pada 17 Ramadan tahun 2 Hijriyah, sebuah kemenangan bersejarah di bulan penuh berkah.",
+    "difficulty": "hard",
+    "points": 20,
+    "emoji": "📅"
+  },
+  {
+    "id": "quiz_sirah_006",
+    "category": "sirah",
+    "question": "Siapa pemimpin kafir Quraisy yang sangat sombong dan tewas dalam Perang Badar?",
+    "options": [
+      "Abu Sufyan",
+      "Abu Lahab",
+      "Abu Jahal",
+      "Umayyah bin Khalaf"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Abu Jahal adalah pemimpin kafir Quraisy yang sangat sombong dan memusuhi Islam. Ia tewas dalam Perang Badar dengan cara yang memalukan.",
+    "difficulty": "easy",
+    "points": 10,
+    "emoji": "💀"
+  },
+  {
+    "id": "quiz_sirah_007",
+    "category": "sirah",
+    "question": "Masjid pertama yang dibangun dalam Islam adalah?",
+    "options": [
+      "Masjid Nabawi",
+      "Masjid Quba",
+      "Masjidil Haram",
+      "Masjid Al-Aqsa"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Masjid Quba adalah masjid pertama yang dibangun oleh Rasulullah ﷺ saat tiba di pinggiran Madinah setelah hijrah.",
+    "difficulty": "easy",
+    "points": 10,
+    "emoji": "🕌"
+  },
+  {
+    "id": "quiz_sirah_008",
+    "category": "sirah",
+    "question": "Siapa pemimpin Anshar yang memberikan pidato menggetarkan saat akan berangkat ke Perang Badar?",
+    "options": [
+      "Sa'd bin Ubadah",
+      "Sa'ad bin Mu'adz",
+      "Ubadah bin Shamit",
+      "Anas bin Malik"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Sa'ad bin Mu'adz radhiyallahu 'anhu berkata bahwa mereka akan mengikuti Rasulullah ﷺ seandainya beliau memerintahkan terjun ke laut.",
+    "difficulty": "medium",
+    "points": 15,
+    "emoji": "🎤"
+  },
+  {
+    "id": "quiz_sirah_009",
+    "category": "sirah",
+    "question": "Berapa jumlah malaikat yang Allah turunkan untuk membantu kaum muslimin di Perang Badar?",
+    "options": [
+      "500 malaikat",
+      "1000 malaikat",
+      "3000 malaikat",
+      "5000 malaikat"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Allah menurunkan 1000 malaikat untuk membantu kaum muslimin sebagaimana disebutkan dalam QS. Al-Anfal: 9.",
+    "difficulty": "medium",
+    "points": 15,
+    "emoji": "👼"
+  },
+  {
+    "id": "quiz_sirah_010",
+    "category": "sirah",
+    "question": "Lagu apa yang dinyanyikan penduduk Madinah saat menyambut kedatangan Rasulullah ﷺ?",
+    "options": [
+      "Sholawat Badar",
+      "Tala'al Badru 'Alaina",
+      "Ya Nabi Salam 'Alaika",
+      "Maula Ya Sholli"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Penduduk Madinah menyanyikan 'Tala'al Badru 'Alaina' (Telah terbit bulan purnama atas kami) sebagai ungkapan kegembiraan dan cinta kepada Rasulullah ﷺ.",
+    "difficulty": "easy",
+    "points": 10,
+    "emoji": "🎵"
+  }
+]

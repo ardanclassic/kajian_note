@@ -31,6 +31,7 @@
 
 - Supabase 2.78.0 (Auth + PostgreSQL + Edge Functions)
 - Lynk.id (Payment webhook-based, no API)
+- ImageKit.io (file storage)
 - **YouTube Transcript API** 🆕 (FastAPI + Docker)
 
 ### External APIs:
@@ -65,6 +66,7 @@ kajian_note/
 │   ├── 📁 components/
 │   │   │
 │   │   ├── 📁 common/
+│   │   │   ├── 📄 CatLoading.tsx
 │   │   │   ├── 📄 ConfirmDialog.tsx
 │   │   │   ├── 📄 Loading.tsx
 │   │   │   └── 📄 PageHeader.tsx
@@ -73,16 +75,18 @@ kajian_note/
 │   │   ├── 📁 features/
 │   │   │   │
 │   │   │   ├── 📁 auth/
-│   │   │   │   ├── 📄 LoginForm.tsx
-│   │   │   │   └── 📄 RegisterForm.tsx
+│   │   │   │   ├── 📄 ProgressIndicator.tsx
+│   │   │   │   ├── 📄 TypeformLoginForm.tsx
+│   │   │   │   ├── 📄 TypeformRegisterForm.tsx
+│   │   │   │   └── 📄 TypeformStep.tsx
 │   │   │   │
 │   │   │   ├── 📁 dashboard/
-│   │   │   │   └── 📄 DashboardCard.tsx
+│   │   │   │   └── 📄 MenuArea.tsx
 │   │   │   │
 │   │   │   ├── 📁 notes/
 │   │   │   │   │
 │   │   │   │   ├── 📁 WaitingExperience
-│   │   │   │   │   ├── 📄 CompletionNotice.tsx
+│   │   │   │   │   ├── 📄 ContentSelector.tsx
 │   │   │   │   │   ├── 📄 QuizMode.tsx
 │   │   │   │   │   ├── 📄 StoryMode.tsx
 │   │   │   │   │   └── 📄 WaitingExperienceOverlay.tsx
@@ -144,7 +148,19 @@ kajian_note/
 │   │   └── 📄 youtube.ts
 │   │
 │   ├── 📁 data/
+│   │   │
 │   │   └── 📁 waiting-experience
+│   │       │
+│   │       ├── 📁 quizzes
+│   │       │    ├── 📄 quiz_1.json
+│   │       │    ├── 📄 quiz_2.json
+│   │       │    └── 📄 quiz_3.json
+│   │       │
+│   │       ├── 📁 stories
+│   │       │    ├── 📄 story_1.json
+│   │       │    ├── 📄 story_2.json
+│   │       │    └── 📄 story_3.json
+│   │       │
 │   │       └── 📄 index.ts
 │   │
 │   ├── 📁 lib/
