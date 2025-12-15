@@ -9,7 +9,7 @@ import { useAuthStore } from "@/store/authStore";
 import { HeroSection, FeaturesSection, HowItWorksSection, PricingSection, CTASection, Footer } from "@/components/home";
 import { ScrollToTopButton } from "@/components/common/ScrollToTopButton";
 
-export const Home: React.FC = () => {
+export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
 
@@ -48,4 +48,4 @@ export const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default LandingPage;

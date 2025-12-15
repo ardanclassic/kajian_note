@@ -14,10 +14,29 @@ import { MasonryNoteList } from "@/components/features/notes/MasonryNoteList";
 import { NoteSearch } from "@/components/features/notes/NoteSearch";
 import { SubscriptionLimitBanner } from "@/components/features/notes/SubscriptionLimitBanner";
 import { ScrollToTopButton } from "@/components/common/ScrollToTopButton";
-import { Plus, FileText, Loader2, X, Sparkles, BookOpen, Globe, Tag, RefreshCw, ArrowLeft } from "lucide-react";
+import {
+  Plus,
+  FileText,
+  Loader2,
+  X,
+  Sparkles,
+  BookOpen,
+  Globe,
+  Tag,
+  RefreshCw,
+  ArrowLeft,
+  Menu,
+  Crown,
+  User,
+  LogOut,
+  Users,
+} from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { useNotesStore } from "@/store/notesStore";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
+import { MenuArea } from "@/components/features/dashboard/MenuArea";
+import Loading from "@/components/common/Loading";
+import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 
 // Types
 interface NoteFilterOptions {
@@ -45,7 +64,7 @@ interface NoteSummary {
 
 export default function Notes() {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const {
     userNotes,
     isLoading,
@@ -64,6 +83,9 @@ export default function Notes() {
 
   const { usage, fetchUsage } = useSubscriptionStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Fetch initial data
   useEffect(() => {
@@ -147,10 +169,48 @@ export default function Notes() {
     }
   };
 
+  const handleLogoutClick = () => {
+    setShowLogoutDialog(true);
+    setIsMenuOpen(false);
+  };
+
+  const handleConfirmLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      await logout();
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      setIsLoggingOut(false);
+    }
+  };
+
+  const menuItems = [
+    { icon: BookOpen, label: "Catatan", onClick: () => navigate("/notes") },
+    { icon: Crown, label: "Subscription", onClick: () => navigate("/subscription") },
+    { icon: User, label: "Profile", onClick: () => navigate("/profile") },
+    { icon: Users, label: "Kelola Users", onClick: () => navigate("/admin/users"), adminOnly: true },
+    // { icon: Settings, label: "Pengaturan", onClick: () => navigate("/settings") },
+    { icon: LogOut, label: "Logout", onClick: handleLogoutClick },
+  ];
+
+  if (!user) {
+    return <Loading fullscreen text="Memuat..." />;
+  }
+
   return (
     <div className="min-h-screen bg-black">
+      <MenuArea
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        userRole={user.role}
+        userName={user.fullName}
+        userTier={user.subscriptionTier}
+        menuItems={menuItems}
+      />
+
       {/* Sticky Action Buttons Bar */}
-      <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-gray-900">
+      <div className="sticky top-0 z-10 bg-black/80 backdrop-blur-md border-b border-gray-900">
         <div className="container mx-auto px-4 py-3">
           <div className="max-w-7xl mx-auto flex items-center gap-2">
             {/* Back Button */}
@@ -183,6 +243,15 @@ export default function Notes() {
               <Plus className="w-4 h-4 sm:mr-2" />
               <span className="hidden sm:inline">Buat Catatan</span>
             </Button>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMenuOpen(true)}
+              className="hover:bg-gray-900 hover:border-emerald-500/30 border border-gray-800"
+            >
+              <Menu className="h-6 w-6 text-white" />
+            </Button>
           </div>
         </div>
       </div>
@@ -190,7 +259,7 @@ export default function Notes() {
       {/* Page Header */}
       <div className="relative border-b border-gray-900 overflow-hidden">
         {/* Subtle Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-900/10 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-b from-gray-900/10 to-transparent" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/3 rounded-full blur-3xl" />
 
         <div className="relative z-10 container mx-auto px-4 py-6">
@@ -341,6 +410,27 @@ export default function Notes() {
 
       {/* Floating Scroll to Top Button */}
       <ScrollToTopButton />
+
+      {/* Logout Dialog */}
+      <ConfirmDialog
+        open={showLogoutDialog}
+        onOpenChange={setShowLogoutDialog}
+        title="Keluar dari Akun?"
+        description={
+          <div className="space-y-2">
+            <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
+            <p className="text-sm text-muted-foreground">
+              Anda perlu login kembali untuk mengakses catatan dan fitur lainnya.
+            </p>
+          </div>
+        }
+        confirmText="Ya, Keluar"
+        cancelText="Batal"
+        onConfirm={handleConfirmLogout}
+        variant="warning"
+        isLoading={isLoggingOut}
+        showCancel={true}
+      />
     </div>
   );
 }
