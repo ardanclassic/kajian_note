@@ -7,13 +7,13 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
 
 // Pages
-import { Home } from "@/pages/Home";
-import { Login } from "@/pages/Login";
-import { Register } from "@/pages/Register";
-import Dashboard from "@/pages/Dashboard";
-import Profile from "@/pages/Profile";
-import Subscription from "@/pages/Subscription";
-import Settings from "@/pages/Settings";
+import { LandingPage } from "@/pages/landing/Landing";
+import { Login } from "@/pages/authentication/Login";
+import { Register } from "@/pages/authentication/Register";
+import Dashboard from "@/pages/dashboard/Dashboard";
+import Profile from "@/pages/profile/Profile";
+import Subscription from "@/pages/subscription/Subscription";
+import Settings from "@/pages/setting/Settings";
 import Notes from "@/pages/notes";
 import CreateNote from "@/pages/notes/CreateNote";
 import ViewNote from "@/pages/notes/ViewNote";
@@ -31,7 +31,7 @@ export const AppRoutes = () => {
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />} />
       <Route path="/register" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Register />} />
 
@@ -115,7 +115,7 @@ export const AppRoutes = () => {
       <Route
         path="/admin/users"
         element={
-          <RoleBasedRoute allowedRoles={["admin"]}>
+          <RoleBasedRoute allowedRoles={["member", "admin"]}>
             <UserManagement />
           </RoleBasedRoute>
         }

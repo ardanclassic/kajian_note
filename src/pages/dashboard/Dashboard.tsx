@@ -18,12 +18,10 @@ import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/common/Loading";
 import {
   BookOpen,
-  Share2,
   FileText,
   Crown,
   User,
   LogOut,
-  Settings,
   Users,
   Plus,
   Menu,
