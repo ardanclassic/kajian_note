@@ -17,7 +17,7 @@
 
 ---
 
-## �  Tech Stack
+## � Tech Stack
 
 ### Frontend:
 
@@ -91,6 +91,7 @@ kajian_note/
 │   │   │   │   │   ├── 📄 StoryMode.tsx
 │   │   │   │   │   └── 📄 WaitingExperienceOverlay.tsx
 │   │   │   │   │
+│   │   │   │   ├── 📄 BackgroundTaskBanner.tsx
 │   │   │   │   ├── 📄 ExportActionsDropdown.tsx
 │   │   │   │   ├── 📄 NoteCard.tsx
 │   │   │   │   ├── 📄 NoteForm.tsx
@@ -248,6 +249,7 @@ kajian_note/
 │   │   └── 📄 youtube.types.ts
 │   │
 │   ├── 📁 utils/
+│   │   ├── 📄 backgroundTaskPersistence.ts
 │   │   ├── 📄 exportUtils.ts
 │   │   ├── 📄 formPersistence.ts
 │   │   ├── 📄 paymentMatching.ts

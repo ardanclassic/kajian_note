@@ -5,15 +5,15 @@
 // CORS headers
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type"
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 /**
  * Main handler
- */ serve(async (req)=>{
+ */ serve(async (req) => {
   // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response("ok", {
-      headers: corsHeaders
+      headers: corsHeaders,
     });
   }
   try {
@@ -27,15 +27,18 @@ const corsHeaders = {
     const { chat_id, pdf_url, note_title, note_id } = body;
     // Validate required fields
     if (!chat_id || !pdf_url || !note_title) {
-      return new Response(JSON.stringify({
-        error: "Missing required fields: chat_id, pdf_url, note_title"
-      }), {
-        status: 400,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json"
+      return new Response(
+        JSON.stringify({
+          error: "Missing required fields: chat_id, pdf_url, note_title",
+        }),
+        {
+          status: 400,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
     }
     console.log(`[Telegram] Sending PDF to chat_id: ${chat_id}`);
     console.log(`[Telegram] Note: ${note_title}`);
@@ -66,40 +69,48 @@ const corsHeaders = {
     const telegramApiUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`;
     const telegramResponse = await fetch(telegramApiUrl, {
       method: "POST",
-      body: formData
+      body: formData,
     });
     const telegramData = await telegramResponse.json();
     if (!telegramData.ok) {
-      throw new Error(`Telegram API error: ${telegramData.description || "Unknown error"} (code: ${telegramData.error_code})`);
+      throw new Error(
+        `Telegram API error: ${telegramData.description || "Unknown error"} (code: ${telegramData.error_code})`
+      );
     }
     console.log("[Telegram] PDF sent successfully!");
     console.log(`[Telegram] Message ID: ${telegramData.result?.message_id}`);
     // Return success response
-    return new Response(JSON.stringify({
-      success: true,
-      message: "PDF sent to Telegram successfully",
-      message_id: telegramData.result?.message_id,
-      file_size: pdfSize
-    }), {
-      status: 200,
-      headers: {
-        ...corsHeaders,
-        "Content-Type": "application/json"
+    return new Response(
+      JSON.stringify({
+        success: true,
+        message: "PDF sent to Telegram successfully",
+        message_id: telegramData.result?.message_id,
+        file_size: pdfSize,
+      }),
+      {
+        status: 200,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+        },
       }
-    });
+    );
   } catch (error) {
     console.error("[Telegram] Error:", error);
     // Return error response
-    return new Response(JSON.stringify({
-      error: error instanceof Error ? error.message : "Internal server error",
-      success: false
-    }), {
-      status: 500,
-      headers: {
-        ...corsHeaders,
-        "Content-Type": "application/json"
+    return new Response(
+      JSON.stringify({
+        error: error instanceof Error ? error.message : "Internal server error",
+        success: false,
+      }),
+      {
+        status: 500,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+        },
       }
-    });
+    );
   }
 });
 /**
@@ -115,7 +126,7 @@ const corsHeaders = {
     lines.push("");
   }
   lines.push("━━━━━━━━━━━━━━━");
-  lines.push("_Dibuat dengan Kajian Note_");
+  lines.push("by Kajian Note_");
   return lines.join("\n");
 }
 /**
@@ -127,5 +138,9 @@ const corsHeaders = {
 /**
  * Sanitize filename for safe file naming
  */ function sanitizeFilename(filename) {
-  return filename.replace(/[^a-zA-Z0-9\s-]/g, "").replace(/\s+/g, "-").toLowerCase().substring(0, 50);
+  return filename
+    .replace(/[^a-zA-Z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .toLowerCase()
+    .substring(0, 50);
 }

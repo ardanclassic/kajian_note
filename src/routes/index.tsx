@@ -24,6 +24,7 @@ import UserManagement from "@/pages/admin/UserManagement";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleBasedRoute } from "./RoleBasedRoute";
 import APITest from "@/pages/APITest";
+import { ManualPaymentRecovery } from '@/pages/admin/ManualPaymentRecovery';
 
 export const AppRoutes = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -107,6 +108,14 @@ export const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <APITest />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/recovery"
+        element={
+          <ProtectedRoute>
+            <ManualPaymentRecovery />
           </ProtectedRoute>
         }
       />

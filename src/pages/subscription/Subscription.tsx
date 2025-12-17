@@ -496,6 +496,7 @@ export default function Subscription() {
         onClose={() => setUpgradeModalOpen(false)}
         selectedTier={selectedTier}
         userEmail={user.email || ""}
+        paymentEmail={user.paymentEmail || ""}
       />
     </div>
   );

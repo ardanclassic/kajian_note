@@ -82,7 +82,7 @@ serve(async (req) => {
     // Step 1: Download PDF from ImageKit
     console.log("[Telegram] Downloading PDF from ImageKit...");
     const pdfResponse = await fetch(pdf_url);
-    
+
     if (!pdfResponse.ok) {
       throw new Error(`Failed to download PDF: ${pdfResponse.statusText}`);
     }
@@ -109,7 +109,7 @@ serve(async (req) => {
     // Step 3: Send to Telegram Bot API
     console.log("[Telegram] Sending to Telegram Bot API...");
     const telegramApiUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`;
-    
+
     const telegramResponse = await fetch(telegramApiUrl, {
       method: "POST",
       body: formData,
@@ -173,7 +173,7 @@ function generateCaption(noteTitle: string, noteId?: string): string {
   }
 
   lines.push("━━━━━━━━━━━━━━━");
-  lines.push("_Dibuat dengan Kajian Note_");
+  lines.push("by Kajian Note_");
 
   return lines.join("\n");
 }

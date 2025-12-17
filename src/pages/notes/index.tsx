@@ -1,6 +1,6 @@
 /**
  * Notes Page - Dark Mode with Emerald Glow
- * Updated: Using MasonryNoteList (Gallery Wall View)
+ * Updated: Using NoteList (Gallery Wall View)
  * Path: src/pages/notes/index.tsx
  * âœ… Pure black background
  * âœ… Emerald glow accents
@@ -10,7 +10,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MasonryNoteList } from "@/components/features/notes/MasonryNoteList";
+import { NoteList } from "@/components/features/notes/NoteList";
 import { NoteSearch } from "@/components/features/notes/NoteSearch";
 import { SubscriptionLimitBanner } from "@/components/features/notes/SubscriptionLimitBanner";
 import { ScrollToTopButton } from "@/components/common/ScrollToTopButton";
@@ -262,7 +262,7 @@ export default function Notes() {
         <div className="absolute inset-0 bg-linear-to-b from-gray-900/10 to-transparent" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/3 rounded-full blur-3xl" />
 
-        <div className="relative z-10 container mx-auto px-4 py-6">
+        <div className="relative container mx-auto px-4 py-6">
           <div className="max-w-7xl mx-auto space-y-4">
             {/* Title & Stats */}
             <div className="flex items-center gap-4">
@@ -334,7 +334,7 @@ export default function Notes() {
           {/* Notes Gallery Wall */}
           {!isLoading || userNotes.length > 0 ? (
             <div>
-              <MasonryNoteList
+              <NoteList
                 notes={userNotes}
                 currentUserId={user?.id}
                 showActions

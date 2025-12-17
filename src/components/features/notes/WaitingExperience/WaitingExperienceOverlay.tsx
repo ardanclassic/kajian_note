@@ -1,18 +1,14 @@
 /**
- * WaitingExperienceOverlay Component - UPDATED
+ * WaitingExperienceOverlay Component - FIXED
  * Fullscreen overlay with mode selection during YouTube import
+ * ✅ FIX: Completion notification muncul di semua mode (termasuk selector)
  *
  * PATH: src/components/features/notes/WaitingExperience/WaitingExperienceOverlay.tsx
- *
- * UPDATED FLOW:
- * 1. Mode Selector (Story/Quiz/Wait)
- * 2. Category Selector (if Story or Quiz selected)
- * 3. Content (StoryMode or QuizMode with selected category)
  */
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, BookOpen, Brain, Loader2, CheckCircle2, Sparkles, ArrowLeft } from "lucide-react";
+import { X, BookOpen, Brain, Loader2, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CatLoading from "@/components/common/CatLoading";
 import { ContentSelector } from "./ContentSelector";
@@ -109,18 +105,33 @@ export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResu
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedStoryId, setSelectedStoryId] = useState<string>("");
   const [showCompletion, setShowCompletion] = useState(false);
-  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const [lastModeWithNotification, setLastModeWithNotification] = useState<WaitingMode | null>(null); // ✅ NEW
 
-  // Show completion notification when import done
+  // ✅ FIXED: Show completion notification when import done (di semua mode)
   useEffect(() => {
-    if (isComplete && currentMode !== "selector") {
+    if (isComplete && open) {
       setShowCompletion(true);
       console.log("[WaitingExperience] Import complete, showing notification");
     }
-  }, [isComplete, currentMode]);
+  }, [isComplete, open]);
 
-  // CRITICAL: Prevent overlay from auto-closing
-  // Overlay should ONLY close when user explicitly clicks button
+  // ✅ Show notification again when mode changes (if was dismissed in previous mode)
+  useEffect(() => {
+    if (isComplete && open && lastModeWithNotification !== currentMode) {
+      console.log("[WaitingExperience] Mode changed to", currentMode, ", showing notification again");
+      setShowCompletion(true);
+      setLastModeWithNotification(currentMode);
+    }
+  }, [currentMode, isComplete, open, lastModeWithNotification]);
+
+  // ✅ Reset completion state when overlay closes
+  useEffect(() => {
+    if (!open) {
+      setShowCompletion(false);
+      setLastModeWithNotification(null);
+    }
+  }, [open]);
+
   useEffect(() => {
     if (open) {
       console.log("[WaitingExperience] Overlay opened, mode:", currentMode);
@@ -156,7 +167,6 @@ export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResu
     setCurrentMode("selector");
     setSelectedCategory("");
     setSelectedStoryId("");
-    setShowCompletion(false);
   };
 
   // Handle back to story list
@@ -182,30 +192,12 @@ export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResu
   const handleContinue = () => {
     console.log('[WaitingExperience] User clicked "Lanjut Dulu"');
     setShowCompletion(false);
-    // Don't close overlay, let user continue story/quiz
   };
 
-  // Handle close attempt (show confirmation if not complete)
+  // Simple close, no cancel confirmation
   const handleCloseAttempt = () => {
-    if (isComplete) {
-      // If already complete, just close
-      onClose();
-    } else {
-      // Show confirmation dialog
-      setShowCancelConfirm(true);
-    }
-  };
-
-  // Handle confirmed cancel
-  const handleConfirmedCancel = () => {
-    console.log("[WaitingExperience] User confirmed cancel");
-    setShowCancelConfirm(false);
-    onClose(); // This will trigger abort in parent component
-  };
-
-  // Handle cancel dismiss
-  const handleCancelDismiss = () => {
-    setShowCancelConfirm(false);
+    console.log("[WaitingExperience] Closing overlay (no cancel)");
+    onClose(); // Just close, process continues in background
   };
 
   return (
@@ -262,7 +254,7 @@ export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResu
             </div>
           </div>
 
-          {/* Completion Notification (Floating) */}
+          {/* Completion Notification (Floating) - ✅ Muncul di semua mode */}
           <AnimatePresence>
             {showCompletion && (
               <motion.div
@@ -270,7 +262,7 @@ export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResu
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="fixed top-4 left-1/2 -translate-x-1/2 z-60 w-[90%] max-w-md"
+                className="fixed top-4 left-1/2 -translate-x-1/2 z-[70] w-[90%] max-w-md"
               >
                 <div className="bg-linear-to-br from-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-emerald-500/30 rounded-2xl p-4 shadow-2xl">
                   <div className="flex items-start gap-3">
@@ -301,68 +293,6 @@ export function WaitingExperienceOverlay({ open, onClose, isComplete, onViewResu
                     </motion.button>
                   </div>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Cancel Confirmation Dialog */}
-          <AnimatePresence>
-            {showCancelConfirm && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-70 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
-                onClick={handleCancelDismiss}
-              >
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                  transition={{ type: "spring", damping: 20, stiffness: 300 }}
-                  className="bg-linear-to-br from-gray-900 to-gray-800 border border-red-500/30 rounded-2xl p-6 max-w-md w-full shadow-2xl"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {/* Icon */}
-                  <div className="flex justify-center mb-4">
-                    <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center">
-                      <svg className="w-8 h-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Title & Message */}
-                  <h3 className="text-xl font-bold text-white text-center mb-2">Yakin Mau Batalkan?</h3>
-                  <p className="text-sm text-gray-300 text-center mb-6 leading-relaxed">
-                    Proses summary masih jalan nih. Kalau dibatalin, nanti harus ulang dari awal lagi. Yakin mau stop?
-                  </p>
-
-                  {/* Actions */}
-                  <div className="flex gap-3">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleCancelDismiss}
-                      className="flex-1 px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium transition-colors"
-                    >
-                      Gak Jadi
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleConfirmedCancel}
-                      className="flex-1 px-4 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium transition-colors"
-                    >
-                      Ya, Batalkan
-                    </motion.button>
-                  </div>
-                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
