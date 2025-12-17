@@ -140,7 +140,7 @@ export default function ViewNote() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Floating Action Bar - Desktop - HIDDEN IN PRINT */}
+      {/* Floating Action Bar */}
       <motion.div
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -262,7 +262,7 @@ export default function ViewNote() {
         </motion.div>
       </div>
 
-      {/* Floating Scroll to Top Button */}
+      {/* Scroll to Top Button */}
       <ScrollToTopButton />
     </div>
   );

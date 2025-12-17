@@ -186,7 +186,6 @@ export function StoryMode({ storyId, onBack }: StoryModeProps) {
               <span className="text-2xl">{story.emoji}</span>
               <h2 className="text-lg font-semibold text-white truncate">{story.title}</h2>
             </div>
-            {story.subtitle && <p className="text-xs text-gray-400 truncate">{story.subtitle}</p>}
           </div>
 
           {/* Pause/Resume Control */}

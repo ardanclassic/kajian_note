@@ -1,15 +1,14 @@
 /**
- * UpgradeModal Component - COMPACT & PROFESSIONAL REDESIGN
- * Ultra-clean, mobile-first design with essential information only
- * Optimized for small screens while maintaining visual appeal
+ * UpgradeModal Component - CLEANED UP VERSION
+ * Removed redundant email alert (already handled in PaymentButton)
+ * More compact, focus on features and pricing
  */
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { PaymentButton } from "./PaymentButton";
 import { PAYMENT_CONFIG, formatPrice, type SubscriptionTier } from "@/config/payment";
-import { Check, Info, Sparkles, Crown, Zap, FileText, X, Shield } from "lucide-react";
+import { Check, X, Sparkles, Crown, FileText, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface UpgradeModalProps {
@@ -17,14 +16,10 @@ interface UpgradeModalProps {
   onClose: () => void;
   selectedTier: SubscriptionTier;
   userEmail: string;
+  paymentEmail: string;
 }
 
 // Animation variants
-const overlayVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
-};
-
 const modalVariants: any = {
   hidden: { opacity: 0, scale: 0.95 },
   visible: {
@@ -55,7 +50,7 @@ const itemVariants: any = {
   }),
 };
 
-export function UpgradeModal({ open, onClose, selectedTier, userEmail }: UpgradeModalProps) {
+export function UpgradeModal({ open, onClose, selectedTier, userEmail, paymentEmail }: UpgradeModalProps) {
   const tierConfig = {
     free: {
       label: "Free",
@@ -85,7 +80,7 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail }: Upgrade
       enabled: true,
     },
     {
-      text: "AI Summary",
+      text: "AI Summary YouTube",
       enabled: true,
     },
     {
@@ -120,12 +115,12 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail }: Upgrade
               variants={modalVariants}
               className="flex flex-col h-full min-h-0"
             >
-              {/* Compact Header - FIXED: added flex-shrink-0 */}
-              <div className="relative bg-black border-b border-gray-800 p-5 flex-shrink-0">
+              {/* Compact Header */}
+              <div className="relative bg-black border-b border-gray-800 p-5 shrink-0">
                 {/* Subtle Glow */}
                 <div className="absolute top-0 right-0 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl" />
 
-                {/* Close Button - Fixed with proper handler */}
+                {/* Close Button */}
                 <Button
                   variant="ghost"
                   size="icon"
@@ -140,7 +135,7 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail }: Upgrade
                 </Button>
 
                 <DialogHeader className="relative space-y-4">
-                  {/* Icon - Smaller */}
+                  {/* Icon */}
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
@@ -152,13 +147,13 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail }: Upgrade
                     </div>
                   </motion.div>
 
-                  {/* Title - Compact */}
+                  {/* Title */}
                   <div className="text-center space-y-1.5">
                     <DialogTitle className="text-2xl font-black text-white">{config.label}</DialogTitle>
                     <DialogDescription className="text-gray-400 text-sm">Tingkatkan pengalaman Anda</DialogDescription>
                   </div>
 
-                  {/* Price - Compact */}
+                  {/* Price */}
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
@@ -173,10 +168,10 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail }: Upgrade
                 </DialogHeader>
               </div>
 
-              {/* Scrollable Content - FIXED: proper flex and overflow setup */}
+              {/* Scrollable Content */}
               <div className="flex-1 min-h-0 overflow-y-auto bg-black">
                 <div className="px-5 py-4 space-y-4">
-                  {/* Features - Minimalist List */}
+                  {/* Features List */}
                   <div className="space-y-2.5">
                     {featuresList.map((feature, index) => (
                       <motion.div
@@ -213,24 +208,12 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail }: Upgrade
                     ))}
                   </div>
 
-                  {/* Email Alert - Compact */}
+                  {/* Payment Button Component - Handles email display */}
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-                    <Alert className="border border-emerald-500/20 bg-emerald-500/5 p-3">
-                      <div className="flex gap-2.5">
-                        <Info className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <AlertDescription className="text-xs text-gray-300 leading-relaxed">
-                          Gunakan email <span className="font-mono font-bold text-emerald-400">{userEmail}</span> saat
-                          checkout
-                        </AlertDescription>
-                      </div>
-                    </Alert>
-                  </motion.div>
-
-                  {/* Payment Button - Compact */}
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
                     <PaymentButton
                       tier={selectedTier}
                       userEmail={userEmail}
+                      paymentEmail={paymentEmail}
                       className="w-full h-12 text-sm font-bold bg-gray-900 border border-emerald-500/50 text-white hover:bg-gray-800 shadow-lg shadow-emerald-500/20"
                     >
                       <Sparkles className="h-4 w-4 mr-2" />
@@ -238,19 +221,21 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail }: Upgrade
                     </PaymentButton>
                   </motion.div>
 
-                  {/* Footer - Ultra Compact */}
+                  {/* Footer Info */}
                   <div className="pt-2 space-y-2 border-t border-gray-800">
                     <div className="flex items-center gap-2 text-xs font-bold text-gray-500 uppercase tracking-wide">
                       <Shield className="h-3 w-3 text-emerald-400" />
                       Info Penting
                     </div>
                     <div className="space-y-1.5 pb-4">
-                      {["Pembayaran via Lynk.id", "Aktif otomatis setelah bayar", "Berlaku 30 hari"].map((note, i) => (
-                        <div key={i} className="flex items-start gap-2">
-                          <div className="w-1 h-1 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
-                          <span className="text-xs text-gray-400">{note}</span>
-                        </div>
-                      ))}
+                      {["Pembayaran via Lynk.id", "Aktif otomatis setelah bayar", "Berlaku 30 hari sejak aktivasi"].map(
+                        (note, i) => (
+                          <div key={i} className="flex items-start gap-2">
+                            <div className="w-1 h-1 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+                            <span className="text-xs text-gray-400">{note}</span>
+                          </div>
+                        )
+                      )}
                     </div>
                   </div>
                 </div>

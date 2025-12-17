@@ -7,7 +7,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Download, ChevronDown, FileText, FileDown, Send, MessageCircle, Lock, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useAuthStore } from "@/store/authStore";
 import { exportNoteToPDF, exportNoteToMarkdown } from "@/utils/exportUtils";
 import { SendToTelegramButton } from "./SendToTelegramButton";
@@ -107,7 +106,7 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
             </button>
 
             {/* Export Markdown */}
-            <button
+            {/* <button
               onClick={handleExportMarkdown}
               className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t mb-1"
             >
@@ -116,7 +115,7 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
                 <div className="font-medium text-sm">Export Markdown</div>
                 <div className="text-xs text-muted-foreground">Download sebagai .md</div>
               </div>
-            </button>
+            </button> */}
 
             {/* Send to Telegram */}
             {sendPDFConfigured ? (
@@ -174,7 +173,7 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
 
             {/* Premium CTA (if free user) */}
             {!canExport && sendPDFConfigured && (
-              <div className="px-4 py-3 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-t">
+              <div className="px-4 py-3 bg-linear-to-r from-yellow-500/10 to-orange-500/10 border-t">
                 <div className="flex items-center gap-2 mb-1">
                   <Crown className="w-4 h-4 text-yellow-500" />
                   <span className="text-xs font-semibold text-yellow-600">Upgrade to Premium</span>

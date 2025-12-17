@@ -1,15 +1,14 @@
 // src/config/payment.ts
 
 export const PAYMENT_CONFIG = {
-  lynkId: {
-    premiumLink: import.meta.env.VITE_LYNK_PREMIUM_LINK || "",
-    advanceLink: import.meta.env.VITE_LYNK_ADVANCE_LINK || "",
-    merchantKey: import.meta.env.VITE_LYNK_MERCHANT_KEY || "",
-  },
   prices: {
     free: 0,
     premium: 50000,
     advance: 100000,
+  },
+  baseLinks: {
+    premium: import.meta.env.VITE_LYNK_PREMIUM_LINK || "",
+    advance: import.meta.env.VITE_LYNK_ADVANCE_LINK || "",
   },
   features: {
     free: {
@@ -37,6 +36,40 @@ export const PAYMENT_CONFIG = {
 
 export type SubscriptionTier = "free" | "premium" | "advance";
 
+export interface PaymentConfig {
+  prices: Record<Exclude<SubscriptionTier, "free">, number>;
+  baseLinks: Record<Exclude<SubscriptionTier, "free">, string>;
+  features: Record<SubscriptionTier, string[]>;
+}
+
+/**
+ * Get base payment link for tier
+ * NOTE: Lynk.id DOES NOT support URL parameters for pre-filling
+ * User must manually enter email during checkout
+ */
+export function getPaymentLink(tier: Exclude<SubscriptionTier, "free">): string {
+  const baseLink = PAYMENT_CONFIG.baseLinks[tier];
+
+  if (!baseLink) {
+    throw new Error(`Payment link tidak tersedia untuk tier: ${tier}`);
+  }
+
+  // Return base link only - no query parameters
+  // Email matching handled via webhook + payment_email field
+  return baseLink;
+}
+
+/**
+ * Get price for subscription tier
+ */
+export function getPrice(tier: SubscriptionTier): number {
+  if (tier === "free") return 0;
+  return PAYMENT_CONFIG.prices[tier];
+}
+
+/**
+ * Format price to Indonesian Rupiah
+ */
 export const formatPrice = (price: number): string => {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -45,8 +78,22 @@ export const formatPrice = (price: number): string => {
   }).format(price);
 };
 
-export const getPaymentLink = (tier: SubscriptionTier): string => {
-  if (tier === "premium") return PAYMENT_CONFIG.lynkId.premiumLink;
-  if (tier === "advance") return PAYMENT_CONFIG.lynkId.advanceLink;
-  return "";
-};
+/**
+ * Get payment link with validation
+ * Throws error if tier is invalid or link not configured
+ */
+export function getValidatedPaymentLink(tier: SubscriptionTier): string {
+  // Type guard for free tier
+  if (tier === "free") {
+    throw new Error("Cannot generate payment link for free tier");
+  }
+
+  // Now TypeScript knows tier is "premium" | "advance"
+  const link = getPaymentLink(tier);
+
+  if (!link || link.trim() === "") {
+    throw new Error(`Payment link not configured for ${tier} tier. Check environment variables.`);
+  }
+
+  return link;
+}

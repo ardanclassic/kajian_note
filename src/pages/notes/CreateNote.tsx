@@ -1,17 +1,26 @@
 /**
- * CreateNote Page - ENHANCED with Form Persistence & Mobile Back Button Handling
+ * CreateNote Page - REFACTORED with Overlay Control
  * - Form persistence with localStorage
  * - Mobile back button handling (keyboard detection)
  * - Reset functionality with confirmation
  * - Auto-restore data on mount
+ * - 🆕 BACKGROUND TASK POLLING (survives page reload)
+ * - 🆕 SMART RESULT INJECTION (auto or confirmation dialog)
+ * - ✅ REFACTORED: WaitingExperienceOverlay controlled here
+ * - ✅ Overlay shows completion notification when task done
+ * - ✅ BANNER CLICK shows fullscreen overlay
+ *
+ * PATH: src/pages/notes/CreateNote.tsx
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { NoteForm } from "@/components/features/notes/NoteForm";
 import { YouTubeImportModal } from "@/components/features/notes/YouTubeImportModal";
+import { BackgroundTaskBanner } from "@/components/features/notes/BackgroundTaskBanner";
+import { WaitingExperienceOverlay } from "@/components/features/notes/WaitingExperience/WaitingExperienceOverlay";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -35,10 +44,24 @@ import {
   hasPersistedData,
   getTimeSinceLastSave,
 } from "@/utils/formPersistence";
-import { PenLine, Youtube, Sparkles, FileText, ChevronLeft, RotateCcw, AlertTriangle } from "lucide-react";
+import {
+  loadBackgroundTask,
+  updateTaskStatus,
+  updatePollingAttempts,
+  clearBackgroundTask,
+  hasActiveBackgroundTask,
+  getTaskProgress,
+} from "@/utils/backgroundTaskPersistence";
+import { pollTaskStatus } from "@/services/youtube/transcript.service";
+import type { BackgroundTaskData } from "@/utils/backgroundTaskPersistence";
+import { PenLine, Youtube, Sparkles, FileText, ChevronLeft, RotateCcw, AlertTriangle, CheckCircle } from "lucide-react";
 import { ScrollToTopButton } from "@/components/common/ScrollToTopButton";
 
 type InputMode = "manual" | "youtube";
+
+// Polling config
+const POLLING_INTERVAL = 2000; // 2 seconds
+const MAX_POLLING_ATTEMPTS = 150; // 5 minutes
 
 /**
  * Generate reference block from YouTube import result
@@ -109,20 +132,34 @@ export default function CreateNote() {
   const [showResetConfirmation, setShowResetConfirmation] = useState(false);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
+  // ✅ Waiting Experience Overlay states
+  const [showWaitingOverlay, setShowWaitingOverlay] = useState(false);
+  const [overlayComplete, setOverlayComplete] = useState(false);
+  const [overlayResult, setOverlayResult] = useState<YouTubeImportResult | null>(null);
+
+  // Background task states
+  const [backgroundTask, setBackgroundTask] = useState<BackgroundTaskData | null>(null);
+  const [taskProgress, setTaskProgress] = useState(0);
+  const [showResultConfirmation, setShowResultConfirmation] = useState(false);
+  const [pendingResult, setPendingResult] = useState<YouTubeImportResult | null>(null);
+
+  // Refs for polling
+  const pollingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isPollingRef = useRef(false);
+  const overlayOpenRef = useRef(false); // ✅ NEW: Track overlay state reliably
+
   // Load persisted data on mount
   useEffect(() => {
     const persisted = loadFormData();
     if (persisted && hasPersistedData()) {
       const timeSince = getTimeSinceLastSave();
 
-      // Restore import result if available
       if (persisted.importResult) {
         setImportedData(persisted.importResult);
         setInputMode("youtube");
         console.log("[CreateNote] Import data dipulihkan");
       }
 
-      // Show toast notification
       toast.info("Data dipulihkan", {
         description: timeSince
           ? `Data terakhir disimpan ${timeSince} menit yang lalu`
@@ -132,11 +169,329 @@ export default function CreateNote() {
     }
   }, []);
 
-  // Keyboard detection (multiple methods for cross-browser compatibility)
+  // ✅ CHECK & RESUME BACKGROUND TASK
+  useEffect(() => {
+    if (hasActiveBackgroundTask()) {
+      const task = loadBackgroundTask();
+      if (task) {
+        console.log("[CreateNote] Resuming background task:", task.taskId);
+        setBackgroundTask(task);
+        setTaskProgress(getTaskProgress());
+        startPolling(task);
+
+        toast.info("Melanjutkan proses summarize", {
+          description: "Proses yang sebelumnya berjalan akan dilanjutkan",
+          duration: 3000,
+        });
+      }
+    }
+
+    return () => {
+      stopPolling();
+    };
+  }, []);
+
+  // ✅ START POLLING
+  const startPolling = (task: BackgroundTaskData) => {
+    if (isPollingRef.current) {
+      console.log("[CreateNote] Polling already running");
+      return;
+    }
+
+    isPollingRef.current = true;
+    console.log("[CreateNote] Starting polling for task:", task.taskId);
+
+    pollTask(task);
+
+    pollingIntervalRef.current = setInterval(() => {
+      const currentTask = loadBackgroundTask();
+      if (!currentTask) {
+        console.log("[CreateNote] Task cleared, stopping polling");
+        stopPolling();
+        return;
+      }
+      pollTask(currentTask);
+    }, POLLING_INTERVAL);
+  };
+
+  // ✅ STOP POLLING
+  const stopPolling = () => {
+    if (pollingIntervalRef.current) {
+      clearInterval(pollingIntervalRef.current);
+      pollingIntervalRef.current = null;
+    }
+    isPollingRef.current = false;
+    console.log("[CreateNote] Polling stopped");
+  };
+
+  // ✅ POLL TASK STATUS
+  const pollTask = async (task: BackgroundTaskData) => {
+    try {
+      const newAttempts = task.pollingAttempts + 1;
+      updatePollingAttempts(newAttempts);
+      setTaskProgress(getTaskProgress());
+
+      if (newAttempts >= MAX_POLLING_ATTEMPTS) {
+        console.error("[CreateNote] Max polling attempts reached");
+        updateTaskStatus("failed", { error: "Timeout: Proses memakan waktu terlalu lama" });
+        setBackgroundTask(null);
+        stopPolling();
+
+        toast.error("Proses timeout", {
+          description: "Proses summarize memakan waktu terlalu lama. Silakan coba lagi.",
+        });
+        return;
+      }
+
+      const status = await pollTaskStatus(task.taskId);
+
+      if (status.status === "completed") {
+        console.log("[CreateNote] Task completed!");
+
+        stopPolling();
+        updateTaskStatus("completed");
+
+        if (!status.result) {
+          throw new Error("Result tidak ditemukan");
+        }
+
+        if (!status.result.summary || status.result.summary.trim().length === 0) {
+          throw new Error("Summary kosong dari API");
+        }
+
+        const videoUrl = `https://www.youtube.com/watch?v=${task.videoId}`;
+
+        let referenceInfo = undefined;
+        if (task.metadata) {
+          referenceInfo = {
+            title: task.metadata.title,
+            speaker:
+              task.manualSpeaker ||
+              (task.metadata.speaker_name !== "unknown" ? task.metadata.speaker_name : "Tidak diketahui"),
+            channelName: task.metadata.channel_name,
+            videoUrl: task.metadata.video_url,
+            thumbnailUrl: task.metadata.thumbnail_url,
+            duration: task.metadata.duration,
+            uploadDate: task.metadata.upload_date,
+            viewCount: task.metadata.view_count,
+          };
+        }
+
+        const result: YouTubeImportResult = {
+          success: true,
+          videoId: task.videoId,
+          videoUrl,
+          title: task.metadata?.title || status.result.summary.substring(0, 50) + "...",
+          content: status.result.summary,
+          language: status.result.language_used,
+          referenceInfo,
+          metadata: {
+            source_type: "youtube",
+            source_url: videoUrl,
+            video_id: task.videoId,
+            language_used: status.result.language_used,
+            total_segments: status.result.original_transcript_length,
+            has_ai_summary: true,
+            model_used: status.result.model_used,
+            imported_at: new Date().toISOString(),
+            video_metadata: task.metadata || undefined,
+          },
+        };
+
+        clearBackgroundTask();
+        setBackgroundTask(null);
+
+        // ✅ ALWAYS set overlay result first (even if closed)
+        setOverlayResult(result);
+
+        // ✅ Use REF instead of state to avoid race condition
+        console.log("[CreateNote] Checking overlay state, overlayOpenRef.current:", overlayOpenRef.current);
+
+        if (overlayOpenRef.current) {
+          console.log("[CreateNote] Overlay IS OPEN, showing completion notification");
+          setOverlayComplete(true);
+        } else {
+          console.log("[CreateNote] Overlay is closed, checking form data");
+          const hasFormData = checkIfFormHasData();
+          console.log("[CreateNote] Has form data:", hasFormData);
+
+          if (hasFormData) {
+            console.log("[CreateNote] Showing result confirmation dialog");
+            setPendingResult(result);
+            setShowResultConfirmation(true);
+          } else {
+            console.log("[CreateNote] Auto-injecting result to form");
+            handleImportSuccess(result);
+            toast.success("Summarize selesai!", {
+              description: "Hasil telah dimasukkan ke form",
+            });
+          }
+        }
+      } else if (status.status === "failed") {
+        console.error("[CreateNote] Task failed:", status.error);
+
+        stopPolling();
+        updateTaskStatus("failed", { error: status.error });
+        setBackgroundTask(null);
+
+        toast.error("Proses gagal", {
+          description: status.error || "Terjadi kesalahan saat memproses video",
+        });
+      }
+
+      const updatedTask = loadBackgroundTask();
+      if (updatedTask) {
+        setBackgroundTask(updatedTask);
+      }
+    } catch (error) {
+      console.error("[CreateNote] Polling error:", error);
+
+      if (error instanceof Error && error.message.includes("network")) {
+        console.log("[CreateNote] Network error, will retry...");
+        return;
+      }
+
+      stopPolling();
+      updateTaskStatus("failed", {
+        error: error instanceof Error ? error.message : "Terjadi kesalahan",
+      });
+      setBackgroundTask(null);
+
+      toast.error("Proses gagal", {
+        description: error instanceof Error ? error.message : "Terjadi kesalahan tidak diketahui",
+      });
+    }
+  };
+
+  // ✅ CHECK IF FORM HAS DATA
+  const checkIfFormHasData = (): boolean => {
+    const persisted = loadFormData();
+    if (!persisted) return false;
+
+    const { formData } = persisted;
+    return formData.title.trim().length > 0 || formData.content.trim().length > 0 || formData.tags.length > 0;
+  };
+
+  // ✅ HANDLE SHOW WAITING OVERLAY (triggered by modal)
+  const handleShowWaitingOverlay = () => {
+    console.log("[CreateNote] Opening waiting overlay");
+    setShowWaitingOverlay(true);
+    overlayOpenRef.current = true; // ✅ Update ref
+    setOverlayComplete(false);
+    setOverlayResult(null);
+  };
+
+  // ✅ HANDLE BACKGROUND TASK CREATED (from modal)
+  const handleBackgroundTaskCreated = (task: BackgroundTaskData) => {
+    console.log("[CreateNote] New background task created:", task.taskId);
+    setBackgroundTask(task);
+    setTaskProgress(0);
+    startPolling(task);
+
+    toast.info("Proses dimulai", {
+      description: "Summarize berjalan di background",
+      duration: 3000,
+    });
+  };
+
+  // ✅ HANDLE CANCEL BACKGROUND TASK
+  const handleCancelBackgroundTask = () => {
+    stopPolling();
+    updateTaskStatus("cancelled");
+    clearBackgroundTask();
+    setBackgroundTask(null);
+
+    toast.success("Proses dibatalkan", {
+      description: "Proses summarize telah dibatalkan",
+    });
+  };
+
+  // ✅ HANDLE BANNER CLICK - Show overlay
+  const handleBannerClick = () => {
+    console.log("[CreateNote] Banner clicked, opening overlay");
+    setShowWaitingOverlay(true);
+    overlayOpenRef.current = true; // ✅ Update ref
+  };
+
+  // ✅ HANDLE CLOSE WAITING OVERLAY
+  const handleCloseWaitingOverlay = () => {
+    console.log("[CreateNote] Closing waiting overlay");
+    setShowWaitingOverlay(false);
+
+    // ✅ If completed while overlay was open, handle result
+    if (overlayComplete && overlayResult) {
+      const hasFormData = checkIfFormHasData();
+
+      if (hasFormData) {
+        setPendingResult(overlayResult);
+        setShowResultConfirmation(true);
+      } else {
+        handleImportSuccess(overlayResult);
+        toast.success("Summarize selesai!", {
+          description: "Hasil telah dimasukkan ke form",
+        });
+      }
+
+      setOverlayComplete(false);
+      setOverlayResult(null);
+    }
+  };
+
+  // ✅ HANDLE VIEW RESULT FROM OVERLAY
+  const handleViewResultFromOverlay = () => {
+    console.log("[CreateNote] User clicked view result from overlay");
+
+    if (overlayResult) {
+      setShowWaitingOverlay(false);
+
+      setTimeout(() => {
+        const hasFormData = checkIfFormHasData();
+
+        if (hasFormData) {
+          setPendingResult(overlayResult);
+          setShowResultConfirmation(true);
+        } else {
+          handleImportSuccess(overlayResult);
+          toast.success("Summarize selesai!", {
+            description: "Hasil telah dimasukkan ke form",
+          });
+        }
+
+        setOverlayComplete(false);
+        setOverlayResult(null);
+      }, 300);
+    }
+  };
+
+  // ✅ HANDLE RESULT CONFIRMATION - ACCEPT
+  const handleAcceptResult = () => {
+    console.log("[CreateNote] User accepted result, injecting to form");
+    if (pendingResult) {
+      handleImportSuccess(pendingResult);
+      setShowResultConfirmation(false);
+      setPendingResult(null);
+
+      toast.success("Result diterapkan", {
+        description: "Form telah diisi dengan hasil summarize",
+      });
+    }
+  };
+
+  // ✅ HANDLE RESULT CONFIRMATION - REJECT
+  const handleRejectResult = () => {
+    console.log("[CreateNote] User rejected result");
+    setShowResultConfirmation(false);
+    setPendingResult(null);
+
+    toast.info("Result diabaikan", {
+      description: "Anda dapat melanjutkan mengisi form secara manual",
+    });
+  };
+
+  // Keyboard detection
   useEffect(() => {
     if (!isMobile()) return;
 
-    // Method 1: Visual Viewport API (Modern browsers)
     if ("visualViewport" in window && window.visualViewport) {
       const viewport = window.visualViewport!;
       let initialHeight = viewport.height;
@@ -154,7 +509,6 @@ export default function CreateNote() {
       };
     }
 
-    // Method 2: Window resize (Safari & fallback)
     let initialWindowHeight = window.innerHeight;
 
     const handleWindowResize = () => {
@@ -165,7 +519,6 @@ export default function CreateNote() {
 
     window.addEventListener("resize", handleWindowResize);
 
-    // Method 3: Focus events (Additional reliability)
     const handleFocusIn = (e: FocusEvent) => {
       const target = e.target as HTMLElement;
       if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable) {
@@ -197,7 +550,7 @@ export default function CreateNote() {
     };
   }, []);
 
-  // Handle orientation change (reset keyboard detection)
+  // Handle orientation change
   useEffect(() => {
     if (!isMobile()) return;
 
@@ -218,17 +571,14 @@ export default function CreateNote() {
   useEffect(() => {
     if (!isMobile()) return;
 
-    // Push dummy state to history
     window.history.pushState({ preventBack: true }, "");
 
     const handlePopState = (e: PopStateEvent) => {
-      // PRIORITY 1: If keyboard is open, allow native behavior (close keyboard)
       if (isKeyboardOpen) {
         console.log("[CreateNote] Keyboard open, allowing native close");
         return;
       }
 
-      // PRIORITY 2: If modal is open, close modal
       if (showImportModal) {
         e.preventDefault();
         window.history.pushState({ preventBack: true }, "");
@@ -237,7 +587,6 @@ export default function CreateNote() {
         return;
       }
 
-      // PRIORITY 3: Show confirmation for page navigation
       e.preventDefault();
       window.history.pushState({ preventBack: true }, "");
       setShowBackConfirmation(true);
@@ -262,10 +611,8 @@ export default function CreateNote() {
     setImportedData(result);
     setInputMode("youtube");
 
-    // Save to localStorage
     saveImportResult(result);
 
-    // Force re-render
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     toast.success("Video berhasil diimpor!");
@@ -299,7 +646,6 @@ export default function CreateNote() {
 
       const note = await createNote(user.id, noteData);
 
-      // Clear localStorage after successful save
       clearFormData();
 
       toast.success("Catatan berhasil dibuat!", {
@@ -322,7 +668,7 @@ export default function CreateNote() {
     navigate(-1);
   };
 
-  // Handle confirmed back (from confirmation dialog)
+  // Handle confirmed back
   const handleConfirmedBack = () => {
     setShowBackConfirmation(false);
     navigate("/notes");
@@ -343,14 +689,12 @@ export default function CreateNote() {
       description: "Semua field berhasil dikosongkan",
     });
 
-    // Force page reload to reset NoteForm
     window.location.reload();
   };
 
   // Get initial form values
   const getInitialFormValues = () => {
     if (!importedData || inputMode === "manual") {
-      // Load from localStorage if available
       const persisted = loadFormData();
       if (persisted?.formData) {
         return persisted.formData;
@@ -358,7 +702,6 @@ export default function CreateNote() {
       return undefined;
     }
 
-    // Format content
     let formattedContent = "";
     if (importedData.content.includes("<p>") || importedData.content.includes("<br>")) {
       formattedContent = importedData.content;
@@ -366,7 +709,6 @@ export default function CreateNote() {
       formattedContent = convertTextToHtml(importedData.content);
     }
 
-    // Generate reference
     const referenceQuote = generateReferenceQuote(importedData);
     const finalContent = referenceQuote ? `${formattedContent}<br><br>${referenceQuote}` : formattedContent;
 
@@ -402,7 +744,6 @@ export default function CreateNote() {
                 <PenLine className="w-3 h-3" />
                 <span className="hidden sm:inline">Buat Catatan</span>
               </Badge>
-              {/* Reset Form */}
               {hasPersistedData() && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -423,7 +764,19 @@ export default function CreateNote() {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6 md:py-8">
         <div className="max-w-4xl mx-auto space-y-4">
-          {/* Input Mode Selector & Reset Button */}
+          {/* Background Task Banner */}
+          <AnimatePresence>
+            {backgroundTask && (
+              <BackgroundTaskBanner
+                task={backgroundTask}
+                progress={taskProgress}
+                onCancel={handleCancelBackgroundTask}
+                onClick={handleBannerClick}
+              />
+            )}
+          </AnimatePresence>
+
+          {/* Input Mode Selector - Disabled when background task running */}
           <motion.div
             variants={cardVariants}
             transition={{ delay: 0.1 }}
@@ -431,45 +784,61 @@ export default function CreateNote() {
           >
             <div className="backdrop-blur-sm">
               <div className="flex flex-col sm:flex-row gap-2">
-                {/* YouTube Tab */}
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={!backgroundTask ? { scale: 1.02 } : {}}
+                  whileTap={!backgroundTask ? { scale: 0.98 } : {}}
                   onClick={() => {
+                    if (backgroundTask) return;
                     if (!importedData) {
                       setShowImportModal(true);
                     } else {
                       setInputMode("youtube");
                     }
                   }}
+                  disabled={!!backgroundTask}
                   className={`flex-1 flex items-center gap-3 px-4 py-3 rounded-lg border transition-all ${
-                    inputMode === "youtube"
+                    backgroundTask
+                      ? "border-gray-500/30 bg-gray-500/10 opacity-50 cursor-not-allowed"
+                      : inputMode === "youtube"
                       ? "border-red-500/50 bg-red-500/10 shadow-sm shadow-red-500/20"
                       : "border-border hover:border-red-500/30 hover:bg-red-500/5"
                   }`}
                 >
-                  <div className={`p-2 rounded-md ${inputMode === "youtube" ? "bg-red-500/20" : "bg-muted"}`}>
+                  <div
+                    className={`p-2 rounded-md ${
+                      backgroundTask ? "bg-gray-500/20" : inputMode === "youtube" ? "bg-red-500/20" : "bg-muted"
+                    }`}
+                  >
                     <Youtube
-                      className={`w-4 h-4 ${inputMode === "youtube" ? "text-red-500" : "text-muted-foreground"}`}
+                      className={`w-4 h-4 ${
+                        backgroundTask
+                          ? "text-gray-500"
+                          : inputMode === "youtube"
+                          ? "text-red-500"
+                          : "text-muted-foreground"
+                      }`}
                     />
                   </div>
                   <div className="text-left">
                     <p
                       className={`text-sm font-semibold ${
-                        inputMode === "youtube" ? "text-red-500" : "text-foreground"
+                        backgroundTask ? "text-gray-500" : inputMode === "youtube" ? "text-red-500" : "text-foreground"
                       }`}
                     >
                       Import YouTube
                     </p>
-                    <p className="text-xs text-muted-foreground hidden sm:block">
-                      {importedData ? "Video diimpor ✓" : "Import video"}
+                    <p
+                      className={`text-xs hidden sm:block ${
+                        backgroundTask ? "text-gray-500" : "text-muted-foreground"
+                      }`}
+                    >
+                      {backgroundTask ? "Proses berjalan..." : importedData ? "Video diimpor ✓" : "Import video"}
                     </p>
                   </div>
                 </motion.button>
               </div>
 
-              {/* Import Button */}
-              {inputMode === "youtube" && !importedData && (
+              {inputMode === "youtube" && !importedData && !backgroundTask && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
@@ -536,6 +905,7 @@ export default function CreateNote() {
                         <Button
                           variant="default"
                           size="sm"
+                          disabled={!!backgroundTask}
                           onClick={() => setShowImportModal(true)}
                           className="border-yellow-500! text-yellow-300 text-[14px]! h-7 px-2 rounded-full!"
                         >
@@ -567,9 +937,19 @@ export default function CreateNote() {
         open={showImportModal}
         onOpenChange={setShowImportModal}
         onImportSuccess={handleImportSuccess}
+        onBackgroundTaskCreated={handleBackgroundTaskCreated}
+        onShowWaitingOverlay={handleShowWaitingOverlay}
       />
 
-      {/* Back Confirmation Dialog (Mobile) */}
+      {/* ✅ Waiting Experience Overlay (controlled here) */}
+      <WaitingExperienceOverlay
+        open={showWaitingOverlay}
+        onClose={handleCloseWaitingOverlay}
+        isComplete={overlayComplete}
+        onViewResult={handleViewResultFromOverlay}
+      />
+
+      {/* Back Confirmation Dialog */}
       <Dialog open={showBackConfirmation} onOpenChange={setShowBackConfirmation}>
         <DialogContent className="max-w-[90%] sm:max-w-md">
           <DialogHeader>
@@ -618,6 +998,33 @@ export default function CreateNote() {
               className="flex-1 sm:flex-initial bg-amber-500 hover:bg-amber-600 text-white"
             >
               Ya, Reset
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ✅ Result Confirmation Dialog */}
+      <Dialog open={showResultConfirmation} onOpenChange={setShowResultConfirmation}>
+        <DialogContent className="max-w-[90%] sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-green-500">
+              <CheckCircle className="w-5 h-5" />
+              Summarize Selesai!
+            </DialogTitle>
+            <DialogDescription>
+              Proses summarize telah selesai. Apakah Anda ingin mengisi form dengan hasil summarize? Data yang sudah ada
+              akan ditimpa.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button variant="outline" onClick={handleRejectResult} className="flex-1 sm:flex-initial">
+              Tidak, Abaikan
+            </Button>
+            <Button
+              onClick={handleAcceptResult}
+              className="flex-1 sm:flex-initial bg-green-500 hover:bg-green-600 text-white"
+            >
+              Ya, Terapkan
             </Button>
           </DialogFooter>
         </DialogContent>

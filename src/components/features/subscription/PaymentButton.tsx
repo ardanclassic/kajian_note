@@ -1,100 +1,270 @@
 /**
- * PaymentButton Component - REDESIGNED
- * Follows design system with proper loading states and animations
+ * PaymentButton - REDESIGNED WITH CONFIRMATION DIALOG
+ * Focus: Email tracking + clear instructions + modern confirmation dialog
+ * Uses framer-motion for smooth animations instead of shadcn AlertDialog
  */
 
-import { Button } from "@/components/ui/button";
-import { getPaymentLink, type SubscriptionTier } from "@/config/payment";
-import { ExternalLink, Loader2, AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { type SubscriptionTier, getPrice } from "@/config/payment";
+import { Loader2, ExternalLink, Copy, CheckCheck, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
-import { motion } from "framer-motion";
+import { supabase } from "@/lib/supabase";
 
 interface PaymentButtonProps {
   tier: SubscriptionTier;
   userEmail: string;
+  paymentEmail: string;
+  userName?: string;
   className?: string;
   children?: React.ReactNode;
 }
 
-export function PaymentButton({ tier, userEmail, className, children }: PaymentButtonProps) {
-  const [isRedirecting, setIsRedirecting] = useState(false);
+export function PaymentButton({ tier, userEmail, paymentEmail, userName, className, children }: PaymentButtonProps) {
+  const [loading, setLoading] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [preparedPaymentUrl, setPreparedPaymentUrl] = useState<string>("");
 
-  const handlePayment = () => {
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(paymentEmail);
+      setEmailCopied(true);
+      toast.success("Email disalin ke clipboard!", {
+        description: "Paste email ini saat checkout di Lynk.id",
+        duration: 3000,
+      });
+
+      setTimeout(() => setEmailCopied(false), 2000);
+    } catch (error) {
+      toast.error("Gagal menyalin email");
+    }
+  };
+
+  const handlePaymentClick = async () => {
     if (tier === "free") {
-      toast.error("Tidak perlu pembayaran untuk paket gratis", {
-        icon: <AlertCircle className="h-5 w-5" />,
-      });
+      toast.error("Tidak dapat melakukan pembayaran untuk paket gratis");
       return;
     }
 
-    const paymentLink = getPaymentLink(tier);
+    try {
+      setLoading(true);
 
-    if (!paymentLink) {
-      toast.error("Link pembayaran tidak tersedia", {
-        description: "Silakan hubungi admin untuk bantuan",
-        icon: <AlertCircle className="h-5 w-5" />,
-      });
-      return;
-    }
+      // 1. Validasi user exists
+      const { data: userExists, error: userError } = await supabase
+        .from("users")
+        .select("id, email, username, payment_email")
+        .eq("email", userEmail)
+        .single();
 
-    // Validate email
-    if (!userEmail) {
-      toast.error("Email tidak ditemukan", {
-        description: "Silakan lengkapi profil Anda terlebih dahulu",
-        icon: <AlertCircle className="h-5 w-5" />,
-      });
-      return;
-    }
-
-    setIsRedirecting(true);
-
-    // Show instruction toast with custom styling
-    toast.info(
-      <div className="space-y-2">
-        <div className="font-bold">Langkah Pembayaran</div>
-        <div className="text-sm">
-          Pastikan menggunakan email: <span className="font-mono font-bold text-emerald-500">{userEmail}</span>
-        </div>
-        <div className="text-xs text-gray-400">Halaman pembayaran akan terbuka dalam tab baru</div>
-      </div>,
-      {
-        duration: 6000,
-        className: "bg-black border border-emerald-500/30",
+      if (userError || !userExists) {
+        toast.error("Email tidak ditemukan dalam sistem. Silakan login ulang.");
+        setLoading(false);
+        return;
       }
-    );
 
-    // Redirect to Lynk.id payment page
-    setTimeout(() => {
-      window.open(paymentLink, "_blank");
-      setIsRedirecting(false);
+      // 2. Update payment_email untuk webhook matching
+      await supabase
+        .from("users")
+        .update({
+          payment_email: paymentEmail,
+        })
+        .eq("id", userExists.id);
 
-      // Success feedback
-      toast.success("Halaman pembayaran dibuka", {
-        description: "Silakan lanjutkan proses pembayaran di tab baru",
+      // 3. Generate unique reference untuk tracking
+      const refId = `SUB-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+      // 4. Get payment link dari config
+      const baseLink =
+        tier === "premium" ? import.meta.env.VITE_LYNK_PREMIUM_LINK : import.meta.env.VITE_LYNK_ADVANCE_LINK;
+
+      if (!baseLink) {
+        toast.error("Payment link tidak tersedia");
+        setLoading(false);
+        return;
+      }
+
+      // 5. Simpan payment attempt untuk tracking
+      const { error: insertError } = await supabase.from("payment_attempts").insert({
+        user_id: userExists.id,
+        reference_id: refId,
+        email: userEmail,
+        tier,
+        amount: getPrice(tier),
+        payment_url: baseLink,
+        status: "pending",
       });
-    }, 1000);
+
+      if (insertError) {
+        console.error("Failed to save payment attempt:", insertError);
+      }
+
+      // 6. Auto-copy email to clipboard
+      try {
+        await navigator.clipboard.writeText(paymentEmail);
+      } catch (e) {
+        console.log("Auto-copy failed, user will copy manually");
+      }
+
+      // 7. Store payment URL and show confirmation dialog
+      setPreparedPaymentUrl(baseLink);
+      setShowConfirmDialog(true);
+      setLoading(false);
+    } catch (error: any) {
+      console.error("Payment preparation error:", error);
+      toast.error("Gagal mempersiapkan pembayaran");
+      setLoading(false);
+    }
+  };
+
+  const handleConfirmPayment = () => {
+    setShowConfirmDialog(false);
+
+    // Show instruction toast
+    toast.success("Membuka halaman pembayaran...", {
+      description: `Email Anda sudah disalin. Paste saat checkout!`,
+      duration: 5000,
+    });
+
+    // Redirect ke Lynk.id
+    setTimeout(() => {
+      window.open(preparedPaymentUrl, "_blank");
+
+      // Show reminder after redirect
+      setTimeout(() => {
+        toast.warning("📋 Gunakan email ini saat checkout:", {
+          description: (
+            <div className="flex items-center gap-2 mt-2">
+              <code className="text-xs bg-white/10 px-2 py-1 rounded">{paymentEmail}</code>
+            </div>
+          ),
+          duration: 10000,
+        });
+      }, 2000);
+    }, 500);
+  };
+
+  const handleCancelPayment = () => {
+    setShowConfirmDialog(false);
+    setPreparedPaymentUrl("");
+    toast.info("Pembayaran dibatalkan");
   };
 
   return (
-    <motion.div whileHover={{ scale: isRedirecting ? 1 : 1.02 }} whileTap={{ scale: isRedirecting ? 1 : 0.98 }}>
-      <Button onClick={handlePayment} disabled={isRedirecting} className={className}>
-        {isRedirecting ? (
-          <>
-            <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-            <span>Membuka halaman pembayaran...</span>
-          </>
-        ) : (
-          <>
-            {children || (
-              <>
-                <span>Lanjutkan ke Pembayaran</span>
-                <ExternalLink className="h-5 w-5 ml-2" />
-              </>
-            )}
-          </>
+    <>
+      <div className="space-y-3">
+        {/* Email Display with Copy Button */}
+        <div className="p-4 bg-gray-900 border border-emerald-500/30 rounded-xl">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <div className="text-xs font-bold text-emerald-400 mb-1.5 uppercase tracking-wide">Email Terdaftar</div>
+              <code className="text-sm font-mono font-bold text-white break-all">{paymentEmail}</code>
+            </div>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleCopyEmail}
+              className="shrink-0 h-8 w-8 p-0 hover:bg-emerald-500/10"
+            >
+              {emailCopied ? (
+                <CheckCheck className="h-4 w-4 text-emerald-400" />
+              ) : (
+                <Copy className="h-4 w-4 text-gray-400" />
+              )}
+            </Button>
+          </div>
+
+          <p className="text-xs text-gray-400 mt-2">Gunakan email ini saat checkout di Lynk.id</p>
+        </div>
+
+        {/* Payment Button */}
+        <Button onClick={handlePaymentClick} disabled={loading} className={className}>
+          {loading ? (
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              Mempersiapkan...
+            </>
+          ) : (
+            <>
+              {children || "Lanjutkan ke Pembayaran"}
+              <ExternalLink className="h-4 w-4 ml-2" />
+            </>
+          )}
+        </Button>
+      </div>
+
+      {/* Confirmation Dialog - Framer Motion Style */}
+      <AnimatePresence>
+        {showConfirmDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-70 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={handleCancelPayment}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", damping: 20, stiffness: 300 }}
+              className="bg-linear-to-br from-gray-900 to-gray-800 border border-emerald-500/30 rounded-2xl p-6 max-w-md w-full shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Icon */}
+              <div className="flex justify-center mb-4">
+                <div className="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                  <AlertCircle className="w-8 h-8 text-emerald-400" />
+                </div>
+              </div>
+
+              {/* Title & Message */}
+              <h3 className="text-xl font-bold text-white text-center mb-2">Siap ke Halaman Pembayaran?</h3>
+              <p className="text-sm text-gray-300 text-center mb-4 leading-relaxed">
+                Pastikan Anda menggunakan email berikut saat checkout:
+              </p>
+
+              {/* Email Highlight */}
+              <div className="p-4 bg-black/50 border border-emerald-500/30 rounded-xl mb-6">
+                <code className="text-sm font-mono font-bold text-emerald-400 break-all block text-center">
+                  {paymentEmail}
+                </code>
+              </div>
+
+              {/* Warning Note */}
+              <div className="flex items-start gap-2 mb-6 p-3 bg-orange-500/10 border border-orange-500/20 rounded-lg">
+                <AlertCircle className="h-4 w-4 text-orange-400 shrink-0 mt-0.5" />
+                <p className="text-xs text-gray-300 leading-relaxed">
+                  <strong className="text-orange-400">Penting:</strong> Email sudah otomatis disalin. Paste di form
+                  email Lynk.id agar subscription aktif otomatis.
+                </p>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleCancelPayment}
+                  className="flex-1 px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium transition-colors"
+                >
+                  Batal
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleConfirmPayment}
+                  className="flex-1 px-4 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-medium transition-colors"
+                >
+                  Lanjutkan
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
-      </Button>
-    </motion.div>
+      </AnimatePresence>
+    </>
   );
 }

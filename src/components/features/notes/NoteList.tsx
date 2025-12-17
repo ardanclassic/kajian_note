@@ -1,8 +1,13 @@
 /**
- * NoteList Component - IMPROVED UI/UX
- * Modern, responsive grid layout with smooth animations
+ * NoteList Component - Pinterest-Style Gallery
+ * Pure CSS Grid Layout (NO external masonry library)
+ * ✨ Responsive: 1 → 2 → 3 columns
+ * ✨ Natural height variation
+ * ✨ Smooth Framer Motion animations
+ * ✨ Dark mode with Emerald glow
  */
 
+import { motion, AnimatePresence } from "framer-motion";
 import { NoteCard } from "./NoteCard";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, FileText, Pin } from "lucide-react";
@@ -48,13 +53,18 @@ export function NoteList({
   // Empty state
   if (notes.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center animate-in fade-in zoom-in-95 duration-500">
-        <div className="p-6 bg-muted/50 rounded-full mb-6">
-          {emptyIcon || <FileText className="w-12 h-12 text-muted-foreground" />}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col items-center justify-center py-16 text-center"
+      >
+        <div className="w-16 h-16 rounded-full bg-gray-900 border border-gray-800 flex items-center justify-center mb-6">
+          {emptyIcon || <FileText className="w-8 h-8 text-gray-600" />}
         </div>
-        <h3 className="text-xl font-semibold mb-2">Tidak Ada Catatan</h3>
-        <p className="text-muted-foreground max-w-sm">{emptyMessage}</p>
-      </div>
+        <h3 className="text-xl font-bold text-white mb-2">Tidak Ada Catatan</h3>
+        <p className="text-gray-400 max-w-sm">{emptyMessage}</p>
+      </motion.div>
     );
   }
 
@@ -62,84 +72,141 @@ export function NoteList({
   const pinnedNotes = notes.filter((note) => note.isPinned);
   const regularNotes = notes.filter((note) => !note.isPinned);
 
+  // Animation variants
+  const containerVariants: any = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.03,
+      },
+    },
+  };
+
+  const itemVariants: any = {
+    hidden: {
+      opacity: 0,
+      y: 30,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.4,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.9,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
+
   return (
     <div className="space-y-8">
-      {/* Pinned Notes */}
+      {/* Pinned Notes Section */}
       {pinnedNotes.length > 0 && (
-        <div className="space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
-          <div className="flex items-center gap-2 px-1">
-            <Pin className="w-4 h-4 text-primary" />
-            <h2 className="text-sm font-bold text-primary uppercase tracking-wider">Catatan Tersimpan</h2>
-            <div className="h-px flex-1 bg-linear-to-r from-primary/50 to-transparent" />
+        <motion.div initial="hidden" animate="visible" variants={containerVariants} className="space-y-5">
+          {/* Section Header */}
+          <motion.div
+            className="flex items-center gap-3"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="w-8 h-8 rounded-lg bg-gray-900 border border-emerald-500/50 flex items-center justify-center shadow-lg shadow-emerald-500/10">
+              <Pin className="w-4 h-4 text-emerald-400" />
+            </div>
+            <h2 className="text-sm font-bold text-emerald-400 uppercase tracking-wider">Catatan Tersimpan</h2>
+            <div className="h-px flex-1 bg-linear-to-r from-emerald-500/50 to-transparent" />
+          </motion.div>
+
+          {/* Pure CSS Grid - Pinterest Style */}
+          <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-auto">
+            <AnimatePresence mode="popLayout">
+              {pinnedNotes.map((note) => (
+                <motion.div key={note.id} variants={itemVariants} layout layoutId={`pinned-${note.id}`}>
+                  <NoteCard
+                    note={note}
+                    showAuthor={showAuthor}
+                    showActions={showActions}
+                    isOwner={currentUserId === note.userId}
+                    isPinnable={isPinnable}
+                    onClick={onClick}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                    onTogglePin={onTogglePin}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {pinnedNotes.map((note, index) => (
-              <div
-                key={note.id}
-                className="animate-in fade-in slide-in-from-bottom-4 duration-500"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <NoteCard
-                  note={note}
-                  showAuthor={showAuthor}
-                  showActions={showActions}
-                  isOwner={currentUserId === note.userId}
-                  isPinnable={isPinnable}
-                  onClick={onClick}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                  onTogglePin={onTogglePin}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+        </motion.div>
       )}
 
-      {/* Regular Notes */}
+      {/* Regular Notes Section */}
       {regularNotes.length > 0 && (
-        <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100">
+        <motion.div initial="hidden" animate="visible" variants={containerVariants} className="space-y-5">
+          {/* Section Header (only if there are pinned notes) */}
           {pinnedNotes.length > 0 && (
-            <div className="flex items-center gap-2 px-1">
-              <FileText className="w-4 h-4 text-muted-foreground" />
-              <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Semua Catatan</h2>
-              <div className="h-px flex-1 bg-linear-to-r from-muted-foreground/30 to-transparent" />
-            </div>
-          )}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {regularNotes.map((note, index) => (
-              <div
-                key={note.id}
-                className="animate-in fade-in slide-in-from-bottom-4 duration-500"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <NoteCard
-                  note={note}
-                  showAuthor={showAuthor}
-                  showActions={showActions}
-                  isOwner={currentUserId === note.userId}
-                  isPinnable={isPinnable}
-                  onClick={onClick}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                  onTogglePin={onTogglePin}
-                />
+            <motion.div
+              className="flex items-center gap-3"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+            >
+              <div className="w-8 h-8 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center">
+                <FileText className="w-4 h-4 text-gray-500" />
               </div>
-            ))}
+              <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider">Semua Catatan</h2>
+              <div className="h-px flex-1 bg-linear-to-r from-gray-800 to-transparent" />
+            </motion.div>
+          )}
+
+          {/* Pure CSS Grid - Pinterest Style */}
+          <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-auto">
+            <AnimatePresence mode="popLayout">
+              {regularNotes.map((note) => (
+                <motion.div key={note.id} variants={itemVariants} layout layoutId={`regular-${note.id}`}>
+                  <NoteCard
+                    note={note}
+                    showAuthor={showAuthor}
+                    showActions={showActions}
+                    isOwner={currentUserId === note.userId}
+                    isPinnable={isPinnable}
+                    onClick={onClick}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                    onTogglePin={onTogglePin}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Pagination */}
       {totalPages > 1 && onPageChange && (
-        <div className="flex flex-col items-center gap-4 pt-6 animate-in fade-in duration-500 delay-200">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="flex flex-col items-center gap-4 pt-8 border-t border-gray-900"
+        >
           <div className="flex items-center gap-2 flex-wrap justify-center">
+            {/* Previous Button */}
             <Button
               variant="outline"
               size="sm"
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="shadow-sm hover:shadow-md transition-shadow"
+              className="shadow-sm hover:shadow-lg hover:border-emerald-500/50 transition-all bg-gray-900 border-gray-800 text-gray-400 hover:text-emerald-400 disabled:opacity-30 disabled:hover:border-gray-800"
             >
               <ChevronLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Prev</span>
@@ -153,11 +220,11 @@ export function NoteList({
                     variant="outline"
                     size="sm"
                     onClick={() => onPageChange(1)}
-                    className="w-10 shadow-sm hover:shadow-md transition-shadow"
+                    className="w-10 shadow-sm hover:shadow-lg hover:border-emerald-500/50 transition-all bg-gray-900 border-gray-800 text-gray-400 hover:text-emerald-400"
                   >
                     1
                   </Button>
-                  {currentPage > 4 && <span className="px-2 text-muted-foreground font-medium">···</span>}
+                  {currentPage > 4 && <span className="px-2 text-gray-600 font-medium">···</span>}
                 </>
               )}
 
@@ -172,8 +239,10 @@ export function NoteList({
                     variant={page === currentPage ? "default" : "outline"}
                     size="sm"
                     onClick={() => onPageChange(page)}
-                    className={`w-10 shadow-sm transition-all ${
-                      page === currentPage ? "shadow-lg scale-110" : "hover:shadow-md"
+                    className={`w-10 transition-all ${
+                      page === currentPage
+                        ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400 shadow-lg shadow-emerald-500/20 scale-110"
+                        : "bg-gray-900 border-gray-800 text-gray-400 hover:border-emerald-500/50 hover:text-emerald-400 shadow-sm hover:shadow-lg"
                     }`}
                   >
                     {page}
@@ -183,12 +252,12 @@ export function NoteList({
               {/* Last page */}
               {currentPage < totalPages - 2 && (
                 <>
-                  {currentPage < totalPages - 3 && <span className="px-2 text-muted-foreground font-medium">···</span>}
+                  {currentPage < totalPages - 3 && <span className="px-2 text-gray-600 font-medium">···</span>}
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => onPageChange(totalPages)}
-                    className="w-10 shadow-sm hover:shadow-md transition-shadow"
+                    className="w-10 shadow-sm hover:shadow-lg hover:border-emerald-500/50 transition-all bg-gray-900 border-gray-800 text-gray-400 hover:text-emerald-400"
                   >
                     {totalPages}
                   </Button>
@@ -196,12 +265,13 @@ export function NoteList({
               )}
             </div>
 
+            {/* Next Button */}
             <Button
               variant="outline"
               size="sm"
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="shadow-sm hover:shadow-md transition-shadow"
+              className="shadow-sm hover:shadow-lg hover:border-emerald-500/50 transition-all bg-gray-900 border-gray-800 text-gray-400 hover:text-emerald-400 disabled:opacity-30 disabled:hover:border-gray-800"
             >
               <span className="hidden sm:inline">Next</span>
               <ChevronRight className="w-4 h-4" />
@@ -209,11 +279,11 @@ export function NoteList({
           </div>
 
           {/* Page info */}
-          <p className="text-sm text-muted-foreground font-medium">
-            Halaman <span className="text-foreground font-bold">{currentPage}</span> dari{" "}
-            <span className="text-foreground font-bold">{totalPages}</span>
+          <p className="text-sm text-gray-500 font-medium">
+            Halaman <span className="text-emerald-400 font-bold">{currentPage}</span> dari{" "}
+            <span className="text-emerald-400 font-bold">{totalPages}</span>
           </p>
-        </div>
+        </motion.div>
       )}
     </div>
   );
