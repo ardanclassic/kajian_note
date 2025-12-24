@@ -1,9 +1,6 @@
 /**
  * Profile Page - Dark Mode with Emerald Glow
- * Refactored: Custom Header Design + ScrollToTop
- * ✅ Pure black background
- * ✅ Emerald glow accents
- * ✅ Compact & modern interface
+ * Refactored: Uses TopHeader for consistent navigation
  */
 
 import { useState, useEffect } from "react";
@@ -14,6 +11,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollToTopButton } from "@/components/common/ScrollToTopButton";
+import { TopHeader } from "@/components/layout/TopHeader";
 import EditProfileForm from "@/components/features/profile/EditProfileForm";
 import ChangePINForm from "@/components/features/profile/ChangePINForm";
 import {
@@ -27,24 +25,14 @@ import {
   Key,
   CreditCard,
   AlertCircle,
-  ArrowLeft,
-  Menu,
-  LogOut,
-  Users,
-  BookOpen,
 } from "lucide-react";
-import { MenuArea } from "@/components/features/dashboard/MenuArea";
-import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import Loading from "@/components/common/Loading";
 
 export default function Profile() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+  const { user } = useAuthStore();
   const [activeTab, setActiveTab] = useState<"profile" | "change-pin">("profile");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
     if (location.state?.forced || location.pathname === "/profile/change-pin") {
@@ -86,63 +74,12 @@ export default function Profile() {
     },
   ];
 
-  const handleLogoutClick = () => {
-    setShowLogoutDialog(true);
-    setIsMenuOpen(false);
-  };
-
-  const handleConfirmLogout = async () => {
-    try {
-      setIsLoggingOut(true);
-      await logout();
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout error:", error);
-      setIsLoggingOut(false);
-    }
-  };
-
-  const menuItems = [
-    { icon: BookOpen, label: "Catatan", onClick: () => navigate("/notes") },
-    { icon: Crown, label: "Subscription", onClick: () => navigate("/subscription") },
-    { icon: User, label: "Profile", onClick: () => navigate("/profile") },
-    { icon: Users, label: "Kelola Users", onClick: () => navigate("/admin/users"), adminOnly: true },
-    // { icon: Settings, label: "Pengaturan", onClick: () => navigate("/settings") },
-    { icon: LogOut, label: "Logout", onClick: handleLogoutClick },
-  ];
-
   if (!user) {
     return <Loading fullscreen text="Memuat..." />;
   }
 
-  return (
-    <div className="min-h-screen bg-black">
-      <MenuArea
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        userRole={user.role}
-        userName={user.fullName}
-        userTier={user.subscriptionTier}
-        menuItems={menuItems}
-      />
-
-      {/* Sticky Action Buttons Bar */}
-      <div className="sticky top-0 z-10 bg-black/80 backdrop-blur-md border-b border-gray-900">
-        <div className="container mx-auto px-4 py-3">
-          <div className="max-w-4xl mx-auto flex items-center gap-2">
-            {/* Back Button */}
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="group flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-900 border border-gray-800 hover:border-emerald-500/50 text-gray-400 hover:text-emerald-400 transition-all text-sm font-medium"
-            >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-              <span className="hidden sm:inline">Dashboard</span>
-            </button>
-
-            {/* Spacer */}
-            <div className="flex-1" />
-
-            {/* Tab Buttons */}
+  const headerActions = (
+    <div className="flex gap-2">
             <Button
               variant={activeTab === "profile" ? "default" : "outline"}
               onClick={() => setActiveTab("profile")}
@@ -169,19 +106,12 @@ export default function Profile() {
               <Key className="h-3.5 w-3.5 sm:mr-1.5" />
               <span className="hidden sm:inline">PIN</span>
             </Button>
+    </div>
+  );
 
-            {/* Menu Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMenuOpen(true)}
-              className="hover:bg-gray-900 hover:border-emerald-500/30 border border-gray-800"
-            >
-              <Menu className="h-6 w-6 text-white" />
-            </Button>
-          </div>
-        </div>
-      </div>
+  return (
+    <div className="min-h-screen bg-black">
+      <TopHeader backButton backTo="/dashboard" actions={headerActions} />
 
       {/* Page Header */}
       <div className="relative border-b border-gray-900 overflow-hidden">
@@ -327,29 +257,7 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* Floating Scroll to Top Button */}
       <ScrollToTopButton />
-
-      {/* Logout Dialog */}
-      <ConfirmDialog
-        open={showLogoutDialog}
-        onOpenChange={setShowLogoutDialog}
-        title="Keluar dari Akun?"
-        description={
-          <div className="space-y-2">
-            <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
-            <p className="text-sm text-muted-foreground">
-              Anda perlu login kembali untuk mengakses catatan dan fitur lainnya.
-            </p>
-          </div>
-        }
-        confirmText="Ya, Keluar"
-        cancelText="Batal"
-        onConfirm={handleConfirmLogout}
-        variant="warning"
-        isLoading={isLoggingOut}
-        showCancel={true}
-      />
     </div>
   );
 }

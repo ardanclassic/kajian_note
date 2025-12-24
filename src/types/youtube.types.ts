@@ -173,6 +173,91 @@ export interface PollTaskStatusResponse {
  */
 
 /**
+ * ========================================
+ * DEEP NOTE (CLEANUP TASK) TYPES
+ * ========================================
+ */
+
+/**
+ * Submit Cleanup Task Request (Deep Note - ASYNC)
+ */
+export interface SubmitCleanupTaskRequest {
+  video_id: string;
+  languages?: string;
+  model?: string; // defaults to gemini-2.5-flash
+  max_tokens_per_chunk?: number; // defaults to 3000
+  output_language?: string; // defaults to "Indonesian"
+}
+
+/**
+ * Submit Cleanup Task Response (Deep Note)
+ */
+export interface SubmitCleanupTaskResponse {
+  task_id: string;
+  status: TaskStatus;
+  message: string;
+}
+
+/**
+ * Cleanup Task Result (when completed)
+ */
+export interface CleanupTaskResult {
+  video_id: string;
+  video_url: string;
+  language_used: string;
+  model_used: string;
+  original_transcript_length: number;
+  cleaned_text: string; // Different from summary
+  chunks_processed: number; // New field
+  total_characters: number; // New field
+}
+
+/**
+ * Poll Cleanup Task Status Response (Deep Note)
+ */
+export interface PollCleanupTaskStatusResponse {
+  task_id: string;
+  status: TaskStatus;
+  created_at?: string;
+  completed_at?: string;
+  result?: CleanupTaskResult;
+  error?: string | null;
+}
+
+/**
+ * Deep Note Import Result
+ */
+export interface DeepNoteImportResult {
+  success: boolean;
+  videoId: string;
+  videoUrl: string;
+  title: string;
+  content: string; // cleaned_text mapped here
+  language: string;
+  chunksProcessed: number;
+  totalCharacters: number;
+  metadata: {
+    source_type: "youtube";
+    source_url: string;
+    video_id: string;
+    language_used: string;
+    total_segments: number;
+    has_deep_note: boolean;
+    model_used?: string;
+    imported_at: string;
+    video_metadata?: VideoMetadataResponse;
+  };
+  referenceInfo?: YouTubeReferenceInfo;
+  error?: string;
+}
+
+/**
+ * ========================================
+ * END DEEP NOTE TYPES
+ * ========================================
+ */
+
+/**
  * YouTube Reference Info (Auto-fetched from metadata)
  * UPDATED: Now auto-populated from VideoMetadataResponse
  */

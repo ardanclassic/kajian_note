@@ -5,10 +5,10 @@
  */
 
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { NoteViewer } from "@/components/features/notes/NoteViewer";
-import { ExportActionsDropdown } from "@/components/features/notes/ExportActionsDropdown";
+import { NoteViewer } from "@/components/features/note-workspace/NoteViewer";
+import { ExportActionsDropdown } from "@/components/features/note-workspace/ExportActionsDropdown";
 import { useAuthStore } from "@/store/authStore";
 import { useNotesStore } from "@/store/notesStore";
 import { BookOpen, Loader2, AlertCircle, ArrowLeft, Edit, Trash2, Share2, MoreVertical } from "lucide-react";
@@ -17,15 +17,21 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { ScrollToTopButton } from '@/components/common/ScrollToTopButton';
+import { TopHeader } from "@/components/layout/TopHeader";
+import Loading from "@/components/common/Loading";
 
 export default function ViewNote() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuthStore();
   const { currentNote, isLoading, error, fetchNoteById, deleteNote, clearCurrentNote, clearError } = useNotesStore();
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [showActions, setShowActions] = useState(false);
+
+  // Detect context
+  const isDeepNoteContext = location.pathname.startsWith('/deep-note');
 
   // Fetch note on mount
   useEffect(() => {
@@ -48,13 +54,21 @@ export default function ViewNote() {
 
   // Handle back
   const handleBack = () => {
-    navigate("/notes");
+    if (isDeepNoteContext) {
+      navigate("/deep-note");
+    } else {
+      navigate("/notes");
+    }
   };
 
   // Handle edit
   const handleEdit = () => {
     if (id) {
-      navigate(`/notes/${id}/edit`);
+      // For now, edit always goes to standard note edit
+      // Ideal flow: create separate edit route or handle context in edit page too
+      navigate(`/notes/${id}/edit`, {
+        state: { fromDeepNote: isDeepNoteContext }
+      });
     }
   };
 
@@ -90,14 +104,7 @@ export default function ViewNote() {
 
   // Loading state
   if (isLoading && !currentNote) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
-          <p className="text-muted-foreground">Memuat catatan...</p>
-        </motion.div>
-      </div>
-    );
+    return <Loading fullscreen text="Memuat catatan..." />;
   }
 
   // Error state
@@ -138,113 +145,99 @@ export default function ViewNote() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Floating Action Bar */}
-      <motion.div
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        className="no-print sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b"
-      >
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between gap-4">
-            {/* Left: Back Button */}
-            <Button variant="ghost" onClick={handleBack} className="gap-2">
-              <ArrowLeft className="w-4 h-4" />
-              <span className="hidden sm:inline">Kembali</span>
-            </Button>
+  const headerActions = (
+    <div className="flex items-center gap-2">
+      {/* Share Button (if public) */}
+      {currentNote.isPublic && (
+        <Button variant="outline" size="sm" onClick={handleShare} className="gap-2 hidden sm:flex">
+          <Share2 className="w-4 h-4" />
+          Share
+        </Button>
+      )}
 
-            {/* Center: Title Badge (hidden on mobile) */}
-            <Badge variant="outline" className="hidden md:flex gap-2">
-              <BookOpen className="w-4 h-4" />
-              Detail Catatan
-            </Badge>
+      {/* Export Actions Dropdown - NEW */}
+      <ExportActionsDropdown note={currentNote} />
 
-            {/* Right: Action Buttons */}
-            <div className="flex items-center gap-2">
-              {/* Share Button (if public) */}
-              {currentNote.isPublic && (
-                <Button variant="outline" size="sm" onClick={handleShare} className="gap-2 hidden sm:flex">
-                  <Share2 className="w-4 h-4" />
-                  Share
-                </Button>
-              )}
+      {/* Edit Button (owner only) */}
+      {canEdit && (
+        <Button variant="default" size="sm" onClick={handleEdit} className="gap-2 hidden sm:flex">
+          <Edit className="w-4 h-4" />
+          Edit
+        </Button>
+      )}
 
-              {/* Export Actions Dropdown - NEW */}
-              <ExportActionsDropdown note={currentNote} />
+      {/* More Actions (Mobile) */}
+      <div className="relative sm:hidden">
+        <Button variant="outline" size="sm" onClick={() => setShowActions(!showActions)}>
+          <MoreVertical className="w-4 h-4" />
+        </Button>
 
-              {/* Edit Button (owner only) */}
+        <AnimatePresence>
+          {showActions && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="absolute right-0 mt-2 w-48 bg-background border rounded-lg shadow-lg overflow-hidden z-50 origin-top-right"
+            >
               {canEdit && (
-                <Button variant="default" size="sm" onClick={handleEdit} className="gap-2 hidden sm:flex">
+                <button
+                  onClick={handleEdit}
+                  className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left text-sm"
+                >
                   <Edit className="w-4 h-4" />
-                  Edit
-                </Button>
+                  <span>Edit Catatan</span>
+                </button>
               )}
-
-              {/* More Actions (Mobile) */}
-              <div className="relative sm:hidden">
-                <Button variant="outline" size="sm" onClick={() => setShowActions(!showActions)}>
-                  <MoreVertical className="w-4 h-4" />
-                </Button>
-
-                <AnimatePresence>
-                  {showActions && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-48 bg-background border rounded-lg shadow-lg overflow-hidden z-50"
-                    >
-                      {canEdit && (
-                        <button
-                          onClick={handleEdit}
-                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left"
-                        >
-                          <Edit className="w-4 h-4" />
-                          <span>Edit Catatan</span>
-                        </button>
-                      )}
-                      {currentNote.isPublic && (
-                        <button
-                          onClick={handleShare}
-                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t"
-                        >
-                          <Share2 className="w-4 h-4" />
-                          <span>Share Link</span>
-                        </button>
-                      )}
-                      {canDelete && (
-                        <button
-                          onClick={handleDelete}
-                          disabled={isDeleting}
-                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-destructive/10 text-destructive transition-colors text-left border-t"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                          <span>Hapus</span>
-                        </button>
-                      )}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Delete Button (Desktop, admin/owner only) */}
+              {currentNote.isPublic && (
+                <button
+                  onClick={handleShare}
+                  className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t text-sm"
+                >
+                  <Share2 className="w-4 h-4" />
+                  <span>Share Link</span>
+                </button>
+              )}
               {canDelete && (
-                <Button
-                  variant="destructive"
-                  size="sm"
+                <button
                   onClick={handleDelete}
                   disabled={isDeleting}
-                  className="gap-2 hidden sm:flex"
+                  className="w-full px-4 py-3 flex items-center gap-3 hover:bg-destructive/10 text-destructive transition-colors text-left border-t text-sm"
                 >
                   <Trash2 className="w-4 h-4" />
-                  {isDeleting ? "Menghapus..." : "Hapus"}
-                </Button>
+                  <span>Hapus</span>
+                </button>
               )}
-            </div>
-          </div>
-        </div>
-      </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Delete Button (Desktop, admin/owner only) */}
+      {canDelete && (
+        <Button
+          variant="destructive"
+          size="sm"
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="gap-2 hidden sm:flex"
+        >
+          <Trash2 className="w-4 h-4" />
+          {isDeleting ? "Menghapus..." : "Hapus"}
+        </Button>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-background">
+      <TopHeader
+        className="no-print"
+        backButton
+        onBackClick={handleBack}
+        title={currentNote.title} // Show title in header
+        actions={headerActions}
+      />
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8 max-w-4xl print:px-0 print:py-0 print:max-w-full">

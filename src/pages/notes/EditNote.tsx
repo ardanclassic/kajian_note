@@ -7,14 +7,15 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { NoteForm } from "@/components/features/notes/NoteForm";
-import { PageHeader } from "@/components/common/PageHeader";
+import { NoteForm } from "@/components/features/note-workspace/NoteForm";
+import { TopHeader } from "@/components/layout/TopHeader";
 import { useAuthStore } from "@/store/authStore";
 import { useNotesStore } from "@/store/notesStore";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
-import { Edit3, ArrowLeft, Loader2, AlertCircle } from "lucide-react";
+import { Edit3, Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { CreateNoteData, UpdateNoteData } from "@/types/notes.types";
+import Loading from "@/components/common/Loading";
 
 export default function EditNote() {
   const { id } = useParams<{ id: string }>();
@@ -101,33 +102,17 @@ export default function EditNote() {
 
   // Loading state
   if (isLoading && !currentNote) {
-    return (
-      <div className="min-h-screen bg-background">
-        <PageHeader
-          badgeIcon={Edit3}
-          badgeText="Loading"
-          title="Memuat Catatan..."
-          description="Mohon tunggu sebentar"
-        />
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col items-center justify-center py-16">
-            <Loader2 className="w-8 h-8 animate-spin text-primary mb-4" />
-            <p className="text-muted-foreground">Memuat catatan...</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <Loading fullscreen text="Memuat catatan..." />;
   }
 
   // Error state
   if (error || !currentNote) {
     return (
       <div className="min-h-screen bg-background">
-        <PageHeader
-          badgeIcon={AlertCircle}
-          badgeText="Error"
-          title="Catatan Tidak Ditemukan"
-          description="Catatan yang Anda cari tidak ada atau sudah dihapus"
+        <TopHeader
+          backButton
+          onBackClick={() => navigate("/notes")}
+          title="Error"
         />
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-3xl mx-auto">
@@ -149,11 +134,10 @@ export default function EditNote() {
   if (!isOwner) {
     return (
       <div className="min-h-screen bg-background">
-        <PageHeader
-          badgeIcon={AlertCircle}
-          badgeText="Access Denied"
+        <TopHeader
+          backButton
+          onBackClick={handleBack}
           title="Akses Ditolak"
-          description="Anda tidak memiliki akses untuk mengedit catatan ini"
         />
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-3xl mx-auto">
@@ -172,16 +156,14 @@ export default function EditNote() {
   return (
     <div className="min-h-screen bg-background">
       {/* Page Header */}
-      <PageHeader
-        badgeIcon={Edit3}
-        badgeText="Edit Note"
-        title=""
-        description=""
+      <TopHeader
+        backButton
+        onBackClick={handleBack}
+        title="Edit Catatan"
         actions={
-          <Button variant="outline" onClick={handleBack}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Kembali
-          </Button>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground hidden sm:inline">Updating: {currentNote.title}</span>
+          </div>
         }
       />
 
@@ -189,12 +171,12 @@ export default function EditNote() {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Edit Form */}
-            <NoteForm
-              note={currentNote}
-              onSubmit={handleUpdateNote}
-              onCancel={handleCancel}
-              isSubmitting={isSubmitting}
-            />
+          <NoteForm
+            note={currentNote}
+            onSubmit={handleUpdateNote}
+            onCancel={handleCancel}
+            isSubmitting={isSubmitting}
+          />
         </div>
       </div>
     </div>

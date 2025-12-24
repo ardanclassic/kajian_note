@@ -16,9 +16,9 @@ export interface NoteSourceMetadata {
   video_url?: string;
   language_used?: string;
   total_segments?: number;
-  has_ai_summary?: boolean;
   model_used?: string;
   imported_at?: string;
+  has_deep_note?: boolean;
 }
 
 /**
