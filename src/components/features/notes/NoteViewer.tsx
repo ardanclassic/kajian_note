@@ -75,7 +75,7 @@ export function NoteViewer({
   return (
     <div className="space-y-6 print:space-y-0">
       {/* Title Section - Adaptive for Screen & Print */}
-      <div className="space-y-4 print:px-8">
+      <div className="space-y-4 print:px-0 pdf-title-page">
         {/* Main Title */}
         <h1 className="text-[32px] md:text-[36px] font-bold leading-tight print:!text-[36pt] print:!font-bold print:!text-black print:!mb-6 print:!mt-[40%]">
           {note.title}
@@ -86,106 +86,50 @@ export function NoteViewer({
           <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground no-print">
             {/* Author */}
             {showAuthor && authorName && (
-              <div className="flex items-center gap-1.5">
-                <User className="w-4 h-4" />
-                <span>{authorName}</span>
-                {authorUsername && <span className="text-xs">@{authorUsername}</span>}
+              <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-500/10 rounded-full">
+                <User className="w-3.5 h-3.5" />
+                <span className="font-medium text-gray-300">{authorName}</span>
               </div>
             )}
 
             {/* Created Date */}
-            <div className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4" />
+            <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-500/10 rounded-full">
+              <Calendar className="w-3.5 h-3.5" />
               <span>{createdDate}</span>
             </div>
 
-            {/* Updated */}
-            {note.updatedAt !== note.createdAt && (
-              <div className="flex items-center gap-1.5">
-                <Clock className="w-4 h-4" />
-                <span>Diperbarui {updatedRelative}</span>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Metadata Grid - Print Version */}
-        <div className="hidden print:flex print:flex-col print:gap-2 print:text-[14pt] print:text-gray-600">
-          {/* Created Date */}
-          <div className="print:flex print:items-center print:gap-2">
-            <span className="print:font-medium">📅</span>
-            <span>{createdDate}</span>
-          </div>
-
-          {/* Author (if shown) */}
-          {showAuthor && authorName && (
-            <div className="print:flex print:items-center print:gap-2">
-              <span className="print:font-medium">👤</span>
-              <span>{authorName}</span>
-              {authorUsername && <span className="print:text-[10pt] print:text-gray-500">@{authorUsername}</span>}
-            </div>
-          )}
-
-          {/* YouTube Source (if exists) */}
-          {isFromYouTube && (
-            <div className="print:flex print:items-center print:justify-items-start print:gap-2">
-              <span className="print:font-medium">🎥</span>
-              <span className="print:text-[13pt]">
-                <a
-                  href={note.sourceUrl!}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mx-2 print:text-[13px] text-blue-300 print:!text-blue-400 dark:text-blue-300 hover:underline"
-                ></a>
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* YouTube Source Badge - Screen Version */}
-        {isFromYouTube && (
-          <div className="flex items-center gap-4 p-3 px-6 bg-gray-400/10 rounded-lg no-print">
-            <TvMinimalPlay className="w-8 h-8 text-red-500" />
-            <div className="flex-1">
-              <p className="text-sm font-medium text-rose-200 dark:text-rose-300">Diimpor dari YouTube</p>
-              <a
-                href={note.sourceUrl!}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[13px] font-normal text-sky-300! dark:text-sky-300! hover:underline"
-              >
-                Lihat video sumber
-              </a>
-            </div>
-            {note.sourceMetadata?.has_ai_summary && (
-              <Badge
-                variant="outline"
-                className="hidden md:block text-xs border-teal-300/50 text-teal-400 dark:text-teal-400"
-              >
-                AI Summary
-              </Badge>
-            )}
-          </div>
-        )}
-
-        {/* Tags - Both Screen & Print */}
-        {note.tags.length > 0 && (
-          <div className="flex items-start gap-2 print:justify-center print:mt-3">
-            <TagIcon className="w-4 h-4 text-muted-foreground mt-1 shrink-0 print:hidden" />
-            <div className="flex flex-wrap gap-2 print:justify-center">
-              {note.tags.map((tag) => (
-                <Badge
-                  key={tag}
-                  variant="outline"
-                  className="gap-1 print:px-3 print:py-1 print:bg-gray-100 print:text-gray-700 print:border-gray-300 print:rounded-full print:text-[10pt]"
-                >
-                  #{tag}
-                </Badge>
+            {/* Tags - Screen Only (Mini version) */}
+            <div className="flex gap-1">
+              {note.tags.slice(0, 3).map(tag => (
+                <span key={tag} className="text-[10px] uppercase tracking-wider text-emerald-400/70">#{tag}</span>
               ))}
             </div>
           </div>
         )}
+
+        {/* Print Metadata - Left Aligned */}
+        <div className="hidden print:flex flex-col gap-2 mt-4 text-[12pt] text-black font-semibold">
+          <div className="flex items-center gap-2">
+            <span>📅 Tanggal:</span>
+            <span>{createdDate}</span>
+          </div>
+        </div>
       </div>
+
+      {/* Tags - Screen & Print Version */}
+      {note.tags.length > 0 && (
+        <div className="flex flex-wrap gap-2 pt-2">
+          {note.tags.map((tag) => (
+            <Badge
+              key={tag}
+              variant="outline"
+              className="bg-emerald-500/5 border-emerald-500/20 text-emerald-400 print:border-black print:text-black print:font-bold"
+            >
+              #{tag}
+            </Badge>
+          ))}
+        </div>
+      )}
 
       {/* Divider - Screen Only */}
       <div className="border-t print:hidden" />
@@ -193,7 +137,7 @@ export function NoteViewer({
       {/* Content Section - PRINT OPTIMIZED */}
       <Card className="border-none shadow-none bg-transparent print:!shadow-none print:!bg-transparent print:!border-none">
         <CardContent className="p-0 print:!p-0 print:!border-none">
-          <div className="prose-editor">
+          <div className="prose-editor pdf-content">
             <div className="ProseMirror" dangerouslySetInnerHTML={{ __html: processedContent }} />
           </div>
         </CardContent>
@@ -201,3 +145,5 @@ export function NoteViewer({
     </div>
   );
 }
+
+
