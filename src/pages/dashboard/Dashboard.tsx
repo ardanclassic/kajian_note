@@ -1,44 +1,34 @@
 /**
- * Dashboard Page - Dark Mode with Emerald Glow
- * Refactored: Following design-guidelines.md
- * ✅ Pure black background
- * ✅ Emerald glow accents
- * ✅ Consistent spacing & animations
+ * Dashboard Page - Premium Redesign (Mobile Optimized)
+ * Focus: Clarity, Luxury, and Mobile Responsiveness
  */
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuthStore } from "@/store/authStore";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
 import { useNotesStore } from "@/store/notesStore";
-import { MenuArea } from "@/components/features/dashboard/MenuArea";
-import { ConfirmDialog } from "@/components/common/ConfirmDialog";
-import { Button } from "@/components/ui/button";
-import { Loading } from "@/components/common/Loading";
+import { TopHeader } from "@/components/layout/TopHeader";
 import {
   BookOpen,
-  FileText,
-  Crown,
-  User,
-  LogOut,
-  Users,
-  Plus,
-  Menu,
-  Calendar,
-  ArrowRight,
   Sparkles,
+  Zap,
+  ArrowRight,
+  Clock,
+  Calendar,
+  Crown,
+  FileText,
+  Search,
 } from "lucide-react";
 import "@/styles/arabic-font.css";
+import { cn } from "@/lib/utils";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
-  const { currentSubscription, usage, fetchUsage } = useSubscriptionStore();
+  const { user } = useAuthStore();
+  const { usage, fetchUsage } = useSubscriptionStore();
   const { userNotes, statistics, fetchUserNotes, fetchStatistics } = useNotesStore();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
     if (user?.id) {
@@ -48,50 +38,14 @@ export default function Dashboard() {
     }
   }, [user?.id, fetchUserNotes, fetchStatistics, fetchUsage]);
 
-  const handleLogoutClick = () => {
-    setShowLogoutDialog(true);
-    setIsMenuOpen(false);
+  // Welcoming Greeting based on time
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Selamat Pagi";
+    if (hour < 15) return "Selamat Siang";
+    if (hour < 18) return "Selamat Sore";
+    return "Selamat Malam";
   };
-
-  const handleConfirmLogout = async () => {
-    try {
-      setIsLoggingOut(true);
-      await logout();
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout error:", error);
-      setIsLoggingOut(false);
-    }
-  };
-
-  if (!user) {
-    return <Loading fullscreen text="Memuat..." />;
-  }
-
-  const menuItems = [
-    { icon: BookOpen, label: "Catatan", onClick: () => navigate("/notes") },
-    { icon: Crown, label: "Subscription", onClick: () => navigate("/subscription") },
-    { icon: User, label: "Profile", onClick: () => navigate("/profile") },
-    { icon: Users, label: "Kelola Users", onClick: () => navigate("/admin/users"), adminOnly: true },
-    // { icon: Settings, label: "Pengaturan", onClick: () => navigate("/settings") },
-    { icon: LogOut, label: "Logout", onClick: handleLogoutClick },
-  ];
-
-  const stats = [
-    {
-      title: "Total Catatan",
-      value: statistics?.totalNotes ?? 0,
-      limit: usage?.notesLimit === Infinity ? "∞" : usage?.notesLimit ?? 0,
-      icon: BookOpen,
-    },
-  ];
-
-  const quickActions = [
-    { icon: Plus, label: "Catatan Baru", path: "/notes/new" },
-    { icon: BookOpen, label: "Lihat Catatan", path: "/notes" },
-    { icon: Crown, label: "Subscription", path: "/subscription" },
-    // { icon: Settings, label: "Pengaturan", path: "/settings" },
-  ];
 
   const container = {
     hidden: { opacity: 0 },
@@ -102,50 +56,28 @@ export default function Dashboard() {
   };
 
   const item = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 },
   };
 
+  if (!user) return null;
+
   return (
-    <>
-      <div className="min-h-screen bg-black">
-        <MenuArea
-          isOpen={isMenuOpen}
-          onClose={() => setIsMenuOpen(false)}
-          userRole={user.role}
-          userName={user.fullName}
-          userTier={user.subscriptionTier}
-          menuItems={menuItems}
-        />
+    <div className="min-h-screen bg-black text-white selection:bg-emerald-500/30">
+      <TopHeader />
 
-        {/* Header - Dark with emerald accent */}
-        <header className="sticky top-0 z-40 w-full border-b border-gray-800 bg-black/95 backdrop-blur">
-          <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/")}>
-              <div className="w-10 h-10 rounded-xl bg-gray-900 border border-emerald-500/50 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                <BookOpen className="h-5 w-5 text-emerald-400" />
-              </div>
-              <span className="text-lg font-bold text-white hidden sm:inline">Kajian Notes</span>
-            </div>
-
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMenuOpen(true)}
-              className="hover:bg-gray-900 hover:border-emerald-500/30 border border-gray-800"
-            >
-              <Menu className="h-6 w-6 text-white" />
-            </Button>
-          </div>
-        </header>
-
-        {/* Main Content */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <motion.div variants={container} initial="hidden" animate="show" className="space-y-8">
-            {/* Welcome Section */}
-            <motion.div variants={item} className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 border border-emerald-500/50 text-emerald-400 rounded-full text-sm font-semibold shadow-lg shadow-emerald-500/20">
-                <Calendar className="h-4 w-4" />
+      <main className="container mx-auto px-4 py-4 md:py-8 space-y-6 md:space-y-12 max-w-6xl">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="space-y-6 md:space-y-8"
+        >
+          {/* 1. Welcome Section */}
+          <motion.div variants={item} className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+            <div className="space-y-3 md:space-y-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-gray-900/50 border border-gray-800 rounded-full text-[10px] md:text-xs font-medium text-gray-400">
+                <Calendar className="w-3 h-3 md:w-3.5 md:h-3.5" />
                 <span>
                   {new Date().toLocaleDateString("id-ID", {
                     weekday: "long",
@@ -155,254 +87,227 @@ export default function Dashboard() {
                   })}
                 </span>
               </div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white">
-                <span className="arabic-tajawal ">أهلا وسهلا</span>, <br className="sm:hidden" />
-                <span className="arabic-tajawal text-emerald-400">{user.fullName}</span>
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white">
+                <span className="arabic-tajawal text-3xl sm:text-5xl">أهلا وسهلا</span>
+                <span className="hidden sm:inline">, </span>
+                <br className="sm:hidden" />
+                <span className="text-lg sm:text-4xl font-bold mt-1 block sm:inline sm:mt-0 text-emerald-400">
+                   {user.fullName}
+                </span>
               </h1>
-            </motion.div>
+            </div>
 
-            {/* Stats Grid */}
-            <motion.div variants={item} className="grid gap-8 sm:grid-cols-2">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="group relative bg-black rounded-2xl p-8 border border-gray-800 hover:border-emerald-500/30 transition-all duration-500 hover:-translate-y-1 overflow-hidden"
-                >
-                  {/* Glow Effect */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="absolute inset-0 bg-emerald-500/5 blur-xl" />
+            {/* Subscription Badge - Compact Mobile */}
+            <div 
+              onClick={() => navigate('/subscription')}
+              className={cn(
+                "w-full md:w-auto cursor-pointer group flex items-center gap-3 px-4 py-2.5 rounded-xl border transition-all duration-300",
+                user.subscriptionTier === 'free' 
+                  ? "bg-gray-900 border-gray-800 hover:border-emerald-500/30" 
+                  : "bg-emerald-950/20 border-emerald-500/30 hover:bg-emerald-900/30"
+              )}
+            >
+               <div className={cn(
+                 "w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center transition-transform group-hover:scale-110",
+                 user.subscriptionTier === 'free' ? "bg-gray-800" : "bg-emerald-500/20"
+               )}>
+                 <Crown className={cn("w-4 h-4 md:w-5 md:h-5", user.subscriptionTier === 'free' ? "text-gray-400" : "text-emerald-400")} />
+               </div>
+               <div className="flex flex-row md:flex-col justify-between items-center md:items-start flex-1 gap-2">
+                  <div className="text-left">
+                    <p className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider">Status Langganan</p>
+                    <p className={cn("font-bold text-sm capitalize leading-none mt-0.5", user.subscriptionTier === 'free' ? "text-white" : "text-emerald-400")}>
+                        {user.subscriptionTier} Plan
+                    </p>
                   </div>
-
-                  {/* Content */}
-                  <div className="relative z-10">
-                    <div className="flex items-start justify-between mb-6">
-                      <div>
-                        <p className="text-sm text-gray-400 mb-3">{stat.title}</p>
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-5xl font-black text-white">{stat.value}</span>
-                          {stat.limit && <span className="text-2xl text-gray-500">/ {stat.limit}</span>}
-                        </div>
-                      </div>
-                      <div className="p-4 rounded-xl bg-gray-900 border border-emerald-500/30">
-                        <stat.icon className="h-6 w-6 text-emerald-400" />
-                      </div>
-                    </div>
-
-                    {/* Progress Bar */}
-                    {stat.limit && (
-                      <div className="h-2 bg-gray-900 rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{
-                            width: `${Math.min(
-                              (stat.value / (typeof stat.limit === "string" ? stat.value : Number(stat.limit))) * 100,
-                              100
-                            )}%`,
-                          }}
-                          transition={{ duration: 1, ease: "easeOut" }}
-                          className="h-full bg-linear-to-r from-emerald-500 to-emerald-400 shadow-lg shadow-emerald-500/50"
-                        />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Corner Highlights */}
-                  <div className="absolute top-0 right-0 w-24 h-24 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="absolute top-0 right-0 w-px h-12 bg-linear-to-b from-emerald-500/50 to-transparent" />
-                    <div className="absolute top-0 right-0 h-px w-12 bg-linear-to-l from-emerald-500/50 to-transparent" />
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* Quick Actions */}
-            <motion.div variants={item} className="space-y-4">
-              <h2 className="text-xl font-bold text-white">Navigasi Cepat</h2>
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                {quickActions.map((action, idx) => (
-                  <motion.button
-                    key={idx}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => navigate(action.path)}
-                    className="group relative bg-[#2e8b57]/30! rounded-2xl p-6 border border-gray-800 hover:border-emerald-500/30 transition-all duration-500 hover:-translate-y-1 overflow-hidden text-left"
-                  >
-                    {/* Glow Effect */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <div className="absolute inset-0 bg-emerald-500/5 blur-xl" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="relative z-10 space-y-3">
-                      <div className="w-12 h-12 rounded-xl bg-gray-900 border border-emerald-500/30 flex items-center justify-center">
-                        <action.icon className="h-6 w-6 text-emerald-400" />
-                      </div>
-                      <p className="font-semibold text-white text-sm">{action.label}</p>
-                    </div>
-
-                    {/* Corner Highlights */}
-                    <div className="absolute top-0 right-0 w-16 h-16 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <div className="absolute top-0 right-0 w-px h-8 bg-linear-to-b from-emerald-500/50 to-transparent" />
-                      <div className="absolute top-0 right-0 h-px w-8 bg-linear-to-l from-emerald-500/50 to-transparent" />
-                    </div>
-                  </motion.button>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Recent Notes */}
-            <motion.div variants={item}>
-              <div className="relative bg-black rounded-2xl sm:p-8 sm:border sm:border-gray-800 overflow-hidden">
-                {/* Grid Pattern */}
-                <div className="absolute inset-0 opacity-[0.015]">
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      backgroundImage:
-                        "linear-gradient(rgba(16,185,129,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.5) 1px, transparent 1px)",
-                      backgroundSize: "80px 80px",
-                    }}
-                  />
-                </div>
-
-                {/* Header */}
-                <div className="relative z-10 flex items-center justify-between mb-8">
-                  <div>
-                    <h2 className="text-2xl font-bold text-white mb-1">Catatan Terbaru</h2>
-                    <p className="text-gray-400">Aktivitas terkini Anda</p>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    onClick={() => navigate("/notes")}
-                    className="text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10"
-                  >
-                    <span className="hidden sm:inline">Lihat Semua</span>
-                    <ArrowRight className="h-4 w-4 sm:ml-2" />
-                  </Button>
-                </div>
-
-                {/* Notes List */}
-                <div className="relative z-10">
-                  {userNotes.length > 0 ? (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-                      {userNotes.slice(0, 6).map((note, idx) => (
-                        <motion.div
-                          key={note.id}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: idx * 0.05, duration: 0.3 }}
-                          onClick={() => navigate(`/notes/${note.id}`)}
-                          className="group relative bg-gray-900 rounded-xl p-4 border border-gray-800 hover:border-emerald-500/30 cursor-pointer transition-all duration-300 overflow-hidden"
-                        >
-                          {/* Subtle Glow on Hover */}
-                          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <div className="absolute inset-0 bg-emerald-500/5" />
-                          </div>
-
-                          {/* Content */}
-                          <div className="relative z-10 flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-black border border-emerald-500/30 flex items-center justify-center shrink-0">
-                              <FileText className="h-5 w-5 text-emerald-400" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h4 className="text-sm font-semibold text-white truncate group-hover:text-emerald-400 transition-colors">
-                                {note.title}
-                              </h4>
-                              {note.tags.length > 0 && (
-                                <div className="flex items-center gap-1 mt-1">
-                                  {note.tags.slice(0, 2).map((tag) => (
-                                    <span key={tag} className="text-xs text-gray-500">
-                                      #{tag}
-                                    </span>
-                                  ))}
-                                  {note.tags.length > 2 && (
-                                    <span className="text-xs text-gray-500">+{note.tags.length - 2}</span>
-                                  )}
-                                </div>
-                              )}
-                            </div>
-                            <ArrowRight className="h-4 w-4 text-gray-600 group-hover:text-emerald-400 transition-colors shrink-0" />
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-16">
-                      <div className="w-20 h-20 mx-auto bg-gray-900 border border-gray-800 rounded-2xl flex items-center justify-center mb-6">
-                        <BookOpen className="h-10 w-10 text-gray-600" />
-                      </div>
-                      <p className="text-gray-300 font-semibold mb-2">Belum ada catatan</p>
-                      <p className="text-sm text-gray-500 mb-6">Mulai buat catatan kajian pertama Anda</p>
-                      <Button
-                        onClick={() => navigate("/notes/new")}
-                        className="bg-gray-900 text-white border border-emerald-500/50 hover:bg-emerald-500/10 shadow-lg shadow-emerald-500/20"
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Buat Catatan
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Premium CTA */}
-            {user.subscriptionTier === "free" && (
-              <motion.div variants={item}>
-                <div
-                  onClick={() => navigate("/subscription")}
-                  className="group relative bg-black rounded-2xl p-8 border border-emerald-500/50 hover:border-emerald-500 transition-all duration-500 cursor-pointer overflow-hidden"
-                >
-                  {/* Glow Orbs */}
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
-                  <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
-
-                  {/* Content */}
-                  <div className="relative z-10 flex items-center gap-6">
-                    <div className="w-16 h-16 rounded-2xl bg-gray-900 border border-emerald-500/50 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
-                      <Crown className="h-8 w-8 text-emerald-400" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-xl font-bold text-white">Upgrade ke Premium</h3>
-                        <Sparkles className="h-5 w-5 text-emerald-400" />
-                      </div>
-                      <p className="text-gray-400">Unlimited catatan & fitur eksklusif menanti Anda</p>
-                    </div>
-                    <ArrowRight className="h-6 w-6 text-emerald-400 hidden md:block shrink-0 group-hover:translate-x-1 transition-transform" />
-                  </div>
-
-                  {/* Corner Highlights */}
-                  <div className="absolute top-0 right-0 w-24 h-24 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="absolute top-0 right-0 w-px h-12 bg-linear-to-b from-emerald-500/50 to-transparent" />
-                    <div className="absolute top-0 right-0 h-px w-12 bg-linear-to-l from-emerald-500/50 to-transparent" />
-                  </div>
-                </div>
-              </motion.div>
-            )}
+                  <ArrowRight className="w-4 h-4 text-gray-500 md:hidden" />
+               </div>
+            </div>
           </motion.div>
-        </main>
-      </div>
 
-      {/* Logout Dialog */}
-      <ConfirmDialog
-        open={showLogoutDialog}
-        onOpenChange={setShowLogoutDialog}
-        title="Keluar dari Akun?"
-        description={
-          <div className="space-y-2">
-            <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
-            <p className="text-sm text-muted-foreground">
-              Anda perlu login kembali untuk mengakses catatan dan fitur lainnya.
-            </p>
-          </div>
-        }
-        confirmText="Ya, Keluar"
-        cancelText="Batal"
-        onConfirm={handleConfirmLogout}
-        variant="warning"
-        isLoading={isLoggingOut}
-        showCancel={true}
-      />
-    </>
+          {/* 2. Primary Actions - CREATION CENTER - Optimized for Mobile */}
+          <motion.div variants={item} className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
+            
+            {/* Action 1: Smart Summary */}
+            <div 
+              onClick={() => navigate('/notes/new')}
+              className="group relative h-40 md:h-56 rounded-2xl md:rounded-[2rem] bg-gray-900/50 border border-gray-800 hover:border-emerald-500/50 cursor-pointer overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/10"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Content */}
+              <div className="relative h-full p-5 md:p-8 flex flex-col justify-between z-10">
+                <div className="flex justify-between items-start">
+                  <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-black border border-gray-800 group-hover:border-emerald-500/50 flex items-center justify-center transition-colors">
+                    <Sparkles className="w-5 h-5 md:w-7 md:h-7 text-emerald-400" />
+                  </div>
+                  <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-black transition-all">
+                    <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 -rotate-45 group-hover:rotate-0 transition-transform duration-300" />
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2 group-hover:text-emerald-400 transition-colors">Smart Summary</h3>
+                  <p className="text-xs md:text-sm text-gray-400 line-clamp-2 md:line-clamp-none leading-relaxed">
+                    Buat ringkasan cepat poin-poin penting kajian.
+                  </p>
+                </div>
+              </div>
+
+              {/* Decorative Big Icon */}
+              <Sparkles className="absolute -bottom-6 -right-6 w-32 h-32 md:w-48 md:h-48 text-emerald-500/5 group-hover:scale-110 transition-transform duration-700 pointer-events-none" />
+            </div>
+
+            {/* Action 2: Deep Note */}
+            <div 
+              onClick={() => navigate('/deep-note/create')}
+              className="group relative h-40 md:h-56 rounded-2xl md:rounded-[2rem] bg-gray-900/50 border border-gray-800 hover:border-purple-500/50 cursor-pointer overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/10"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Content */}
+              <div className="relative h-full p-5 md:p-8 flex flex-col justify-between z-10">
+                <div className="flex justify-between items-start">
+                  <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-black border border-gray-800 group-hover:border-purple-500/50 flex items-center justify-center transition-colors">
+                    <Zap className="w-5 h-5 md:w-7 md:h-7 text-purple-400" />
+                  </div>
+                  <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-purple-500 group-hover:text-white transition-all">
+                    <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 -rotate-45 group-hover:rotate-0 transition-transform duration-300" />
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2 group-hover:text-purple-400 transition-colors">Deep Note</h3>
+                  <p className="text-xs md:text-sm text-gray-400 line-clamp-2 md:line-clamp-none leading-relaxed">
+                    Analisis mendalam & komprehensif dengan AI Advanced.
+                  </p>
+                </div>
+              </div>
+
+              {/* Decorative Big Icon */}
+              <Zap className="absolute -bottom-6 -right-6 w-32 h-32 md:w-48 md:h-48 text-purple-500/5 group-hover:scale-110 transition-transform duration-700 pointer-events-none" />
+            </div>
+
+          </motion.div>
+
+          {/* 3. Quick Shortcuts */}
+          <motion.div variants={item} className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+             {/* Library */}
+             <div 
+                onClick={() => navigate('/notes')}
+                className="col-span-2 sm:col-span-1 bg-gray-900/30 rounded-xl md:rounded-2xl p-3 md:p-4 border border-gray-800 hover:bg-gray-900 transition-colors cursor-pointer"
+             >
+                <div className="flex items-center gap-3">
+                   <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0">
+                      <BookOpen className="w-4 h-4 md:w-5 md:h-5 text-blue-400" />
+                   </div>
+                   <div>
+                      <p className="text-xs md:text-sm font-semibold text-white">Library</p>
+                      <p className="text-[10px] md:text-xs text-gray-400">{statistics?.totalNotes || 0} Catatan</p>
+                   </div>
+                </div>
+             </div>
+
+             {/* Deep Note Archive */}
+             <div 
+                onClick={() => navigate('/deep-note')}
+                className="col-span-2 sm:col-span-1 bg-gray-900/30 rounded-xl md:rounded-2xl p-3 md:p-4 border border-gray-800 hover:bg-gray-900 transition-colors cursor-pointer"
+             >
+                <div className="flex items-center gap-3">
+                   <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-purple-500/10 flex items-center justify-center shrink-0">
+                      <FileText className="w-4 h-4 md:w-5 md:h-5 text-purple-400" />
+                   </div>
+                   <div>
+                      <p className="text-xs md:text-sm font-semibold text-white">Deep Notes</p>
+                      <p className="text-[10px] md:text-xs text-gray-400">Lihat Arsip</p>
+                   </div>
+                </div>
+             </div>
+             
+             {/* Search - Optimized labels */}
+             <div 
+                className="col-span-2 bg-gray-900/30 rounded-xl md:rounded-2xl p-3 md:p-4 border border-gray-800 hover:bg-gray-900 transition-colors cursor-pointer flex items-center justify-between group"
+                onClick={() => navigate('/notes')}
+             >
+                <div className="flex items-center gap-3">
+                   <Search className="w-4 h-4 md:w-5 md:h-5 text-gray-500 group-hover:text-emerald-400 transition-colors shrink-0" />
+                   <span className="text-xs md:text-sm text-gray-400 group-hover:text-white transition-colors">
+                    Cari catatan...
+                   </span>
+                </div>
+                <div className="hidden sm:block px-2 py-1 rounded bg-black border border-gray-800 text-[10px] text-gray-500 font-mono">
+                   Tap to search
+                </div>
+             </div>
+          </motion.div>
+
+          {/* 4. Recent Activity */}
+          <motion.div variants={item} className="space-y-3 md:space-y-4 pt-2">
+            <div className="flex items-center justify-between">
+               <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2">
+                  <Clock className="w-4 h-4 md:w-5 md:h-5 text-emerald-500" />
+                  Lanjutkan Belajar
+               </h2>
+               <button 
+                  onClick={() => navigate('/notes')}
+                  className="text-xs md:text-sm text-emerald-400 hover:text-emerald-300 font-medium px-2 py-1 hover:bg-emerald-500/10 rounded-lg transition-colors"
+               >
+                  Lihat Semua
+               </button>
+            </div>
+
+            <div className="grid gap-2 md:gap-3">
+               {userNotes.length > 0 ? (
+                 userNotes.slice(0, 3).map((note, i) => (
+                    <motion.div
+                       key={note.id}
+                       initial={{ opacity: 0, x: -10 }}
+                       animate={{ opacity: 1, x: 0 }}
+                       transition={{ delay: i * 0.1 }}
+                       onClick={() => navigate(`/notes/${note.id}`)}
+                       className="group flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-xl md:rounded-2xl bg-gray-900/30 border border-gray-800 hover:border-gray-700 hover:bg-gray-900/60 cursor-pointer transition-all"
+                    >
+                       {/* Icon Identifier - Smaller on mobile */}
+                       <div className={cn(
+                          "w-9 h-9 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center shrink-0",
+                          note.sourceMetadata?.has_deep_note 
+                            ? "bg-purple-500/10 text-purple-400 border border-purple-500/20" 
+                            : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                       )}>
+                          {note.sourceMetadata?.has_deep_note ? <Zap className="w-4 h-4 md:w-5 md:h-5" /> : <Sparkles className="w-4 h-4 md:w-5 md:h-5" />}
+                       </div>
+                       
+                       <div className="flex-1 min-w-0 space-y-0.5 md:space-y-1">
+                          <h4 className="font-semibold text-white text-sm md:text-base line-clamp-1 md:line-clamp-1 group-hover:text-emerald-400 transition-colors">
+                             {note.title}
+                          </h4>
+                          <div className="flex items-center gap-2 text-[10px] md:text-xs text-gray-500">
+                             <span>{new Date(note.createdAt).toLocaleDateString("id-ID", { day: 'numeric', month: 'short' })}</span>
+                             <span className="w-0.5 h-0.5 md:w-1 md:h-1 rounded-full bg-gray-700" />
+                             <span className={cn(
+                                note.sourceMetadata?.has_deep_note ? "text-purple-400" : "text-emerald-400"
+                             )}>
+                                {note.sourceMetadata?.has_deep_note ? "Deep Note" : "Smart Summary"}
+                             </span>
+                          </div>
+                       </div>
+                       
+                       {/* Arrow indicator */}
+                       <div className="text-gray-600 group-hover:text-white transition-colors shrink-0">
+                          <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+                       </div>
+                    </motion.div>
+                 ))
+               ) : (
+                 <div className="text-center py-8 md:py-12 bg-gray-900/30 rounded-xl md:rounded-2xl border border-gray-800 border-dashed">
+                    <p className="text-sm text-gray-500">Belum ada catatan aktivitas.</p>
+                 </div>
+               )}
+            </div>
+          </motion.div>
+
+        </motion.div>
+      </main>
+    </div>
   );
 }

@@ -1,19 +1,17 @@
 /**
  * Notes Page - Dark Mode with Emerald Glow
- * Updated: Using NoteList (Gallery Wall View)
+ * Updated: Using TopHeader and Gallery Wall View
  * Path: src/pages/notes/index.tsx
- * âœ… Pure black background
- * âœ… Emerald glow accents
- * âœ… Gallery Wall layout
  */
 
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { NoteList } from "@/components/features/notes/NoteList";
-import { NoteSearch } from "@/components/features/notes/NoteSearch";
-import { SubscriptionLimitBanner } from "@/components/features/notes/SubscriptionLimitBanner";
+import { SummaryList } from "@/components/features/smart-summary/SummaryList";
+import { SummarySearch } from "@/components/features/smart-summary/SummarySearch";
+import { SubscriptionLimitBanner } from "@/components/features/note-workspace/SubscriptionLimitBanner";
 import { ScrollToTopButton } from "@/components/common/ScrollToTopButton";
+import { TopHeader } from "@/components/layout/TopHeader";
 import {
   Plus,
   FileText,
@@ -24,19 +22,11 @@ import {
   Globe,
   Tag,
   RefreshCw,
-  ArrowLeft,
-  Menu,
-  Crown,
-  User,
-  LogOut,
-  Users,
 } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { useNotesStore } from "@/store/notesStore";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
-import { MenuArea } from "@/components/features/dashboard/MenuArea";
-import Loading from "@/components/common/Loading";
-import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import Loading, { PageLoading } from "@/components/common/Loading";
 
 // Types
 interface NoteFilterOptions {
@@ -60,11 +50,12 @@ interface NoteSummary {
   isPinned: boolean;
   createdAt: string;
   userId: string;
+  sourceMetadata?: any; // Added for filtering
 }
 
 export default function Notes() {
   const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+  const { user } = useAuthStore();
   const {
     userNotes,
     isLoading,
@@ -83,9 +74,6 @@ export default function Notes() {
 
   const { usage, fetchUsage } = useSubscriptionStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Fetch initial data
   useEffect(() => {
@@ -169,92 +157,35 @@ export default function Notes() {
     }
   };
 
-  const handleLogoutClick = () => {
-    setShowLogoutDialog(true);
-    setIsMenuOpen(false);
-  };
-
-  const handleConfirmLogout = async () => {
-    try {
-      setIsLoggingOut(true);
-      await logout();
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout error:", error);
-      setIsLoggingOut(false);
-    }
-  };
-
-  const menuItems = [
-    { icon: BookOpen, label: "Catatan", onClick: () => navigate("/notes") },
-    { icon: Crown, label: "Subscription", onClick: () => navigate("/subscription") },
-    { icon: User, label: "Profile", onClick: () => navigate("/profile") },
-    { icon: Users, label: "Kelola Users", onClick: () => navigate("/admin/users"), adminOnly: true },
-    // { icon: Settings, label: "Pengaturan", onClick: () => navigate("/settings") },
-    { icon: LogOut, label: "Logout", onClick: handleLogoutClick },
-  ];
-
   if (!user) {
     return <Loading fullscreen text="Memuat..." />;
   }
 
+  // Header Actions
+  const headerActions = (
+    <>
+      <button
+        onClick={handleRefresh}
+        disabled={isRefreshing}
+        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-900 border border-gray-800 hover:border-emerald-500/50 text-gray-400 hover:text-emerald-400 transition-all disabled:opacity-50 text-sm font-medium"
+      >
+        <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`} />
+        <span className="hidden sm:inline">Refresh</span>
+      </button>
+
+      <Button
+        onClick={handleCreateNote}
+        className="bg-gray-900 text-white border border-emerald-500/50 hover:bg-emerald-500/10 shadow-lg shadow-emerald-500/20 transition-all hover:border-emerald-500"
+      >
+        <Plus className="w-4 h-4 sm:mr-2" />
+        <span className="hidden sm:inline">Buat Catatan</span>
+      </Button>
+    </>
+  );
+
   return (
     <div className="min-h-screen bg-black">
-      <MenuArea
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        userRole={user.role}
-        userName={user.fullName}
-        userTier={user.subscriptionTier}
-        menuItems={menuItems}
-      />
-
-      {/* Sticky Action Buttons Bar */}
-      <div className="sticky top-0 z-10 bg-black/80 backdrop-blur-md border-b border-gray-900">
-        <div className="container mx-auto px-4 py-3">
-          <div className="max-w-7xl mx-auto flex items-center gap-2">
-            {/* Back Button */}
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="group flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-900 border border-gray-800 hover:border-emerald-500/50 text-gray-400 hover:text-emerald-400 transition-all text-sm font-medium"
-            >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-              <span className="hidden sm:inline">Dashboard</span>
-            </button>
-
-            {/* Spacer */}
-            <div className="flex-1" />
-
-            {/* Refresh Button */}
-            <button
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-900 border border-gray-800 hover:border-emerald-500/50 text-gray-400 hover:text-emerald-400 transition-all disabled:opacity-50 text-sm font-medium"
-            >
-              <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`} />
-              <span className="hidden sm:inline">Refresh</span>
-            </button>
-
-            {/* Create Note Button */}
-            <Button
-              onClick={handleCreateNote}
-              className="bg-gray-900 text-white border border-emerald-500/50 hover:bg-emerald-500/10 shadow-lg shadow-emerald-500/20 transition-all hover:border-emerald-500"
-            >
-              <Plus className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Buat Catatan</span>
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMenuOpen(true)}
-              className="hover:bg-gray-900 hover:border-emerald-500/30 border border-gray-800"
-            >
-              <Menu className="h-6 w-6 text-white" />
-            </Button>
-          </div>
-        </div>
-      </div>
+      <TopHeader backButton backTo="/dashboard" actions={headerActions} />
 
       {/* Page Header */}
       <div className="relative border-b border-gray-900 overflow-hidden">
@@ -295,7 +226,7 @@ export default function Notes() {
           {usage && <SubscriptionLimitBanner usage={usage} compact />}
 
           {/* Search & Filter Bar */}
-          <NoteSearch availableTags={tags} onSearch={handleSearch} onClear={handleClearSearch} />
+          <SummarySearch availableTags={tags} onSearch={handleSearch} onClear={handleClearSearch} />
 
           {/* Error Message */}
           {error && (
@@ -322,20 +253,14 @@ export default function Notes() {
 
           {/* Loading State */}
           {isLoading && !userNotes.length && (
-            <div className="relative bg-black rounded-xl p-16 border border-gray-800 overflow-hidden">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl animate-pulse" />
-              <div className="relative z-10 flex flex-col items-center justify-center text-center">
-                <Loader2 className="w-10 h-10 animate-spin text-emerald-400 mb-4" />
-                <p className="text-gray-400 font-medium text-sm">Memuat catatan...</p>
-              </div>
-            </div>
+            <PageLoading text="Memuat catatan..." />
           )}
 
           {/* Notes Gallery Wall */}
           {!isLoading || userNotes.length > 0 ? (
             <div>
-              <NoteList
-                notes={userNotes}
+              <SummaryList
+                notes={userNotes.filter((note) => !note.sourceMetadata?.has_deep_note)}
                 currentUserId={user?.id}
                 showActions
                 onClick={handleViewNote}
@@ -408,29 +333,7 @@ export default function Notes() {
         </div>
       </div>
 
-      {/* Floating Scroll to Top Button */}
       <ScrollToTopButton />
-
-      {/* Logout Dialog */}
-      <ConfirmDialog
-        open={showLogoutDialog}
-        onOpenChange={setShowLogoutDialog}
-        title="Keluar dari Akun?"
-        description={
-          <div className="space-y-2">
-            <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
-            <p className="text-sm text-muted-foreground">
-              Anda perlu login kembali untuk mengakses catatan dan fitur lainnya.
-            </p>
-          </div>
-        }
-        confirmText="Ya, Keluar"
-        cancelText="Batal"
-        onConfirm={handleConfirmLogout}
-        variant="warning"
-        isLoading={isLoggingOut}
-        showCancel={true}
-      />
     </div>
   );
 }

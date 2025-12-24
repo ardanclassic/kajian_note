@@ -17,10 +17,10 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { NoteForm } from "@/components/features/notes/NoteForm";
-import { YouTubeImportModal } from "@/components/features/notes/YouTubeImportModal";
-import { BackgroundTaskBanner } from "@/components/features/notes/BackgroundTaskBanner";
-import { WaitingExperienceOverlay } from "@/components/features/notes/WaitingExperience/WaitingExperienceOverlay";
+import { NoteForm } from "@/components/features/note-workspace/NoteForm";
+import { YouTubeImportModal } from "@/components/features/smart-summary/YouTubeImportModal";
+import { BackgroundTaskBanner } from "@/components/features/note-workspace/BackgroundTaskBanner";
+import { WaitingExperienceOverlay } from "@/components/features/note-workspace/WaitingExperience/WaitingExperienceOverlay";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -56,6 +56,7 @@ import { pollTaskStatus } from "@/services/youtube/transcript.service";
 import type { BackgroundTaskData } from "@/utils/backgroundTaskPersistence";
 import { PenLine, Youtube, Sparkles, FileText, ChevronLeft, RotateCcw, AlertTriangle, CheckCircle } from "lucide-react";
 import { ScrollToTopButton } from "@/components/common/ScrollToTopButton";
+import { TopHeader } from "@/components/layout/TopHeader";
 
 type InputMode = "manual" | "youtube";
 
@@ -731,35 +732,30 @@ export default function CreateNote() {
       transition={{ duration: 0.3 }}
     >
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center justify-between max-w-4xl mx-auto">
-            <Button variant="ghost" size="sm" onClick={handleCancel} className="gap-2 hover:bg-muted/50">
-              <ChevronLeft className="w-4 h-4" />
-              <span className="hidden sm:inline">Kembali</span>
-            </Button>
-
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="gap-1.5 bg-primary/10 text-primary border-primary/20">
-                <PenLine className="w-3 h-3" />
-                <span className="hidden sm:inline">Buat Catatan</span>
-              </Badge>
-              {hasPersistedData() && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <Button variant="ghost" size="sm" onClick={handleResetForm} className="gap-2 hover:bg-muted/50">
-                    <RotateCcw className="w-4 h-4" />
-                    <span className="hidden sm:inline">Reset Form</span>
-                  </Button>
-                </motion.div>
-              )}
-            </div>
+      <TopHeader
+        backButton
+        onBackClick={handleCancel}
+        actions={
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary" className="gap-1.5 bg-primary/10 text-primary border-primary/20">
+              <Sparkles className="w-3 h-3" />
+              <span className="hidden sm:inline">Smart Summary</span>
+            </Badge>
+            {hasPersistedData() && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                <Button variant="ghost" size="sm" onClick={handleResetForm} className="gap-2 hover:bg-muted/50">
+                  <RotateCcw className="w-4 h-4" />
+                  <span className="hidden sm:inline">Reset Form</span>
+                </Button>
+              </motion.div>
+            )}
           </div>
-        </div>
-      </div>
+        }
+      />
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6 md:py-8">

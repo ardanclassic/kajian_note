@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { useAuthStore } from "@/store/authStore";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { TopHeader } from "@/components/layout/TopHeader";
 import { UpgradeModal } from "@/components/features/subscription/UpgradeModal";
 import { PricingTable } from "@/components/features/subscription/PricingTable";
 import { type SubscriptionTier, PAYMENT_CONFIG, formatPrice } from "@/config/payment";
@@ -144,23 +145,7 @@ export default function Subscription() {
       </div>
 
       {/* Header - Sticky */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="sticky top-0 z-40 bg-black/80 backdrop-blur-xl border-b border-gray-800"
-      >
-        <div className="container mx-auto px-4 py-3 max-w-7xl">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate(-1)}
-            className="gap-2 text-gray-400 hover:text-white hover:bg-gray-900"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Kembali
-          </Button>
-        </div>
-      </motion.div>
+      <TopHeader backButton backTo="/dashboard" />
 
       {/* Main Content */}
       <div className="relative container mx-auto px-4 py-8 md:py-12 space-y-8 md:space-y-12 max-w-7xl">

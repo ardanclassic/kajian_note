@@ -40,6 +40,7 @@ interface EnvConfig {
   openRouter: {
     apiKey: string;
     defaultModel: string;
+    geminiModel: string; // For Deep Note
   };
 
   // Telegram Bot
@@ -126,6 +127,7 @@ export const env: EnvConfig = {
   openRouter: {
     apiKey: getEnvVar("VITE_OPENROUTER_API_KEY", false) || "",
     defaultModel: getEnvVar("VITE_OPENROUTER_DEFAULT_MODEL", false) || "qwen/qwen3-8b",
+    geminiModel: getEnvVar("VITE_OPENROUTER_GEMINI_MODEL", false) || "google/gemini-2.5-flash",
   },
 
   // NEW: Telegram Bot Configuration

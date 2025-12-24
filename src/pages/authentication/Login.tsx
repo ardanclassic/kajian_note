@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
 import { TypeformLoginForm } from "@/components/features/auth/TypeformLoginForm";
 import { motion } from "framer-motion";
+import logo from "@/assets/images/logo.png";
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -37,12 +38,12 @@ export const Login: React.FC = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center space-y-2"
         >
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight bg-linear-to-r from-emerald-400 to-emerald-600 bg-clip-text text-transparent">
-            Kajian Note
+          <img src={logo} alt="Alwaah Logo" className="w-20 h-20 mx-auto object-contain mb-4 rounded-full" />
+          <h1 className="text-5xl text-center md:text-6xl font-bold tracking-tight bg-linear-to-r from-emerald-400 to-emerald-600 bg-clip-text text-transparent">
+            Alwaah
           </h1>
-          <p className="text-muted-foreground text-lg">Masuk ke Akun Anda</p>
+          <p className="text-muted-foreground text-center text-lg">Masuk ke Akun Anda</p>
         </motion.div>
 
         {/* Login Form */}
@@ -61,7 +62,7 @@ export const Login: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center text-sm text-muted-foreground"
         >
-          <p>© 2025 Kajian Note. All rights reserved.</p>
+          <p>© 2025 Alwaah. All rights reserved.</p>
         </motion.div>
       </div>
     </div>

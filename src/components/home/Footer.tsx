@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { BookOpen, Twitter, Instagram, Mail, Heart, Quote } from "lucide-react";
 import "@/styles/arabic-font.css";
+import logo from "@/assets/images/logo.png";
 
 interface FooterProps {
   onNavigate: (path: string) => void;
@@ -58,10 +59,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               whileHover={{ x: -5 }}
               onClick={() => onNavigate("/")}
             >
-              <div className="w-12 h-12 rounded-xl bg-gray-900 border border-emerald-500/30 flex items-center justify-center shadow-lg group-hover:shadow-emerald-500/30 transition-shadow">
-                <BookOpen className="h-7 w-7 text-emerald-400" />
+              <div className="w-12 h-12 rounded-full border border-emerald-500/30 shadow-lg group-hover:shadow-emerald-500/30 transition-shadow">
+                <img src={logo} alt="Alwaah Logo" className="w-full h-full object-cover rounded-full" />
               </div>
-              <span className="text-2xl font-bold text-emerald-400">Kajian Note</span>
+              <span className="text-2xl font-bold text-emerald-400">Alwaah</span>
             </motion.div>
 
             <p className="md:ml-auto text-left md:text-right text-gray-400 leading-relaxed max-w-md">
@@ -139,7 +140,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="flex flex-col md:flex-row justify-between items-center gap-4"
         >
-          <p className="text-sm text-gray-500">© 2025 Kajian Note. All rights reserved.</p>
+          <p className="text-sm text-gray-500">© 2025 Alwaah. All rights reserved.</p>
 
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <span>Made with</span>

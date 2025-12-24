@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Sparkles, LayoutDashboard, ArrowRight, Youtube, Download, Zap, BookOpen } from "lucide-react";
+import logo from "@/assets/images/logo.png";
 
 interface HeroSectionProps {
   isAuthenticated: boolean;
@@ -46,8 +47,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isAuthenticated, onNav
             transition={{ duration: 0.8, delay: 0.2 }}
             className="space-y-4"
           >
+            <img src={logo} alt="Alwaah Logo" className="w-24 h-24 md:w-32 md:h-32 mx-auto object-contain mb-2 rounded-full" />
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-tight">
-              <span className="block text-white">Kajian Note</span>
+              <span className="block text-white">Alwaah</span>
             </h1>
 
             <p className="text-xl md:text-2xl lg:text-3xl text-gray-300 font-light leading-relaxed">

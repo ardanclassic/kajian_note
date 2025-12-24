@@ -8,6 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
 import { Loading } from "@/components/common/Loading";
 import { AppRoutes } from "@/routes";
+import { ScrollToTop } from "@/components/common/ScrollToTop";
 
 function App() {
   const { isLoading, initialize } = useAuthStore();
@@ -25,6 +26,7 @@ function App() {
   // Render app routes
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <AppRoutes />
     </BrowserRouter>
   );
