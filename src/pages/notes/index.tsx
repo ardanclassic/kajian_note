@@ -7,8 +7,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { SummaryList } from "@/components/features/smart-summary/SummaryList";
-import { SummarySearch } from "@/components/features/smart-summary/SummarySearch";
+import { SummaryList } from "@/components/features/note-summary/SummaryList";
+import { SummarySearch } from "@/components/features/note-summary/SummarySearch";
 import { SubscriptionLimitBanner } from "@/components/features/note-workspace/SubscriptionLimitBanner";
 import { ScrollToTopButton } from "@/components/common/ScrollToTopButton";
 import { TopHeader } from "@/components/layout/TopHeader";

@@ -106,7 +106,7 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
             </button>
 
             {/* Export Markdown */}
-            {/* <button
+            <button
               onClick={handleExportMarkdown}
               className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t mb-1"
             >
@@ -115,7 +115,7 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
                 <div className="font-medium text-sm">Export Markdown</div>
                 <div className="text-xs text-muted-foreground">Download sebagai .md</div>
               </div>
-            </button> */}
+            </button>
 
             {/* Send to Telegram */}
             {sendPDFConfigured ? (

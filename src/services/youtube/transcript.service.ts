@@ -43,7 +43,7 @@ const endpoints = {
   transcript: "/transcript",
   transcriptText: "/transcript/text",
   transcriptSummarize: "/transcript/summarize", // OLD - Sync
-  transcriptSummarizeTask: "/transcript/summarize-task", // NEW - Async (Smart Summary)
+  transcriptSummarizeTask: "/transcript/summarize-task", // NEW - Async (Note Summary)
   transcriptCleanupTask: "/transcript/cleanup-task", // NEW - Async (Deep Note)
   taskStatus: "/tasks", // NEW - Polling endpoint
   health: "/health",
@@ -374,16 +374,13 @@ export const submitCleanupTask = async (
   outputLanguage: string = defaultConfigDeepNote.outputLanguage
 ): Promise<SubmitCleanupTaskResponse> => {
   try {
-    const response = await youtubeAPI.post<SubmitCleanupTaskResponse>(
-      endpoints.transcriptCleanupTask,
-      {
-        video_id: videoId,
-        languages,
-        model,
-        max_tokens_per_chunk: maxTokensPerChunk,
-        output_language: outputLanguage,
-      } as SubmitCleanupTaskRequest
-    );
+    const response = await youtubeAPI.post<SubmitCleanupTaskResponse>(endpoints.transcriptCleanupTask, {
+      video_id: videoId,
+      languages,
+      model,
+      max_tokens_per_chunk: maxTokensPerChunk,
+      output_language: outputLanguage,
+    } as SubmitCleanupTaskRequest);
 
     return response.data;
   } catch (error) {
@@ -401,10 +398,9 @@ export const pollCleanupTaskStatus = async (
   signal?: AbortSignal
 ): Promise<PollCleanupTaskStatusResponse> => {
   try {
-    const response = await youtubeAPI.get<PollCleanupTaskStatusResponse>(
-      `${endpoints.taskStatus}/${taskId}`,
-      { signal }
-    );
+    const response = await youtubeAPI.get<PollCleanupTaskStatusResponse>(`${endpoints.taskStatus}/${taskId}`, {
+      signal,
+    });
 
     return response.data;
   } catch (error) {
@@ -498,13 +494,7 @@ export const fetchDeepNoteAsync = async (
 ): Promise<CleanupTaskResult> => {
   try {
     // Step 1: Submit task
-    const taskResponse = await submitCleanupTask(
-      videoId,
-      languages,
-      model,
-      maxTokensPerChunk,
-      outputLanguage
-    );
+    const taskResponse = await submitCleanupTask(videoId, languages, model, maxTokensPerChunk, outputLanguage);
 
     // Step 2: Poll until completed/failed
     const result = await pollCleanupWithRetry(taskResponse.task_id, signal, onProgress);

@@ -1,0 +1,158 @@
+﻿// Custom hook for Fabric.js canvas management with SCROLL system
+// REBUILT: Fixes text editing re-renders and multi-selection movement
+
+import { useEffect, useRef, useCallback } from "react";
+import { Canvas, Textbox, Rect, Circle, FabricImage, FabricObject, ActiveSelection, util } from "fabric";
+import { useEditorStore } from "@/store/contentStudioStore";
+import type { CanvasElement, TextElement, ShapeElement, Ratio } from "@/types/contentStudio.types";
+import { RATIO_DIMENSIONS, DISPLAY_DIMENSIONS } from "@/types/contentStudio.types";
+
+declare module "fabric" {
+  interface FabricObject {
+    customData?: { id: string };
+  }
+}
+
+import { createFabricObject, CONTROL_DEFAULTS } from "@/utils/contentStudio/fabricUtils";
+import { initAligningGuidelines } from "@/utils/contentStudio/smartGuides";
+
+interface UseCanvasOptions {
+  ratio: Ratio;
+  zoom: number;
+}
+
+export function useCanvas(
+  containerRef: React.RefObject<HTMLDivElement | null>,
+  // viewportRef removed - handled by parent
+  options: UseCanvasOptions,
+  canvasId: string,
+  slideIndex: number
+) {
+  const canvasRef = useRef<Canvas | null>(null);
+  const isRenderingRef = useRef(false);
+  // Track text editing state to prevent re-renders interrupting the user
+  const isEditingRef = useRef(false);
+  // Track internal selection updates to prevent clearing selection
+  const isInternalSelectionUpdateRef = useRef(false);
+  // Track multi-select modifications to prevent re-render during drag
+  const isMultiSelectModifyingRef = useRef(false);
+  // Track initial coordinates of multi-selection to detect changes
+  const selectionCoordsRef = useRef<Map<string, { x: number; y: number }>>(new Map());
+  const fontLoadingRef = useRef<Set<string>>(new Set());
+
+  const {
+    slides,
+    currentSlideIndex,
+    selectedElementId,
+    selectedElementIds,
+    updateElement,
+    updateElements,
+    removeElements,
+    selectElement,
+    selectElements,
+    pushToHistory,
+    setZoom,
+    setCurrentSlide, // Added
+  } = useEditorStore();
+
+  // Use the passed slideIndex to get the specific slide for this canvas
+  const currentSlide = slides[slideIndex];
+  const dimensions = RATIO_DIMENSIONS[options.ratio];
+  const displayDimensions = DISPLAY_DIMENSIONS[options.ratio];
+
+  // Enhanced font loading - WITH WEIGHT SUPPORT AND FALLBACK
+  const loadFont = useCallback((fontFamily: string, fontWeight: number = 400): Promise<void> => {
+    if (!fontFamily || fontFamily === "Arial" || fontFamily === "sans-serif") {
+      return Promise.resolve();
+    }
+    // Cache key includes weight
+    const fontKey = `${fontFamily.replace(/\s+/g, "-").toLowerCase()}-${fontWeight}`;
+
+    if (fontLoadingRef.current.has(fontKey)) {
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve) => {
+      // Inject CSS link (one per family)
+      const linkId = `font-${fontFamily.replace(/\s+/g, "-").toLowerCase()}`;
+      if (!document.getElementById(linkId)) {
+        const link = document.createElement("link");
+        link.id = linkId;
+        // Use specific weights instead of variable axis for better compatibility
+        link.href = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(
+          /\s+/g,
+          "+"
+        )}:wght@400;500;600;700;800;900&display=swap`;
+        link.rel = "stylesheet";
+        document.head.appendChild(link);
+      }
+
+      const markLoaded = () => {
+        fontLoadingRef.current.add(fontKey);
+        resolve();
+      };
+
+      if ("fonts" in document) {
+        // Try to load specific weight first
+        const fontSpec = `${fontWeight} 24px "${fontFamily}"`;
+        const fallbackSpec = `24px "${fontFamily}"`; // No weight = default
+
+        document.fonts
+          .load(fontSpec)
+          .then(() => {
+            // Check if specific weight is ready
+            if (document.fonts.check(fontSpec)) {
+              markLoaded();
+            } else {
+              // Specific weight not available, try default
+              return document.fonts.load(fallbackSpec).then(() => {
+                markLoaded();
+              });
+            }
+          })
+          .catch(() => {
+            // Fallback: just try to load without weight
+            document.fonts
+              .load(fallbackSpec)
+              .then(() => markLoaded())
+              .catch(() => {
+                // Give up, resolve anyway
+                setTimeout(markLoaded, 200);
+              });
+          });
+      } else {
+        setTimeout(markLoaded, 500);
+      }
+    });
+  }, []);
+
+  // Only load fonts for selected element if this is the active slide
+  useEffect(() => {
+    if (canvasRef.current && selectedElementId && currentSlide && currentSlideIndex === slideIndex) {
+      const el = currentSlide.elements.find((e) => e.id === selectedElementId);
+      if (el?.type === "text") {
+        loadFont((el as TextElement).fontFamily, (el as TextElement).fontWeight).then(() => {
+          if (!isEditingRef.current) {
+            setTimeout(() => canvasRef.current?.requestRenderAll(), 50);
+          }
+        });
+      }
+    }
+  }, [selectedElementId, currentSlideIndex, slideIndex, currentSlide, loadFont]);
+
+  // Browser Zoom listener removed from here - moved to CanvasEditor
+
+  // Initialize canvas
+  useEffect(() => {
+    if (!containerRef.current || canvasRef.current) return;
+
+    const canvas = new Canvas(canvasId, {
+      width: dimensions.width,
+      height: dimensions.height,
+      backgroundColor: currentSlide?.backgroundColor || "#FFFFFF",
+      selection: true,
+      preserveObjectStacking: true,
+    });
+
+    canvasRef.current = canvas;
+

@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { DeepNoteList } from "@/components/features/deep-note/DeepNoteList";
-import { SummarySearch } from "@/components/features/smart-summary/SummarySearch";
+import { SummarySearch } from "@/components/features/note-summary/SummarySearch";
 import { SubscriptionLimitBanner } from "@/components/features/note-workspace/SubscriptionLimitBanner";
 import { ScrollToTopButton } from "@/components/common/ScrollToTopButton";
 import { TopHeader } from "@/components/layout/TopHeader";

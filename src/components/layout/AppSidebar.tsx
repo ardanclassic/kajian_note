@@ -13,7 +13,10 @@ import {
   Heart,
   Paintbrush,
   Info,
-  X
+  X,
+
+  Map,
+  Palette
 } from "lucide-react";
 
 import {
@@ -70,7 +73,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       isActive: location.pathname === "/dashboard",
     },
     {
-      title: "Smart Summary",
+      title: "Note Summary",
       url: "/notes",
       icon: BookOpen,
       isActive: location.pathname === "/notes" || location.pathname.startsWith("/notes/"),
@@ -80,6 +83,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       url: "/deep-note",
       icon: Zap,
       isActive: location.pathname.startsWith("/deep-note"),
+    },
+    {
+      title: "Memory Journey",
+      url: "/memory-journey",
+      icon: Map,
+      isActive: location.pathname.startsWith("/memory-journey"),
+    },
+    {
+      title: "Content Studio",
+      url: "/content-studio",
+      icon: Palette,
+      isActive: location.pathname.startsWith("/content-studio"),
     },
   ];
 
@@ -144,7 +159,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       isActive={item.isActive}
                       className="hover:bg-gray-900 hover:text-emerald-400 data-[active=true]:bg-emerald-500/10 data-[active=true]:text-emerald-400 transition-all font-medium py-2.5 group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                     >
-                      {item.icon && <item.icon className="!w-5 !h-5 text-gray-400 group-hover:text-emerald-400 group-data-[active=true]:text-emerald-400 shrink-0 group-data-[collapsible=icon]:!w-6 group-data-[collapsible=icon]:!h-6" />}
+                      {item.icon && <item.icon className="w-5! h-5! text-gray-400 group-hover:text-emerald-400 group-data-[active=true]:text-emerald-400 shrink-0 group-data-[collapsible=icon]:w-6! group-data-[collapsible=icon]:h-6!" />}
                       <span className="text-sm ml-1">{item.title}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -166,7 +181,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         onClick={() => handleNavigation(item.url)}
                         className="hover:bg-gray-900 hover:text-emerald-400 transition-all font-medium py-2.5 group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                       >
-                        {item.icon && <item.icon className="!w-5 !h-5 shrink-0 group-data-[collapsible=icon]:!w-6 group-data-[collapsible=icon]:!h-6" />}
+                        {item.icon && <item.icon className="w-5! h-5! shrink-0 group-data-[collapsible=icon]:w-6! group-data-[collapsible=icon]:h-6!" />}
                         <span className="text-sm ml-1">{item.title}</span>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -184,7 +199,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton
                     size="lg"
-                    className="data-[state=open]:bg-emerald-500/10 data-[state=open]:text-emerald-400 hover:bg-gray-900 hover:text-white group-data-[collapsible=icon]:!p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12"
+                    className="data-[state=open]:bg-emerald-500/10 data-[state=open]:text-emerald-400 hover:bg-gray-900 hover:text-white group-data-[collapsible=icon]:p-0! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12"
                   >
                     <Avatar className="h-8 w-8 rounded-lg shrink-0 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:w-10">
                       <AvatarImage src={user?.avatarUrl || undefined} alt={user?.fullName} />
@@ -275,7 +290,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           open={showThemeSettings}
           onClose={() => setShowThemeSettings(false)}
         />
-      </Sidebar>
+      </Sidebar >
     </>
   );
 }
