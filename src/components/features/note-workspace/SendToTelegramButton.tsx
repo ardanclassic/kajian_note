@@ -22,6 +22,7 @@ interface SendToTelegramButtonProps {
   onSuccess?: () => void;
   onExit?: () => void;
   onError?: (error: string) => void;
+  onLoadingChange?: (isLoading: boolean) => void;
 }
 
 export function SendToTelegramButton({
@@ -32,6 +33,7 @@ export function SendToTelegramButton({
   onSuccess,
   onExit,
   onError,
+  onLoadingChange,
 }: SendToTelegramButtonProps) {
   const { user }: any = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
@@ -53,6 +55,7 @@ export function SendToTelegramButton({
     }
 
     setIsLoading(true);
+    if (onLoadingChange) onLoadingChange(true);
     setError(null);
 
     try {
@@ -103,6 +106,7 @@ export function SendToTelegramButton({
       if (onError) onError(errorMessage);
     } finally {
       setIsLoading(false);
+      if (onLoadingChange) onLoadingChange(false);
     }
   };
 

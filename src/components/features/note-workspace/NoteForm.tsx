@@ -412,42 +412,44 @@ export function NoteForm({ note, initialValues, onSubmit, onCancel, isSubmitting
           </CardContent>
         </Card>
 
-        {/* Sticky Action Buttons - Outside Card */}
-        <div
-          className={cn(
-            "fixed bottom-0 left-0 right-0 z-10",
-            "bg-background/95 backdrop-blur-md",
-            "border-t transition-all duration-200",
-            "p-4 md:p-6",
-            isScrolled && "shadow-2xl shadow-black/20"
-          )}
-        >
-          <div className="container mx-auto max-w-4xl">
-            <div className="flex gap-2">
+        {/* Floating Action Bar - Modern & Elegant */}
+        <div className="fixed bottom-6 left-0 right-0 z-50 px-4 pointer-events-none">
+          <div className="container mx-auto max-w-lg">
+            <motion.div
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className="pointer-events-auto flex items-center gap-2 p-1.5 bg-[#0F1115]/90 backdrop-blur-xl border border-gray-800/50 rounded-2xl shadow-2xl shadow-black/50"
+            >
+              {onCancel && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={onCancel}
+                  disabled={isSubmitting}
+                  className="rounded-xl px-6 text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors h-12"
+                >
+                  Batal
+                </Button>
+              )}
+
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex-1 bg-primary hover:bg-primary/90 text-white"
+                className="flex-1 rounded-xl bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-medium shadow-lg shadow-emerald-500/20 h-12 transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                     {isEditMode ? "Menyimpan..." : "Membuat..."}
                   </>
                 ) : (
                   <>
-                    <Save className="w-4 h-4 mr-2" />
-                    {isEditMode ? "Simpan" : "Buat Catatan"}
+                    <Save className="w-5 h-5 mr-2" />
+                    {isEditMode ? "Simpan Perubahan" : "Simpan Catatan"}
                   </>
                 )}
               </Button>
-
-              {onCancel && (
-                <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting} className="px-6">
-                  Batal
-                </Button>
-              )}
-            </div>
+            </motion.div>
           </div>
         </div>
       </motion.form>

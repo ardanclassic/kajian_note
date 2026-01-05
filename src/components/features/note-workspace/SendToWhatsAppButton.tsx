@@ -22,6 +22,7 @@ interface SendToWhatsAppButtonProps {
   onSuccess?: () => void;
   onExit?: () => void;
   onError?: (error: string) => void;
+  onLoadingChange?: (isLoading: boolean) => void;
 }
 
 /**
@@ -80,6 +81,7 @@ export function SendToWhatsAppButton({
   onSuccess,
   onExit,
   onError,
+  onLoadingChange,
 }: SendToWhatsAppButtonProps) {
   const { user } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
@@ -103,6 +105,7 @@ export function SendToWhatsAppButton({
     }
 
     setIsLoading(true);
+    if (onLoadingChange) onLoadingChange(true);
     setError(null);
 
     // ✅ Format phone number
@@ -143,6 +146,14 @@ export function SendToWhatsAppButton({
       if (onError) onError(errorMessage);
     } finally {
       setIsLoading(false);
+      // NOTE: We don't set loading to false here immediately if we wait for confirm dialog?
+      // Actually the loading state in this component controls the "Processing..." UI.
+      // The ConfirmDialog is shown AFTER loading is done.
+      // But the user might consider the "Confirm Dialog" as part of the process where they shouldn't just accidentally close the parent dialog if they are about to click confirm.
+      // However, the specific request was "disable ... during loading process".
+      // The generation process is the one that takes time (10s). The confirm dialog is just a click.
+      // So setting it to false here is correct for "loading".
+      if (onLoadingChange) onLoadingChange(false);
     }
   };
 

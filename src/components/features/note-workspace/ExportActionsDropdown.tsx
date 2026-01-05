@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, X, FileText, FileDown, Send, MessageCircle, Lock, Crown, ArrowLeft } from "lucide-react";
+import { Download, X, FileText, FileDown, Send, MessageCircle, Lock, Crown, ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useAuthStore } from "@/store/authStore";
@@ -28,6 +28,7 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
   const [open, setOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("menu");
   const [isExporting, setIsExporting] = useState(false);
+  const [isChildLoading, setIsChildLoading] = useState(false);
 
   // Check permissions
   const canExport = true;
@@ -58,11 +59,18 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
 
   // Reset to menu when dialog closes
   const handleOpenChange = (isOpen: boolean) => {
+    // Prevent closing if loading
+    if (!isOpen && (isExporting || isChildLoading)) {
+      return;
+    }
+
     setOpen(isOpen);
     if (!isOpen) {
       setViewMode("menu");
     }
   };
+
+  const isLoading = isExporting || isChildLoading;
 
   return (
     <>
@@ -72,7 +80,7 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
         size="sm"
         onClick={() => setOpen(true)}
         className={`gap-2 ${className}`}
-        disabled={isExporting}
+        disabled={isLoading}
       >
         <Download className="w-4 h-4" />
         <span className="hidden sm:inline">Export</span>
@@ -80,7 +88,16 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
 
       {/* Fullscreen Dialog */}
       <Dialog open={open} onOpenChange={handleOpenChange}>
-        <DialogContent className="max-w-md p-0 gap-0 bg-background border-border/50 h-dvh sm:h-auto sm:max-h-[90vh] flex flex-col">
+        <DialogContent
+          className="max-w-md p-0 gap-0 bg-background border-border/50 h-dvh sm:h-auto sm:max-h-[90vh] flex flex-col"
+          showCloseButton={!isLoading}
+          onInteractOutside={(e) => {
+            if (isLoading) e.preventDefault();
+          }}
+          onEscapeKeyDown={(e) => {
+            if (isLoading) e.preventDefault();
+          }}
+        >
           {/* Header */}
           <DialogHeader className="px-6 py-4 border-b border-border/50 shrink-0">
             <div className="flex items-center justify-between">
@@ -91,6 +108,7 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
                     size="icon"
                     className="h-8 w-8 -ml-2"
                     onClick={() => setViewMode("menu")}
+                    disabled={isLoading}
                   >
                     <ArrowLeft className="w-4 h-4" />
                   </Button>
@@ -119,16 +137,22 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
                   {/* Export PDF */}
                   <motion.button
                     onClick={handleExportPDF}
-                    disabled={isExporting}
+                    disabled={isLoading}
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
                     className="w-full p-4 flex items-center gap-4 rounded-xl bg-yellow-500/5 hover:bg-yellow-500/10 border border-yellow-500/20 transition-all duration-200 text-left group disabled:opacity-50"
                   >
-                    <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-yellow-500/20 group-hover:bg-yellow-500/30 transition-colors flex-shrink-0">
-                      <FileText className="w-6 h-6 text-yellow-500" />
+                    <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-yellow-500/20 group-hover:bg-yellow-500/30 transition-colors shrink-0">
+                      {isExporting ? (
+                        <Loader2 className="w-6 h-6 text-yellow-500 animate-spin" />
+                      ) : (
+                        <FileText className="w-6 h-6 text-yellow-500" />
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-bold text-base text-foreground">Export PDF</div>
+                      <div className="font-bold text-base text-foreground">
+                        {isExporting ? "Generating PDF..." : "Export PDF"}
+                      </div>
                       <div className="text-sm text-muted-foreground">Via print dialog</div>
                     </div>
                   </motion.button>
@@ -138,11 +162,12 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
                     canExport ? (
                       <motion.button
                         onClick={() => setViewMode("telegram")}
+                        disabled={isLoading}
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.99 }}
-                        className="w-full p-4 flex items-center gap-4 rounded-xl bg-blue-500/5 hover:bg-blue-500/10 border border-blue-500/20 transition-all duration-200 text-left group"
+                        className="w-full p-4 flex items-center gap-4 rounded-xl bg-blue-500/5 hover:bg-blue-500/10 border border-blue-500/20 transition-all duration-200 text-left group disabled:opacity-50"
                       >
-                        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20 group-hover:bg-blue-500/30 transition-colors flex-shrink-0">
+                        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20 group-hover:bg-blue-500/30 transition-colors shrink-0">
                           <Send className="w-6 h-6 text-blue-400" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -152,7 +177,7 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
                       </motion.button>
                     ) : (
                       <div className="w-full p-4 flex items-center gap-4 rounded-xl bg-muted/20 border border-border/50 opacity-50 cursor-not-allowed">
-                        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-muted/30 flex-shrink-0">
+                        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-muted/30 shrink-0">
                           <Lock className="w-6 h-6 text-muted-foreground" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -171,11 +196,12 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
                     canExport ? (
                       <motion.button
                         onClick={() => setViewMode("whatsapp")}
+                        disabled={isLoading}
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.99 }}
-                        className="w-full p-4 flex items-center gap-4 rounded-xl bg-green-500/5 hover:bg-green-500/10 border border-green-500/20 transition-all duration-200 text-left group"
+                        className="w-full p-4 flex items-center gap-4 rounded-xl bg-green-500/5 hover:bg-green-500/10 border border-green-500/20 transition-all duration-200 text-left group disabled:opacity-50"
                       >
-                        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-green-500/20 group-hover:bg-green-500/30 transition-colors flex-shrink-0">
+                        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-green-500/20 group-hover:bg-green-500/30 transition-colors shrink-0">
                           <MessageCircle className="w-6 h-6 text-green-500" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -185,7 +211,7 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
                       </motion.button>
                     ) : (
                       <div className="w-full p-4 flex items-center gap-4 rounded-xl bg-muted/20 border border-border/50 opacity-50 cursor-not-allowed">
-                        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-muted/30 flex-shrink-0">
+                        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-muted/30 shrink-0">
                           <Lock className="w-6 h-6 text-muted-foreground" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -202,11 +228,12 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
                   {/* Export Markdown */}
                   <motion.button
                     onClick={handleExportMarkdown}
+                    disabled={isLoading}
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
-                    className="w-full p-4 flex items-center gap-4 rounded-xl bg-fuchsia-500/5 hover:bg-fuchsia-500/10 border border-fuchsia-500/20 transition-all duration-200 text-left group"
+                    className="w-full p-4 flex items-center gap-4 rounded-xl bg-fuchsia-500/5 hover:bg-fuchsia-500/10 border border-fuchsia-500/20 transition-all duration-200 text-left group disabled:opacity-50"
                   >
-                    <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-fuchsia-500/20 group-hover:bg-fuchsia-500/30 transition-colors flex-shrink-0">
+                    <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-fuchsia-500/20 group-hover:bg-fuchsia-500/30 transition-colors shrink-0">
                       <FileDown className="w-6 h-6 text-fuchsia-500" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -217,7 +244,7 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
 
                   {/* Premium CTA */}
                   {!canExport && sendPDFConfigured && (
-                    <div className="mt-4 p-4 rounded-xl bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20">
+                    <div className="mt-4 p-4 rounded-xl bg-linear-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20">
                       <div className="flex items-center gap-2 mb-2">
                         <Crown className="w-5 h-5 text-yellow-500" />
                         <span className="font-bold text-sm text-yellow-600 dark:text-yellow-500">
@@ -247,6 +274,7 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
                     size="default"
                     className="w-full"
                     onExit={() => setViewMode("menu")}
+                    onLoadingChange={setIsChildLoading}
                     onSuccess={() => {
                       setTimeout(() => setOpen(false), 2000);
                     }}
@@ -269,6 +297,7 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
                     size="default"
                     className="w-full"
                     onExit={() => setViewMode("menu")}
+                    onLoadingChange={setIsChildLoading}
                     onSuccess={() => {
                       setTimeout(() => setOpen(false), 2000);
                     }}
