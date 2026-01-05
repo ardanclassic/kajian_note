@@ -47,7 +47,15 @@ const tagVariants = {
   exit: { opacity: 0, scale: 0.8 },
 };
 
-export function NoteForm({ note, initialValues, onSubmit, onCancel, isSubmitting = false, mode, maxLength = 50000 }: NoteFormProps) {
+export function NoteForm({
+  note,
+  initialValues,
+  onSubmit,
+  onCancel,
+  isSubmitting = false,
+  mode,
+  maxLength = 50000,
+}: NoteFormProps) {
   const { user } = useAuthStore();
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>(initialValues?.tags || note?.tags || []);
