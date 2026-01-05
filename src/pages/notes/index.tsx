@@ -158,7 +158,7 @@ export default function Notes() {
   };
 
   if (!user) {
-    return <Loading fullscreen text="Memuat..." />;
+    return <Loading fullscreen />;
   }
 
   // Header Actions

@@ -65,7 +65,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <span className="text-2xl font-bold text-emerald-400">Alwaah</span>
             </motion.div>
 
-            <p className="md:ml-auto text-left md:text-right text-gray-400 leading-relaxed max-w-md">
+            <p className="md:ml-auto text-left md:text-right text-gray-400 leading-relaxed">
               Platform catatan kajian terbaik untuk jamaah masjid di Indonesia. Mudah, cepat, dan powerful untuk
               mencatat ilmu bermanfaat.
             </p>
@@ -103,7 +103,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </div>
 
                 {/* Arabic Text */}
-                <p className="text-2xl text-white arabic-tajawal leading-loose mb-4 text-right" dir="rtl">
+                <p className="text-2xl text-white arabic-tajawal leading-loose text-right mb-6!" dir="rtl">
                   {selectedQuote.arabic}
                 </p>
 

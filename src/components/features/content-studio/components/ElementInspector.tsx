@@ -351,19 +351,27 @@ function ShapeProperties({
       <div className="mb-3">
         <label className={labelClass}>Fill Color</label>
         <div className="flex gap-1.5">
-          <input
-            type="color"
-            value={element.fill}
-            style={{ backgroundColor: element.fill }}
-            onChange={(e) => updateElement({ fill: e.target.value })}
-            className="bg-transparent w-7 h-7 p-0 border-none rounded-md cursor-pointer"
-          />
-          <input
-            type="text"
-            value={element.fill}
-            onChange={(e) => updateElement({ fill: e.target.value })}
-            className="flex-1 px-2.5 py-1.5 bg-white/5 border-none rounded-md text-white text-[13px] font-mono"
-          />
+          {typeof element.fill === 'string' ? (
+            <>
+              <input
+                type="color"
+                value={element.fill}
+                style={{ backgroundColor: element.fill }}
+                onChange={(e) => updateElement({ fill: e.target.value })}
+                className="bg-transparent w-7 h-7 p-0 border-none rounded-md cursor-pointer"
+              />
+              <input
+                type="text"
+                value={element.fill}
+                onChange={(e) => updateElement({ fill: e.target.value })}
+                className="flex-1 px-2.5 py-1.5 bg-white/5 border-none rounded-md text-white text-[13px] font-mono"
+              />
+            </>
+          ) : (
+            <div className="flex-1 px-2.5 py-1.5 bg-white/5 border border-white/10 rounded-md text-white/50 text-[13px]">
+              Gradient (Edit in Toolbar)
+            </div>
+          )}
         </div>
       </div>
 

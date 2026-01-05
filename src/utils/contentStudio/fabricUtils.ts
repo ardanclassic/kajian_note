@@ -1,5 +1,49 @@
-import { FabricObject, Textbox, Rect, Circle, FabricImage, Triangle, Group } from "fabric";
-import type { CanvasElement, TextElement, ShapeElement, ImageElement } from "@/types/contentStudio.types";
+import {
+  FabricObject,
+  Textbox,
+  Rect,
+  Circle,
+  FabricImage,
+  Triangle,
+  Group,
+  Line,
+  Control,
+  controlsUtils,
+  Gradient, // Added import
+} from "fabric";
+import type { CanvasElement, TextElement, ShapeElement, ImageElement, GradientFill } from "@/types/contentStudio.types";
+
+// Helper: Convert GradientFill object to Fabric Gradient
+const createGradient = (fill: string | GradientFill): string | Gradient<"linear"> => {
+  if (typeof fill === "string") return fill;
+
+  // Calculate coords based on angle (0-360)
+  // We assume a percentage based gradient (0-1) relative to object
+  const angleRad = (fill.angle || 0) * (Math.PI / 180);
+
+  // Center point is 0.5, 0.5. We move outwards by 0.5 in direction of angle
+  const cos = Math.cos(angleRad);
+  const sin = Math.sin(angleRad);
+
+  // Fabric Gradient coords are x1,y1 -> x2,y2
+  // We want the vector to pass through center.
+  // Start point
+  const x1 = 0.5 - cos * 0.5;
+  const y1 = 0.5 - sin * 0.5;
+  // End point
+  const x2 = 0.5 + cos * 0.5;
+  const y2 = 0.5 + sin * 0.5;
+
+  return new Gradient({
+    type: "linear",
+    gradientUnits: "percentage",
+    coords: { x1, y1, x2, y2 },
+    colorStops: [
+      { offset: 0, color: fill.startColor },
+      { offset: 1, color: fill.endColor },
+    ],
+  });
+};
 
 // Canva-like selection controls
 export const CONTROL_DEFAULTS = {
@@ -67,6 +111,133 @@ const createShapeWithText = (shape: FabricObject, shapeEl: ShapeElement): Fabric
   return group;
 };
 
+const createLineWithMarkers = (lineEl: ShapeElement): FabricObject => {
+  const { width } = lineEl.size;
+  const strokeWidth = lineEl.strokeWidth || 2;
+  const strokeColor = lineEl.stroke || "#000000";
+
+  // APPROACH: Use fabric.Line with strokeUniform: true
+  // This supports strokeDashArray properly (unlike Rect border) and handles scaling natively.
+  // We define the line as horizontal from (0,0) to (width,0) and center it.
+  const line = new Line([0, 0, width, 0], {
+    left: lineEl.position.x,
+    top: lineEl.position.y,
+    stroke: strokeColor,
+    strokeWidth: strokeWidth,
+    strokeDashArray: lineEl.strokeDashArray || undefined,
+    strokeLineCap: "round", // Better looking ends
+
+    angle: lineEl.rotation,
+    opacity: lineEl.opacity,
+    originX: "center",
+    originY: "center",
+
+    // Stable scaling properties
+    strokeUniform: true, // Vital: keeps stroke width and dash array constant during scaling
+    lockScalingY: true, // Prevent thickening (use strokeWidth property instead)
+    lockScalingX: false, // Allow length resizing via scaling
+    lockSkewingX: true,
+    lockSkewingY: true,
+
+    // Initial state
+    scaleX: 1,
+    scaleY: 1,
+
+    ...CONTROL_DEFAULTS,
+    // Fix cropping issues for custom rendered markers
+    objectCaching: false,
+    padding: 16, // Increased padding to clear markers
+  });
+
+  // Store marker config
+  (line as any).lineStartMarker = lineEl.lineStart;
+  (line as any).lineEndMarker = lineEl.lineEnd;
+  (line as any).originalStrokeWidth = strokeWidth;
+
+  // Configure Controls: Only allow length resizing and rotation
+  line.setControlsVisibility({
+    tl: false,
+    tr: false,
+    bl: false,
+    br: false,
+    mt: false,
+    mb: false,
+    ml: true, // Left Resize
+    mr: true, // Right Resize
+    mtr: true, // Rotation
+  });
+
+  // Override render to draw markers
+  const originalRender = line._render.bind(line);
+  line._render = function (ctx: CanvasRenderingContext2D) {
+    originalRender(ctx); // Draw the line
+
+    const lineStartMarker = (this as any).lineStartMarker;
+    const lineEndMarker = (this as any).lineEndMarker;
+
+    // Geometry
+    const halfWidth = (this.width || 0) / 2;
+    const baseThickness = (this as any).strokeWidth || 2;
+
+    const sX = this.scaleX || 1;
+    const sY = this.scaleY || 1;
+
+    // Marker size
+    const mSize = Math.max(10, baseThickness * 3);
+
+    // Un-scale factors (markers should stay constant size visually)
+    const invSX = 1 / sX;
+    const invSY = 1 / sY;
+
+    ctx.save();
+    ctx.fillStyle = this.stroke as string; // Markers match stroke color
+
+    if (lineStartMarker && lineStartMarker !== "none") {
+      ctx.save();
+      ctx.translate(-halfWidth, 0); // Left end
+      ctx.scale(invSX, invSY);
+      ctx.rotate(Math.PI);
+      drawMarkerShape(ctx, lineStartMarker, mSize, baseThickness);
+      ctx.restore();
+    }
+
+    if (lineEndMarker && lineEndMarker !== "none") {
+      ctx.save();
+      ctx.translate(halfWidth, 0); // Right end
+      ctx.scale(invSX, invSY);
+      drawMarkerShape(ctx, lineEndMarker, mSize, baseThickness);
+      ctx.restore();
+    }
+
+    ctx.restore();
+  };
+
+  return line;
+};
+
+// Helper for drawing markers
+const drawMarkerShape = (ctx: CanvasRenderingContext2D, type: string, size: number, strokeWidth: number) => {
+  ctx.beginPath();
+  if (type === "arrow") {
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-size / 2, size / 2);
+    ctx.lineTo(-size / 2, -size / 2);
+    ctx.fill();
+  } else if (type === "circle") {
+    ctx.arc(0, 0, size / 2, 0, 2 * Math.PI);
+    ctx.fill();
+  } else if (type === "square") {
+    ctx.fillRect(-size / 2, -size / 2, size, size);
+  } else if (type === "diamond") {
+    ctx.save();
+    ctx.rotate(Math.PI / 4);
+    ctx.fillRect(-size * 0.35, -size * 0.35, size * 0.7, size * 0.7);
+    ctx.restore();
+  } else if (type === "bar") {
+    ctx.fillRect(-strokeWidth / 2, -size / 2, strokeWidth, size);
+  }
+};
+
 export const createFabricObject = async (element: CanvasElement): Promise<FabricObject | null> => {
   switch (element.type) {
     case "text":
@@ -111,7 +282,7 @@ export const createFabricObject = async (element: CanvasElement): Promise<Fabric
           width: shapeEl.size.width,
           height: shapeEl.size.height,
           angle: shapeEl.rotation,
-          fill: shapeEl.fill,
+          fill: createGradient(shapeEl.fill),
           stroke: shapeEl.stroke,
           strokeWidth: shapeEl.strokeWidth,
           strokeDashArray: shapeEl.strokeDashArray || undefined,
@@ -127,7 +298,7 @@ export const createFabricObject = async (element: CanvasElement): Promise<Fabric
           top: shapeEl.position.y,
           radius: shapeEl.size.width / 2,
           angle: shapeEl.rotation,
-          fill: shapeEl.fill,
+          fill: createGradient(shapeEl.fill),
           stroke: shapeEl.stroke,
           strokeWidth: shapeEl.strokeWidth,
           strokeDashArray: shapeEl.strokeDashArray || undefined,
@@ -142,7 +313,7 @@ export const createFabricObject = async (element: CanvasElement): Promise<Fabric
           width: shapeEl.size.width,
           height: shapeEl.size.height,
           angle: shapeEl.rotation,
-          fill: shapeEl.fill,
+          fill: createGradient(shapeEl.fill),
           stroke: shapeEl.stroke,
           strokeWidth: shapeEl.strokeWidth,
           strokeDashArray: shapeEl.strokeDashArray || undefined,
@@ -151,18 +322,7 @@ export const createFabricObject = async (element: CanvasElement): Promise<Fabric
         });
         return createShapeWithText(triangle, shapeEl);
       } else if (shapeEl.shapeType === "line") {
-        // Line creation requires more specific handling usually (x1, y1, x2, y2)
-        return new Rect({
-          // Fallback
-          left: shapeEl.position.x,
-          top: shapeEl.position.y,
-          width: shapeEl.size.width,
-          height: shapeEl.strokeWidth || 2,
-          angle: shapeEl.rotation,
-          fill: shapeEl.stroke,
-          opacity: shapeEl.opacity,
-          ...CONTROL_DEFAULTS,
-        });
+        return createLineWithMarkers(shapeEl);
       }
       return null;
 

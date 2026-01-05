@@ -1,16 +1,14 @@
 import {
-   Undo, Redo, Copy, Trash2,
-   Palette, ZoomIn, ZoomOut, RotateCcw,
-   Type, ChevronDown, Edit2,
+   Copy, Trash2, Undo2,
+   Palette,
    Bold, Italic, AlignLeft, AlignCenter, AlignRight,
-   Lock, Unlock, Eye, EyeOff,
-   ChevronUp, ChevronsUp, ChevronDown as ChevronDownIcon, ChevronsDown,
-   Upload, Layers,
+   Lock, Unlock,
+   Upload,
    Underline, Strikethrough, Minus, Plus, ArrowUpDown
 } from 'lucide-react';
 import { useEditorStore } from '@/store/contentStudioStore';
-import { useState, useRef, useEffect } from 'react';
-import type { TextElement, ShapeElement, ImageElement, CanvasElement } from '@/types/contentStudio.types';
+import { useRef } from 'react';
+import type { TextElement, ShapeElement, ImageElement } from '@/types/contentStudio.types';
 import { cn } from "@/lib/utils";
 
 // Sub-components (Extracted)
@@ -22,6 +20,10 @@ import { FillColorControl } from './toolbar/FillColorControl';
 import { StrokeStyleControl } from './toolbar/StrokeStyleControl';
 import { CornerControl } from './toolbar/CornerControl';
 import { TransparencyControl } from './toolbar/TransparencyControl';
+import { ImagePositionPopover } from './toolbar/ImagePositionPopover';
+import { ImageFlipControl } from './toolbar/ImageFlipControl';
+import { LinePositionPopover } from './toolbar/LinePositionPopover';
+import { LineControls } from './toolbar/LineControls';
 
 export function TopToolbar() {
    const {
@@ -29,17 +31,11 @@ export function TopToolbar() {
       duplicateElement,
       removeElement,
       updateElement,
-      undo,
-      redo,
-      historyIndex,
-      history,
       slides,
       currentSlideIndex,
       updateSlide,
-      zoomLevel,
-      setZoom,
       reorderElements,
-      pushToHistory
+      ratio
    } = useEditorStore();
 
    const currentSlide = slides[currentSlideIndex];
@@ -198,61 +194,97 @@ export function TopToolbar() {
                   onChange={(updates) => updateElement(selectedElementId!, updates)}
                />
 
-               <CornerControl
-                  cornerRadius={(selectedElement as ShapeElement).cornerRadius || 0}
-                  shapeType={(selectedElement as ShapeElement).shapeType}
-                  onChange={(updates) => updateElement(selectedElementId!, updates)}
-               />
+               {selectedElement.shapeType === 'line' ? (
+                  <LineControls
+                     lineStart={(selectedElement as ShapeElement).lineStart}
+                     lineEnd={(selectedElement as ShapeElement).lineEnd}
+                     onChange={(updates) => updateElement(selectedElementId!, updates)}
+                  />
+               ) : (
+                  <>
+                     <CornerControl
+                        cornerRadius={(selectedElement as ShapeElement).cornerRadius || 0}
+                        shapeType={(selectedElement as ShapeElement).shapeType}
+                        onChange={(updates) => updateElement(selectedElementId!, updates)}
+                     />
 
-               <FillColorControl
-                  fill={(selectedElement as ShapeElement).fill || '#ffffff'}
-                  onChange={(color) => updateElement(selectedElementId!, { fill: color })}
-               />
+                     <FillColorControl
+                        fill={(selectedElement as ShapeElement).fill || '#ffffff'}
+                        onChange={(color) => updateElement(selectedElementId!, { fill: color })}
+                     />
+                  </>
+               )}
 
                <div className="h-6 w-px shrink-0 bg-border mx-1" />
 
-               {/* Text on Shape */}
-               <div style={{ width: 140 }}>
-                  <FontFamilySelect
-                     value={(selectedElement as ShapeElement).textFontFamily || 'Inter'}
-                     onChange={(val) => updateElement(selectedElementId!, { textFontFamily: val })}
+               {/* Position Control (Added for Line/Shapes) */}
+               {selectedElement.shapeType === 'line' ? (
+                  <LinePositionPopover
+                     currentPosition={selectedElement.position}
+                     currentSize={selectedElement.size}
+                     scaleX={1}
+                     scaleY={1}
+                     ratio={ratio}
+                     onPositionChange={(pos) => updateElement(selectedElementId!, { position: pos })}
                   />
-               </div>
-
-               <div className="flex items-center">
-                  <input
-                     type="number"
-                     className="h-7 w-12 rounded-md border border-input bg-transparent px-2 text-center text-xs"
-                     value={(selectedElement as ShapeElement).textFontSize || 16}
-                     onChange={(e) => updateElement(selectedElementId!, { textFontSize: parseInt(e.target.value) || 16 })}
-                     min="8" max="200"
+               ) : (
+                  <ImagePositionPopover
+                     currentPosition={selectedElement.position}
+                     currentSize={selectedElement.size}
+                     scaleX={1}
+                     scaleY={1}
+                     ratio={ratio}
+                     onPositionChange={(pos) => updateElement(selectedElementId!, { position: pos })}
                   />
-               </div>
+               )}
 
-               <div className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-muted">
-                  <span className="pointer-events-none z-10 text-xs font-bold text-foreground">A</span>
-                  <div className="absolute bottom-0 h-1 w-full" style={{ backgroundColor: (selectedElement as ShapeElement).textFill || '#ffffff' }}></div>
-                  <input
-                     type="color"
-                     className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-                     value={(selectedElement as ShapeElement).textFill || '#ffffff'}
-                     onChange={(e) => updateElement(selectedElementId!, { textFill: e.target.value })}
-                  />
-               </div>
+               {/* Text on Shape - Hide for Lines */}
+               {selectedElement.shapeType !== 'line' && (
+                  <>
+                     <div className="h-6 w-px shrink-0 bg-border mx-1" />
+                     <div style={{ width: 140 }}>
+                        <FontFamilySelect
+                           value={(selectedElement as ShapeElement).textFontFamily || 'Inter'}
+                           onChange={(val) => updateElement(selectedElementId!, { textFontFamily: val })}
+                        />
+                     </div>
 
-               <button
-                  className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground"
-                  onClick={() => {
-                     const currentAlign = (selectedElement as ShapeElement).textAlign || 'center';
-                     const nextAlign = currentAlign === 'left' ? 'center' :
-                        currentAlign === 'center' ? 'right' : 'left';
-                     updateElement(selectedElementId!, { textAlign: nextAlign });
-                  }}
-               >
-                  {(selectedElement as ShapeElement).textAlign === 'center' ? <AlignCenter size={16} /> :
-                     (selectedElement as ShapeElement).textAlign === 'right' ? <AlignRight size={16} /> :
-                        <AlignLeft size={16} />}
-               </button>
+                     <div className="flex items-center">
+                        <input
+                           type="number"
+                           className="h-7 w-12 rounded-md border border-input bg-transparent px-2 text-center text-xs"
+                           value={(selectedElement as ShapeElement).textFontSize || 16}
+                           onChange={(e) => updateElement(selectedElementId!, { textFontSize: parseInt(e.target.value) || 16 })}
+                           min="8" max="200"
+                        />
+                     </div>
+
+                     <div className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-muted">
+                        <span className="pointer-events-none z-10 text-xs font-bold text-foreground">A</span>
+                        <div className="absolute bottom-0 h-1 w-full" style={{ backgroundColor: (selectedElement as ShapeElement).textFill || '#ffffff' }}></div>
+                        <input
+                           type="color"
+                           className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                           value={(selectedElement as ShapeElement).textFill || '#ffffff'}
+                           onChange={(e) => updateElement(selectedElementId!, { textFill: e.target.value })}
+                        />
+                     </div>
+
+                     <button
+                        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground"
+                        onClick={() => {
+                           const currentAlign = (selectedElement as ShapeElement).textAlign || 'center';
+                           const nextAlign = currentAlign === 'left' ? 'center' :
+                              currentAlign === 'center' ? 'right' : 'left';
+                           updateElement(selectedElementId!, { textAlign: nextAlign });
+                        }}
+                     >
+                        {(selectedElement as ShapeElement).textAlign === 'center' ? <AlignCenter size={16} /> :
+                           (selectedElement as ShapeElement).textAlign === 'right' ? <AlignRight size={16} /> :
+                              <AlignLeft size={16} />}
+                     </button>
+                  </>
+               )}
             </div>
          )}
 
@@ -274,16 +306,83 @@ export function TopToolbar() {
                   style={{ display: 'none' }}
                />
 
-               <div className="flex items-center gap-2">
-                  <span className="text-xs font-medium text-muted-foreground uppercase">Radius</span>
-                  <input
-                     type="number"
-                     className="h-7 w-12 rounded-md border border-input bg-transparent px-2 text-center text-xs"
-                     value={(selectedElement as ImageElement).cornerRadius || 0}
-                     onChange={(e) => updateElement(selectedElementId!, { cornerRadius: parseInt(e.target.value) || 0 })}
-                     min="0" max="100"
-                  />
-               </div>
+               <button
+                  className="flex items-center gap-1.5 rounded-md border border-border bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground transition-all hover:bg-muted/80 hover:text-foreground"
+                  onClick={() => {
+                     if (selectedElement) {
+                        const imageEl = selectedElement as ImageElement;
+                        updateSlide(currentSlideIndex, {
+                           backgroundImage: imageEl.src,
+                           metadata: {
+                              ...currentSlide?.metadata,
+                              previousBackgroundElement: {
+                                 ...imageEl,
+                                 wasBackground: true
+                              }
+                           }
+                        });
+                        removeElement(selectedElementId!);
+                     }
+                  }}
+                  title="Set as Background"
+               >
+                  <ArrowUpDown size={14} className="rotate-90" />
+                  <span>Set BG</span>
+               </button>
+
+               {currentSlide?.backgroundImage && currentSlide?.metadata?.previousBackgroundElement && (
+                  <button
+                     className="flex items-center gap-1.5 rounded-md border border-orange-500/30 bg-orange-500/15 px-3 py-1.5 text-xs font-medium text-orange-500 transition-all hover:bg-orange-500/25 hover:border-orange-500"
+                     onClick={() => {
+                        const prevElement = currentSlide?.metadata?.previousBackgroundElement;
+                        if (prevElement) {
+                           const { wasBackground, ...elementData } = prevElement;
+                           updateSlide(currentSlideIndex, {
+                              backgroundImage: undefined,
+                              metadata: {
+                                 ...currentSlide?.metadata,
+                                 previousBackgroundElement: undefined
+                              }
+                           });
+                           useEditorStore.getState().addElement(elementData);
+                        }
+                     }}
+                     title="Restore from Background"
+                  >
+                     <Undo2 size={14} />
+                     <span>Undo BG</span>
+                  </button>
+               )}
+
+               <div className="h-6 w-px shrink-0 bg-border mx-1" />
+
+
+               <ImagePositionPopover
+                  currentPosition={(selectedElement as ImageElement).position}
+                  currentSize={(selectedElement as ImageElement).size}
+                  scaleX={(selectedElement as ImageElement).scaleX}
+                  scaleY={(selectedElement as ImageElement).scaleY}
+                  ratio={ratio}
+                  onPositionChange={(pos) => updateElement(selectedElementId!, { position: pos })}
+               />
+
+               <ImageFlipControl
+                  onFlip={(direction) => {
+                     const img = selectedElement as ImageElement;
+                     if (direction === 'horizontal') {
+                        updateElement(selectedElementId!, { scaleX: img.scaleX * -1 });
+                     } else {
+                        updateElement(selectedElementId!, { scaleY: img.scaleY * -1 });
+                     }
+                  }}
+               />
+
+
+               <CornerControl
+                  cornerRadius={(selectedElement as ImageElement).cornerRadius || 0}
+                  shapeType="rect"
+                  onChange={(updates) => updateElement(selectedElementId!, updates)}
+               />
             </div>
          )}
 

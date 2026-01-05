@@ -72,7 +72,7 @@ export function generateWhatsAppMessage(noteTitle: string, pdfUrl: string, noteI
   lines.push("_Link akan kedaluwarsa dalam 1 jam_");
   lines.push("");
   lines.push("━━━━━━━━━━━━━━━");
-  lines.push("by Kajian Note");
+  lines.push("by Alwaah");
 
   if (noteId) {
     lines.push(`ID: ${noteId}`);
@@ -182,7 +182,7 @@ export function generateNoteShareMessage(note: Note, noteUrl: string): string {
   lines.push(noteUrl);
   lines.push("");
   lines.push("━━━━━━━━━━━━━━━");
-  lines.push("by Kajian Note");
+  lines.push("by Alwaah");
 
   return lines.join("\n");
 }

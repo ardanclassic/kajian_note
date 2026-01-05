@@ -100,67 +100,43 @@ export const ElegantSpinner: React.FC<{ size?: "sm" | "md" | "lg" | "xl"; classN
  * Fullscreen Loading Overlay
  * Premium branding experience with logo animation
  */
-const FullscreenLoader: React.FC<{ text?: string }> = ({ text = "Memuat..." }) => {
+/**
+ * Fullscreen Loading Overlay
+ * Premium branding experience with Elegant Spinner
+ */
+const FullscreenLoader: React.FC<{ text?: string }> = ({ text }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/95 backdrop-blur-md"
+      className="fixed inset-0 z-9999 flex flex-col items-center justify-center bg-black/95 backdrop-blur-md"
     >
-      {/* Ambient Background Effects */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none animate-pulse" />
+      <div className="flex flex-col items-center gap-6">
+        {/* Logo Alwaah */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-16 h-16 rounded-full border border-gray-800 bg-black p-1 shadow-2xl shadow-emerald-500/20 mb-2"
+        >
+          <img src={logo} alt="Alwaah" className="w-full h-full object-cover rounded-full opacity-90" />
+        </motion.div>
 
-      <div className="relative z-10 flex flex-col items-center">
-        {/* Logo Container */}
-        <div className="relative mb-8">
-          {/* Main Logo Icon */}
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="relative w-24 h-24 rounded-full border border-emerald-500/30 shadow-2xl shadow-emerald-500/20"
-          >
-            <img src={logo} alt="Alwaah Logo" className="w-full h-full object-cover rounded-full" />
-          </motion.div>
-
-          {/* Orbiting Elements */}
-          <motion.div
-            className="absolute inset-[-10px] rounded-full border border-emerald-500/20"
-            animate={{ rotate: 180, scale: [1, 1.05, 1] }}
-            transition={{ duration: 4, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute inset-[-20px] rounded-full border border-dashed border-emerald-500/10"
-            animate={{ rotate: -360 }}
-            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          />
-        </div>
+        <ElegantSpinner size="xl" />
 
         {/* Text Animation */}
-        <div className="text-center space-y-2">
-          <motion.h3
+        {text && (
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-2xl font-bold text-white tracking-widest"
+            className="flex items-center gap-2 justify-center"
           >
-            ALWAAH
-          </motion.h3>
-
-          {text && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="flex items-center gap-2 justify-center"
-            >
-              <span className="h-px w-8 bg-gradient-to-r from-transparent to-emerald-500/50" />
-              <p className="text-emerald-400 text-sm font-medium tracking-wide uppercase">{text}</p>
-              <span className="h-px w-8 bg-gradient-to-l from-transparent to-emerald-500/50" />
-            </motion.div>
-          )}
-        </div>
+            <span className="h-px w-8 bg-linear-to-r from-transparent to-emerald-500/50" />
+            <p className="text-emerald-400 text-sm font-medium tracking-wide uppercase animate-pulse">{text}</p>
+            <span className="h-px w-8 bg-linear-to-l from-transparent to-emerald-500/50" />
+          </motion.div>
+        )}
       </div>
     </motion.div>
   );
@@ -245,7 +221,7 @@ export const CardSkeletonLoading: React.FC<{ count?: number }> = ({ count = 3 })
           className="rounded-xl border border-gray-800 bg-gray-900/30 p-6 space-y-4 overflow-hidden relative"
         >
           {/* Shimmer Effect */}
-          <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+          <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-linear-to-r from-transparent via-white/5 to-transparent" />
 
           <div className="h-8 w-3/4 bg-gray-800 rounded-lg" />
           <div className="space-y-2">

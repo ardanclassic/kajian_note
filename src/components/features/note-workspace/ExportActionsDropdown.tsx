@@ -1,12 +1,14 @@
 /**
- * ExportActionsDropdown Component
- * Unified dropdown for all export/send actions
+ * ExportActionsDialog Component  
+ * Fullscreen dialog for all export/send actions
+ * Mobile-first design with better UX
  */
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, ChevronDown, FileText, FileDown, Send, MessageCircle, Lock, Crown } from "lucide-react";
+import { Download, X, FileText, FileDown, Send, MessageCircle, Lock, Crown, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useAuthStore } from "@/store/authStore";
 import { exportNoteToPDF, exportNoteToMarkdown } from "@/utils/exportUtils";
 import { SendToTelegramButton } from "./SendToTelegramButton";
@@ -19,25 +21,24 @@ interface ExportActionsDropdownProps {
   className?: string;
 }
 
+type ViewMode = "menu" | "telegram" | "whatsapp";
+
 export function ExportActionsDropdown({ note, className = "" }: ExportActionsDropdownProps) {
   const { user } = useAuthStore();
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [showTelegramButton, setShowTelegramButton] = useState(false);
-  const [showWhatsAppButton, setShowWhatsAppButton] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>("menu");
   const [isExporting, setIsExporting] = useState(false);
 
   // Check permissions
-  // const canExport = user?.subscriptionTier === "premium" || user?.subscriptionTier === "advance";
   const canExport = true;
   const sendPDFConfigured = isSendPDFAvailable();
 
   // Handle export PDF (native print)
   const handleExportPDF = async () => {
     setIsExporting(true);
-    setShowDropdown(false);
-
     try {
       await exportNoteToPDF(note);
+      setOpen(false);
     } catch (error) {
       console.error("Export PDF error:", error);
     } finally {
@@ -47,205 +48,237 @@ export function ExportActionsDropdown({ note, className = "" }: ExportActionsDro
 
   // Handle export Markdown
   const handleExportMarkdown = () => {
-    setShowDropdown(false);
     try {
       exportNoteToMarkdown(note);
+      setOpen(false);
     } catch (error) {
       console.error("Export Markdown error:", error);
     }
   };
 
-  // Handle send to Telegram
-  const handleTelegramClick = () => {
-    setShowDropdown(false);
-    setShowTelegramButton(true);
-    setShowWhatsAppButton(false);
-  };
-
-  // Handle send to WhatsApp
-  const handleWhatsAppClick = () => {
-    setShowDropdown(false);
-    setShowWhatsAppButton(true);
-    setShowTelegramButton(false);
+  // Reset to menu when dialog closes
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen);
+    if (!isOpen) {
+      setViewMode("menu");
+    }
   };
 
   return (
-    <div className={`relative ${className}`}>
-      {/* Main Button */}
+    <>
+      {/* Trigger Button */}
       <Button
         variant="outline"
         size="sm"
-        onClick={() => setShowDropdown(!showDropdown)}
-        className="gap-2"
+        onClick={() => setOpen(true)}
+        className={`gap-2 ${className}`}
         disabled={isExporting}
       >
         <Download className="w-4 h-4" />
         <span className="hidden sm:inline">Export</span>
-        <ChevronDown className="w-3 h-3" />
       </Button>
 
-      {/* Dropdown Menu */}
-      <AnimatePresence>
-        {showDropdown && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute -right-[90%] md:right-0 mt-2 w-64 bg-background/80 rounded-lg shadow-lg overflow-hidden z-50"
-          >
-            {/* Export PDF (Native) */}
-            <button
-              onClick={handleExportPDF}
-              className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left mb-1"
-            >
-              <FileText className="w-4 h-4 text-yellow-500" />
-              <div className="flex-1">
-                <div className="font-medium text-sm">Export PDF</div>
-                <div className="text-xs text-muted-foreground">Via print dialog</div>
+      {/* Fullscreen Dialog */}
+      <Dialog open={open} onOpenChange={handleOpenChange}>
+        <DialogContent className="max-w-md p-0 gap-0 bg-background border-border/50 h-dvh sm:h-auto sm:max-h-[90vh] flex flex-col">
+          {/* Header */}
+          <DialogHeader className="px-6 py-4 border-b border-border/50 shrink-0">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                {viewMode !== "menu" && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 -ml-2"
+                    onClick={() => setViewMode("menu")}
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                  </Button>
+                )}
+                <DialogTitle className="text-base font-semibold">
+                  {viewMode === "menu" && "Export Options"}
+                  {viewMode === "telegram" && "Via Telegram"}
+                  {viewMode === "whatsapp" && "Via WhatsApp"}
+                </DialogTitle>
               </div>
-            </button>
-
-            {/* Export Markdown */}
-            <button
-              onClick={handleExportMarkdown}
-              className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors text-left border-t mb-1"
-            >
-              <FileDown className="w-4 h-4 text-fuchsia-500" />
-              <div className="flex-1">
-                <div className="font-medium text-sm">Export Markdown</div>
-                <div className="text-xs text-muted-foreground">Download sebagai .md</div>
-              </div>
-            </button>
-
-            {/* Send to Telegram */}
-            {sendPDFConfigured ? (
-              canExport ? (
-                <button
-                  onClick={handleTelegramClick}
-                  className="w-full px-4 py-3 flex items-center gap-3 bg-blue-500/5 hover:bg-blue-500/10 text-blue-600 dark:text-blue-400 transition-colors text-left mb-1"
-                >
-                  <Send className="w-4 h-4 text-blue-400" />
-                  <div className="flex-1">
-                    <div className="font-medium text-sm">Send to Telegram</div>
-                    <div className="text-xs text-muted-foreground">Direct to your Telegram</div>
-                  </div>
-                </button>
-              ) : (
-                <div className="px-4 py-3 flex items-center gap-3 opacity-50 cursor-not-allowed">
-                  <Lock className="w-4 h-4" />
-                  <div className="flex-1">
-                    <div className="font-medium text-sm flex items-center gap-2">
-                      Send to Telegram
-                      <Crown className="w-3 h-3 text-yellow-500" />
-                    </div>
-                    <div className="text-xs text-muted-foreground">Premium only</div>
-                  </div>
-                </div>
-              )
-            ) : null}
-
-            {/* Send to WhatsApp */}
-            {sendPDFConfigured ? (
-              canExport ? (
-                <button
-                  onClick={handleWhatsAppClick}
-                  className="w-full px-4 py-3 flex items-center gap-3 bg-green-500/5 hover:bg-green-500/10 text-green-600 dark:text-green-500 transition-colors text-left border-t mb-1"
-                >
-                  <MessageCircle className="w-4 h-4 text-green-500" />
-                  <div className="flex-1">
-                    <div className="font-medium text-sm">Send to WhatsApp</div>
-                    <div className="text-xs text-muted-foreground">Share via WhatsApp link</div>
-                  </div>
-                </button>
-              ) : (
-                <div className="px-4 py-3 flex items-center gap-3 opacity-50 cursor-not-allowed border-t">
-                  <Lock className="w-4 h-4" />
-                  <div className="flex-1">
-                    <div className="font-medium text-sm flex items-center gap-2">
-                      Send to WhatsApp
-                      <Crown className="w-3 h-3 text-yellow-500" />
-                    </div>
-                    <div className="text-xs text-muted-foreground">Premium only</div>
-                  </div>
-                </div>
-              )
-            ) : null}
-
-            {/* Premium CTA (if free user) */}
-            {!canExport && sendPDFConfigured && (
-              <div className="px-4 py-3 bg-linear-to-r from-yellow-500/10 to-orange-500/10 border-t">
-                <div className="flex items-center gap-2 mb-1">
-                  <Crown className="w-4 h-4 text-yellow-500" />
-                  <span className="text-xs font-semibold text-yellow-600">Upgrade to Premium</span>
-                </div>
-                <p className="text-xs text-muted-foreground">Dapatkan fitur send to Telegram & WhatsApp</p>
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Telegram Button (when activated) */}
-      <AnimatePresence>
-        {showTelegramButton && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute -right-full md:right-0 mt-2 w-80 z-50"
-          >
-            <div className="bg-background rounded-lg shadow-lg p-4">
-              <SendToTelegramButton
-                note={note}
-                variant="default"
-                size="sm"
-                className="w-full"
-                onExit={() => setShowTelegramButton(false)}
-                onSuccess={() => {
-                  setTimeout(() => setShowTelegramButton(false), 3000);
-                }}
-              />
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </DialogHeader>
 
-      {/* WhatsApp Button (when activated) */}
-      <AnimatePresence>
-        {showWhatsAppButton && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute -right-full md:right-0 mt-2 w-80 z-50"
-          >
-            <div className="bg-background rounded-lg shadow-lg p-4">
-              <SendToWhatsAppButton
-                note={note}
-                variant="default"
-                size="sm"
-                className="w-full"
-                onExit={() => setShowWhatsAppButton(false)}
-                onSuccess={() => {
-                  setTimeout(() => setShowWhatsAppButton(false), 5000);
-                }}
-              />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto overflow-x-hidden">
+            <AnimatePresence mode="wait">
+              {/* Main Menu */}
+              {viewMode === "menu" && (
+                <motion.div
+                  key="menu"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="p-4 space-y-3"
+                >
+                  {/* Export PDF */}
+                  <motion.button
+                    onClick={handleExportPDF}
+                    disabled={isExporting}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                    className="w-full p-4 flex items-center gap-4 rounded-xl bg-yellow-500/5 hover:bg-yellow-500/10 border border-yellow-500/20 transition-all duration-200 text-left group disabled:opacity-50"
+                  >
+                    <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-yellow-500/20 group-hover:bg-yellow-500/30 transition-colors flex-shrink-0">
+                      <FileText className="w-6 h-6 text-yellow-500" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-bold text-base text-foreground">Export PDF</div>
+                      <div className="text-sm text-muted-foreground">Via print dialog</div>
+                    </div>
+                  </motion.button>
 
-      {/* Click outside to close */}
-      {(showDropdown || showTelegramButton || showWhatsAppButton) && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={() => {
-            setShowDropdown(false);
-            setShowTelegramButton(false);
-            setShowWhatsAppButton(false);
-          }}
-        />
-      )}
-    </div>
+                  {/* Send to Telegram */}
+                  {sendPDFConfigured && (
+                    canExport ? (
+                      <motion.button
+                        onClick={() => setViewMode("telegram")}
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.99 }}
+                        className="w-full p-4 flex items-center gap-4 rounded-xl bg-blue-500/5 hover:bg-blue-500/10 border border-blue-500/20 transition-all duration-200 text-left group"
+                      >
+                        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20 group-hover:bg-blue-500/30 transition-colors flex-shrink-0">
+                          <Send className="w-6 h-6 text-blue-400" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-bold text-base text-foreground">Send to Telegram</div>
+                          <div className="text-sm text-muted-foreground">Direct to your Telegram</div>
+                        </div>
+                      </motion.button>
+                    ) : (
+                      <div className="w-full p-4 flex items-center gap-4 rounded-xl bg-muted/20 border border-border/50 opacity-50 cursor-not-allowed">
+                        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-muted/30 flex-shrink-0">
+                          <Lock className="w-6 h-6 text-muted-foreground" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-bold text-base text-foreground flex items-center gap-2">
+                            Send to Telegram
+                            <Crown className="w-4 h-4 text-yellow-500" />
+                          </div>
+                          <div className="text-sm text-muted-foreground">Premium only</div>
+                        </div>
+                      </div>
+                    )
+                  )}
+
+                  {/* Send to WhatsApp */}
+                  {sendPDFConfigured && (
+                    canExport ? (
+                      <motion.button
+                        onClick={() => setViewMode("whatsapp")}
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.99 }}
+                        className="w-full p-4 flex items-center gap-4 rounded-xl bg-green-500/5 hover:bg-green-500/10 border border-green-500/20 transition-all duration-200 text-left group"
+                      >
+                        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-green-500/20 group-hover:bg-green-500/30 transition-colors flex-shrink-0">
+                          <MessageCircle className="w-6 h-6 text-green-500" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-bold text-base text-foreground">Send to WhatsApp</div>
+                          <div className="text-sm text-muted-foreground">Share via WhatsApp link</div>
+                        </div>
+                      </motion.button>
+                    ) : (
+                      <div className="w-full p-4 flex items-center gap-4 rounded-xl bg-muted/20 border border-border/50 opacity-50 cursor-not-allowed">
+                        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-muted/30 flex-shrink-0">
+                          <Lock className="w-6 h-6 text-muted-foreground" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-bold text-base text-foreground flex items-center gap-2">
+                            Send to WhatsApp
+                            <Crown className="w-4 h-4 text-yellow-500" />
+                          </div>
+                          <div className="text-sm text-muted-foreground">Premium only</div>
+                        </div>
+                      </div>
+                    )
+                  )}
+
+                  {/* Export Markdown */}
+                  <motion.button
+                    onClick={handleExportMarkdown}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                    className="w-full p-4 flex items-center gap-4 rounded-xl bg-fuchsia-500/5 hover:bg-fuchsia-500/10 border border-fuchsia-500/20 transition-all duration-200 text-left group"
+                  >
+                    <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-fuchsia-500/20 group-hover:bg-fuchsia-500/30 transition-colors flex-shrink-0">
+                      <FileDown className="w-6 h-6 text-fuchsia-500" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-bold text-base text-foreground">Export Markdown</div>
+                      <div className="text-sm text-muted-foreground">Download sebagai .md</div>
+                    </div>
+                  </motion.button>
+
+                  {/* Premium CTA */}
+                  {!canExport && sendPDFConfigured && (
+                    <div className="mt-4 p-4 rounded-xl bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Crown className="w-5 h-5 text-yellow-500" />
+                        <span className="font-bold text-sm text-yellow-600 dark:text-yellow-500">
+                          Upgrade to Premium
+                        </span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Dapatkan fitur send to Telegram & WhatsApp
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+
+              {/* Telegram View */}
+              {viewMode === "telegram" && (
+                <motion.div
+                  key="telegram"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  className="p-6"
+                >
+                  <SendToTelegramButton
+                    note={note}
+                    variant="default"
+                    size="default"
+                    className="w-full"
+                    onExit={() => setViewMode("menu")}
+                    onSuccess={() => {
+                      setTimeout(() => setOpen(false), 2000);
+                    }}
+                  />
+                </motion.div>
+              )}
+
+              {/* WhatsApp View */}
+              {viewMode === "whatsapp" && (
+                <motion.div
+                  key="whatsapp"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  className="p-6"
+                >
+                  <SendToWhatsAppButton
+                    note={note}
+                    variant="default"
+                    size="default"
+                    className="w-full"
+                    onExit={() => setViewMode("menu")}
+                    onSuccess={() => {
+                      setTimeout(() => setOpen(false), 2000);
+                    }}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

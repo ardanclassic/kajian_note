@@ -92,6 +92,16 @@ interface Blueprint {
   };
 }
 
+/**
+ * Parses a JSON blueprint to generate a full slide deck.
+ * Supports different slide types (Cover, Content, Closing) and handles
+ * the initial layout generation based on the provided ratio and color palette.
+ *
+ * @param blueprint The source blueprint JSON
+ * @param ratio Aspect ratio (e.g. 1:1, 4:5)
+ * @param colorPalette The selected color theme
+ * @returns Array of generated Slides
+ */
 export function parseBlueprint(blueprint: Blueprint, ratio: Ratio, colorPalette: any): Slide[] {
   if (!blueprint.slides || !Array.isArray(blueprint.slides)) {
     throw new Error("Invalid blueprint: slides array is required");
@@ -103,7 +113,6 @@ export function parseBlueprint(blueprint: Blueprint, ratio: Ratio, colorPalette:
 
     const slide: Slide = {
       id: uuidv4(),
-      // type removed
       elements: [],
       backgroundColor: colorPalette.colors.background || "#FFFFFF",
       originalContent: slideData,
@@ -123,6 +132,10 @@ export function parseBlueprint(blueprint: Blueprint, ratio: Ratio, colorPalette:
   });
 }
 
+/**
+ * Regenerates a single slide's layout using a different design variant (A/B).
+ * Preserves the original content data but completely redraws the elements.
+ */
 export function reGenerateSlide(slide: Slide, variant: "A" | "B", ratio: Ratio, palette: any): Slide {
   if (!slide.originalContent) return slide; // Should fallback to extract content if needed, but for now blueprint driven.
 

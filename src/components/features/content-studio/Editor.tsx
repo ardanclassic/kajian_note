@@ -1,4 +1,10 @@
-// Main Editor Component - Composes all editor pieces
+/**
+ * Editor Component
+ * 
+ * The main layout container for the Content Studio.
+ * Orchestrates the Sidebar, TopToolbar, and the main CanvasEditor workspace.
+ * Manages the collapsible sidebar state.
+ */
 
 import { motion } from 'framer-motion';
 import { Sidebar } from './components/Sidebar';
@@ -14,7 +20,7 @@ export function Editor() {
 
   return (
     <div className="relative flex w-screen h-screen overflow-hidden bg-black text-white font-sans">
-      {/* Left Sidebar Container */}
+      {/* Collapsible Sidebar Container */}
       <div className="relative flex h-full z-10">
         <motion.div
           className="overflow-hidden bg-[#0a0a0a] border-right border-white/10"
@@ -36,11 +42,11 @@ export function Editor() {
         </button>
       </div>
 
-      {/* Main Content Area */}
+      {/* Main Workspace: Toolbar + Canvas */}
       <div className="flex-1 flex flex-col min-w-0 relative">
         <TopToolbar />
 
-        {/* Canvas Area */}
+        {/* Canvas Scrollable Area */}
         <div className="flex-1 min-h-0 overflow-hidden">
           <CanvasEditor />
         </div>

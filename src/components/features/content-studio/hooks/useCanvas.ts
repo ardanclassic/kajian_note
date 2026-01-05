@@ -1,10 +1,21 @@
-// Custom hook for Fabric.js canvas management with SCROLL system
-// REBUILT: Fixes text editing re-renders and multi-selection movement
+/**
+ * useCanvas Hook
+ *
+ * Manages the lifecycle of a Fabric.js canvas instance for a single slide.
+ * Handles:
+ * - Canvas initialization and sizing
+ * - Syncing Fabric objects with Redux/Zustand state
+ * - Event listeners (selection, modification, text editing)
+ * - Multi-selection logic and history management
+ *
+ * Note: This hook is designed to work in a list of canvases (Scroll Spy architecture),
+ * so it must handle activation/deactivation and mounting/unmounting gracefully.
+ */
 
-import { useEffect, useRef, useCallback } from "react";
-import { Canvas, Textbox, Rect, Circle, FabricImage, FabricObject, ActiveSelection, util } from "fabric";
+import { useEffect, useRef } from "react";
+import { Canvas, Textbox, FabricObject, ActiveSelection, FabricImage } from "fabric";
 import { useEditorStore } from "@/store/contentStudioStore";
-import type { CanvasElement, TextElement, ShapeElement, Ratio } from "@/types/contentStudio.types";
+import type { TextElement, ShapeElement, Ratio } from "@/types/contentStudio.types";
 import { RATIO_DIMENSIONS, DISPLAY_DIMENSIONS } from "@/types/contentStudio.types";
 
 declare module "fabric" {
@@ -14,6 +25,12 @@ declare module "fabric" {
 }
 
 import { createFabricObject, CONTROL_DEFAULTS, loadFont } from "@/utils/contentStudio/fabricUtils";
+import {
+  setupShapeTextEditing,
+  setupMultiSelectTracking,
+  setupObjectModification,
+  handleShiftClickSelection,
+} from "@/utils/contentStudio/fabricHandlers";
 import { initAligningGuidelines } from "@/utils/contentStudio/smartGuides";
 import type { Slide } from "@/types/contentStudio.types";
 
@@ -26,8 +43,8 @@ export function useCanvas(
   containerRef: React.RefObject<HTMLDivElement | null>,
   options: UseCanvasOptions,
   canvasElRef: React.RefObject<HTMLCanvasElement | null>,
-  slide: Slide, // CRITICAL FIX: Accept slide directly as prop
-  slideIndex: number // Keep slideIndex for active slide detection
+  slide: Slide, // Direct prop access ensures we render the correct slide data during reorder operations
+  slideIndex: number // Used to detect if this canvas is the currently "active" slide in the viewport
 ) {
   const canvasRef = useRef<Canvas | null>(null);
   const isRenderingRef = useRef(false);
@@ -47,8 +64,12 @@ export function useCanvas(
   const slideIndexRef = useRef(slideIndex);
   slideIndexRef.current = slideIndex;
 
+  // Track last synced elements to detect actual changes (Moved to top for Init access)
+  const lastSyncedElementsRef = useRef<string>("");
+  // Store fabric objects map for selection sync
+  const fabricObjectsMapRef = useRef<Map<string, FabricObject>>(new Map());
+
   const {
-    slides,
     currentSlideIndex,
     selectedElementId,
     selectedElementIds,
@@ -58,7 +79,6 @@ export function useCanvas(
     selectElement,
     selectElements,
     pushToHistory,
-    setZoom,
     setCurrentSlide, // Added
   } = useEditorStore();
 
@@ -86,24 +106,35 @@ export function useCanvas(
 
   // ==================== CANVAS INITIALIZATION ====================
   // This effect initializes a new Fabric.js canvas instance
-  // With STABLE keys (key={slide.id}), this runs ONLY ONCE when slide is first created
+  // REBUILT: Now re-initializes on slideIndex change to prevent "Blank Page on Move" bugs.
+  // This ensures the fabric instance is always attached to the current DOM node.
   useEffect(() => {
     if (!containerRef.current || canvasRef.current || !canvasElRef.current) return;
 
-    // Create new canvas instance
+    // Reset sync state on re-init so elements are re-rendered
+    lastSyncedElementsRef.current = "";
+
+    // Calculate correct scaled dimensions
+    const scaleFactor = (displayDimensions.width / dimensions.width) * (options.zoom / 100);
+    const scaledWidth = dimensions.width * scaleFactor;
+    const scaledHeight = dimensions.height * scaleFactor;
+
+    // Create new canvas instance with SCALED dimensions
     const canvas = new Canvas(canvasElRef.current, {
-      width: dimensions.width,
-      height: dimensions.height,
+      width: scaledWidth,
+      height: scaledHeight,
       backgroundColor: currentSlide?.backgroundColor || "#FFFFFF",
-      selection: true, // CRITICAL: Enable selection
+      selection: true, // Enable native selection
       preserveObjectStacking: true,
       renderOnAddRemove: false, // Manual render control for better performance
     });
 
     canvasRef.current = canvas;
 
-    // CRITICAL: Force immediate offset calculation
-    // This must happen BEFORE any elements are added
+    // Set zoom level
+    canvas.setZoom(scaleFactor);
+
+    // Force immediate offset calculation BEFORE adding elements
     canvas.calcOffset();
     canvas.renderAll();
 
@@ -140,7 +171,7 @@ export function useCanvas(
     };
 
     const handleSelectionCleared = () => {
-      if (isInternalSelectionUpdateRef.current) return;
+      if (isInternalSelectionUpdateRef.current || isRenderingRef.current) return;
       selectElements([]);
     };
 
@@ -165,68 +196,8 @@ export function useCanvas(
         return;
       }
 
-      if (!e.e || isRenderingRef.current) return;
-
       // Shift+Click multi-selection
-      const isShiftKey = e.e.shiftKey;
-      const target = e.target;
-
-      if (isShiftKey && target && target.customData?.id) {
-        e.e.preventDefault();
-        const clickedId = target.customData.id;
-        const currentActive = canvas.getActiveObject();
-
-        if (!currentActive) {
-          canvas.setActiveObject(target);
-          selectElement(clickedId);
-        } else if (currentActive === target) {
-          return;
-        } else if (currentActive.type === "activeSelection") {
-          const activeSelection = currentActive as ActiveSelection;
-          const currentObjects = activeSelection.getObjects();
-          const isInSelection = currentObjects.some((obj: any) => obj === target);
-          let newObjects: FabricObject[];
-
-          if (isInSelection) {
-            newObjects = currentObjects.filter((obj: any) => obj !== target);
-          } else {
-            newObjects = [...currentObjects, target as FabricObject];
-          }
-
-          isInternalSelectionUpdateRef.current = true;
-          canvas.discardActiveObject();
-
-          if (newObjects.length === 0) {
-            selectElement(null);
-          } else if (newObjects.length === 1) {
-            canvas.setActiveObject(newObjects[0]);
-            selectElement((newObjects[0] as any).customData?.id || null);
-          } else {
-            const newSelection = new ActiveSelection(newObjects, {
-              canvas: canvas,
-              ...CONTROL_DEFAULTS,
-            });
-            canvas.setActiveObject(newSelection);
-
-            const ids = newObjects.map((obj: any) => obj.customData?.id).filter(Boolean);
-            selectElements(ids);
-          }
-          isInternalSelectionUpdateRef.current = false;
-          canvas.requestRenderAll();
-        } else {
-          isInternalSelectionUpdateRef.current = true;
-          const newSelection = new ActiveSelection([currentActive, target], {
-            canvas: canvas,
-            ...CONTROL_DEFAULTS,
-          });
-          canvas.setActiveObject(newSelection);
-          isInternalSelectionUpdateRef.current = false;
-
-          const ids = [(currentActive as any).customData?.id, clickedId].filter(Boolean);
-          selectElements(ids);
-          canvas.requestRenderAll();
-        }
-      }
+      handleShiftClickSelection(e, canvas, isRenderingRef, isInternalSelectionUpdateRef, selectElement, selectElements);
     });
 
     // ========== TEXT EDITING ==========
@@ -249,235 +220,25 @@ export function useCanvas(
     });
 
     // ========== DOUBLE CLICK TO EDIT SHAPE TEXT ==========
-    canvas.on("mouse:dblclick", (e) => {
-      const target = e.target;
-      if (!target || target.type === "activeSelection" || !target.customData?.id) return;
-
-      const id = target.customData.id;
-      const { slides, currentSlideIndex } = useEditorStore.getState();
-      const currentSlide = slides[currentSlideIndex];
-      const element = currentSlide?.elements.find((el) => el.id === id);
-
-      if (element && element.type === "shape") {
-        const shapeEl = element as ShapeElement;
-        if (isEditingRef.current) return;
-
-        isEditingRef.current = true;
-        const center = target.getCenterPoint();
-        const scaledWidth = target.getScaledWidth();
-        const angle = target.angle;
-
-        if (target.type === "group" && (target as any).getObjects) {
-          const objects = (target as any).getObjects();
-          if (objects.length > 1) {
-            objects[1].set("visible", false);
-            target.set("dirty", true);
-          }
-        }
-
-        const tempTextbox = new Textbox(shapeEl.textContent || "", {
-          left: center.x,
-          top: center.y,
-          originX: "center",
-          originY: "center",
-          angle: angle,
-          width: scaledWidth - 6,
-          backgroundColor: "transparent",
-          fill: shapeEl.textFill || "#ffffff",
-          fontSize: shapeEl.textFontSize || 16,
-          fontFamily: shapeEl.textFontFamily || "Inter",
-          fontWeight: shapeEl.textFontWeight || 400,
-          textAlign: shapeEl.textAlign || "center",
-          selectable: true,
-          hasControls: true,
-          lockScalingFlip: true,
-          customData: { id: id },
-          padding: 0,
-          splitByGrapheme: true,
-          breakWords: true,
-        });
-
-        canvas.add(tempTextbox);
-        canvas.setActiveObject(tempTextbox);
-        tempTextbox.enterEditing();
-        tempTextbox.selectAll();
-
-        tempTextbox.on("input" as any, () => {
-          const textHeight = tempTextbox.calcTextHeight();
-          const currentHeight = target.getScaledHeight();
-          const minHeight = shapeEl.size.height;
-          const padding = 20;
-          const newHeight = Math.max(minHeight, textHeight + padding);
-
-          if (Math.abs(newHeight - currentHeight) > 1) {
-            if (target.type === "group" && (target as any).getObjects) {
-              const objects = (target as any).getObjects();
-              const shapeObj = objects[0];
-              if (shapeObj) {
-                try {
-                  const groupScaleY = target.scaleY || 1;
-                  const shapeScaleY = shapeObj.scaleY || 1;
-                  const requiredHeight = newHeight / (groupScaleY * shapeScaleY);
-
-                  shapeObj.set({ height: requiredHeight });
-                  shapeObj.set("dirty", true);
-                  (target as any).addWithUpdate();
-                  target.set("dirty", true);
-
-                  tempTextbox.set({ top: target.top, left: target.left });
-                  tempTextbox.setCoords();
-                  canvas.requestRenderAll();
-                } catch (err) {}
-              }
-            }
-          }
-        });
-
-        const handleExit = () => {
-          const newText = tempTextbox.text;
-          const finalHeight = target.getScaledHeight();
-          isEditingRef.current = false;
-
-          useEditorStore.getState().updateElement(id, {
-            textContent: newText,
-            size: {
-              width: shapeEl.size.width,
-              height: finalHeight,
-            },
-          });
-
-          if (target.type === "group" && (target as any).getObjects) {
-            (target as any).getObjects()[1].set("visible", true);
-          }
-          canvas.remove(tempTextbox);
-          lastSyncedElementsRef.current = "";
-        };
-
-        tempTextbox.on("editing:exited", handleExit);
-        tempTextbox.on("deselected", handleExit);
-
-        canvas.requestRenderAll();
-      }
-    });
+    canvas.on("mouse:dblclick", setupShapeTextEditing(canvas, isEditingRef, lastSyncedElementsRef, updateElement));
 
     // ========== MULTI-SELECT TRACKING ==========
-    canvas.on("selection:created", (e: any) => {
-      if (e.selected && e.selected.length > 1) {
-        selectionCoordsRef.current.clear();
-        e.selected.forEach((obj: any) => {
-          if (obj.customData?.id) {
-            selectionCoordsRef.current.set(obj.customData.id, {
-              x: obj.left || 0,
-              y: obj.top || 0,
-            });
-          }
-        });
-      }
-    });
+    const { onSelectionCreated, onSelectionCleared } = setupMultiSelectTracking(
+      canvas,
+      selectionCoordsRef,
+      isRenderingRef,
+      isInternalSelectionUpdateRef,
+      pushToHistory,
+      updateElements,
+      lastSyncedElementsRef,
+      selectElement
+    );
 
-    canvas.on("selection:cleared", () => {
-      if (isRenderingRef.current || isInternalSelectionUpdateRef.current) return;
-      if (selectionCoordsRef.current.size > 1) {
-        const updatesList: { id: string; changes: Partial<CanvasElement> }[] = [];
-        let hasMoved = false;
-        const canvasObjects = canvas.getObjects();
-
-        selectionCoordsRef.current.forEach((initialCoords, id) => {
-          const obj = canvasObjects.find((o: any) => o.customData?.id === id);
-          if (obj) {
-            const currentLeft = obj.left || 0;
-            const currentTop = obj.top || 0;
-            if (Math.abs(currentLeft - initialCoords.x) > 0.5 || Math.abs(currentTop - initialCoords.y) > 0.5) {
-              hasMoved = true;
-              const changes: Partial<CanvasElement> = {
-                position: { x: currentLeft, y: currentTop },
-                rotation: obj.angle || 0,
-              };
-
-              const objScaleX = obj.scaleX || 1;
-              const objScaleY = obj.scaleY || 1;
-
-              if (["textbox", "text", "i-text"].includes(obj.type)) {
-                (changes as any).fontSize = Math.round(((obj as any).fontSize || 24) * Math.max(objScaleX, objScaleY));
-                (changes as any).size = {
-                  width: (obj.width || 0) * objScaleX,
-                  height: (obj.height || 0) * objScaleY,
-                };
-              } else if (obj.type === "image") {
-                (changes as any).scaleX = objScaleX;
-                (changes as any).scaleY = objScaleY;
-              } else {
-                (changes as any).size = {
-                  width: (obj.width || 0) * objScaleX,
-                  height: (obj.height || 0) * objScaleY,
-                };
-              }
-              updatesList.push({ id, changes });
-            }
-          }
-        });
-
-        if (hasMoved && updatesList.length > 0) {
-          pushToHistory();
-          updateElements(updatesList);
-          lastSyncedElementsRef.current = "";
-        }
-        selectionCoordsRef.current.clear();
-      }
-      selectElement(null);
-    });
+    canvas.on("selection:created", onSelectionCreated);
+    canvas.on("selection:cleared", onSelectionCleared);
 
     // ========== OBJECT MODIFICATION ==========
-    canvas.on("object:modified", (e) => {
-      const target = e.target;
-      if (!target || target.type === "activeSelection") return; // Handled by selection:cleared
-
-      pushToHistory();
-      const obj = target as FabricObject & { customData?: { id: string } };
-      if (!obj?.customData?.id) return;
-
-      const updates: Partial<CanvasElement> = {
-        position: { x: obj.left || 0, y: obj.top || 0 },
-        rotation: obj.angle || 0,
-      };
-
-      if (["textbox", "text", "i-text"].includes(obj.type)) {
-        const scalingX = obj.scaleX || 1;
-        const scalingY = obj.scaleY || 1;
-        const scaling = Math.max(scalingX, scalingY);
-        const newFontSize = Math.round(((obj as any).fontSize || 24) * scaling);
-        const newWidth = (obj.width || 0) * scalingX;
-
-        (updates as any).fontSize = newFontSize;
-        (updates as any).size = { width: newWidth, height: (obj.height || 0) * scalingY };
-
-        obj.set({
-          fontSize: newFontSize,
-          width: newWidth,
-          scaleX: 1,
-          scaleY: 1,
-          dirty: true,
-        });
-      } else if (obj.type === "image") {
-        (updates as any).scaleX = obj.scaleX || 1;
-        (updates as any).scaleY = obj.scaleY || 1;
-      } else if (["rect", "circle", "triangle", "polygon"].includes(obj.type || "")) {
-        (updates as any).size = {
-          width: (obj.width || 0) * (obj.scaleX || 1),
-          height: (obj.height || 0) * (obj.scaleY || 1),
-        };
-        obj.set({
-          width: (obj.width || 0) * (obj.scaleX || 1),
-          height: (obj.height || 0) * (obj.scaleY || 1),
-          scaleX: 1,
-          scaleY: 1,
-          dirty: true,
-        });
-      }
-
-      updateElement(obj.customData.id, updates, false);
-      canvas.requestRenderAll();
-    });
+    canvas.on("object:modified", setupObjectModification(canvas, pushToHistory, updateElement));
 
     // ========== CLEANUP ==========
     return () => {
@@ -492,7 +253,7 @@ export function useCanvas(
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [slideIndex]); // CRITICAL: Re-init on slideIndex change
 
   // ==================== ROBUST OFFSET MANAGEMENT ====================
   // Ensure canvas offset is correct after initialization and scroll
@@ -556,24 +317,97 @@ export function useCanvas(
 
     canvas.setZoom(scaleFactor);
 
+    // Force recalculation after dimension change
+    canvas.calcOffset();
     canvas.renderAll();
-  }, [options.ratio, options.zoom, dimensions, displayDimensions]);
+  }, [options.ratio, options.zoom, dimensions, displayDimensions, slideIndex]);
 
   // Update background color
+  // Update background (Color & Image)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !currentSlide) return;
 
+    // 1. Set Background Color
     canvas.backgroundColor = currentSlide.backgroundColor;
-    canvas.renderAll();
-  }, [currentSlide?.backgroundColor]);
+
+    // 2. Set Background Image (if exists)
+    if (currentSlide.backgroundImage) {
+      FabricImage.fromURL(currentSlide.backgroundImage, { crossOrigin: "anonymous" })
+        .then((img: FabricImage) => {
+          if (!img || !canvas) return;
+
+          // Scale image to cover the canvas (like CSS object-fit: cover)
+          const canvasWidth = dimensions.width; // Use logical dimensions, not scaled
+          const canvasHeight = dimensions.height;
+
+          const imgWidth = img.width || 1;
+          const imgHeight = img.height || 1;
+
+          const scaleX = canvasWidth / imgWidth;
+          const scaleY = canvasHeight / imgHeight;
+
+          // Use max for 'cover', min for 'contain'
+          const scale = Math.max(scaleX, scaleY);
+
+          img.set({
+            originX: "center",
+            originY: "center",
+            left: canvasWidth / 2,
+            top: canvasHeight / 2,
+            scaleX: scale,
+            scaleY: scale,
+          });
+
+          canvas.backgroundImage = img;
+          canvas.requestRenderAll();
+        })
+        .catch((err: any) => {
+          console.error("Failed to load background image", err);
+          canvas.backgroundImage = undefined; // Fallback
+          canvas.requestRenderAll();
+        });
+    } else {
+      canvas.backgroundImage = undefined;
+      canvas.requestRenderAll();
+    }
+
+    // 3. Add double-click handler for background image restoration
+    const handleCanvasDblClick = (e: any) => {
+      // Only trigger if clicking on empty canvas (no object selected)
+      if (!e.target && currentSlide?.backgroundImage && currentSlide?.metadata?.previousBackgroundElement) {
+        const prevElement = currentSlide.metadata.previousBackgroundElement;
+        const { wasBackground, ...elementData } = prevElement;
+
+        // Restore element
+        useEditorStore.getState().updateSlide(currentSlideIndex, {
+          backgroundImage: undefined,
+          metadata: {
+            ...currentSlide.metadata,
+            previousBackgroundElement: undefined,
+          },
+        });
+        useEditorStore.getState().addElement(elementData);
+      }
+    };
+
+    canvas.on("mouse:dblclick", handleCanvasDblClick);
+
+    return () => {
+      canvas.off("mouse:dblclick", handleCanvasDblClick);
+    };
+  }, [
+    currentSlide?.backgroundColor,
+    currentSlide?.backgroundImage,
+    currentSlide?.metadata,
+    dimensions.width,
+    dimensions.height,
+    currentSlideIndex,
+  ]);
 
   // ========== REFACTORED: SEPARATE ELEMENT SYNC FROM SELECTION SYNC ==========
 
-  // Track last synced elements to detect actual changes
-  const lastSyncedElementsRef = useRef<string>("");
-  // Store fabric objects map for selection sync
-  const fabricObjectsMapRef = useRef<Map<string, FabricObject>>(new Map());
+  // Refs moved to top of file...
 
   // EFFECT 1: Sync ELEMENTS from store to canvas (NO selection dependency!)
   useEffect(() => {
@@ -633,6 +467,9 @@ export function useCanvas(
               textFontWeight: (el as any).textFontWeight,
               textFill: (el as any).textFill,
               textAlign: (el as any).textAlign,
+              // Line properties
+              lineStart: (el as any).lineStart,
+              lineEnd: (el as any).lineEnd,
             }
           : {}),
       })),
@@ -652,9 +489,6 @@ export function useCanvas(
     prevSlideIndexRef.current = slideIndex;
     isRenderingRef.current = true;
 
-    canvas.clear();
-    canvas.backgroundColor = currentSlide.backgroundColor;
-
     const textElements = currentSlide.elements.filter((el) => el.type === "text") as TextElement[];
     const shapeElements = currentSlide.elements.filter((el) => el.type === "shape") as ShapeElement[];
 
@@ -667,6 +501,16 @@ export function useCanvas(
     ];
 
     Promise.all(fontPromises).then(async () => {
+      if (!canvasRef.current) return;
+
+      // Preserve background image across clears
+      const savedBg = canvas.backgroundImage;
+      canvas.clear();
+      canvas.backgroundColor = currentSlide.backgroundColor;
+      if (savedBg) {
+        canvas.backgroundImage = savedBg;
+      }
+
       const sortedElements = [...currentSlide.elements].sort((a, b) => a.zIndex - b.zIndex);
 
       const newFabricObjectsMap = new Map<string, FabricObject>();
@@ -745,7 +589,7 @@ export function useCanvas(
         // Mark rendering complete
         isRenderingRef.current = false;
 
-        // CRITICAL FIX: Force render and offset update after element sync
+        // Force render and offset update after element sync
         // This ensures objects appear correctly after reorder when slideIndex fingerprint triggers rebuild
         try {
           canvas.calcOffset();
@@ -768,8 +612,7 @@ export function useCanvas(
       }, 300);
     });
 
-    // CRITICAL: With stable keys, same component can receive different slides!
-    // We must trigger re-render when currentSlide.id changes (different slide assigned to this component)
+    // Ensure re-render when currentSlide.id changes (component reuse with different data)
     // Also include currentSlide?.elements to catch element updates within the same slide
   }, [currentSlide?.id, currentSlide?.elements, currentSlideIndex, slideIndex, loadFont]);
 
@@ -844,203 +687,6 @@ export function useCanvas(
     });
   }, [selectedElementIds, currentSlide]);
 
-  // Create text element
-  const addText = useCallback(
-    (text: string = "Double click to edit") => {
-      const canvas = canvasRef.current;
-      if (!canvas) return null;
-
-      const textObj = new Textbox(text, {
-        left: dimensions.width / 2 - 100,
-        top: dimensions.height / 2 - 20,
-        width: 200,
-        fontFamily: "Inter",
-        fontSize: 24,
-        fill: "#1a1a1a",
-        textAlign: "center",
-        editable: true,
-        splitByGrapheme: false,
-        lockScalingFlip: true,
-        noScaleCache: false,
-        objectCaching: true,
-        ...CONTROL_DEFAULTS,
-      });
-
-      return textObj;
-    },
-    [dimensions]
-  );
-
-  const addImage = useCallback(
-    async (src: string) => {
-      const canvas = canvasRef.current;
-      if (!canvas) return null;
-
-      try {
-        const img = await FabricImage.fromURL(src);
-
-        const maxWidth = dimensions.width * 0.8;
-        const maxHeight = dimensions.height * 0.8;
-        const scale = Math.min(maxWidth / img.width!, maxHeight / img.height!);
-
-        img.scale(scale);
-        img.set({
-          left: (dimensions.width - img.width! * scale) / 2,
-          top: (dimensions.height - img.height! * scale) / 2,
-        });
-
-        return img;
-      } catch (error) {
-        console.error("Failed to load image:", error);
-        return null;
-      }
-    },
-    [dimensions]
-  );
-
-  const addShape = useCallback(
-    (type: "rect" | "circle") => {
-      const canvas = canvasRef.current;
-      if (!canvas) return null;
-
-      if (type === "rect") {
-        return new Rect({
-          left: dimensions.width / 2 - 75,
-          top: dimensions.height / 2 - 50,
-          width: 150,
-          height: 100,
-          fill: "#3B82F6",
-          stroke: "#1D4ED8",
-          strokeWidth: 2,
-          rx: 8,
-          ry: 8,
-          ...CONTROL_DEFAULTS,
-        });
-      } else {
-        return new Circle({
-          left: dimensions.width / 2 - 50,
-          top: dimensions.height / 2 - 50,
-          radius: 50,
-          fill: "#3B82F6",
-          stroke: "#1D4ED8",
-          strokeWidth: 2,
-          ...CONTROL_DEFAULTS,
-        });
-      }
-    },
-    [dimensions]
-  );
-
-  const exportAsImage = useCallback((format: "png" | "jpeg" = "png", quality = 1, multiplier = 3) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return null;
-
-    return canvas.toDataURL({
-      format,
-      quality,
-      multiplier,
-    });
-  }, []);
-
-  const deleteSelected = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const activeObjects = canvas.getActiveObjects();
-
-    if (activeObjects.length > 0) {
-      const idsToDelete = activeObjects.map((obj: any) => obj.customData?.id).filter((id: string) => !!id);
-
-      if (idsToDelete.length > 0) {
-        canvas.discardActiveObject();
-        removeElements(idsToDelete);
-      }
-    }
-  }, [removeElements]);
-
-  const moveSelected = useCallback(
-    (dx: number, dy: number) => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-
-      const activeObject = canvas.getActiveObject();
-      if (!activeObject) return;
-
-      pushToHistory();
-
-      const updatesList: { id: string; changes: Partial<CanvasElement> }[] = [];
-
-      if (activeObject.type === "activeSelection") {
-        const activeSelection = activeObject as ActiveSelection;
-        const objects = activeSelection.getObjects();
-
-        // Set flag to prevent useEffect re-render
-        isMultiSelectModifyingRef.current = true;
-
-        // Move each object
-        objects.forEach((obj) => {
-          obj.left = (obj.left || 0) + dx;
-          obj.top = (obj.top || 0) + dy;
-          obj.setCoords();
-        });
-
-        // Calculate world coordinates for each object
-        objects.forEach((obj: any) => {
-          if (obj.customData?.id) {
-            // Use calcTransformMatrix which includes all parent transforms
-            const matrix = obj.calcTransformMatrix();
-            const decomposed = util.qrDecompose(matrix);
-
-            // Get the CENTER in world coords
-            const worldCenterX = decomposed.translateX;
-            const worldCenterY = decomposed.translateY;
-
-            // Get scaled dimensions
-            const scaledWidth = (obj.width || 0) * decomposed.scaleX;
-            const scaledHeight = (obj.height || 0) * decomposed.scaleY;
-
-            // Convert CENTER to TOP-LEFT
-            const position = {
-              x: worldCenterX - scaledWidth / 2,
-              y: worldCenterY - scaledHeight / 2,
-            };
-
-            updatesList.push({
-              id: obj.customData.id,
-              changes: { position },
-            });
-          }
-        });
-
-        // Clear the flag after TWO frames
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            isMultiSelectModifyingRef.current = false;
-          });
-        });
-      } else {
-        activeObject.left = (activeObject.left || 0) + dx;
-        activeObject.top = (activeObject.top || 0) + dy;
-        activeObject.setCoords();
-
-        if (activeObject.customData?.id) {
-          updatesList.push({
-            id: activeObject.customData.id,
-            changes: {
-              position: { x: activeObject.left, y: activeObject.top },
-            },
-          });
-        }
-      }
-
-      if (updatesList.length > 0) {
-        updateElements(updatesList);
-      }
-      canvas.requestRenderAll();
-    },
-    [updateElements, pushToHistory]
-  );
-
   // EFFECT: Handle Export Request via Event (Robust method to access Fabric instance)
   useEffect(() => {
     const handleExport = (e: CustomEvent) => {
@@ -1082,12 +728,5 @@ export function useCanvas(
     return () => window.removeEventListener("CONTENT_STUDIO_EXPORT_SLIDE", handleExport as EventListener);
   }, [currentSlide?.id]);
 
-  return {
-    addText,
-    addImage,
-    addShape,
-    exportAsImage,
-    deleteSelected,
-    moveSelected,
-  };
+  // No return value needed - all logic is handled via effects and store listeners
 }

@@ -56,10 +56,18 @@ export interface ImageElement extends BaseElement {
   cornerRadius?: number;
 }
 
+// Gradient type definition
+export interface GradientFill {
+  type: "linear" | "radial";
+  startColor: string;
+  endColor: string;
+  angle: number; // For linear (in degrees)
+}
+
 export interface ShapeElement extends BaseElement {
   type: "shape";
   shapeType: "rect" | "circle" | "line" | "triangle" | "star" | "polygon";
-  fill: string;
+  fill: string | GradientFill;
   stroke: string;
   strokeWidth: number;
   strokeDashArray?: number[] | null; // For dashed/dotted strokes
@@ -72,6 +80,8 @@ export interface ShapeElement extends BaseElement {
   textFontWeight?: number;
   textFill?: string;
   textAlign?: "left" | "center" | "right";
+  lineStart?: "none" | "arrow" | "circle" | "square" | "diamond" | "bar";
+  lineEnd?: "none" | "arrow" | "circle" | "square" | "diamond" | "bar";
 }
 
 export type CanvasElement = TextElement | ImageElement | ShapeElement;
@@ -89,6 +99,7 @@ export interface Slide {
   title?: string;
   isHidden?: boolean;
   isLocked?: boolean;
+  metadata?: Record<string, any>;
 }
 
 // Template types

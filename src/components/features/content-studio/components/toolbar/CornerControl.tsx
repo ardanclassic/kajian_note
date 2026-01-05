@@ -59,7 +59,7 @@ export function CornerControl({
                 max="100"
                 value={cornerRadius}
                 onChange={(e) => onChange({ cornerRadius: parseInt(e.target.value) })}
-                className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-secondary accent-primary"
+                className="h-2 w-full cursor-pointer appearance-none rounded-full bg-secondary accent-primary"
               />
               <input
                 type="number"

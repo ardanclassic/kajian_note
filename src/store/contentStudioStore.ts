@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { persist, subscribeWithSelector } from "zustand/middleware";
 import { v4 as uuidv4 } from "uuid";
 import type { Slide, CanvasElement, Ratio, HistoryEntry } from "@/types/contentStudio.types";
+import { RATIO_DIMENSIONS } from "@/types/contentStudio.types";
 import { parseBlueprint, reGenerateSlide } from "@/utils/contentStudio/blueprintParser";
 
 const MAX_HISTORY_SIZE = 50;
@@ -102,7 +103,6 @@ export const DEFAULT_COLOR_PALETTE: ColorPalette = {
 
 const createEmptySlide = (): Slide => ({
   id: uuidv4(),
-  // type removed
   elements: [],
   backgroundColor: "#FFFFFF",
 });
@@ -226,10 +226,43 @@ export const useEditorStore = create<EditorState & EditorActions>()(
         addElement: (element) => {
           get().pushToHistory();
           set((state) => {
+            let elementToAdd = { ...element };
+
+            // AUTO-RESIZE IMAGE ON IMPORT
+            if (elementToAdd.type === "image") {
+              const canvasWidth = RATIO_DIMENSIONS[state.ratio].width;
+              const canvasHeight = RATIO_DIMENSIONS[state.ratio].height;
+
+              const maxWidth = canvasWidth * 0.7;
+              const maxHeight = canvasHeight * 0.7;
+
+              const currentWidth = elementToAdd.size.width * (elementToAdd as any).scaleX;
+              const currentHeight = elementToAdd.size.height * (elementToAdd as any).scaleY;
+
+              if (currentWidth > maxWidth || currentHeight > maxHeight) {
+                const scaleX = maxWidth / elementToAdd.size.width;
+                const scaleY = maxHeight / elementToAdd.size.height;
+
+                // Use the smaller scale factor to ensure it fits within BOTH dimensions
+                const scaleFactor = Math.min(scaleX, scaleY);
+
+                (elementToAdd as any).scaleX = scaleFactor;
+                (elementToAdd as any).scaleY = scaleFactor; // Maintain aspect ratio
+
+                // Recenter logic
+                const newW = elementToAdd.size.width * scaleFactor;
+                const newH = elementToAdd.size.height * scaleFactor;
+                elementToAdd.position = {
+                  x: (canvasWidth - newW) / 2,
+                  y: (canvasHeight - newH) / 2,
+                };
+              }
+            }
+
             const currentSlide = state.slides[state.currentSlideIndex];
             const maxZIndex = currentSlide.elements.reduce((max, el) => Math.max(max, el.zIndex), 0);
 
-            const newElement = { ...element, zIndex: maxZIndex + 1 };
+            const newElement = { ...elementToAdd, zIndex: maxZIndex + 1 };
             const newSlides = state.slides.map((slide, i) =>
               i === state.currentSlideIndex ? { ...slide, elements: [...slide.elements, newElement] } : slide
             );

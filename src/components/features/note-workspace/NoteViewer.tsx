@@ -4,12 +4,12 @@
  * Optimized for native print/PDF export
  */
 
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, User, Globe, Lock, Tag as TagIcon, Clock, TvMinimalPlay } from "lucide-react";
+import { Calendar, User, Tag as TagIcon, Mic } from "lucide-react";
 import type { Note } from "@/types/notes.types";
-import { formatDistanceToNow, format } from "date-fns";
+import { format } from "date-fns";
 import { id as idLocale } from "date-fns/locale";
 import { convertMarkdownToHtml } from "@/utils/exportUtils";
 
@@ -51,33 +51,117 @@ export function NoteViewer({
 }: NoteViewerProps) {
   // Format dates
   const createdDate = format(new Date(note.createdAt), "dd MMMM yyyy, HH:mm", { locale: idLocale });
-  const updatedRelative = formatDistanceToNow(new Date(note.updatedAt), {
-    addSuffix: true,
-    locale: idLocale,
-  });
 
-  // Process content: detect HTML or convert markdown
+  // Derive teacher/speaker name from tags (heuristic)
+  // 1. Process content FIRST: detect HTML or convert markdown
   const processedContent = useMemo(() => {
     if (!note.content) return "";
 
+    let finalHtml = "";
+
     // If already HTML (from Tiptap), sanitize and use directly
     if (isHtmlContent(note.content)) {
-      return sanitizeHtml(note.content);
+      finalHtml = sanitizeHtml(note.content);
+    } else {
+      // If plain text or markdown, convert to HTML
+      finalHtml = convertMarkdownToHtml(note.content);
     }
 
-    // If plain text or markdown, convert to HTML
-    return convertMarkdownToHtml(note.content);
+    return finalHtml;
   }, [note.content]);
 
-  // Check if note is from YouTube
-  const isFromYouTube = note.sourceType === "youtube" && note.sourceUrl;
+  // 3. EFFECT: Detect "Sumber Referensi" in rendered DOM and force page break
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // Target the specific container where content lives
+      const contentDiv = document.querySelector('.prose-editor .ProseMirror') || document.querySelector('.prose-editor');
+      if (!contentDiv) return;
+
+      const elements = contentDiv.querySelectorAll('h1, h2, h3, h4, h5, h6, p, div');
+
+      for (const el of elements) {
+        // Check text content safely
+        if (el.textContent && /Sumber Referensi/i.test(el.textContent)) {
+          const element = el as HTMLElement;
+          // Apply styles via style object to preserve other styles if any
+          element.style.breakBefore = 'page';
+          element.style.pageBreakBefore = 'always';
+          element.style.marginTop = '2cm';
+          element.style.display = 'block';
+
+          // Add a marker class
+          element.classList.add('pdf-ref-break');
+          break;
+        }
+      }
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [processedContent]);
+
+  // 2. Derive teacher/speaker name from PROCESSED content or tags
+  const teacherName = useMemo(() => {
+    let name = "";
+
+    // A. Try to extract from processed content (Visual text)
+    if (processedContent) {
+      // Strip HTML tags to get plain text
+      const plainText = processedContent.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
+
+      // Regex to find specific keywords followed by colon and name
+      // Matches: "Narasumber: Ustadz X", "Pemateri : Ustadz Y", "Oleh: Z"
+      // Capture until newline or HTML tag char to avoid stopping at dots in titles
+      const patterns = [
+        /(?:Narasumber|Pemateri)\s*[:]\s*([^\n\r<]+)/i,
+        /(?:Sumber)\s*[:]\s*([^\n\r<]+)/i
+      ];
+
+      for (const pattern of patterns) {
+        const match = plainText.match(pattern);
+        if (match && match[1]) {
+          // Take the first part before any common punctuation that ends a name usually in this context
+          // Or just take reasonable length
+          let extracted = match[1].trim();
+
+          // Cleanup: Stop at "Channel" word if present (case insensitive)
+          const channelIndex = extracted.toLowerCase().indexOf('channel');
+          if (channelIndex > -1) {
+            extracted = extracted.substring(0, channelIndex).trim();
+          }
+
+          // Remove trailing punctuation like colons, dashes
+          extracted = extracted.replace(/[:|-]+$/, '').trim();
+
+          // Take max 50 chars to be safe
+          if (extracted.length > 50) extracted = extracted.substring(0, 50);
+
+          if (extracted.length > 2) {
+            name = extracted;
+            break;
+          }
+        }
+      }
+    }
+
+    // B. Fallback to Tags if content extraction failed
+    if (!name && note.tags && note.tags.length > 0) {
+      const honourifics = ['ust', 'ustadz', 'syeikh', 'syaikh', 'buya', 'kyai', 'dr', 'prof'];
+      const teacherTag = note.tags.find(tag =>
+        honourifics.some(h => tag.toLowerCase().startsWith(h))
+      );
+      // Use found tag or first tag if none found
+      name = teacherTag || note.tags[0];
+    }
+
+    return name || "-";
+  }, [processedContent, note.tags]);
 
   return (
     <div className="space-y-6 print:space-y-0">
       {/* Title Section - Adaptive for Screen & Print */}
       <div className="space-y-4 print:px-0 pdf-title-page">
         {/* Main Title */}
-        <h1 className="text-[32px] md:text-[36px] font-bold leading-tight print:!text-[36pt] print:!font-bold print:!text-black print:!mb-6 print:!mt-[40%]">
+        <h1 className="text-[32px] md:text-[36px] font-bold leading-tight print:!text-[40pt] print:!font-bold print:!text-black print:!mb-8 print:!mt-[15%]">
           {note.title}
         </h1>
 
@@ -107,12 +191,14 @@ export function NoteViewer({
           </div>
         )}
 
-        {/* Print Metadata - Left Aligned */}
-        <div className="hidden print:flex flex-col gap-2 mt-4 text-[12pt] text-black font-semibold">
-          <div className="flex items-center gap-2">
-            <span>📅 Tanggal:</span>
-            <span>{createdDate}</span>
-          </div>
+        {/* Print Metadata - Left Aligned - SPEAKER NAME */}
+        <div className="hidden print:flex flex-col gap-2 mt-8 text-[18pt] text-black">
+          {teacherName && teacherName !== "-" && (
+            <div className="flex items-start gap-3">
+              <Mic className="w-6 h-6 mt-1 flex-shrink-0" />
+              <span className="font-bold text-black leading-snug">{teacherName}</span>
+            </div>
+          )}
         </div>
       </div>
 

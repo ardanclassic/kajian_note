@@ -131,7 +131,7 @@ export default function ListDeepNote() {
     }
   };
 
-  if (!user) return <Loading fullscreen text="Memuat..." />;
+  if (!user) return <Loading fullscreen />;
 
   // Action buttons for TopHeader
   const headerActions = (

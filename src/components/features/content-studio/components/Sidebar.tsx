@@ -76,7 +76,9 @@ export function Sidebar() {
   };
 
   return (
-    <div className="min-w-[340px] h-full bg-transparent border-r border-[#ffffff1a] flex flex-col overflow-y-auto custom-scrollbar">
+    <div
+      className="min-w-[340px] h-full bg-transparent border-r border-[#ffffff1a] flex flex-col overflow-y-auto custom-scrollbar"
+    >
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-6 border-b border-[#ffffff1a]">
         <div className="flex items-center gap-2">

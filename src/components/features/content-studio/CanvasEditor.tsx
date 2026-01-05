@@ -11,7 +11,7 @@ import type { Ratio } from '@/types/contentStudio.types';
 import { cn } from "@/lib/utils";
 
 interface SlideCanvasProps {
-  slide: any;
+  slide: any; // Ideally this should be the specific Slide type
   index: number;
   totalSlides: number;
   zoomLevel: number;
@@ -25,6 +25,13 @@ interface SlideCanvasProps {
   onUpdate: (updates: any) => void;
 }
 
+/**
+ * SlideCanvas
+ * 
+ * Represents a single slide's canvas rendering context within the editor list.
+ * Wraps the `useCanvas` hook to initialize Fabric.js for this specific slide.
+ * Handles the slide's "frame" UI controls (title, move up/down, delete, etc).
+ */
 const SlideCanvas = ({
   slide, index, totalSlides, zoomLevel, ratio, isActive,
   onRemove, onDuplicate, onInsertAfter, onMoveUp, onMoveDown, onUpdate
@@ -40,14 +47,30 @@ const SlideCanvas = ({
   const iconSize = 18;
   const iconStrokeWidth = 2;
 
-  // Initialize canvas for this specific slide
+  // Initialize canvas management hook for this specific slide
   useCanvas(
     containerRef,
     { ratio, zoom: zoomLevel },
     canvasElRef,
-    slide,  // Pass slide object directly
-    index   // Then slideIndex for active slide detection
+    slide,  // Directly pass slide data to ensure hook has latest state
+    index   // Index needed for active slide checks
   );
+
+  /**
+   * Layout Reflow Fix:
+   * When slides are reordered, the container might not naturally reflow its height
+   * correctly in some browser engines. This forces a reflow to ensure the layout
+   * stays robust.
+   */
+  useEffect(() => {
+    if (containerRef.current) {
+      const container = containerRef.current;
+      const currentHeight = container.style.height;
+      container.style.height = 'auto';
+      void container.offsetHeight; // Trigger Reflow
+      container.style.height = currentHeight;
+    }
+  }, [index, slide.id]);
 
   return (
     <div
@@ -110,7 +133,7 @@ const SlideCanvas = ({
             <Copy size={iconSize} strokeWidth={iconStrokeWidth} />
           </button>
           <button
-            className="bg-transparent border-none text-gray-300 cursor-pointer p-1.5 rounded flex items-center justify-center transition-all hover:text-white hover:bg-white/15 hover:-translate-y-px active:translate-y-0 disabled:opacity-30 disabled:cursor-default disabled:transform-none hover:text-red-500 hover:bg-red-500/15"
+            className="bg-transparent border-none text-gray-300 cursor-pointer p-1.5 rounded flex items-center justify-center transition-all hover:text-red-500 hover:bg-red-500/15 hover:-translate-y-px active:translate-y-0 disabled:opacity-30 disabled:cursor-default disabled:transform-none"
             onClick={(e) => { e.stopPropagation(); onRemove(); }}
             title="Delete Page"
             disabled={totalSlides <= 1}
@@ -128,9 +151,10 @@ const SlideCanvas = ({
       </div>
 
       <div
+        key={`canvas-container-${slide.id}-${index}`}
         ref={containerRef}
         className={cn(
-          "bg-white rounded overflow-hidden", // Removed will-change-transform
+          "bg-white rounded",
           "shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3),0_10px_20px_-2px_rgba(0,0,0,0.25),0_0_0_1px_rgba(255,255,255,0.1)]",
           isActive && "shadow-[0_0_0_2px_#3B82F6,0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)]"
         )}
@@ -138,7 +162,9 @@ const SlideCanvas = ({
           width: scaledWidth,
           height: (displayDimensions.height * zoomLevel) / 100,
           marginBottom: '40px',
-          opacity: slide.isHidden ? 0.5 : 1 // Visual feedback for hidden
+          opacity: slide.isHidden ? 0.5 : 1,
+          position: 'relative',
+          overflow: 'visible'
         }}
       >
         <canvas
@@ -146,7 +172,8 @@ const SlideCanvas = ({
           id={canvasId}
           style={{
             width: '100%',
-            height: '100%'
+            height: '100%',
+            display: 'block'
           }}
         />
         {/* Overlay for Hidden Page */}
@@ -160,6 +187,15 @@ const SlideCanvas = ({
   );
 };
 
+/**
+ * CanvasEditor
+ * 
+ * The central workspace component that renders the list of slides.
+ * Manages global editor interactions including:
+ * - Scroll synchronization (Scroll Spy)
+ * - Global keyboard shortcuts (Delete, Arrows)
+ * - Browser zoom override (Ctrl+Scroll)
+ */
 export function CanvasEditor() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const {
@@ -185,7 +221,11 @@ export function CanvasEditor() {
 
   const dimensions = RATIO_DIMENSIONS[ratio];
 
-  // Prevent Browser Zoom (Global)
+  /**
+   * Browser Zoom Override:
+   * Intercepts Ctrl+Wheel events to zoom the CANVAS instead of the browser page.
+   * This provides a more native app-like experience.
+   */
   useEffect(() => {
     const viewport = viewportRef.current;
     if (!viewport) return;
@@ -207,10 +247,15 @@ export function CanvasEditor() {
     return () => viewport.removeEventListener('wheel', preventBrowserZoom, { capture: true } as any);
   }, [zoomLevel, setZoom]);
 
-  // Global Keyboard Shortcuts (Delete, Arrows)
+  /**
+   * Global Keyboard Shortcuts:
+   * - Delete/Backspace: Remove selected elements
+   * - Arrow Keys: Nudge selected elements (Shift + Arrow for larger steps)
+   */
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const activeTag = document.activeElement?.tagName;
+      // Ignore if user is typing in an input text field
       if (activeTag === 'INPUT' || activeTag === 'TEXTAREA') return;
 
       if (e.key === 'Delete' || e.key === 'Backspace') {
@@ -221,6 +266,7 @@ export function CanvasEditor() {
       }
 
       if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        // Prevent default scrolling for up/down keys
         if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
           e.preventDefault();
         }
@@ -265,13 +311,19 @@ export function CanvasEditor() {
     }, 50);
   };
 
-  // SCROLL SPY: Update active slide based on scroll position
+  /**
+   * Scroll Spy:
+   * Detects which slide is currently most visible in the viewport and updates 
+   * the `currentSlideIndex` in the store. This allows the sidebar and tools 
+   * to contextually update based on what the user is looking at.
+   */
   useEffect(() => {
     const viewport = viewportRef.current;
     if (!viewport) return;
 
     let timeoutId: any;
     const handleScroll = () => {
+      // Throttle scroll events
       if (timeoutId) return;
       timeoutId = setTimeout(() => {
         const viewportRect = viewport.getBoundingClientRect();
@@ -429,13 +481,6 @@ export function CanvasEditor() {
             {/* Clamp Logic for Bug Fix */}
             Page {Math.min(currentSlideIndex + 1, slides.length || 1)} / {slides.length}
           </div>
-          <div className="w-px h-4 bg-white/10 hidden"></div>
-          <button className="bg-transparent border-none text-gray-400 cursor-pointer p-1 flex items-center justify-center hover:text-white hidden" title="Grid View">
-            <Grid size={16} />
-          </button>
-          <button className="bg-transparent border-none text-gray-400 cursor-pointer p-1 flex items-center justify-center hover:text-white hidden" title="Full Screen">
-            <Monitor size={16} />
-          </button>
         </div>
       </div>
     </div>

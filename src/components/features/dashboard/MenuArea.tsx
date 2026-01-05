@@ -284,7 +284,7 @@ export function MenuArea({
                 </div>
 
                 {/* Footer Text */}
-                <p className="text-xs text-gray-600 text-center font-medium">Kajian Notes © 2025</p>
+                <p className="text-xs text-gray-600 text-center font-medium">Alwaah © 2025</p>
               </div>
             </div>
           </motion.div>

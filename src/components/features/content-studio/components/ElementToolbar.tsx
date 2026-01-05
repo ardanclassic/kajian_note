@@ -110,14 +110,14 @@ export function ElementToolbar() {
     };
   };
 
-  const createImageElement = (src: string): ImageElement => ({
+  const createImageElement = (src: string, width = 300, height = 200): ImageElement => ({
     id: uuidv4(),
     type: 'image',
     position: {
-      x: dimensions.width / 2 - 150,
-      y: dimensions.height / 2 - 100
+      x: dimensions.width / 2 - width / 2,
+      y: dimensions.height / 2 - height / 2
     },
-    size: { width: 300, height: 200 },
+    size: { width, height },
     rotation: 0,
     opacity: 1,
     locked: false,
@@ -135,7 +135,12 @@ export function ElementToolbar() {
     const reader = new FileReader();
     reader.onload = (event) => {
       const src = event.target?.result as string;
-      addElement(createImageElement(src));
+
+      const img = new window.Image();
+      img.onload = () => {
+        addElement(createImageElement(src, img.naturalWidth, img.naturalHeight));
+      };
+      img.src = src;
     };
     reader.readAsDataURL(file);
 

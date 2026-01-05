@@ -320,10 +320,10 @@ export default function EditProfileForm() {
                     Diverifikasi:{" "}
                     {user?.telegramVerifiedAt
                       ? new Date(user.telegramVerifiedAt).toLocaleDateString("id-ID", {
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric",
-                        })
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })
                       : "-"}
                   </p>
                 </div>
@@ -384,7 +384,7 @@ export default function EditProfileForm() {
                       className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-all shadow-lg shadow-blue-600/20"
                     >
                       <Send className="w-4 h-4" />
-                      Buka @kajian_note_bot
+                      Buka @alwaah_bot
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   </div>

@@ -56,7 +56,7 @@ function buildWhatsAppMessage(noteTitle: string, pdfUrl: string, noteId?: string
   lines.push("_Link akan kedaluwarsa dalam 1 jam_");
   lines.push("");
   lines.push("──────────────────────────");
-  lines.push("by Kajian Note");
+  lines.push("by Alwaah");
   if (noteId) {
     lines.push(`ID: ${noteId}`);
   }
@@ -180,21 +180,16 @@ export function SendToWhatsAppButton({
     <>
       <div className="space-y-2">
         {!isLoading && (
-          <div className="flex items-center justify-between gap-2">
-            <Button
-              variant={variant}
-              size={size}
-              className={"w-[80%] text-green-300"}
-              onClick={handleSendToWhatsApp}
-              disabled={isLoading}
-            >
-              <MessageCircle className="w-4 h-4 mr-2" />
-              Send to WhatsApp
-            </Button>
-            <Button variant={variant} size={size} className={"w-[20%]"} onClick={() => onExit?.()} disabled={isLoading}>
-              ×
-            </Button>
-          </div>
+          <Button
+            variant={variant}
+            size={size}
+            className="w-full h-12 text-base bg-green-600/80 hover:bg-green-600 text-white border-0"
+            onClick={handleSendToWhatsApp}
+            disabled={isLoading}
+          >
+            <MessageCircle className="w-4 h-4 mr-2" />
+            Send to WhatsApp
+          </Button>
         )}
 
         {/* Error Alert */}

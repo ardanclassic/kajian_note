@@ -120,7 +120,7 @@ export function SendToTelegramButton({
             <strong className="text-yellow-300">Verifikasi Telegram diperlukan</strong>
             <p className="mt-1 text-muted-foreground">
               1. Buka Telegram dan cari bot:{" "}
-              <code className="font-mono text-xs bg-muted px-1 py-0.5 rounded">@kajian_note_bot</code>
+              <code className="font-mono text-xs bg-muted px-1 py-0.5 rounded">@alwaah_bot</code>
             </p>
             <p className="text-muted-foreground">
               2. Kirim: <code className="font-mono text-xs bg-muted px-1 py-0.5 rounded">/start</code>
@@ -136,21 +136,16 @@ export function SendToTelegramButton({
     <>
       <div className="space-y-2">
         {!isLoading && (
-          <div className="flex items-center justify-between gap-2">
-            <Button
-              variant={variant}
-              size={size}
-              className={"w-[80%] text-blue-300"}
-              onClick={handleSendToTelegram}
-              disabled={isLoading}
-            >
-              <Send className="w-4 h-4 mr-2" />
-              Send to Telegram
-            </Button>
-            <Button variant={variant} size={size} className={"w-[20%]"} onClick={() => onExit?.()} disabled={isLoading}>
-              ×
-            </Button>
-          </div>
+          <Button
+            variant={variant}
+            size={size}
+            className="w-full h-12 text-base bg-blue-600/80 hover:bg-blue-600 text-white border-0"
+            onClick={handleSendToTelegram}
+            disabled={isLoading}
+          >
+            <Send className="w-4 h-4 mr-2" />
+            Send to Telegram
+          </Button>
         )}
 
         {/* Error Alert */}
@@ -170,6 +165,21 @@ export function SendToTelegramButton({
             </AlertDescription>
           </Alert>
         )}
+
+        {/* Info Alert - Cara Kerja */}
+        {!isLoading && !error && (
+          <Alert className="border-blue-500/30 bg-blue-500/5">
+            <AlertDescription className="text-xs text-muted-foreground">
+              <strong className="text-blue-300">Cara kerja:</strong>
+              <div className="mt-1 space-y-1">
+                <p>1. Pastikan Anda sudah start bot <strong>@alwaah_bot</strong></p>
+                <p>2. Klik tombol "Send to Telegram" di atas</p>
+                <p>3. Tunggu proses generate PDF selesai</p>
+                <p>4. PDF akan dikirim otomatis ke chat Telegram Anda</p>
+              </div>
+            </AlertDescription>
+          </Alert>
+        )}
       </div>
 
       {/* Success Dialog */}
@@ -182,25 +192,25 @@ export function SendToTelegramButton({
             onSuccess();
           }
         }}
-        title="PDF Berhasil Dikirim!"
+        title="Berhasil Terkirim!"
         description={
           <>
-            <div className="flex items-center gap-2 text-blue-300 mb-3">
-              <CheckCircle2 className="w-5 h-5" />
-              <span className="font-medium">Pesan telah dikirim ke Telegram Anda</span>
+            <div className="text-base text-gray-300 mb-4 leading-relaxed">
+              Catatan <strong>"{note.title}"</strong> telah berhasil dikonversi menjadi PDF dan dikirimkan ke akun Telegram Anda.
             </div>
 
-            <div className="text-sm text-muted-foreground mb-3">
-              Silakan buka aplikasi Telegram untuk melihat PDF catatan "<strong>{note.title}</strong>" yang baru saja
-              dikirim.
+            <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 mb-2">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-blue-400 mt-0.5" />
+                <div className="text-sm text-blue-100">
+                  Silakan periksa chat dengan <strong>Alwaah Bot</strong> di Telegram untuk mengunduh file PDF Anda.
+                </div>
+              </div>
             </div>
 
-            <Alert className="border-blue-500/50 bg-blue-500/10">
-              <AlertCircle className="w-4 h-4 text-blue-300" />
-              <AlertDescription className="text-xs text-blue-300">
-                💡 Jika tidak menerima pesan, pastikan bot <strong>@kajian_note_bot</strong> masih aktif di chat Anda.
-              </AlertDescription>
-            </Alert>
+            <p className="text-xs text-muted-foreground mt-2">
+              *Jika pesan tidak masuk, pastikan Anda tidak memblokir bot kami.
+            </p>
           </>
         }
         confirmText="Oke, Mengerti"
