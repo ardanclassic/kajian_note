@@ -23,6 +23,7 @@ export interface RegisterData {
   username: string;
   pin: string;
   phone?: string;
+  email?: string;
 }
 
 /**

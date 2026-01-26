@@ -42,7 +42,7 @@ export const youtubeConfig: YouTubeConfig = {
   openRouter: {
     apiKey: env.openRouter.apiKey,
     defaultModel: env.openRouter.defaultModel,
-    maxTokens: 50000,
+    maxTokens: 4000,
   },
 
   // Default transcript settings

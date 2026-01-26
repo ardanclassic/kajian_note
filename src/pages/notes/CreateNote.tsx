@@ -17,10 +17,10 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { NoteForm } from "@/components/features/note-workspace/NoteForm";
-import { YouTubeImportModal } from "@/components/features/smart-summary/YouTubeImportModal";
-import { BackgroundTaskBanner } from "@/components/features/note-workspace/BackgroundTaskBanner";
-import { WaitingExperienceOverlay } from "@/components/features/note-workspace/WaitingExperience/WaitingExperienceOverlay";
+import { NoteForm } from "@/components/features/notes/editor/NoteForm";
+import { YouTubeImportModal } from "@/components/features/notes/import/YouTubeImportModal";
+import { BackgroundTaskBanner } from "@/components/features/notes/common/BackgroundTaskBanner";
+import { WaitingExperienceOverlay } from "@/components/features/notes/editor/WaitingExperience/WaitingExperienceOverlay";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -739,7 +739,7 @@ export default function CreateNote() {
           <div className="flex items-center gap-2">
             <Badge variant="secondary" className="gap-1.5 bg-primary/10 text-primary border-primary/20">
               <Sparkles className="w-3 h-3" />
-              <span className="hidden sm:inline">Smart Summary</span>
+              <span className="hidden sm:inline">Note Summary</span>
             </Badge>
             {hasPersistedData() && (
               <motion.div
@@ -792,41 +792,36 @@ export default function CreateNote() {
                     }
                   }}
                   disabled={!!backgroundTask}
-                  className={`flex-1 flex items-center gap-3 px-4 py-3 rounded-lg border transition-all ${
-                    backgroundTask
-                      ? "border-gray-500/30 bg-gray-500/10 opacity-50 cursor-not-allowed"
-                      : inputMode === "youtube"
+                  className={`flex-1 flex items-center gap-3 px-4 py-3 rounded-lg border transition-all ${backgroundTask
+                    ? "border-gray-500/30 bg-gray-500/10 opacity-50 cursor-not-allowed"
+                    : inputMode === "youtube"
                       ? "border-red-500/50 bg-red-500/10 shadow-sm shadow-red-500/20"
                       : "border-border hover:border-red-500/30 hover:bg-red-500/5"
-                  }`}
+                    }`}
                 >
                   <div
-                    className={`p-2 rounded-md ${
-                      backgroundTask ? "bg-gray-500/20" : inputMode === "youtube" ? "bg-red-500/20" : "bg-muted"
-                    }`}
+                    className={`p-2 rounded-md ${backgroundTask ? "bg-gray-500/20" : inputMode === "youtube" ? "bg-red-500/20" : "bg-muted"
+                      }`}
                   >
                     <Youtube
-                      className={`w-4 h-4 ${
-                        backgroundTask
-                          ? "text-gray-500"
-                          : inputMode === "youtube"
+                      className={`w-4 h-4 ${backgroundTask
+                        ? "text-gray-500"
+                        : inputMode === "youtube"
                           ? "text-red-500"
                           : "text-muted-foreground"
-                      }`}
+                        }`}
                     />
                   </div>
                   <div className="text-left">
                     <p
-                      className={`text-sm font-semibold ${
-                        backgroundTask ? "text-gray-500" : inputMode === "youtube" ? "text-red-500" : "text-foreground"
-                      }`}
+                      className={`text-sm font-semibold ${backgroundTask ? "text-gray-500" : inputMode === "youtube" ? "text-red-500" : "text-foreground"
+                        }`}
                     >
                       Import YouTube
                     </p>
                     <p
-                      className={`text-xs hidden sm:block ${
-                        backgroundTask ? "text-gray-500" : "text-muted-foreground"
-                      }`}
+                      className={`text-xs hidden sm:block ${backgroundTask ? "text-gray-500" : "text-muted-foreground"
+                        }`}
                     >
                       {backgroundTask ? "Proses berjalan..." : importedData ? "Video diimpor ✓" : "Import video"}
                     </p>

@@ -1,0 +1,219 @@
+{
+  "metadata": {
+    "title": "Minimalist Flat - Menjaga Lisan",
+    "source": "Alwaah Reminders",
+    "author": {
+      "name": "@alwaah.app",
+      "hashtag": "#SelfReminder",
+      "avatar_url": ""
+    },
+    "total_slides": 5,
+    "aspect_ratio": "4:5",
+    "description": "Hati-hati dengan lisan. Luka karena pedang bisa sembuh, tapi luka karena lisan bisa membekas selamanya.",
+    "tags": ["#SelfReminder", "#JagaLisan", "#Nasihat"]
+  },
+  "design": {
+    "background_color": "#F9FAFB",
+    "text_color": "#374151",
+    "accent_color": "#374151",
+    "font_family": "Inter",
+    "decorative_line": {
+      "enabled": false
+    },
+    "text_alignment": "left",
+    "author_color": "#374151"
+  },
+  "author_display": {
+    "enabled": true,
+    "position": "bottom-center",
+    "variant": "inline"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": {
+        "background_color": "#F3F4F6",
+        "text_color": "#1F2937",
+        "author_color": "#1F2937"
+      },
+      "content": {
+        "title": "MENJAGA LISAN",
+        "subtitle": "Sebuah Pengingat Diri"
+      },
+      "layout": {
+        "title_size": 36,
+        "title_weight": 800,
+        "subtitle_size": 24,
+        "subtitle_weight": 500,
+        "title_position": "center",
+        "subtitle_position": "center",
+        "content_alignment": "center",
+        "author_position_override": "bottom-center"
+      }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": {
+        "background_color": "#F9FAFB",
+        "text_color": "#374151",
+        "author_color": "#374151"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "LUKA KARENA LIDAH LEBIH SAKIT DARIPADA LUKA KARENA PEDANG.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 600,
+              "lineHeight": 1.5,
+              "align": "left",
+              "spacing": 20,
+              "color": "#374151"
+            }
+          },
+          {
+            "text": "Seringkali kita meremehkan apa yang keluar dari lisan kita, padahal satu kalimat saja bisa menghancurkan hati seseorang selama bertahun-tahun lamanya.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "lineHeight": 1.6,
+              "align": "left",
+              "spacing": 15,
+              "color": "#4B5563"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left",
+        "author_position_override": "bottom-right"
+      }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": {
+        "background_color": "#F9FAFB",
+        "text_color": "#374151"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "DIAM ADALAH EMAS.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 600,
+              "align": "left",
+              "spacing": 20,
+              "color": "#111827"
+            }
+          },
+          {
+            "text": "Jika bicaramu tidak lebih baik daripada diammu, maka menahan diri adalah pilihan yang paling bijak untuk keselamatan dunia dan akhiratmu.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "spacing": 20,
+              "color": "#374151"
+            }
+          },
+          {
+            "text": "Rasulullah shallallahu 'alaihi wa sallam bersabda, \"Barangsiapa beriman kepada Allah dan hari akhir, hendaklah ia berkata baik atau diam.\"",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "spacing": 10,
+              "color": "#4B5563",
+              "fontStyle": "italic"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left",
+        "author_position_override": "bottom-right"
+      }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": {
+        "background_color": "#F9FAFB",
+        "text_color": "#374151"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Saring sebelum sharing, pikir sebelum bergulir. Tidak semua yang kita tahu harus dikatakan, dan tidak semua yang kita rasakan harus diungkapkan.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "lineHeight": 1.6,
+              "spacing": 20,
+              "color": "#374151"
+            }
+          },
+          {
+            "text": "Sebab kata-kata yang sudah terucap ibarat anak panah yang lepas dari busurnya, ia tidak akan pernah bisa ditarik kembali.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "lineHeight": 1.6,
+              "spacing": 0,
+              "color": "#4B5563"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left",
+        "author_position_override": "bottom-right"
+      }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": {
+        "background_color": "#F3F4F6",
+        "text_color": "#1F2937",
+        "author_color": "#1F2937"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "JAGA LISAN, JAGA HATI.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 600,
+              "align": "center",
+              "lineHeight": 1.5,
+              "spacing": 10,
+              "color": "#1F2937"
+            }
+          },
+          {
+            "text": "Semoga Allah membimbing lisan kita.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "center",
+              "lineHeight": 1.5,
+              "spacing": 0,
+              "color": "#4B5563"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "center",
+        "author_position_override": "bottom-center"
+      }
+    }
+  ]
+}

@@ -56,10 +56,16 @@ export type LoginFormData = z.infer<typeof loginSchema>;
 /**
  * Register schema
  */
+const emailSchema = z.string().email("Format email tidak valid").optional().or(z.literal(""));
+
+/**
+ * Register schema
+ */
 export const registerSchema = z
   .object({
     fullName: fullNameSchema,
     username: usernameSchema,
+    email: emailSchema,
     pin: pinSchema,
     confirmPin: pinSchema,
     phone: phoneSchema,

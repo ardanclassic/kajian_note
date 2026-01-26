@@ -7,7 +7,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { NoteForm } from "@/components/features/note-workspace/NoteForm";
+import { NoteForm } from "@/components/features/notes/editor/NoteForm";
 import { TopHeader } from "@/components/layout/TopHeader";
 import { useAuthStore } from "@/store/authStore";
 import { useNotesStore } from "@/store/notesStore";

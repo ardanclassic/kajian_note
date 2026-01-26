@@ -213,7 +213,7 @@ export default function APITest() {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-b from-background to-muted/20"
+      className="min-h-screen bg-linear-to-b from-background to-muted/20"
       initial="initial"
       animate="animate"
       exit="exit"

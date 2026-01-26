@@ -23,11 +23,20 @@ import ViewNote from "@/pages/notes/ViewNote";
 import EditNote from "@/pages/notes/EditNote";
 import CreateDeepNote from "@/pages/deepnote/CreateDeepNote";
 import ListDeepNote from "@/pages/deepnote/ListDeepNote";
+
+// Content Studio Routes
+import ListContentStudio from "@/pages/content-studio/ListContentStudio";
+import ContentStudio from "@/pages/content-studio/ContentStudio";
+// Prompt Studio Routes
+import PromptStudio from "@/pages/prompt-studio";
+// Quest Routes
+import { QuestPage } from "@/components/features/quest";
 import UserManagement from "@/pages/admin/UserManagement";
 import APITest from "@/pages/APITest";
 import { ManualPaymentRecovery } from '@/pages/admin/ManualPaymentRecovery';
 import Donation from "@/pages/donation/Donation";
 import About from "@/pages/about/About";
+
 
 // Route Guards
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -68,6 +77,18 @@ export const AppRoutes = () => {
         <Route path="/deep-note" element={<ListDeepNote />} />
         <Route path="/deep-note/create" element={<CreateDeepNote />} />
         <Route path="/deep-note/:id" element={<ViewNote />} />
+
+
+
+        {/* Content Studio Routes */}
+        <Route path="/content-studio" element={<ListContentStudio />} />
+        <Route path="/content-studio/create" element={<ContentStudio />} />
+
+        {/* Prompt Studio Routes */}
+        <Route path="/prompt-studio" element={<PromptStudio />} />
+
+        {/* Quest Routes */}
+        <Route path="/quest" element={<QuestPage />} />
 
         {/* Tools */}
         <Route path="/api-test" element={<APITest />} />

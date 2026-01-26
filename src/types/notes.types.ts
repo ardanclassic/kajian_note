@@ -6,7 +6,7 @@
 /**
  * Note source type
  */
-export type NoteSourceType = "manual" | "youtube";
+export type NoteSourceType = "manual" | "youtube" | "quest";
 
 /**
  * Note source metadata (for YouTube imports)
@@ -19,6 +19,10 @@ export interface NoteSourceMetadata {
   model_used?: string;
   imported_at?: string;
   has_deep_note?: boolean;
+  // Quest metadata
+  question_id?: string;
+  topic_slug?: string;
+  difficulty?: string;
 }
 
 /**

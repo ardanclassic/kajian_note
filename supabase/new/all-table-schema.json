@@ -1,0 +1,838 @@
+[
+  {
+    "schema": [
+      {
+        "table_name": "admin_alerts",
+        "table_type": "BASE TABLE",
+        "columns": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "type",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "severity",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "message",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "data",
+            "type": "jsonb",
+            "nullable": true
+          },
+          {
+            "name": "resolved",
+            "type": "boolean",
+            "nullable": true
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          }
+        ]
+      },
+      {
+        "table_name": "imagekit_expired_files",
+        "table_type": "VIEW",
+        "columns": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "nullable": true
+          },
+          {
+            "name": "file_id",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "file_url",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "file_name",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "file_size",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "folder",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "uploaded_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "expires_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "note_id",
+            "type": "uuid",
+            "nullable": true
+          },
+          {
+            "name": "user_id",
+            "type": "uuid",
+            "nullable": true
+          },
+          {
+            "name": "hours_expired",
+            "type": "numeric",
+            "nullable": true
+          }
+        ]
+      },
+      {
+        "table_name": "imagekit_temp_uploads",
+        "table_type": "BASE TABLE",
+        "columns": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "file_id",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "file_url",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "file_name",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "file_size",
+            "type": "integer",
+            "nullable": false
+          },
+          {
+            "name": "folder",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "uploaded_at",
+            "type": "timestamp with time zone",
+            "nullable": false
+          },
+          {
+            "name": "expires_at",
+            "type": "timestamp with time zone",
+            "nullable": false
+          },
+          {
+            "name": "deleted_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "note_id",
+            "type": "uuid",
+            "nullable": true
+          },
+          {
+            "name": "user_id",
+            "type": "uuid",
+            "nullable": true
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp with time zone",
+            "nullable": false
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp with time zone",
+            "nullable": false
+          },
+          {
+            "name": "uploader_role",
+            "type": "text",
+            "nullable": true
+          }
+        ]
+      },
+      {
+        "table_name": "notes",
+        "table_type": "BASE TABLE",
+        "columns": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "title",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "content",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "user_id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "is_public",
+            "type": "boolean",
+            "nullable": true
+          },
+          {
+            "name": "is_pinned",
+            "type": "boolean",
+            "nullable": true
+          },
+          {
+            "name": "tags",
+            "type": "ARRAY",
+            "nullable": true
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "source_type",
+            "type": "character varying",
+            "nullable": true
+          },
+          {
+            "name": "source_url",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "source_metadata",
+            "type": "jsonb",
+            "nullable": true
+          }
+        ]
+      },
+      {
+        "table_name": "payment_attempts",
+        "table_type": "BASE TABLE",
+        "columns": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "user_id",
+            "type": "uuid",
+            "nullable": true
+          },
+          {
+            "name": "reference_id",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "email",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "tier",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "amount",
+            "type": "integer",
+            "nullable": false
+          },
+          {
+            "name": "payment_url",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "status",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "processed_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          }
+        ]
+      },
+      {
+        "table_name": "payment_webhooks",
+        "table_type": "BASE TABLE",
+        "columns": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "payment_id",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "event_type",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "payload",
+            "type": "jsonb",
+            "nullable": false
+          },
+          {
+            "name": "processed",
+            "type": "boolean",
+            "nullable": true
+          },
+          {
+            "name": "processed_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "error_message",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "customer_email",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "matched_user_id",
+            "type": "uuid",
+            "nullable": true
+          },
+          {
+            "name": "received_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          }
+        ]
+      },
+      {
+        "table_name": "profile_changes",
+        "table_type": "BASE TABLE",
+        "columns": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "user_id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "field_changed",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "old_value",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "new_value",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "changed_by",
+            "type": "uuid",
+            "nullable": true
+          },
+          {
+            "name": "changed_by_role",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "changed_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "ip_address",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "user_agent",
+            "type": "text",
+            "nullable": true
+          }
+        ]
+      },
+      {
+        "table_name": "quest_bookmarks",
+        "table_type": "BASE TABLE",
+        "columns": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "user_id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "note_id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "question_id",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "topic_slug",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          }
+        ]
+      },
+      {
+        "table_name": "quest_sessions",
+        "table_type": "BASE TABLE",
+        "columns": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "user_id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "topic_slug",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "total_questions",
+            "type": "integer",
+            "nullable": false
+          },
+          {
+            "name": "correct_answers",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "wrong_answers",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "total_points",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "started_at",
+            "type": "timestamp with time zone",
+            "nullable": false
+          },
+          {
+            "name": "completed_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "duration_seconds",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "questions_data",
+            "type": "jsonb",
+            "nullable": true
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          }
+        ]
+      },
+      {
+        "table_name": "quest_stats",
+        "table_type": "BASE TABLE",
+        "columns": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "user_id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "topic_slug",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "total_sessions",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "total_questions_answered",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "total_correct",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "total_wrong",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "total_points",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "accuracy_percentage",
+            "type": "numeric",
+            "nullable": true
+          },
+          {
+            "name": "best_score",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "average_score",
+            "type": "numeric",
+            "nullable": true
+          },
+          {
+            "name": "first_attempt_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "last_attempt_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          }
+        ]
+      },
+      {
+        "table_name": "subscriptions",
+        "table_type": "BASE TABLE",
+        "columns": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "user_id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "tier",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "status",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "payment_method",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "payment_id",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "payment_status",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "amount",
+            "type": "numeric",
+            "nullable": true
+          },
+          {
+            "name": "currency",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "start_date",
+            "type": "timestamp with time zone",
+            "nullable": false
+          },
+          {
+            "name": "end_date",
+            "type": "timestamp with time zone",
+            "nullable": false
+          },
+          {
+            "name": "customer_email",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "customer_name",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "customer_phone",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          }
+        ]
+      },
+      {
+        "table_name": "users",
+        "table_type": "BASE TABLE",
+        "columns": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "nullable": false
+          },
+          {
+            "name": "email",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "auth_user_id",
+            "type": "uuid",
+            "nullable": true
+          },
+          {
+            "name": "username",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "full_name",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "phone",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "role",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "subscription_tier",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "subscription_status",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "subscription_start_date",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "subscription_end_date",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "payment_email",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "avatar_url",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "bio",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "auth_type",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "is_verified",
+            "type": "boolean",
+            "nullable": true
+          },
+          {
+            "name": "is_active",
+            "type": "boolean",
+            "nullable": true
+          },
+          {
+            "name": "force_password_change",
+            "type": "boolean",
+            "nullable": true
+          },
+          {
+            "name": "password_reset_by_admin",
+            "type": "boolean",
+            "nullable": true
+          },
+          {
+            "name": "password_reset_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "password_changed_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "created_by",
+            "type": "uuid",
+            "nullable": true
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "last_login_at",
+            "type": "timestamp with time zone",
+            "nullable": true
+          },
+          {
+            "name": "telegram_chat_id",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "telegram_verified_at",
+            "type": "timestamp without time zone",
+            "nullable": true
+          },
+          {
+            "name": "status",
+            "type": "text",
+            "nullable": true
+          }
+        ]
+      }
+    ]
+  }
+]

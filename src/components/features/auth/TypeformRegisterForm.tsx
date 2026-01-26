@@ -27,7 +27,7 @@ export const TypeformRegisterForm: React.FC = () => {
   const [showPin, setShowPin] = useState(false);
   const [showConfirmPin, setShowConfirmPin] = useState(false);
 
-  const totalSteps = 5;
+  const totalSteps = 6;
 
   const {
     register,
@@ -43,6 +43,7 @@ export const TypeformRegisterForm: React.FC = () => {
     defaultValues: {
       fullName: "",
       username: "",
+      email: "",
       pin: "",
       confirmPin: "",
       phone: "",
@@ -51,6 +52,7 @@ export const TypeformRegisterForm: React.FC = () => {
 
   const fullName = watch("fullName");
   const username = watch("username");
+  const email = watch("email");
   const phone = watch("phone");
   const pin = watch("pin");
   const confirmPin = watch("confirmPin");
@@ -63,7 +65,7 @@ export const TypeformRegisterForm: React.FC = () => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      const fieldNames = ["fullName", "username", "phone", "pin", "confirmPin"];
+      const fieldNames = ["fullName", "username", "email", "phone", "pin", "confirmPin"];
       const element = document.querySelector(`input[name="${fieldNames[currentStep - 1]}"]`) as HTMLInputElement;
       element?.focus();
     }, 250);
@@ -85,12 +87,15 @@ export const TypeformRegisterForm: React.FC = () => {
         isValid = await trigger("username");
         break;
       case 3:
-        isValid = phone ? await trigger("phone") : true;
+        isValid = email ? await trigger("email") : true;
         break;
       case 4:
-        isValid = await trigger("pin");
+        isValid = phone ? await trigger("phone") : true;
         break;
       case 5:
+        isValid = await trigger("pin");
+        break;
+      case 6:
         isValid = await trigger("confirmPin");
         if (isValid) await onSubmit(getValues());
         return;
@@ -115,6 +120,7 @@ export const TypeformRegisterForm: React.FC = () => {
         username: data.username,
         pin: data.pin,
         phone: data.phone || undefined,
+        email: data.email || undefined,
       });
       navigate("/dashboard");
     } catch (error) {
@@ -167,9 +173,30 @@ export const TypeformRegisterForm: React.FC = () => {
           <p className="text-xs text-gray-600">Huruf kecil & angka aja ya (3-20 karakter)</p>
         </TypeformStep>
 
-        {/* Step 3: Phone */}
+        {/* Step 3: Email */}
         <TypeformStep
           isActive={currentStep === 3}
+          title="Ada email aktif? 📧"
+          subtitle="Opsional kok! Biar gampang restore akun kalau lupa PIN."
+          onNext={handleNext}
+          onBack={handleBack}
+          nextLabel={email ? "Lanjut" : "Lewati"}
+          nextDisabled={!!errors.email}
+          error={errors.email?.message}
+        >
+          <Input
+            type="email"
+            placeholder="email@kamu.com (opsional)"
+            {...register("email")}
+            onKeyPress={handleKeyPress}
+            disabled={isLoading}
+            className="h-11 bg-gray-900/40 border-gray-800/50 text-white placeholder-gray-600 focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/20 rounded-lg"
+          />
+        </TypeformStep>
+
+        {/* Step 4: Phone */}
+        <TypeformStep
+          isActive={currentStep === 4}
           title="Nomor WA-mu? 📱"
           subtitle="Santai, gak wajib! Tapi kalau diisi, sharing catatan ke WA jadi lebih gampang."
           onNext={handleNext}
@@ -188,9 +215,9 @@ export const TypeformRegisterForm: React.FC = () => {
           />
         </TypeformStep>
 
-        {/* Step 4: PIN */}
+        {/* Step 5: PIN */}
         <TypeformStep
-          isActive={currentStep === 4}
+          isActive={currentStep === 5}
           title="Bikin PIN yuk 🔒"
           subtitle="6 angka buat login nanti"
           onNext={handleNext}
@@ -222,9 +249,9 @@ export const TypeformRegisterForm: React.FC = () => {
           <p className="text-xs text-gray-600">Yang gampang diingat tapi aman ya</p>
         </TypeformStep>
 
-        {/* Step 5: Confirm PIN */}
+        {/* Step 6: Confirm PIN */}
         <TypeformStep
-          isActive={currentStep === 5}
+          isActive={currentStep === 6}
           title="Ulangi PIN-nya dong ✓"
           subtitle="Biar gak lupa nanti"
           onNext={handleNext}

@@ -1,0 +1,182 @@
+[
+  {
+    "topic_slug": "fiqih-ibadah",
+    "question_text": "Hukum wudhu sebelum melaksanakan shalat bagi yang berhadats adalah...",
+    "options": [
+      { "id": "A", "text": "Sunnah" },
+      { "id": "B", "text": "Wajib / Syarat Sah" },
+      { "id": "C", "text": "Makruh" },
+      { "id": "D", "text": "Mubah" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Suci dari hadats (dengan wudhu/tayamum/mandi) adalah syarat sah shalat.",
+      "dalil": "QS. Al-Ma'idah: 6",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-ibadah",
+    "question_text": "Membasuh kaki dalam wudhu termasuk...",
+    "options": [
+      { "id": "A", "text": "Rukun Wudhu" },
+      { "id": "B", "text": "Sunnah Wudhu" },
+      { "id": "C", "text": "Syarat Wajib" },
+      { "id": "D", "text": "Pembatal Wudhu" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Membasuh kedua kaki hingga mata kaki adalah salah satu dari rukun (fardhu) wudhu.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-ibadah",
+    "question_text": "Jumlah rakaat shalat fardhu dalam sehari semalam adalah...",
+    "options": [
+      { "id": "A", "text": "15 Rakaat" },
+      { "id": "B", "text": "17 Rakaat" },
+      { "id": "C", "text": "20 Rakaat" },
+      { "id": "D", "text": "12 Rakaat" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Subuh (2) + Dzuhur (4) + Ashar (4) + Maghrib (3) + Isya (4) = 17 Rakaat.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-ibadah",
+    "question_text": "Zakat yang wajib dikeluarkan setiap individu Muslim pada bulan Ramadhan disebut...",
+    "options": [
+      { "id": "A", "text": "Zakat Mal" },
+      { "id": "B", "text": "Zakat Profesi" },
+      { "id": "C", "text": "Zakat Fitrah" },
+      { "id": "D", "text": "Sedekah" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Zakat Fitrah adalah zakat jiwa yang wajib ditunaikan sebelum shalat Idul Fitri.",
+      "dalil": "HR. Bukhari Muslim",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-ibadah",
+    "question_text": "Nishab (batas minimal wajib zakat) untuk emas adalah...",
+    "options": [
+      { "id": "A", "text": "85 gram" },
+      { "id": "B", "text": "100 gram" },
+      { "id": "C", "text": "50 gram" },
+      { "id": "D", "text": "20 dinar (k.l 85 gram)" }
+    ],
+    "correct": "D",
+    "explanation": {
+      "text": "Nishab emas adalah 20 dinar, yang setara dengan sekitar 85 gram emas murni.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-ibadah",
+    "question_text": "Berikut ini yang MEMBATALKAN puasa adalah...",
+    "options": [
+      { "id": "A", "text": "Makan dengan tidak sengaja" },
+      { "id": "B", "text": "Muntah dengan sengaja" },
+      { "id": "C", "text": "Berkumur-kumur" },
+      { "id": "D", "text": "Sikat gigi" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Muntah dengan sengaja membatalkan puasa. Makan tak sengaja tidak batal.",
+      "dalil": "HR. Abu Daud",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-ibadah",
+    "question_text": "Shalat sunnah yang sangat ditekankan (Muakkad) yang mengiringi shalat fardhu disebut...",
+    "options": [
+      { "id": "A", "text": "Shalat Dhuha" },
+      { "id": "B", "text": "Shalat Tahajud" },
+      { "id": "C", "text": "Shalat Rawatib" },
+      { "id": "D", "text": "Shalat Witir" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Shalat Rawatib adalah shalat sunnah yang dikerjakan sebelum (qabliyah) atau sesudah (ba'diyah) shalat fardhu.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-ibadah",
+    "question_text": "Tayamum dilakukan menggunakan media...",
+    "options": [
+      { "id": "A", "text": "Air" },
+      { "id": "B", "text": "Debu/Tanah yang suci" },
+      { "id": "C", "text": "Batu" },
+      { "id": "D", "text": "Kayu" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Tayamum adalah pengganti wudhu menggunakan debu atau tanah yang suci.",
+      "dalil": "QS. An-Nisa: 43",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-ibadah",
+    "question_text": "Syarat sah shalat jamak (menggabungkan dua shalat) bagi musafir adalah...",
+    "options": [
+      { "id": "A", "text": "Perjalanan haram" },
+      { "id": "B", "text": "Jarak perjalanan mencapai batas qashar" },
+      { "id": "C", "text": "Harus sakit" },
+      { "id": "D", "text": "Harus hujan deras" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Salah satu sebab boleh jamak/qashar adalah safar (perjalanan) yang mubah dan mencapai jarak tertentu (jumhur ulama ± 80-90 km).",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-ibadah",
+    "question_text": "Hukum meninggalkan shalat Jumat bagi laki-laki muslim yang mukim dan sehat adalah...",
+    "options": [
+      { "id": "A", "text": "Boleh diganti Dzuhur" },
+      { "id": "B", "text": "Dosa Besar" },
+      { "id": "C", "text": "Makruh" },
+      { "id": "D", "text": "Sunnah" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Meninggalkan shalat Jumat tanpa udzur syar'i adalah dosa besar dan diancam hatinya akan dikunci oleh Allah.",
+      "dalil": "HR. Muslim",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  }
+]

@@ -229,18 +229,17 @@ export default function Subscription() {
                       {user.subscriptionTier === "free"
                         ? "Paket dasar untuk memulai"
                         : user.subscriptionTier === "premium"
-                        ? "Paket populer untuk pengguna aktif"
-                        : "Paket lengkap tanpa batas"}
+                          ? "Paket populer untuk pengguna aktif"
+                          : "Paket lengkap tanpa batas"}
                     </p>
                   </div>
                 </div>
 
                 <div
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full ${
-                    user.subscriptionStatus === "active"
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full ${user.subscriptionStatus === "active"
                       ? "bg-emerald-500/20 border border-emerald-500/30 text-emerald-400"
                       : "bg-red-500/20 border border-red-500/30 text-red-400"
-                  }`}
+                    }`}
                 >
                   <CheckCircle2 className="h-4 w-4" />
                   <span className="font-bold text-sm">
@@ -396,9 +395,8 @@ export default function Subscription() {
                             <div className="flex items-center gap-2">
                               <span className="font-bold text-white capitalize">{sub.tier}</span>
                               <div
-                                className={`px-2 py-0.5 rounded-full text-xs font-bold ${
-                                  isActive ? "bg-emerald-500/20 text-emerald-400" : "bg-gray-800 text-gray-400"
-                                }`}
+                                className={`px-2 py-0.5 rounded-full text-xs font-bold ${isActive ? "bg-emerald-500/20 text-emerald-400" : "bg-gray-800 text-gray-400"
+                                  }`}
                               >
                                 {sub.status}
                               </div>
@@ -481,7 +479,6 @@ export default function Subscription() {
         onClose={() => setUpgradeModalOpen(false)}
         selectedTier={selectedTier}
         userEmail={user.email || ""}
-        paymentEmail={user.paymentEmail || ""}
       />
     </div>
   );

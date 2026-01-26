@@ -1,0 +1,182 @@
+[
+  {
+    "topic_slug": "sirah-rasulullah",
+    "question_text": "Julukan Nabi Muhammad SAW sebelum menjadi Rasul karena kejujurannya adalah...",
+    "options": [
+      { "id": "A", "text": "Al-Faruq" },
+      { "id": "B", "text": "Al-Amin" },
+      { "id": "C", "text": "As-Siddiq" },
+      { "id": "D", "text": "Saifullah" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Al-Amin artinya Yang Terpercaya. Gelar ini diberikan penduduk Mekkah karena beliau sangat jujur dan amanah.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-rasulullah",
+    "question_text": "Nama ayahanda Nabi Muhammad SAW adalah...",
+    "options": [
+      { "id": "A", "text": "Abdul Muthalib" },
+      { "id": "B", "text": "Abu Thalib" },
+      { "id": "C", "text": "Abdullah" },
+      { "id": "D", "text": "Hamzah" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Ayah Nabi SAW adalah Abdullah bin Abdul Muthalib.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-rasulullah",
+    "question_text": "Ibu susu Nabi SAW dari kabilah Bani Sa'ad adalah...",
+    "options": [
+      { "id": "A", "text": "Syuwaibah" },
+      { "id": "B", "text": "Halimah As-Sa'diyah" },
+      { "id": "C", "text": "Aminah" },
+      { "id": "D", "text": "Ummu Aiman" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Halimah As-Sa'diyah adalah wanita yang menyusui dan mengasuh Nabi SAW di pedalaman.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-rasulullah",
+    "question_text": "Ciri fisik Nabi SAW: Rambut beliau...",
+    "options": [
+      { "id": "A", "text": "Gundul" },
+      { "id": "B", "text": "Keriting pekat" },
+      { "id": "C", "text": "Lurus kaku" },
+      { "id": "D", "text": "Ikal bergelombang (Wavy)" }
+    ],
+    "correct": "D",
+    "explanation": {
+      "text": "Dalam Syama'il Muhammadiyah, rambut beliau disifatkan tidak keriting pekat dan tidak lurus kaku, melainkan ikal bergelombang.",
+      "dalil": "Kitab Syama'il Muhammadiyah",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-rasulullah",
+    "question_text": "Akhlak Nabi SAW digambarkan oleh Aisyah RA sebagai...",
+    "options": [
+      { "id": "A", "text": "Seperti Malaikat" },
+      { "id": "B", "text": "Al-Quran yang berjalan" },
+      { "id": "C", "text": "Raja yang tegas" },
+      { "id": "D", "text": "Pertapa yang diam" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Ketika ditanya tentang akhlak Rasulullah, Aisyah menjawab: 'Maka sesungguhnya akhlak beliau adalah Al-Quran'.",
+      "dalil": "HR. Muslim",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-rasulullah",
+    "question_text": "Kakek yang mengasuh Nabi SAW setelah ibunya wafat adalah...",
+    "options": [
+      { "id": "A", "text": "Abu Thalib" },
+      { "id": "B", "text": "Abdul Muthalib" },
+      { "id": "C", "text": "Abu Lahab" },
+      { "id": "D", "text": "Abbas" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Abdul Muthalib sangat menyayangi Nabi SAW dan mengasuhnya setelah Aminah wafat, sebelum kemudian diasuh Abu Thalib.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-rasulullah",
+    "question_text": "Nabi Muhammad SAW wafat pada usia...",
+    "options": [
+      { "id": "A", "text": "53 tahun" },
+      { "id": "B", "text": "60 tahun" },
+      { "id": "C", "text": "63 tahun" },
+      { "id": "D", "text": "65 tahun" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Nabi SAW wafat pada usia 63 tahun (dalam hitungan Qamariyah).",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-rasulullah",
+    "question_text": "Putri Nabi SAW yang menikah dengan Ali bin Abi Thalib adalah...",
+    "options": [
+      { "id": "A", "text": "Zainab" },
+      { "id": "B", "text": "Ruqayyah" },
+      { "id": "C", "text": "Ummu Kultsum" },
+      { "id": "D", "text": "Fatimah Az-Zahra" }
+    ],
+    "correct": "D",
+    "explanation": {
+      "text": "Fatimah Az-Zahra adalah putri bungsu Nabi yang menikah dengan Ali bin Abi Thalib.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-rasulullah",
+    "question_text": "Sahabat yang menemani Nabi SAW di Gua Hira saat wahyu pertama turun...",
+    "options": [
+      { "id": "A", "text": "Tidak ada (Sendirian)" },
+      { "id": "B", "text": "Abu Bakar" },
+      { "id": "C", "text": "Khadijah" },
+      { "id": "D", "text": "Zaid bin Haritsah" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Saat wahyu pertama turun, Nabi SAW sedang berkhalwat (menyendiri) di Gua Hira.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-rasulullah",
+    "question_text": "Mukjizat terbesar Nabi Muhammad SAW yang masih ada hingga sekarang adalah...",
+    "options": [
+      { "id": "A", "text": "Terbelahnya bulan" },
+      { "id": "B", "text": "Air keluar dari jari" },
+      { "id": "C", "text": "Al-Quran" },
+      { "id": "D", "text": "Perjalanan Isra Mi'raj" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Al-Quran adalah mukjizat maknawi yang abadi dan terjaga hingga kiamat.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  }
+]

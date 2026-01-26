@@ -1,4 +1,4 @@
-# Kajian Note
+# Alwaah
 
 > Aplikasi catatan kajian dengan sistem auth yang user-friendly untuk jamaah masjid. Tidak perlu email, cukup username dan PIN!
 
@@ -19,12 +19,14 @@
 ## 🚀 Tech Stack
 
 **Frontend:**
+
 - React 19.1.1 + Vite 7.1.7 + TypeScript 5.9.3
 - Tailwind CSS 4.1.16 + shadcn/ui
 - Zustand 5.0.8 (State Management)
 - React Hook Form 7.66.0 + Zod 4.1.12
 
 **Backend:**
+
 - Supabase (Auth + PostgreSQL + Edge Functions)
 - Lynk.id Payment Gateway (webhook-based)
 
@@ -56,11 +58,11 @@ VITE_LYNK_WEBHOOK_SECRET=your_lynk_webhook_secret
 
 ## 📊 Subscription Tiers
 
-| Tier    | Price      | Notes     | Tags      | Features                    |
-|---------|------------|-----------|-----------|----------------------------|
-| Free    | Rp 0       | 10        | 3         | Basic features             |
-| Premium | Rp 50K/mo  | 100       | 10        | Public notes, PDF export   |
-| Advance | Rp 100K/mo | Unlimited | Unlimited | All features               |
+| Tier    | Price      | Notes     | Tags      | Features                 |
+| ------- | ---------- | --------- | --------- | ------------------------ |
+| Free    | Rp 0       | 10        | 3         | Basic features           |
+| Premium | Rp 50K/mo  | 100       | 10        | Public notes, PDF export |
+| Advance | Rp 100K/mo | Unlimited | Unlimited | All features             |
 
 ## 🏗️ Project Structure
 
@@ -125,6 +127,7 @@ npm run lint
 ## 📝 Database Schema
 
 Key tables:
+
 - `users` - User accounts & profiles
 - `subscriptions` - Subscription records
 - `payment_webhooks` - Payment webhook logs
@@ -133,12 +136,14 @@ Key tables:
 ## 🚀 Deployment
 
 ### Frontend (Vercel/Netlify)
+
 ```bash
 npm run build
 # Deploy dist/ folder
 ```
 
 ### Backend (Supabase)
+
 ```bash
 # Deploy edge functions
 supabase functions deploy lynk-webhook

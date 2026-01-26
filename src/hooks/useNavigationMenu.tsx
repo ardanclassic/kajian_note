@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
-import { 
-  BookOpen, 
-  Crown, 
-  User, 
-  Users, 
-  LogOut, 
+import {
+  BookOpen,
+  Crown,
+  User,
+  Users,
+  LogOut,
   FileText,
   Sparkles
 } from "lucide-react";
@@ -35,7 +35,7 @@ export const useNavigationMenu = () => {
   };
 
   const menuItems: MenuItem[] = [
-    { icon: Sparkles, label: "Smart Summary", onClick: () => navigate("/notes") },
+    { icon: Sparkles, label: "Note Summary", onClick: () => navigate("/notes") },
     { icon: FileText, label: "Deep Note", onClick: () => navigate("/deep-note"), badge: "Premium" },
     { icon: Crown, label: "Subscription", onClick: () => navigate("/subscription") },
     { icon: User, label: "Profile", onClick: () => navigate("/profile") },

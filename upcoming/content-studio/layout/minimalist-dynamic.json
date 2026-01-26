@@ -1,0 +1,212 @@
+{
+  "metadata": {
+    "title": "Minimalist Dynamic - Keutamaan Sabar",
+    "source": "Alwaah Reminders",
+    "author": {
+      "name": "@alwaah.app",
+      "hashtag": "#ReminderPagi",
+      "avatar_url": ""
+    },
+    "total_slides": 5,
+    "aspect_ratio": "4:5",
+    "description": "Sabar itu pahit rasanya, namun manis buahnya. Di balik setiap ujian, ada derajat yang ditinggikan.",
+    "tags": ["#Sabar", "#UjianHidup", "#KuatkanHati"]
+  },
+  "design": {
+    "background_color": "#1C1917",
+    "text_color": "#E7E5E4",
+    "accent_color": "#F59E0B",
+    "font_family": "Inter",
+    "decorative_line": {
+      "enabled": false
+    },
+    "text_alignment": "left",
+    "author_color": "#A8A29E"
+  },
+  "author_display": {
+    "enabled": true,
+    "position": "bottom-right",
+    "variant": "inline"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": {
+        "background_color": "#1C1917",
+        "text_color": "#E7E5E4",
+        "author_color": "#A8A29E"
+      },
+      "content": {
+        "title": "SABAR ITU\nTAK BERBATAS",
+        "subtitle": "Kunci Ketenangan Hati"
+      },
+      "layout": {
+        "title_size": 52,
+        "title_weight": 900,
+        "subtitle_size": 24,
+        "subtitle_weight": 400,
+        "title_position": "left",
+        "subtitle_position": "left",
+        "content_alignment": "left",
+        "author_position_override": "bottom-right"
+      }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": {
+        "background_color": "#1C1917",
+        "text_color": "#E7E5E4",
+        "author_color": "#A8A29E"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "BUKAN SEKADAR MENAHAN MARAH,",
+            "style": {
+              "fontSize": 36,
+              "fontWeight": 800,
+              "lineHeight": 1.1,
+              "align": "left",
+              "spacing": 15,
+              "color": "#F59E0B"
+            }
+          },
+          {
+            "text": "Tapi menahan lisan dari mengeluh, menahan hati dari gelisah, dan menahan anggota badan dari berbuat yang tidak ridha.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "lineHeight": 1.6,
+              "align": "left",
+              "spacing": 20,
+              "color": "#A8A29E"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left",
+        "author_position_override": "bottom-right"
+      }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": {
+        "background_color": "#F59E0B",
+        "text_color": "#1C1917",
+        "author_color": "#1C1917"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "ALLAH BERSAMA\nORANG SABAR.",
+            "style": {
+              "fontSize": 42,
+              "fontWeight": 900,
+              "align": "left",
+              "spacing": 20,
+              "color": "#1C1917",
+              "lineHeight": 1
+            }
+          },
+          {
+            "text": "\"Innallaha ma'ash shobirin\"",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 600,
+              "align": "left",
+              "spacing": 10,
+              "color": "#78350F",
+              "fontStyle": "italic"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left",
+        "author_position_override": "bottom-right"
+      }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": {
+        "background_color": "#0F172A",
+        "text_color": "#F1F5F9",
+        "author_color": "#64748B"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "SETIAP UJIAN ADALAH,",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 600,
+              "align": "left",
+              "spacing": 10,
+              "color": "#94A3B8",
+              "letterSpacing": 2
+            }
+          },
+          {
+            "text": "CARA ALLAH MENGANGKAT DERAJATMU.",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 800,
+              "align": "left",
+              "lineHeight": 1.2,
+              "spacing": 20,
+              "color": "#F1F5F9"
+            }
+          },
+          {
+            "text": "Semakin berat ujiannya, semakin besar pahala yang menanti bagi mereka yang ridha.",
+            "style": {
+              "fontSize": 18,
+              "fontWeight": 400,
+              "align": "left",
+              "lineHeight": 1.6,
+              "spacing": 0,
+              "color": "#CBD5E1"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left",
+        "author_position_override": "bottom-right"
+      }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": {
+        "background_color": "#1C1917",
+        "text_color": "#E7E5E4",
+        "author_color": "#A8A29E"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "JADIKAN SABAR \nSEBAGAI PENOLONGMU.",
+            "style": {
+              "fontSize": 36,
+              "fontWeight": 900,
+              "align": "center",
+              "lineHeight": 1.1,
+              "spacing": 20,
+              "color": "#F59E0B"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "center",
+        "author_position_override": "bottom-center"
+      }
+    }
+  ]
+}

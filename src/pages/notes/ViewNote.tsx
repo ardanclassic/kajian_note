@@ -7,8 +7,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { NoteViewer } from "@/components/features/note-workspace/NoteViewer";
-import { ExportActionsDropdown } from "@/components/features/note-workspace/ExportActionsDropdown";
+import { NoteViewer } from "@/components/features/notes/viewer/NoteViewer";
+import { ExportActionsDropdown } from "@/components/features/notes/common/ExportActionsDropdown";
 import { useAuthStore } from "@/store/authStore";
 import { useNotesStore } from "@/store/notesStore";
 import { BookOpen, Loader2, AlertCircle, ArrowLeft, Edit, Trash2, Share2, MoreVertical } from "lucide-react";
@@ -146,30 +146,49 @@ export default function ViewNote() {
   }
 
   const headerActions = (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1">
       {/* Share Button (if public) */}
       {currentNote.isPublic && (
-        <Button variant="outline" size="sm" onClick={handleShare} className="gap-2 hidden sm:flex">
+        <Button variant="ghost" size="sm" onClick={handleShare} className="gap-2 hidden sm:flex text-muted-foreground hover:text-foreground">
           <Share2 className="w-4 h-4" />
           Share
         </Button>
       )}
 
-      {/* Export Actions Dropdown - NEW */}
+      {/* Export Actions Dropdown */}
       <ExportActionsDropdown note={currentNote} />
 
       {/* Edit Button (owner only) */}
       {canEdit && (
-        <Button variant="default" size="sm" onClick={handleEdit} className="gap-2 hidden sm:flex">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleEdit}
+          className="gap-2 hidden sm:flex border-gray-700/50 hover:bg-gray-800 hover:text-white transition-colors"
+        >
           <Edit className="w-4 h-4" />
           Edit
         </Button>
       )}
 
+      {/* Delete Button (Desktop, admin/owner only) */}
+      {canDelete && (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="gap-2 hidden sm:flex text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+        >
+          <Trash2 className="w-4 h-4" />
+          {isDeleting ? "..." : "Hapus"}
+        </Button>
+      )}
+
       {/* More Actions (Mobile) */}
       <div className="relative sm:hidden">
-        <Button variant="outline" size="sm" onClick={() => setShowActions(!showActions)}>
-          <MoreVertical className="w-4 h-4" />
+        <Button variant="ghost" size="icon" onClick={() => setShowActions(!showActions)}>
+          <MoreVertical className="w-5 h-5 text-muted-foreground" />
         </Button>
 
         <AnimatePresence>
@@ -212,20 +231,6 @@ export default function ViewNote() {
           )}
         </AnimatePresence>
       </div>
-
-      {/* Delete Button (Desktop, admin/owner only) */}
-      {canDelete && (
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={handleDelete}
-          disabled={isDeleting}
-          className="gap-2 hidden sm:flex"
-        >
-          <Trash2 className="w-4 h-4" />
-          {isDeleting ? "Menghapus..." : "Hapus"}
-        </Button>
-      )}
     </div>
   );
 

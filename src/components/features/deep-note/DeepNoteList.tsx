@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from "framer-motion";
-import { NoteCard } from "@/components/features/note-workspace/NoteCard";
+import { NoteCard } from "@/components/features/notes/common/NoteCard";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, FileText, Pin, Sparkles } from "lucide-react";
 import type { NoteSummary } from "@/types/notes.types";
@@ -188,31 +188,31 @@ export function DeepNoteList({
       {/* Pagination (Same as List) */}
       {totalPages > 1 && onPageChange && (
         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 0.4, delay: 0.2 }}
-           className="flex flex-col items-center gap-4 pt-8 border-t border-gray-900"
-         >
-           {/* Simple pagination for brevity - can copy full pagination if needed */}
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onPageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </Button>
-              <span className="text-sm text-gray-400">Page {currentPage} of {totalPages}</span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onPageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              >
-                Next
-              </Button>
-            </div>
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="flex flex-col items-center gap-4 pt-8 border-t border-gray-900"
+        >
+          {/* Simple pagination for brevity - can copy full pagination if needed */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onPageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </Button>
+            <span className="text-sm text-gray-400">Page {currentPage} of {totalPages}</span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onPageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </Button>
+          </div>
         </motion.div>
       )}
     </div>

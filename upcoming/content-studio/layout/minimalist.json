@@ -1,0 +1,301 @@
+{
+  "metadata": {
+    "title": "Minimalist Trust Series",
+    "source": "Alwaah Reminders",
+    "author": {
+      "name": "@alwaah.app",
+      "hashtag": "#Tawakkal",
+      "avatar_url": ""
+    },
+    "total_slides": 4,
+    "aspect_ratio": "4:5"
+  },
+  "design": {
+    "background_color": "#ffffff",
+    "text_color": "#1F2937",
+    "accent_color": "#059669",
+    "font_family": "Inter",
+    "decorative_line": {
+      "enabled": false,
+      "color": "#000000",
+      "width": "100%",
+      "thickness": "2px"
+    },
+    "text_alignment": "left"
+  },
+  "author_display": {
+    "enabled": true,
+    "position": "bottom-center",
+    "variant": "inline"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "content",
+      "design_override": {
+        "background_color": "#F3F4F6",
+        "text_color": "#111827"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "TENANG SAJA,",
+            "style": {
+              "fontSize": 48,
+              "fontWeight": 900,
+              "lineHeight": 1,
+              "align": "left",
+              "spacing": 10,
+              "color": "#374151"
+            }
+          },
+          {
+            "text": "SEMUA SUDAH",
+            "style": {
+              "fontSize": 48,
+              "fontWeight": 900,
+              "lineHeight": 1,
+              "align": "left",
+              "spacing": 10,
+              "color": "#059669"
+            }
+          },
+          {
+            "text": "DIATUR.",
+            "style": {
+              "fontSize": 48,
+              "fontWeight": 900,
+              "lineHeight": 1,
+              "align": "left",
+              "spacing": 60,
+              "color": "#059669"
+            }
+          },
+          {
+            "text": "Kadang kita terlalu cemas memikirkan hal yang sebenarnya sudah selesai di langit.",
+            "style": {
+              "fontSize": 26,
+              "fontFamily": "Merriweather",
+              "fontWeight": 300,
+              "align": "left",
+              "lineHeight": 1.5,
+              "spacing": 30
+            }
+          },
+          {
+            "text": "Tugasmu hanya berusaha, bukan memastikan hasil.",
+            "style": {
+              "fontSize": 24,
+              "fontFamily": "Inter",
+              "fontWeight": 600,
+              "align": "left",
+              "spacing": 20
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left",
+        "author_position_override": "bottom-left"
+      }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": {
+        "background_color": "#ffffff",
+        "text_color": "#000000"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "3 HAL PASTI:",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 800,
+              "color": "#059669",
+              "align": "left",
+              "spacing": 30
+            }
+          },
+          {
+            "text": "1. Rezeki Tidak Tertukar",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 700,
+              "align": "left",
+              "spacing": 5
+            }
+          },
+          {
+            "text": "Apa yang menjadi jatahmu akan sampai padamu, lewat jalan yang tak kau duga.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "spacing": 30,
+              "color": "#4B5563"
+            }
+          },
+          {
+            "text": "2. Ujian Sesuai Kemampuan",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 700,
+              "align": "left",
+              "spacing": 5
+            }
+          },
+          {
+            "text": "Jika pundakmu berat, itu karena Allah tau punggungmu kuat.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "spacing": 30,
+              "color": "#4B5563"
+            }
+          },
+          {
+            "text": "3. Akhir Yang Indah",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 700,
+              "align": "left",
+              "spacing": 5
+            }
+          },
+          {
+            "text": "Bagi mereka yang bersabar.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "spacing": 0,
+              "color": "#4B5563"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left",
+        "author_position_override": "bottom-right"
+      }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": {
+        "background_color": "#111827",
+        "text_color": "#F9FAFB"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "SABAR ITU",
+            "style": {
+              "fontSize": 60,
+              "fontWeight": 900,
+              "align": "center",
+              "lineHeight": 0.9,
+              "spacing": 0,
+              "color": "#6EE7B7"
+            }
+          },
+          {
+            "text": "PAHIT.",
+            "style": {
+              "fontSize": 60,
+              "fontWeight": 900,
+              "align": "center",
+              "lineHeight": 0.9,
+              "spacing": 40,
+              "color": "#6EE7B7"
+            }
+          },
+          {
+            "text": "Tapi hasilnya lebih manis daripada madu.",
+            "style": {
+              "fontSize": 28,
+              "fontFamily": "Merriweather",
+              "fontWeight": 300,
+              "align": "center",
+              "spacing": 40
+            }
+          },
+          {
+            "text": "\"Dan berikanlah berita gembira kepada orang-orang yang sabar.\"",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "center",
+              "spacing": 10,
+              "opacity": 0.8
+            }
+          },
+          {
+            "text": "(QS. Al-Baqarah: 155)",
+            "style": {
+              "fontSize": 16,
+              "fontWeight": 600,
+              "align": "center",
+              "spacing": 0,
+              "opacity": 0.6
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "center",
+        "author_position_override": "top-center"
+      }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": {
+        "background_color": "#064E3B",
+        "text_color": "#ECFDF5"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "JADI,",
+            "style": {
+              "fontSize": 80,
+              "fontWeight": 900,
+              "align": "center",
+              "lineHeight": 1,
+              "spacing": 20,
+              "color": "#A7F3D0"
+            }
+          },
+          {
+            "text": "Kita mulai lagi besok?",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 500,
+              "align": "center",
+              "spacing": 10
+            }
+          },
+          {
+            "text": "Bismillah.",
+            "style": {
+              "fontSize": 48,
+              "fontWeight": 800,
+              "fontFamily": "Merriweather",
+              "align": "center",
+              "lineHeight": 1.4,
+              "spacing": 0
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "center",
+        "author_position_override": "top-right"
+      }
+    }
+  ]
+}

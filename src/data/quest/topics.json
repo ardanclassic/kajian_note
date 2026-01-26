@@ -1,0 +1,98 @@
+[
+  {
+    "slug": "akidah-tauhid",
+    "topic": "Akidah",
+    "subtopic": "Tauhid",
+    "name": "Tauhid & Iman",
+    "description": "Memahami konsep dasar keimanan, rukun iman, dan kemurnian tauhid kepada Allah.",
+    "icon": "Heart",
+    "color": "rose",
+    "order": 1,
+    "question_count": 10,
+    "is_active": true
+  },
+  {
+    "slug": "akidah-takdir",
+    "topic": "Akidah",
+    "subtopic": "Takdir",
+    "name": "Iman Kepada Takdir",
+    "description": "Menyelami konsep Qada dan Qadar serta rahasia ketetapan Allah.",
+    "icon": "HelpCircle",
+    "color": "violet",
+    "order": 2,
+    "question_count": 10,
+    "is_active": true
+  },
+  {
+    "slug": "akidah-hari-akhir",
+    "topic": "Akidah",
+    "subtopic": "Hari Akhir",
+    "name": "Hari Akhir",
+    "description": "Perjalanan setelah kematian, alam barzakh, tanda kiamat, hingga surga dan neraka.",
+    "icon": "Clock",
+    "color": "slate",
+    "order": 3,
+    "question_count": 10,
+    "is_active": true
+  },
+  {
+    "slug": "fiqih-ibadah",
+    "topic": "Fiqih",
+    "subtopic": "Ibadah",
+    "name": "Fiqih Ibadah",
+    "description": "Panduan praktis beribadah sehari-hari: Thaharah, Shalat, Zakat, dan Puasa.",
+    "icon": "Users",
+    "color": "emerald",
+    "order": 4,
+    "question_count": 10,
+    "is_active": true
+  },
+  {
+    "slug": "fiqih-muamalat",
+    "topic": "Fiqih",
+    "subtopic": "Muamalat",
+    "name": "Fiqih Muamalat",
+    "description": "Hukum transaksi, jual beli, dan hubungan antar sesama manusia dalam Islam.",
+    "icon": "Briefcase",
+    "color": "cyan",
+    "order": 5,
+    "question_count": 10,
+    "is_active": true
+  },
+  {
+    "slug": "sirah-rasulullah",
+    "topic": "Sirah",
+    "subtopic": "Rasulullah",
+    "name": "Pribadi Rasulullah (Shamail)",
+    "description": "Mengenal fisik, akhlak, dan keseharian Nabi Muhammad SAW yang mulia.",
+    "icon": "User",
+    "color": "amber",
+    "order": 6,
+    "question_count": 10,
+    "is_active": true
+  },
+  {
+    "slug": "sirah-nabawiyah",
+    "topic": "Sirah",
+    "subtopic": "Nabawiyah",
+    "name": "Sirah Nabawiyah",
+    "description": "Sejarah perjuangan dakwah Nabi Muhammad SAW dari Mekkah hingga Madinah.",
+    "icon": "BookOpen",
+    "color": "orange",
+    "order": 7,
+    "question_count": 10,
+    "is_active": true
+  },
+  {
+    "slug": "sirah-shahabat",
+    "topic": "Sirah",
+    "subtopic": "Shahabat & Ulama",
+    "name": "Kisah Shahabat & Ulama",
+    "description": "Teladan dari para sahabat Nabi dan ulama-ulama besar pewaris para nabi.",
+    "icon": "Star",
+    "color": "yellow",
+    "order": 8,
+    "question_count": 10,
+    "is_active": true
+  }
+]

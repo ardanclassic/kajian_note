@@ -1,0 +1,200 @@
+{
+  "metadata": {
+    "title": "Bahaya Nuklir bagi Peradaban",
+    "description": "Narasi ringkas dan dinamis tentang ancaman nuklir terhadap kelangsungan peradaban manusia dan tanggung jawab moral umat manusia.",
+    "author": {
+      "name": "alwaah.project",
+      "hashtag": "#peradaban"
+    },
+    "tags": ["#nuklir", "#peradaban", "#teknologi", "#ancaman"],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-center"
+  },
+  "design": {
+    "background_color": "#1C1917",
+    "text_color": "#E7E5E4",
+    "accent_color": "#F59E0B",
+    "font_family": "Inter"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": {
+        "background_color": "#F59E0B",
+        "text_color": "#1C1917",
+        "author_color": "#1C1917"
+      },
+      "content": {
+        "title": "NUKLIR",
+        "subtitle": "UJIAN TERBESAR PERADABAN"
+      },
+      "layout": {
+        "title_size": 40,
+        "subtitle_size": 28,
+        "title_weight": 900,
+        "title_position": "center"
+      }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": {
+        "background_color": "#1C1917"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "SATU LEDAKAN",
+            "style": {
+              "fontSize": 44,
+              "fontWeight": 900,
+              "color": "#F59E0B",
+              "align": "left"
+            }
+          },
+          {
+            "text": "dapat menghapus sebuah kota, memutus sejarah, dan mengubah arah peradaban manusia dalam hitungan detik.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 500,
+              "color": "#E7E5E4",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Daya hancur nuklir melampaui seluruh senjata konvensional.",
+            "style": {
+              "fontSize": 16,
+              "fontWeight": 400,
+              "color": "#A8A29E",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": {
+        "background_color": "#FAFAF9"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "HIROSHIMA",
+            "style": {
+              "fontSize": 42,
+              "fontWeight": 900,
+              "color": "#F59E0B",
+              "align": "center"
+            }
+          },
+          {
+            "text": "bukan sekadar catatan sejarah, tetapi peringatan bahwa ilmu tanpa adab melahirkan kehancuran massal.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 500,
+              "color": "#1C1917",
+              "align": "center"
+            }
+          },
+          {
+            "text": "Luka nuklir diwariskan lintas generasi.",
+            "style": {
+              "fontSize": 16,
+              "fontWeight": 400,
+              "color": "#78716C",
+              "align": "center"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "center" }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": {
+        "background_color": "#292524"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "KEKUATAN",
+            "style": {
+              "fontSize": 40,
+              "fontWeight": 900,
+              "color": "#F59E0B",
+              "align": "left"
+            }
+          },
+          {
+            "text": "yang tidak dibatasi moral akan berubah menjadi ancaman bagi penciptanya sendiri.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 500,
+              "color": "#E7E5E4",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Peradaban runtuh karena kehilangan hikmah.",
+            "style": {
+              "fontSize": 16,
+              "fontWeight": 400,
+              "color": "#A8A29E",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": {
+        "background_color": "#FAFAF9"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "AMANAH BUMI",
+            "style": {
+              "fontSize": 38,
+              "fontWeight": 900,
+              "color": "#F59E0B",
+              "align": "center"
+            }
+          },
+          {
+            "text": "Allah ﷻ menciptakan manusia sebagai penjaga, bukan penghancur. Teknologi seharusnya menjadi sarana menjaga kehidupan, bukan mengakhirinya.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 500,
+              "color": "#1C1917",
+              "align": "center"
+            }
+          },
+          {
+            "text": "Pilihan moral menentukan masa depan peradaban.",
+            "style": {
+              "fontSize": 16,
+              "fontWeight": 400,
+              "color": "#78716C",
+              "align": "center"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "center" }
+    }
+  ]
+}

@@ -12,11 +12,11 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { NoteForm } from "@/components/features/note-workspace/NoteForm";
+import { NoteForm } from "@/components/features/notes/editor/NoteForm";
 import { DeepNoteImportModal } from "@/components/features/deep-note/DeepNoteImportModal";
 import { TopHeader } from "@/components/layout/TopHeader";
-import { BackgroundTaskBanner } from "@/components/features/note-workspace/BackgroundTaskBanner";
-import { WaitingExperienceOverlay } from "@/components/features/note-workspace/WaitingExperience/WaitingExperienceOverlay";
+import { BackgroundTaskBanner } from "@/components/features/notes/common/BackgroundTaskBanner";
+import { WaitingExperienceOverlay } from "@/components/features/notes/editor/WaitingExperience/WaitingExperienceOverlay";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {

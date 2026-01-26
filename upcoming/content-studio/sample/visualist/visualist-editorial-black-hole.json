@@ -1,0 +1,373 @@
+{
+  "metadata": {
+    "title": "Black Hole: Gerbang Menuju Ketidakberhinggaan",
+    "description": "Menyelami misteri lubang hitam, dari prediksi Einstein hingga gambar pertama dari Event Horizon Telescope, dalam perjalanan memahami batas-batas alam semesta.",
+    "author": {
+      "name": "alwaah.project",
+      "hashtag": "ContentStudio"
+    },
+    "tags": ["#LubangHitam", "#Astrofisika", "#RelativitasUmum", "#AlamSemesta", "#EventHorizon"],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-center"
+  },
+  "design": {
+    "background_color": "#000000",
+    "text_color": "#F8FAFC",
+    "accent_color": "#F59E0B",
+    "background_color_1": "#000000",
+    "text_color_1": "#F8FAFC",
+    "background_color_2": "#1C1917",
+    "text_color_2": "#F8FAFC"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": {
+        "background_color": "#000000",
+        "text_color": "#F59E0B"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+        "position": "left",
+        "opacity": 0.3
+      },
+      "content": {
+        "title": "Black Hole",
+        "subtitle": "Ketika Ruang, Waktu, dan Gravitasi Mencapai Titik Ekstrem"
+      },
+      "layout": {
+        "line_height": 1.1,
+        "title_size": 56,
+        "subtitle_size": 36,
+        "title_weight": 900,
+        "title_position": "right",
+        "subtitle_position": "right"
+      }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": {
+        "background_color": "#000000"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Lubang Kegelapan Abadi",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#F59E0B"
+            }
+          },
+          {
+            "text": "Black hole atau lubang hitam adalah wilayah dalam ruang-waktu di mana tarikan gravitasi begitu kuat sehingga tidak ada sesuatu pun, termasuk cahaya, yang dapat lolos. Ia adalah hasil akhir dari kehidupan bintang masif yang telah kehabisan bahan bakar nuklirnya.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F8FAFC"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": {
+        "background_color": "#1C1917"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Dari Teori ke Kenyataan",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#F59E0B"
+            }
+          },
+          {
+            "text": "Meski konsep objek dengan gravitasi tak terhingga sudah lama dibayangkan, baru pada 1915 Einstein dengan Teori Relativitas Umum memberikan kerangka matematis untuk keberadaannya. Istilah 'black hole' sendiri dipopulerkan oleh fisikawan John Archibald Wheeler pada 1967.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F8FAFC"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": {
+        "background_color": "#000000"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1504700610630-ac6aba3536d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Anatomi Sebuah Lubang Hitam",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#F59E0B"
+            }
+          },
+          {
+            "text": "Lubang hitam memiliki beberapa bagian kunci: Singularitas di pusat (kerapatan tak terhingga), Event Horizon (batas tak bisa kembali), dan Accretion Disk (cakram materi berputar super panas). Seringkali juga terdapat jet partikel energetik yang ditembakkan dari kutubnya.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F8FAFC"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": {
+        "background_color": "#1C1917"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1465101162946-4377e57745c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Gelombang Gravitasi: Bukti Pertama",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#F59E0B"
+            }
+          },
+          {
+            "text": "Pada 2015, LIGO mendeteksi gelombang gravitasi untuk pertama kalinya, yang berasal dari tabrakan dua lubang hitam. Penemuan ini membuktikan keberadaan lubang hitam biner dan membuka era baru dalam astronomi: astronomi gelombang gravitasi.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F8FAFC"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "design_override": {
+        "background_color": "#000000"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Foto Pertama Event Horizon",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#F59E0B"
+            }
+          },
+          {
+            "text": "Tahun 2019 mencatat sejarah dengan dirilisnya gambar pertama event horizon lubang hitam di pusat galaksi M87 oleh Event Horizon Telescope (EHT). Citra cincin emas itu adalah konfirmasi visual langsung dari prediksi teori Einstein dan struktur lubang hitam supermasif.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F8FAFC"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "design_override": {
+        "background_color": "#1C1917"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Paradoks Informasi",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#F59E0B"
+            }
+          },
+          {
+            "text": "Salah satu teka-teki terbesar adalah paradoks informasi lubang hitam. Menurut teori kuantum, informasi harus kekal, namun menurut relativitas umum, informasi yang jatuh ke lubang hitam lenyap selamanya. Rekonsiliasi keduanya adalah perburuan teori gravitasi kuantum.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F8FAFC"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 8,
+      "type": "content",
+      "design_override": {
+        "background_color": "#000000"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Lubang Hitam di Pusat Galaksi",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#F59E0B"
+            }
+          },
+          {
+            "text": "Hampir setiap galaksi besar, termasuk Bima Sakti, memiliki lubang hitam supermasif di pusatnya. Lubang hitam kita, Sagittarius A*, memiliki massa sekitar 4 juta kali matahari. Ia relatif tenang, tetapi aktivitasnya dapat membentuk evolusi galaksi induknya.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F8FAFC"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 9,
+      "type": "content",
+      "design_override": {
+        "background_color": "#1C1917"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Masa Depan Penelitian",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#F59E0B"
+            }
+          },
+          {
+            "text": "Penelitian lubang hitam terus berkembang. Dari pengamatan EHT yang lebih detail, deteksi gelombang gravitasi yang lebih banyak, hingga eksperimen teori seperti holografi dan gravitasi kuantum. Lubang hitam tetap menjadi laboratorium alam untuk menguji hukum fisika paling fundamental.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F8FAFC"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 10,
+      "type": "content",
+      "design_override": {
+        "background_color": "#000000"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Sumber Referensi",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#F59E0B"
+            }
+          },
+          {
+            "text": "1. 'A Brief History of Time' oleh Stephen Hawking.\n2. 'The Science of Interstellar' oleh Kip Thorne.\n3. 'Black Hole Blues' oleh Janna Levin.\n4. 'First M87 Event Horizon Telescope Results' - The Astrophysical Journal Letters.\n5. 'Observation of Gravitational Waves from a Binary Black Hole Merger' - Physical Review Letters.",
+            "style": {
+              "fontSize": 16,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#D4D4D8"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    }
+  ]
+}

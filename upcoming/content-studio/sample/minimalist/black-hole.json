@@ -1,0 +1,218 @@
+{
+  "metadata": {
+    "title": "Lubang Hitam & Ruang Waktu",
+    "description": "Sebuah perjalanan visual menembus kosmos, menjelajahi teka-teki lubang hitam dan jalinan ruang-waktu. Dari teori Einstein hingga penemuan terbaru, pahami fenomena paling misterius di alam semesta.",
+    "author": {
+      "name": "alwaah.project",
+      "hashtag": "#ContentStudio"
+    },
+    "tags": ["#Astrofisika", "#LubangHitam", "#Kosmos", "#RuangWaktu", "#Sains"],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-center"
+  },
+  "design": {
+    "font_family": "Inter",
+    "background_color": "#0A0E17",
+    "text_color": "#E2E8F0",
+    "accent_color": "#60A5FA",
+    "background_color_1": "#0A0E17",
+    "text_color_1": "#E2E8F0",
+    "accent_color_1": "#60A5FA",
+    "background_color_2": "#1E293B",
+    "text_color_2": "#CBD5E1",
+    "accent_color_2": "#FBBF24"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": { "background_color": "#0A0E17", "text_color": "#FBBF24" },
+      "content": { "title": "LUBANG HITAM & RUANG WAKTU", "subtitle": "Menjelajah ke Jantung Kegelapan Kosmik" },
+      "layout": { "title_size": 40, "subtitle_size": 28, "title_weight": 900, "title_position": "center" }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": { "background_color": "#0A0E17" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Paradoks Kosmik Terhebat",
+            "style": { "fontSize": 34, "fontWeight": 800, "color": "#60A5FA", "align": "left" }
+          },
+          {
+            "text": "Lubang hitam adalah wilayah di ruang angkasa di mana gravitasi begitu kuat sehingga tidak ada apa pun—bahkan cahaya—yang dapat lolos dari tarikannya. Kelengkungan ekstrem ruang-waktu ini, yang diprediksikan oleh Relativitas Umum Einstein, menciptakan batas yang disebut cakrawala peristiwa. Di luar titik ini, semua hukum fisika yang dikenal runtuh, menjadikan lubang hitam sebagai salah satu misteri terbesar alam semesta dan bukti kekuatan mentah alam.",
+            "style": { "fontSize": 22, "fontWeight": 400, "color": "#E2E8F0", "align": "left" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": { "background_color": "#1E293B" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Visi Revolusioner Einstein",
+            "style": { "fontSize": 32, "fontWeight": 700, "color": "#FBBF24", "align": "right" }
+          },
+          {
+            "text": "Konsep ruang-waktu diperkenalkan oleh Albert Einstein pada 1915. Dia mengusulkan bahwa ruang dan waktu bukan entitas terpisah, tetapi terjalin menjadi satu kain empat dimensi. Objek masif seperti bintang dan planet melengkungkan kain ini, menciptakan apa yang kita rasakan sebagai gravitasi. Lubang hitam mewakili pelengkungan paling ekstrem yang mungkin, di mana kelengkungan ruang-waktu menjadi tak terhingga.",
+            "style": { "fontSize": 22, "fontWeight": 400, "color": "#CBD5E1", "align": "right" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": { "background_color": "#0A0E17" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Anatomi Sebuah Lubang Hitam",
+            "style": { "fontSize": 36, "fontWeight": 800, "color": "#60A5FA", "align": "left" }
+          },
+          {
+            "text": "Di pusatnya terletak singularitas—titik dengan kepadatan tak terhingga. Di sekelilingnya ada cakrawala peristiwa, titik tidak bisa kembali. Di luarnya, piringan akresi terbentuk dari materi yang sangat panas berputar ke dalam, memancarkan sinar-X intens. Beberapa lubang hitam juga menyemburkan jet partikel yang sangat kuat dengan kecepatan mendekati cahaya dari kutubnya, membentuk seluruh galaksi di sekitarnya.",
+            "style": { "fontSize": 22, "fontWeight": 400, "color": "#E2E8F0", "align": "left" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": { "background_color": "#1E293B" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Bagaimana Lubang Hitam Lahir?",
+            "style": { "fontSize": 32, "fontWeight": 700, "color": "#FBBF24", "align": "right" }
+          },
+          {
+            "text": "Lubang hitam bintang terbentuk ketika bintang masif (lebih dari 20 massa matahari) kehabisan bahan bakar nuklir dan runtuh oleh gravitasinya sendiri dalam ledakan supernova. Lubang hitam supermasif, jutaan hingga miliaran kali massa Matahari, bersemayam di pusat galaksi seperti Bima Sakti. Asal usulnya masih diperdebatkan—mungkin dari keruntuhan langsung awan gas raksasa atau penggabungan lubang hitam lebih kecil seiring waktu kosmik.",
+            "style": { "fontSize": 22, "fontWeight": 400, "color": "#CBD5E1", "align": "right" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "design_override": { "background_color": "#0A0E17" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Perilaku Aneh Ruang-Waktu",
+            "style": { "fontSize": 34, "fontWeight": 800, "color": "#60A5FA", "align": "left" }
+          },
+          {
+            "text": "Di dekat lubang hitam, distorsi ruang-waktu menyebabkan efek ekstrem. Pelebaran waktu berarti waktu berjalan lebih lambat bagi pengamat dekat cakrawala dibandingkan seseorang yang jauh. Gaya pasang dapat meregangkan objek menjadi seperti mie dalam proses yang disebut spaghettifikasi. Pelengkungan juga membelokkan cahaya, bertindak sebagai lensa gravitasi yang memperbesar dan mendistorsi gambar bintang dan galaksi latar belakang.",
+            "style": { "fontSize": 22, "fontWeight": 400, "color": "#E2E8F0", "align": "left" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "design_override": { "background_color": "#1E293B" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Gambar Pertama dalam Sejarah",
+            "style": { "fontSize": 32, "fontWeight": 700, "color": "#FBBF24", "align": "right" }
+          },
+          {
+            "text": "Pada 2019, kolaborasi Event Horizon Telescope merilis gambar langsung pertama bayangan lubang hitam—lubang hitam supermasif di pusat galaksi M87. Pencapaian bersejarah ini membutuhkan penyelarasan teleskop radio di seluruh dunia, menciptakan teleskop virtual seukuran Bumi. Gambar tersebut mengonfirmasi prediksi Relativitas Umum dan memberikan bukti visual keberadaan raksasa kosmik ini.",
+            "style": { "fontSize": 22, "fontWeight": 400, "color": "#CBD5E1", "align": "right" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 8,
+      "type": "content",
+      "design_override": { "background_color": "#0A0E17" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Lubang Hitam & Paradoks Informasi",
+            "style": { "fontSize": 30, "fontWeight": 800, "color": "#60A5FA", "align": "left" }
+          },
+          {
+            "text": "Stephen Hawking berteori bahwa lubang hitam memancarkan radiasi (Radiasi Hawking) dan perlahan menguap. Ini memunculkan paradoks informasi: jika lubang hitam lenyap, apa yang terjadi pada semua informasi tentang materi yang ditelannya? Mekanika kuantum mengatakan informasi tidak dapat dihancurkan. Konflik antara relativitas umum dan teori kuantum ini tetap menjadi salah satu masalah terbesar fisika yang belum terpecahkan, mengisyaratkan teori yang lebih dalam tentang gravitasi kuantum.",
+            "style": { "fontSize": 20, "fontWeight": 400, "color": "#E2E8F0", "align": "left" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 9,
+      "type": "content",
+      "design_override": { "background_color": "#1E293B" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Lubang Cacing & Jalan Pintas Kosmik",
+            "style": { "fontSize": 32, "fontWeight": 700, "color": "#FBBF24", "align": "right" }
+          },
+          {
+            "text": "Secara teoretis, kelengkungan ruang-waktu ekstrem dapat menciptakan lubang cacing—jembatan yang menghubungkan bagian alam semesta yang jauh atau bahkan alam semesta berbeda. Beberapa solusi persamaan Einstein menunjukkan lubang hitam bisa terhubung ke lubang putih (tempat materi keluar) melalui lubang cacing. Meskipun masih hipotetis dan membutuhkan materi eksotis untuk tetap terbuka, lubang cacing menangkap imajinasi sebagai portal potensial untuk perjalanan antarbintang, meski masih berada dalam ranah fisika teoretis dan fiksi ilmiah.",
+            "style": { "fontSize": 20, "fontWeight": 400, "color": "#CBD5E1", "align": "right" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 10,
+      "type": "content",
+      "design_override": { "background_color": "#0A0E17" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Masa Depan Penelitian Lubang Hitam",
+            "style": { "fontSize": 32, "fontWeight": 800, "color": "#60A5FA", "align": "left" }
+          },
+          {
+            "text": "Observatorium generasi berikutnya seperti Laser Interferometer Space Antenna (LISA) akan mendeteksi gelombang gravitasi dari penggabungan lubang hitam supermasif. Teleskop Luar Angkasa James Webb mengintip alam semesta awal untuk menemukan lubang hitam primordial. Simulasi canggih di superkomputer memodelkan akresi dan pembentukan jet. Setiap penemuan mengupas lapisan misteri, membawa kita lebih dekat untuk memahami sifat sejati ruang-waktu dan objek paling penuh teka-teki di alam semesta.",
+            "style": { "fontSize": 20, "fontWeight": 400, "color": "#E2E8F0", "align": "left" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 11,
+      "type": "content",
+      "design_override": { "background_color": "#1E293B" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Tempat Kita di Kosmos yang Melengkung",
+            "style": { "fontSize": 34, "fontWeight": 700, "color": "#FBBF24", "align": "center" }
+          },
+          {
+            "text": "Lubang hitam bukan sekadar pembersih vakum kosmik; mereka adalah mesin fundamental yang membentuk evolusi galaksi, memengaruhi pembentukan bintang, dan menguji batas-batas fisika. Mempelajarinya mendorong pengetahuan manusia ke perbatasan, menggabungkan gravitasi, mekanika kuantum, dan termodinamika. Mereka mengingatkan kita bahwa alam semesta jauh lebih aneh dan lebih menakjubkan daripada yang dapat kita bayangkan. Pencarian untuk memahami lubang hitam pada akhirnya adalah pencarian untuk memahami ruang-waktu itu sendiri—panggung tempat drama kosmik berlangsung.",
+            "style": { "fontSize": 22, "fontWeight": 400, "color": "#CBD5E1", "align": "center" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "center" }
+    }
+  ]
+}

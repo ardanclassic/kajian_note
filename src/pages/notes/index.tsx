@@ -7,9 +7,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { SummaryList } from "@/components/features/smart-summary/SummaryList";
-import { SummarySearch } from "@/components/features/smart-summary/SummarySearch";
-import { SubscriptionLimitBanner } from "@/components/features/note-workspace/SubscriptionLimitBanner";
+import { NoteList } from "@/components/features/notes/list/NoteList";
+import { NoteSearch } from "@/components/features/notes/list/NoteSearch";
+import { SubscriptionLimitBanner } from "@/components/features/notes/common/SubscriptionLimitBanner";
 import { ScrollToTopButton } from "@/components/common/ScrollToTopButton";
 import { TopHeader } from "@/components/layout/TopHeader";
 import {
@@ -158,7 +158,7 @@ export default function Notes() {
   };
 
   if (!user) {
-    return <Loading fullscreen text="Memuat..." />;
+    return <Loading fullscreen />;
   }
 
   // Header Actions
@@ -198,7 +198,7 @@ export default function Notes() {
             {/* Title & Stats */}
             <div className="flex items-center gap-4">
               {/* Icon */}
-              <div className="w-10 h-10 rounded-lg bg-gray-900 border border-emerald-500/50 flex items-center justify-center shadow-lg shadow-emerald-500/10 flex-shrink-0">
+              <div className="w-10 h-10 rounded-lg bg-gray-900 border border-emerald-500/50 flex items-center justify-center shadow-lg shadow-emerald-500/10 shrink-0">
                 <BookOpen className="w-5 h-5 text-emerald-400" />
               </div>
 
@@ -226,7 +226,7 @@ export default function Notes() {
           {usage && <SubscriptionLimitBanner usage={usage} compact />}
 
           {/* Search & Filter Bar */}
-          <SummarySearch availableTags={tags} onSearch={handleSearch} onClear={handleClearSearch} />
+          <NoteSearch availableTags={tags} onSearch={handleSearch} onClear={handleClearSearch} />
 
           {/* Error Message */}
           {error && (
@@ -259,7 +259,7 @@ export default function Notes() {
           {/* Notes Gallery Wall */}
           {!isLoading || userNotes.length > 0 ? (
             <div>
-              <SummaryList
+              <NoteList
                 notes={userNotes.filter((note) => !note.sourceMetadata?.has_deep_note)}
                 currentUserId={user?.id}
                 showActions

@@ -1,0 +1,448 @@
+{
+  "metadata": {
+    "title": "Biografi Ustadz Syafiq Riza Basalamah",
+    "description": "Mengenal lebih dekat sosok dai, penceramah, dan penuntut ilmu yang dikenal dengan penyampaiannya yang lembut, mendalam, dan penuh hikmah.",
+    "author": {
+      "name": "alwaah.project",
+      "hashtag": "#ContentStudio"
+    },
+    "tags": ["#Dai", "#Biografi", "#UstadzSyafiq", "#Islam", "#Kajian"],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-center"
+  },
+  "design": {
+    "font_family": "Inter",
+    "background_color": "#1A237E",
+    "text_color": "#E8EAF6",
+    "accent_color": "#FFD54F",
+    "background_color_1": "#1A237E",
+    "text_color_1": "#E8EAF6",
+    "accent_color_1": "#FFD54F",
+    "background_color_2": "#E8F5E9",
+    "text_color_2": "#1B5E20",
+    "accent_color_2": "#FF6F00",
+    "background_color_3": "#311B92",
+    "text_color_3": "#D1C4E9",
+    "accent_color_3": "#80DEEA"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": { "background_color": "#FFD54F", "text_color": "#1A237E" },
+      "content": { "title": "Ust. Syafiq Riza Basalamah", "subtitle": "Dai yang Menyentuh Hati" },
+      "layout": { "title_size": 38, "subtitle_size": 26, "title_weight": 900, "title_position": "center" }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": { "background_color": "#1A237E" },
+      "content": {
+        "blocks": [
+          {
+            "text": "AWAL KEHIDUPAN",
+            "style": {
+              "fontSize": 40,
+              "fontWeight": 800,
+              "color": "#FFD54F",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Lahir di Jakarta, 4 Oktober 1975. Nama lengkap: Syafiq Riza Basalamah.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 600,
+              "color": "#80DEEA",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Dibesarkan dalam lingkungan keluarga yang agamis dan mencintai ilmu.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "color": "#E8EAF6",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": { "background_color": "#E8F5E9" },
+      "content": {
+        "blocks": [
+          {
+            "text": "PENDIDIKAN DASAR",
+            "style": {
+              "fontSize": 38,
+              "fontWeight": 800,
+              "color": "#1B5E20",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Menempuh pendidikan di SD dan SMP di Jakarta. Sudah menunjukkan ketertarikan pada kajian agama sejak kecil.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 500,
+              "color": "#FF6F00",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Aktif mengikuti majelis taklim dan halaqah.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "color": "#1B5E20",
+              "align": "right"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": { "background_color": "#311B92" },
+      "content": {
+        "blocks": [
+          {
+            "text": "MENUNTUT ILMU KE ARAB SAUDI",
+            "style": {
+              "fontSize": 36,
+              "fontWeight": 800,
+              "color": "#80DEEA",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Melanjutkan studi S1 di Universitas Islam Madinah, Jurusan Hadits.",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 600,
+              "color": "#FFD54F",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Berkesempatan belajar langsung kepada ulama-ulama besar di sana.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#D1C4E9",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": { "background_color": "#1A237E" },
+      "content": {
+        "blocks": [
+          {
+            "text": "GURU & SANAD ILMU",
+            "style": {
+              "fontSize": 42,
+              "fontWeight": 900,
+              "color": "#FFD54F",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Berguru kepada Syaikh Abdul Muhsin Al-Abbad, Syaikh Shalih Alu Syaikh, Syaikh Shalih Al-Fauzan, dan ulama lainnya.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 500,
+              "color": "#80DEEA",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Mendapat ijazah dalam beberapa kitab.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "color": "#E8EAF6",
+              "align": "right"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "design_override": { "background_color": "#E8F5E9" },
+      "content": {
+        "blocks": [
+          {
+            "text": "KARIR DAKWAH",
+            "style": {
+              "fontSize": 44,
+              "fontWeight": 900,
+              "color": "#FF6F00",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Memulai dakwah secara intensif setelah kembali ke Indonesia.",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 600,
+              "color": "#1B5E20",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Dikenal dengan penyampaiannya yang tenang, sistematis, dan mudah dipahami.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#1B5E20",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "design_override": { "background_color": "#311B92" },
+      "content": {
+        "blocks": [
+          {
+            "text": "STYLE PENYAMPAIAN",
+            "style": {
+              "fontSize": 40,
+              "fontWeight": 800,
+              "color": "#80DEEA",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Mengutamakan kelembutan, penghayatan, dan penekanan pada pemahaman yang mendalam.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 500,
+              "color": "#FFD54F",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Sering menyelipkan nasihat untuk memperbaiki hati.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "color": "#D1C4E9",
+              "align": "right"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 8,
+      "type": "content",
+      "design_override": { "background_color": "#1A237E" },
+      "content": {
+        "blocks": [
+          {
+            "text": "KEGIATAN & RUANG LINGKUP",
+            "style": {
+              "fontSize": 38,
+              "fontWeight": 800,
+              "color": "#FFD54F",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Mengisi kajian tetap di masjid, kampus, dan melalui platform online.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 600,
+              "color": "#80DEEA",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Juga aktif menulis artikel dan menerjemahkan kitab.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "color": "#E8EAF6",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 9,
+      "type": "content",
+      "design_override": { "background_color": "#E8F5E9" },
+      "content": {
+        "blocks": [
+          {
+            "text": "KARYA & KONTEN",
+            "style": {
+              "fontSize": 42,
+              "fontWeight": 900,
+              "color": "#1B5E20",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Memiliki rekaman kajian audio dan video yang tersebar luas.",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 600,
+              "color": "#FF6F00",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Kajian rutin seperti \"Silsilah Aqidah\" dan \"Tazkiyatun Nufus\" sangat populer.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#1B5E20",
+              "align": "right"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 10,
+      "type": "content",
+      "design_override": { "background_color": "#311B92" },
+      "content": {
+        "blocks": [
+          {
+            "text": "MANHAJ & PENDIRIAN",
+            "style": {
+              "fontSize": 40,
+              "fontWeight": 800,
+              "color": "#FFD54F",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Berpegang teguh pada manhaj Ahlus Sunnah wal Jama'ah.",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 600,
+              "color": "#80DEEA",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Mengedepankan sikap wasathiyah (moderat) dan menjauhi sikap ekstrem.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#D1C4E9",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 11,
+      "type": "content",
+      "design_override": { "background_color": "#1A237E" },
+      "content": {
+        "blocks": [
+          {
+            "text": "PENGARUH & DAKWAH DIGITAL",
+            "style": {
+              "fontSize": 38,
+              "fontWeight": 800,
+              "color": "#80DEEA",
+              "align": "center"
+            }
+          },
+          {
+            "text": "Kajian beliau banyak diakses melalui YouTube, Spotify, dan media sosial.",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 600,
+              "color": "#FFD54F",
+              "align": "center"
+            }
+          },
+          {
+            "text": "Mampu menjangkau berbagai kalangan, dari muda hingga tua.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#E8EAF6",
+              "align": "center"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "center" }
+    },
+    {
+      "slide_number": 12,
+      "type": "content",
+      "design_override": { "background_color": "#E8F5E9" },
+      "content": {
+        "blocks": [
+          {
+            "text": "PENUTUP & DOA",
+            "style": {
+              "fontSize": 46,
+              "fontWeight": 900,
+              "color": "#FF6F00",
+              "align": "center"
+            }
+          },
+          {
+            "text": "Semoga Allah ﷻ menjaga Ustadz Syafiq Riza Basalamah dan memberkahi ilmunya.",
+            "style": {
+              "fontSize": 30,
+              "fontWeight": 700,
+              "color": "#1B5E20",
+              "align": "center"
+            }
+          },
+          {
+            "text": "Semoga kita dapat mengambil manfaat dari ilmu dan keteladanannya.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 500,
+              "color": "#1B5E20",
+              "align": "center"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "center" }
+    }
+  ]
+}

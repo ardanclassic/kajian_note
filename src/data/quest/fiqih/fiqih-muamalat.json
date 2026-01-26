@@ -1,0 +1,182 @@
+[
+  {
+    "topic_slug": "fiqih-muamalat",
+    "question_text": "Jual beli dengan sistem melebihkan pembayaran karena penangguhan waktu (hutang berbunga) disebut...",
+    "options": [
+      { "id": "A", "text": "Riba Fadhl" },
+      { "id": "B", "text": "Riba Nasi'ah" },
+      { "id": "C", "text": "Jual Beli Salam" },
+      { "id": "D", "text": "Murabahah" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Riba Nasi'ah adalah tambahan yang disyaratkan yang diambil oleh pemberi hutang dari orang yang berhutang sebagai imbalan penangguhan (tempo).",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-muamalat",
+    "question_text": "Hukum asal muamalah (transaksi duniawi) adalah...",
+    "options": [
+      { "id": "A", "text": "Haram sampai ada dalil yang membolehkan" },
+      { "id": "B", "text": "Boleh (Mubah) sampai ada dalil yang melarang" },
+      { "id": "C", "text": "Makruh" },
+      { "id": "D", "text": "Wajib" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Kaidah Fiqih menyatakan hukum asal dalam urusan dunia/muamalah adalah mubah (boleh) kecuali ada dalil yang mengharamkannya.",
+      "dalil": "Kaidah Fiqih",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-muamalat",
+    "question_text": "Jual beli barang yang tidak jelas (gharar), seperti 'jual burung di udara', hukumnya...",
+    "options": [
+      { "id": "A", "text": "Sah" },
+      { "id": "B", "text": "Haram/Tidak Sah" },
+      { "id": "C", "text": "Makruh" },
+      { "id": "D", "text": "Sunnah" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Nabi SAW melarang jual beli Gharar (ketidakjelasan) karena berpotensi merugikan salah satu pihak.",
+      "dalil": "HR. Muslim",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-muamalat",
+    "question_text": "Khiyar dalam jual beli artinya...",
+    "options": [
+      { "id": "A", "text": "Hak memilih lanjut atau batal" },
+      { "id": "B", "text": "Keuntungan" },
+      { "id": "C", "text": "Kerugian" },
+      { "id": "D", "text": "Tawar menawar" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Khiyar adalah hak pilih bagi penjual dan pembeli untuk melangsungkan akad atau membatalkannya dalam kondisi tertentu.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-muamalat",
+    "question_text": "Akad kerjasama usaha dimana satu pihak memberi modal dan pihak lain mengelola, dengan bagi hasil disebut...",
+    "options": [
+      { "id": "A", "text": "Murabahah" },
+      { "id": "B", "text": "Mudharabah" },
+      { "id": "C", "text": "Wadiah" },
+      { "id": "D", "text": "Ijarah" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Mudharabah adalah akad kerjasama permodalan dan pengelola dengan pembagian keuntungan nisbah.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 15,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-muamalat",
+    "question_text": "Menimbun barang pokok saat langka agar harganya naik (Ihtikar) hukumnya...",
+    "options": [
+      { "id": "A", "text": "Boleh (Strategi Bisnis)" },
+      { "id": "B", "text": "Haram" },
+      { "id": "C", "text": "Makruh" },
+      { "id": "D", "text": "Sunnah" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Menimbun (Ihtikar) barang kebutuhan pokok yang merugikan orang banyak hukumnya haram.",
+      "dalil": "HR. Muslim",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-muamalat",
+    "question_text": "Luqathah adalah istilah fiqih untuk...",
+    "options": [
+      { "id": "A", "text": "Barang gadaian" },
+      { "id": "B", "text": "Barang temuan" },
+      { "id": "C", "text": "Barang curian" },
+      { "id": "D", "text": "Barang titipan" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Luqathah adalah harta yang ditemukan (barang temuan) yang tidak diketahui pemiliknya.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-muamalat",
+    "question_text": "Mengurangi timbangan atau takaran dalam berdagang termasuk dosa yang diancam dalam surah...",
+    "options": [
+      { "id": "A", "text": "Al-Ma'un" },
+      { "id": "B", "text": "Al-Muthaffifin" },
+      { "id": "C", "text": "Al-Humazah" },
+      { "id": "D", "text": "At-Takatsur" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Surah Al-Muthaffifin (Orang-orang yang curang) berisi ancaman bagi mereka yang mengurangi takaran dan timbangan.",
+      "dalil": "QS. Al-Muthaffifin: 1-3",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-muamalat",
+    "question_text": "Hukum memakan harta anak yatim secara zalim adalah...",
+    "options": [
+      { "id": "A", "text": "Dosa Besar" },
+      { "id": "B", "text": "Makruh" },
+      { "id": "C", "text": "Dosa Kecil" },
+      { "id": "D", "text": "Mubah" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Memakan harta anak yatim adalah salah satu dari 7 dosa besar yang membinasakan.",
+      "dalil": "QS. An-Nisa: 10",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "fiqih-muamalat",
+    "question_text": "Akad sewa menyewa barang atau jasa disebut...",
+    "options": [
+      { "id": "A", "text": "Ijarah" },
+      { "id": "B", "text": "Wakalah" },
+      { "id": "C", "text": "Kafalah" },
+      { "id": "D", "text": "Hiwalah" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Ijarah adalah akad pemindahan hak guna (manfaat) atas suatu barang atau jasa dengan upah.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  }
+]

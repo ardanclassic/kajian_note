@@ -1,0 +1,149 @@
+{
+  "metadata": {
+    "title": "Seni dalam Setiap Suapan",
+    "description": "Menyelami keindahan dan filosofi di balik kegiatan memasak, dari bahan mentah hingga sajian yang memikat.",
+    "author": { "name": "alwaah.project", "hashtag": "ContentStudio" },
+    "tags": ["#SeniMemasak", "#KulinerIndonesia", "#VisualStorytelling"],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-center"
+  },
+  "design": {
+    "background_color": "#0C1A2A",
+    "text_color": "#F5F5F5",
+    "accent_color": "#F4B942",
+    "background_color_1": "#1E3A5F",
+    "text_color_1": "#F5F5F5",
+    "background_color_2": "#2C5530",
+    "text_color_2": "#F5F5F5"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": { "background_color": "#0C1A2A", "text_color": "#F4B942" },
+      "content": {
+        "title": "Seni Memasak",
+        "subtitle": "Lebih dari sekadar mengolah, ia adalah cerita yang disajikan"
+      },
+      "layout": {
+        "line_height": 1.0,
+        "title_size": 52,
+        "subtitle_size": 32,
+        "title_weight": 900,
+        "title_position": "center"
+      }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": { "background_color": "#1E3A5F" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1507048331197-7d4ac70811cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Memasak adalah bahasa universal yang menyatukan rasa, aroma, dan kenangan. Setiap bahan bercerita tentang asal usul dan potensinya.",
+            "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#F5F5F5" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": { "background_color": "#2C5530" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Teknik dan kreativitas bertemu di dapur. Dari potongan yang presisi hingga paduan bumbu yang harmonis, setiap langkah adalah ekspresi.",
+            "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#F5F5F5" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": { "background_color": "#1E3A5F" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Warna, tekstur, dan penyajian adalah kanvas terakhir. Sebuah hidangan yang indah membangkitkan selera bahkan sebelum dicicipi.",
+            "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#F5F5F5" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": { "background_color": "#2C5530" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Memasak adalah tindakan memberi. Berbagi hidangan adalah berbagi kebahagiaan, warisan, dan cinta yang nyata.",
+            "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#F5F5F5" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "design_override": { "background_color": "#1E3A5F" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1576866209830-589e1bfbaa4d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Selalu ada ruang untuk bereksperimen. Seni memasak terus berkembang, mengikuti musim, inovasi, dan cerita pribadi setiap koki.",
+            "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#F5F5F5" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "design_override": { "background_color": "#0C1A2A" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Sumber Referensi",
+            "style": { "fontSize": 24, "fontWeight": 700, "align": "left", "color": "#F4B942" }
+          },
+          {
+            "text": "1. \"The Art of Simple Food\" oleh Alice Waters\n2. \"Salt, Fat, Acid, Heat\" oleh Samin Nosrat\n3. Dokumenter \"Chef's Table\" (Netflix)\n4. Artikel \"Philosophy of Cooking\" - Stanford Encyclopedia of Philosophy\n5. Situs budaya kuliner Indonesia: infokuliner.com",
+            "style": { "fontSize": 16, "fontWeight": 400, "align": "left", "color": "#F5F5F5" }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    }
+  ]
+}

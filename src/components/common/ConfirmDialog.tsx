@@ -133,9 +133,9 @@ export function ConfirmDialog({
             </DialogHeader>
 
             {typeof description === "string" ? (
-              <DialogDescription className="text-left pt-2 text-gray-300 text-sm">{description}</DialogDescription>
+              <DialogDescription className="text-left pt-2 text-gray-300 text-base leading-relaxed">{description}</DialogDescription>
             ) : (
-              <div className="text-left pt-2 text-sm text-gray-300">{description}</div>
+              <div className="text-left pt-2 text-base text-gray-300 leading-relaxed">{description}</div>
             )}
 
             <DialogFooter className="gap-3 sm:gap-3 mt-6">
@@ -154,9 +154,13 @@ export function ConfirmDialog({
                 onClick={handleConfirm}
                 disabled={isLoading}
                 className={
-                  config.confirmVariant === "destructive"
+                  variant === "danger"
                     ? "bg-red-600 hover:bg-red-700 text-white border-0"
-                    : "bg-gray-900 border-emerald-500/50 text-white hover:bg-emerald-500/10"
+                    : variant === "success"
+                      ? "bg-green-600/80 hover:bg-green-600 text-white border-0"
+                      : variant === "warning"
+                        ? "bg-yellow-600/80 hover:bg-yellow-600 text-white border-0"
+                        : "bg-blue-600/80 hover:bg-blue-600 text-white border-0"
                 }
               >
                 {isLoading ? (

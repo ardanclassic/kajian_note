@@ -1,0 +1,234 @@
+{
+  "metadata": {
+    "title": "Teori Konspirasi Mengenai Adolf Hitler",
+    "description": "Menyelami narasi alternatif, mitos, dan spekulasi tersembunyi di balik salah satu figur paling kontroversial dalam sejarah.",
+    "author": {
+      "name": "alwaah.project",
+      "hashtag": "#ContentStudio"
+    },
+    "tags": ["#Konspirasi", "#Sejarah", "#Hitler", "#Nazi", "#Misteri"],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-center"
+  },
+  "design": {
+    "font_family": "Inter",
+    "background_color": "#0A0A0F",
+    "text_color": "#E5E5E5",
+    "accent_color": "#DC2626",
+    "background_color_1": "#0A0A0F",
+    "text_color_1": "#E5E5E5",
+    "accent_color_1": "#DC2626",
+    "background_color_2": "#F5F5F5",
+    "text_color_2": "#171717",
+    "accent_color_2": "#059669"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": { "background_color": "#DC2626", "text_color": "#F5F5F5" },
+      "content": { "title": "HITLER: APA YANG TIDAK DIKISAHKAN?", "subtitle": "Mengungkap Teori Konspirasi yang Bertahan" },
+      "layout": { "title_size": 40, "subtitle_size": 28, "title_weight": 900, "title_position": "center" }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": { "background_color": "#0A0A0F" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Lebih dari sekadar diktator yang dikalahkan.",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 800,
+              "color": "#DC2626",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Kekalahan Jerman pada 1945 bukanlah akhir dari cerita Hitler bagi banyak penggemar teori konspirasi. Narasi resmi sejarah dipertanyakan, memunculkan spekulasi tentang pelarian, kelanjutan kekuasaan rahasia, dan warisan tersembunyi yang masih mempengaruhi dunia.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "color": "#E5E5E5",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": { "background_color": "#0A0A0F" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Melarikan diri ke Argentina?",
+            "style": {
+              "fontSize": 34,
+              "fontWeight": 800,
+              "color": "#DC2626",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Teori paling populer menyatakan Hitler tidak bunuh diri di bunker, tetapi melarikan diri melalui terowongan rahasia ke Spanyol, lalu dengan kapal selam ke Argentina. Didukung oleh laporan saksi mata yang tidak terdokumentasi dan foto-foto yang dipertanyakan.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "color": "#E5E5E5",
+              "align": "right"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": { "background_color": "#F5F5F5" },
+      "content": {
+        "blocks": [
+          {
+            "text": "MITOS KELANGSUNGAN HIDUP",
+            "style": {
+              "fontSize": 36,
+              "fontWeight": 900,
+              "color": "#059669",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Beberapa teori ekstrem percaya Hitler hidup jauh hingga 1970-an, mungkin di Antartika atau Amerika Selatan, mengawasi jaringan Nazi global (ODESSA) yang berusaha membangun Reich Keempat.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 500,
+              "color": "#171717",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": { "background_color": "#F5F5F5" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Okultisme & Misteri",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 800,
+              "color": "#059669",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Keterlibatan Nazi dengan okultisme, seperti Thule Society, memicu teori bahwa Hitler mencari artefak mistis seperti Tombak Takdir atau bahkan berkomunikasi dengan kekuatan gelap untuk kekuasaan.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "color": "#171717",
+              "align": "right"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "design_override": { "background_color": "#0A0A0F" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Pangkalan Rahasia di Antartika",
+            "style": {
+              "fontSize": 34,
+              "fontWeight": 800,
+              "color": "#DC2626",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Ekspedisi Nazi ke Antartika (Neuschwabenland) diklaim sebagai upaya membangun pangkalan (Basis 211) untuk teknologi canggih dan perlindungan bagi elit Nazi, menimbulkan spekulasi tentang UFO Nazi (Die Glocke).",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "color": "#E5E5E5",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "design_override": { "background_color": "#0A0A0F" },
+      "content": {
+        "blocks": [
+          {
+            "text": "Kontroversi Kematian",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 800,
+              "color": "#DC2626",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Laporan intelijen AS (FBI) yang mendokumentasikan 'sightings' Hitler pasca-perang, ditambah ketiadaan pemeriksaan forensik definitif pada sisa-sisa bunker, terus mengobarkan keraguan dan bahan bakar teori konspirasi.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "color": "#E5E5E5",
+              "align": "right"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 8,
+      "type": "content",
+      "design_override": { "background_color": "#F5F5F5" },
+      "content": {
+        "blocks": [
+          {
+            "text": "MENGAPA TEORI INI BERTAHAN?",
+            "style": {
+              "fontSize": 36,
+              "fontWeight": 900,
+              "color": "#059669",
+              "align": "center"
+            }
+          },
+          {
+            "text": "Teori konspirasi tentang Hitler mencerminkan keinginan manusia untuk narasi yang lebih kompleks, ketidakpercayaan terhadap otoritas, dan upaya memahami kejahatan yang tak terbayangkan. Mereka mengungkap lebih banyak tentang psikologi kolektif kita daripada sejarah itu sendiri.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 500,
+              "color": "#171717",
+              "align": "center"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "center" }
+    }
+  ]
+}

@@ -21,7 +21,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({ currentSte
       {/* Minimalist progress bar */}
       <div className="relative h-0.5 bg-gray-800/30 rounded-full overflow-hidden">
         <motion.div
-          className="absolute inset-y-0 left-0 bg-gradient-to-r from-emerald-400 to-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"
+          className="absolute inset-y-0 left-0 bg-linear-to-r from-emerald-400 to-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
           transition={{ duration: 0.3, ease: "easeInOut" }}

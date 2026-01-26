@@ -275,7 +275,7 @@ const features = [
     icon: Share2
   },
   {
-    title: "Smart Summary",
+    title: "Note Summary",
     description: "Ringkasan cerdas yang menangkap inti sari kajian, cocok untuk Anda yang ingin grasp poin cepat.",
     icon: Sparkles
   },

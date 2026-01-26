@@ -73,8 +73,8 @@ export function MenuArea({
   };
 
   const getTierBadgeColor = () => {
-    if (userTier === "advance") return "bg-gradient-to-r from-purple-500 to-pink-500";
-    if (userTier === "premium") return "bg-gradient-to-r from-emerald-500 to-cyan-500";
+    if (userTier === "advance") return "bg-linear-to-r from-purple-500 to-pink-500";
+    if (userTier === "premium") return "bg-linear-to-r from-emerald-500 to-cyan-500";
     return "bg-gray-800 border border-gray-700";
   };
 
@@ -284,7 +284,7 @@ export function MenuArea({
                 </div>
 
                 {/* Footer Text */}
-                <p className="text-xs text-gray-600 text-center font-medium">Kajian Notes © 2025</p>
+                <p className="text-xs text-gray-600 text-center font-medium">Alwaah © 2025</p>
               </div>
             </div>
           </motion.div>

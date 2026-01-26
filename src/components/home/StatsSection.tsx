@@ -151,7 +151,7 @@ export const StatsSection: React.FC = () => {
           </h2>
 
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Bergabunglah dengan ribuan jamaah yang sudah merasakan manfaat Kajian Note
+            Bergabunglah dengan ribuan jamaah yang sudah merasakan manfaat Alwaah
           </p>
         </motion.div>
 

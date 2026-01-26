@@ -1,0 +1,596 @@
+import {
+  FabricObject,
+  Textbox,
+  Rect,
+  Circle,
+  FabricImage,
+  Triangle,
+  Group,
+  Line,
+  Control,
+  controlsUtils,
+  Gradient,
+  Pattern,
+} from "fabric";
+import type { CanvasElement, TextElement, ShapeElement, ImageElement, GradientFill } from "@/types/contentStudio.types";
+
+// GLOBAL CONTROL OVERRIDES
+// Move rotation handle (mtr) to the BOTTOM to avoid overlapping with Top Floating Menu
+
+// Helper to adjust controls for an instance
+const adjustFabricControls = (obj: any) => {
+  if (obj.controls && obj.controls.mtr) {
+    obj.controls.mtr.y = 0.5; // Bottom edge
+    obj.controls.mtr.offsetY = 40;
+    // Also ensure it is visible
+    obj.controls.mtr.visible = true;
+  }
+};
+
+export const createGradient = (fill: string | GradientFill): string | Gradient<"linear"> => {
+  if (typeof fill === "string") return fill;
+
+  // Calculate coords based on angle (0-360)
+  // We assume a percentage based gradient (0-1) relative to object
+  const angleRad = (fill.angle || 0) * (Math.PI / 180);
+
+  // Center point is 0.5, 0.5. We move outwards by 0.5 in direction of angle
+  const cos = Math.cos(angleRad);
+  const sin = Math.sin(angleRad);
+
+  // Fabric Gradient coords are x1,y1 -> x2,y2
+  // We want the vector to pass through center.
+  // Start point
+  const x1 = 0.5 - cos * 0.5;
+  const y1 = 0.5 - sin * 0.5;
+  // End point
+  const x2 = 0.5 + cos * 0.5;
+  const y2 = 0.5 + sin * 0.5;
+
+  return new Gradient({
+    type: "linear",
+    gradientUnits: "percentage",
+    coords: { x1, y1, x2, y2 },
+    colorStops: [
+      { offset: 0, color: fill.startColor },
+      { offset: 1, color: fill.endColor },
+    ],
+  });
+};
+
+// Canva-like selection controls
+export const CONTROL_DEFAULTS = {
+  transparentCorners: false,
+  cornerColor: "#3B82F6",
+  cornerStrokeColor: "#ffffff",
+  borderColor: "#3B82F6",
+  cornerSize: 10,
+  padding: 8,
+  cornerStyle: "circle" as "circle",
+  borderDashArray: [4, 4],
+  borderScaleFactor: 2,
+  // Smart Rotation Rules
+  snapAngle: 15, // Snap every 15 degrees (covers 30, 45, 60, 90)
+  snapThreshold: 5, // Snap when within 5 degrees
+};
+
+// GLOBAL CONTROL OVERRIDES
+// Move rotation handle (mtr) to the BOTTOM to avoid overlapping with Top Floating Menu
+
+const originalControls = FabricObject.prototype.controls;
+if (originalControls && originalControls.mtr) {
+  originalControls.mtr.y = 0.5; // Bottom edge
+  originalControls.mtr.offsetY = 40; // Push out downwards
+}
+
+// Helper: Custom rounded rectangle path for partial corners
+const drawRoundedRectPath = (ctx: CanvasRenderingContext2D, w: number, h: number, radii: number[]) => {
+  const x = -w / 2;
+  const y = -h / 2;
+  const [tl, tr, bl, br] = radii.map((r) => Math.min(r, w / 2, h / 2));
+
+  ctx.beginPath();
+  ctx.moveTo(x + tl, y);
+  ctx.lineTo(x + w - tr, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + tr);
+  ctx.lineTo(x + w, y + h - br);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - br, y + h);
+  ctx.lineTo(x + bl, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - bl);
+  ctx.lineTo(x, y + tl);
+  ctx.quadraticCurveTo(x, y, x + tl, y);
+  ctx.closePath();
+};
+
+// Helper: Custom rounded triangle path for partial corners
+const drawRoundedTrianglePath = (ctx: CanvasRenderingContext2D, w: number, h: number, radii: number[]) => {
+  const [r0, r1, r2] = radii; // Top, Bottom-Left, Bottom-Right
+
+  // Points for standard Fabric Triangle: (0, -h/2), (-w/2, h/2), (w/2, h/2)
+  const p0 = { x: 0, y: -h / 2 };
+  const p1 = { x: -w / 2, y: h / 2 };
+  const p2 = { x: w / 2, y: h / 2 };
+
+  // Helper to get point at distance on a line
+  const getPointAtDist = (from: any, to: any, d: number) => {
+    const len = Math.sqrt((to.x - from.x) ** 2 + (to.y - from.y) ** 2);
+    const t = Math.min(d / len, 0.5); // Clamp to half length
+    return {
+      x: from.x + (to.x - from.x) * t,
+      y: from.y + (to.y - from.y) * t,
+    };
+  };
+
+  // Vertices rounding points
+  const p0_1 = getPointAtDist(p0, p1, r0);
+  const p0_2 = getPointAtDist(p0, p2, r0);
+  const p1_0 = getPointAtDist(p1, p0, r1);
+  const p1_2 = getPointAtDist(p1, p2, r1);
+  const p2_0 = getPointAtDist(p2, p0, r2);
+  const p2_1 = getPointAtDist(p2, p1, r2);
+
+  ctx.beginPath();
+  ctx.moveTo(p0_1.x, p0_1.y);
+  ctx.quadraticCurveTo(p0.x, p0.y, p0_2.x, p0_2.y);
+  ctx.lineTo(p2_0.x, p2_0.y);
+  ctx.quadraticCurveTo(p2.x, p2.y, p2_1.x, p2_1.y);
+  ctx.lineTo(p1_2.x, p1_2.y);
+  ctx.quadraticCurveTo(p1.x, p1.y, p1_0.x, p1_0.y);
+  ctx.closePath();
+};
+
+// Helper: Create shape with text overlay
+const createShapeWithText = (shape: FabricObject, shapeEl: ShapeElement): FabricObject => {
+  // Reset shape to origin for grouping
+  shape.set({
+    left: 0,
+    top: 0,
+    originX: "center",
+    originY: "center",
+  });
+
+  if (!shapeEl.textContent) {
+    // No text, return shape as-is but restore original position AND ORIGIN
+    shape.set({
+      left: shapeEl.position.x,
+      top: shapeEl.position.y,
+      originX: "left", // Reset to default origin
+      originY: "top", // Reset to default origin
+      angle: shapeEl.rotation,
+      opacity: shapeEl.opacity,
+    });
+    return shape;
+  }
+
+  // Create textbox for shape text
+  const textbox = new Textbox(shapeEl.textContent || "", {
+    fontSize: shapeEl.textFontSize || 16,
+    fontFamily: shapeEl.textFontFamily || "Inter",
+    fontWeight: shapeEl.textFontWeight || 400,
+    fill: shapeEl.textFill || "#ffffff",
+    textAlign: shapeEl.textAlign || "center",
+    width: shapeEl.size.width - 6, // Padding from edges (3px per side)
+    originX: "center",
+    originY: "center",
+    left: 0,
+    top: 0,
+    selectable: false, // Text is not individually selectable
+    evented: false,
+    breakWords: true, // Force wrapping for long words
+    splitByGrapheme: true, // Ensure continuous strings wrap
+  });
+
+  // Create group with shape and text
+  const group = new Group([shape, textbox], {
+    left: shapeEl.position.x,
+    top: shapeEl.position.y,
+    angle: shapeEl.rotation,
+    opacity: shapeEl.opacity,
+    ...CONTROL_DEFAULTS,
+  });
+
+  return group;
+};
+
+const createLineWithMarkers = (lineEl: ShapeElement): FabricObject => {
+  const { width } = lineEl.size;
+  const strokeWidth = lineEl.strokeWidth || 2;
+  const strokeColor = lineEl.stroke || "#000000";
+
+  // APPROACH: Use fabric.Line with strokeUniform: true
+  // This supports strokeDashArray properly (unlike Rect border) and handles scaling natively.
+  // We define the line as horizontal from (0,0) to (width,0) and center it.
+  const line = new Line([0, 0, width, 0], {
+    left: lineEl.position.x,
+    top: lineEl.position.y,
+    stroke: strokeColor,
+    strokeWidth: strokeWidth,
+    strokeDashArray: lineEl.strokeDashArray || undefined,
+    strokeLineCap: "round", // Better looking ends
+
+    angle: lineEl.rotation,
+    opacity: lineEl.opacity,
+    originX: "center",
+    originY: "center",
+
+    // Stable scaling properties
+    strokeUniform: true, // Vital: keeps stroke width and dash array constant during scaling
+    lockScalingY: true, // Prevent thickening (use strokeWidth property instead)
+    lockScalingX: false, // Allow length resizing via scaling
+    lockSkewingX: true,
+    lockSkewingY: true,
+
+    // Initial state
+    scaleX: 1,
+    scaleY: 1,
+
+    ...CONTROL_DEFAULTS,
+    // Fix cropping issues for custom rendered markers
+    objectCaching: false,
+    padding: 16, // Increased padding to clear markers
+  });
+
+  // Store marker config
+  (line as any).lineStartMarker = lineEl.lineStart;
+  (line as any).lineEndMarker = lineEl.lineEnd;
+  (line as any).originalStrokeWidth = strokeWidth;
+
+  // Configure Controls: Only allow length resizing and rotation
+  line.setControlsVisibility({
+    tl: false,
+    tr: false,
+    bl: false,
+    br: false,
+    mt: false,
+    mb: false,
+    ml: true, // Left Resize
+    mr: true, // Right Resize
+    mtr: true, // Rotation
+  });
+
+  // Override render to draw markers
+  const originalRender = line._render.bind(line);
+  line._render = function (ctx: CanvasRenderingContext2D) {
+    originalRender(ctx); // Draw the line
+
+    const lineStartMarker = (this as any).lineStartMarker;
+    const lineEndMarker = (this as any).lineEndMarker;
+
+    // Geometry
+    const halfWidth = (this.width || 0) / 2;
+    const baseThickness = (this as any).strokeWidth || 2;
+
+    const sX = this.scaleX || 1;
+    const sY = this.scaleY || 1;
+
+    // Marker size
+    const mSize = Math.max(10, baseThickness * 3);
+
+    // Un-scale factors (markers should stay constant size visually)
+    const invSX = 1 / sX;
+    const invSY = 1 / sY;
+
+    ctx.save();
+    ctx.fillStyle = this.stroke as string; // Markers match stroke color
+
+    if (lineStartMarker && lineStartMarker !== "none") {
+      ctx.save();
+      ctx.translate(-halfWidth, 0); // Left end
+      ctx.scale(invSX, invSY);
+      ctx.rotate(Math.PI);
+      drawMarkerShape(ctx, lineStartMarker, mSize, baseThickness);
+      ctx.restore();
+    }
+
+    if (lineEndMarker && lineEndMarker !== "none") {
+      ctx.save();
+      ctx.translate(halfWidth, 0); // Right end
+      ctx.scale(invSX, invSY);
+      drawMarkerShape(ctx, lineEndMarker, mSize, baseThickness);
+      ctx.restore();
+    }
+
+    ctx.restore();
+  };
+
+  return line;
+};
+
+// Helper for drawing markers
+const drawMarkerShape = (ctx: CanvasRenderingContext2D, type: string, size: number, strokeWidth: number) => {
+  ctx.beginPath();
+  if (type === "arrow") {
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-size / 2, size / 2);
+    ctx.lineTo(-size / 2, -size / 2);
+    ctx.fill();
+  } else if (type === "circle") {
+    ctx.arc(0, 0, size / 2, 0, 2 * Math.PI);
+    ctx.fill();
+  } else if (type === "square") {
+    ctx.fillRect(-size / 2, -size / 2, size, size);
+  } else if (type === "diamond") {
+    ctx.save();
+    ctx.rotate(Math.PI / 4);
+    ctx.fillRect(-size * 0.35, -size * 0.35, size * 0.7, size * 0.7);
+    ctx.restore();
+  } else if (type === "bar") {
+    ctx.fillRect(-strokeWidth / 2, -size / 2, strokeWidth, size);
+  }
+};
+
+export const createFabricObject = async (element: CanvasElement): Promise<FabricObject | null> => {
+  switch (element.type) {
+    case "text":
+      const textEl = element as TextElement;
+      const textObj = new Textbox(textEl.content || "", {
+        left: textEl.position.x,
+        top: textEl.position.y,
+        originX: (textEl as any).originX || "left",
+        originY: (textEl as any).originY || "top",
+        width: textEl.size.width,
+        angle: textEl.rotation,
+        fontSize: textEl.fontSize || 16,
+        fontFamily: textEl.fontFamily || "Inter",
+        fontWeight: textEl.fontWeight || 400,
+        fill: textEl.fill,
+        textAlign: textEl.textAlign,
+        opacity: textEl.opacity,
+        lineHeight: textEl.lineHeight,
+        charSpacing: (textEl.letterSpacing || 0) * 10,
+        // Map textDecoration to fabric boolean
+        underline: textEl.textDecoration === "underline",
+        linethrough: textEl.textDecoration === "line-through",
+
+        scaleX: textEl.scaleX || 1,
+        scaleY: textEl.scaleY || 1,
+        shadow: textEl.shadow,
+        // Common props
+        lockScalingFlip: true,
+        objectCaching: false, // Better for text editing
+        splitByGrapheme: false,
+        breakWords: true, // Force wrapping if words exceed width
+        ...CONTROL_DEFAULTS,
+      });
+      // Adjust controls (rotator at bottom)
+      adjustFabricControls(textObj);
+      return textObj;
+
+    case "shape":
+      const shapeEl = element as ShapeElement;
+      if (shapeEl.shapeType === "rect") {
+        const rect = new Rect({
+          left: shapeEl.position.x,
+          top: shapeEl.position.y,
+          width: shapeEl.size.width,
+          height: shapeEl.size.height,
+          angle: shapeEl.rotation,
+          fill: createGradient(shapeEl.fill),
+          stroke: shapeEl.stroke,
+          strokeWidth: shapeEl.strokeWidth,
+          strokeDashArray: shapeEl.strokeDashArray || undefined,
+          opacity: shapeEl.opacity,
+          rx: shapeEl.cornerRadius || 0,
+          ry: shapeEl.cornerRadius || 0,
+          scaleX: shapeEl.scaleX || 1,
+          scaleY: shapeEl.scaleY || 1,
+          ...CONTROL_DEFAULTS,
+        });
+
+        // Handle partial corner radii
+        if (shapeEl.cornerRadii && shapeEl.cornerRadii.length === 4) {
+          (rect as any).cornerRadii = shapeEl.cornerRadii;
+          const originalRender = rect._render.bind(rect);
+          rect._render = function (ctx: CanvasRenderingContext2D) {
+            drawRoundedRectPath(ctx, this.width || 0, this.height || 0, (this as any).cornerRadii);
+            this._renderFill(ctx);
+            this._renderStroke(ctx);
+          };
+        }
+
+        const finalRect = createShapeWithText(rect, shapeEl);
+        adjustFabricControls(finalRect);
+        return finalRect;
+      } else if (shapeEl.shapeType === "circle") {
+        const circle = new Circle({
+          left: shapeEl.position.x,
+          top: shapeEl.position.y,
+          radius: shapeEl.size.width / 2,
+          angle: shapeEl.rotation,
+          fill: createGradient(shapeEl.fill),
+          stroke: shapeEl.stroke,
+          strokeWidth: shapeEl.strokeWidth,
+          strokeDashArray: shapeEl.strokeDashArray || undefined,
+          opacity: shapeEl.opacity,
+          scaleX: shapeEl.scaleX || 1,
+          scaleY: shapeEl.scaleY || 1,
+          ...CONTROL_DEFAULTS,
+        });
+        const finalCircle = createShapeWithText(circle, shapeEl);
+        adjustFabricControls(finalCircle);
+        return finalCircle;
+      } else if (shapeEl.shapeType === "triangle") {
+        const triangle = new Triangle({
+          left: shapeEl.position.x,
+          top: shapeEl.position.y,
+          width: shapeEl.size.width,
+          height: shapeEl.size.height,
+          angle: shapeEl.rotation,
+          fill: createGradient(shapeEl.fill),
+          stroke: shapeEl.stroke,
+          strokeWidth: shapeEl.strokeWidth,
+          strokeDashArray: shapeEl.strokeDashArray || undefined,
+          opacity: shapeEl.opacity,
+          scaleX: shapeEl.scaleX || 1,
+          scaleY: shapeEl.scaleY || 1,
+          ...CONTROL_DEFAULTS,
+        });
+
+        // Handle partial corner radii for triangle
+        if (shapeEl.cornerRadii && shapeEl.cornerRadii.length === 3) {
+          (triangle as any).cornerRadii = shapeEl.cornerRadii;
+          triangle._render = function (ctx: CanvasRenderingContext2D) {
+            drawRoundedTrianglePath(ctx, this.width || 0, this.height || 0, (this as any).cornerRadii);
+            this._renderFill(ctx);
+            this._renderStroke(ctx);
+          };
+        }
+
+        const finalTriangle = createShapeWithText(triangle, shapeEl);
+        adjustFabricControls(finalTriangle);
+        return finalTriangle;
+      } else if (shapeEl.shapeType === "line") {
+        const line = createLineWithMarkers(shapeEl);
+        adjustFabricControls(line);
+        return line;
+      }
+      return null;
+
+    case "image":
+      const imgEl = element as ImageElement;
+      try {
+        return new Promise<FabricObject | null>((resolve) => {
+          const imgTag = document.createElement("img");
+          if (!imgEl.src.startsWith("data:")) {
+            imgTag.crossOrigin = "anonymous"; // CRITICAL: Prevent canvas tainting for external URLs
+          }
+          imgTag.onload = () => {
+            // Create FabricImage from the loaded img tag
+            const img = new FabricImage(imgTag, {
+              left: imgEl.position.x,
+              top: imgEl.position.y,
+              angle: imgEl.rotation,
+              opacity: imgEl.opacity,
+              scaleX: imgEl.scaleX || 1,
+              scaleY: imgEl.scaleY || 1,
+              cropX: imgEl.cropX || 0,
+              cropY: imgEl.cropY || 0,
+              width: imgEl.size.width || imgTag.naturalWidth,
+              height: imgEl.size.height || imgTag.naturalHeight,
+              objectCaching: false,
+              ...CONTROL_DEFAULTS,
+            });
+
+            adjustFabricControls(img);
+
+            if (
+              (imgEl.cornerRadius && imgEl.cornerRadius > 0) ||
+              (imgEl.cornerRadii && imgEl.cornerRadii.length === 4)
+            ) {
+              const w = img.width || 0;
+              const h = img.height || 0;
+              const scaleX = imgEl.scaleX || 1;
+              const scaleY = imgEl.scaleY || 1;
+
+              // Create clipPath Rect
+              img.clipPath = new Rect({
+                left: -w / 2,
+                top: -h / 2,
+                width: w,
+                height: h,
+                rx: (imgEl.cornerRadius || 0) / scaleX,
+                ry: (imgEl.cornerRadius || 0) / scaleY,
+              });
+
+              // Apply partial corner radii if provided
+              if (imgEl.cornerRadii && imgEl.cornerRadii.length === 4) {
+                const radii = imgEl.cornerRadii.map((r) => r / scaleX);
+                img.clipPath._render = function (ctx: CanvasRenderingContext2D) {
+                  drawRoundedRectPath(ctx, this.width || 0, this.height || 0, radii);
+                  ctx.fill();
+                };
+              }
+            }
+
+            resolve(img);
+          };
+          imgTag.onerror = (e) => {
+            console.warn("Image load failed (using fallback):", imgEl.src);
+            // Professional Elegant Abstract (User Preferred)
+            const PLACEHOLDER_SRC =
+              "https://images.unsplash.com/photo-1515787366009-7cbdd2dc587b?q=80&w=1170&auto=format&fit=crop";
+
+            // Allow fallback if not already trying the placeholder
+            if (imgTag.src !== PLACEHOLDER_SRC) {
+              console.warn("Falling back to premium placeholder image...");
+              // Ensure CORS is set for the fallback image to support cropping/export
+              imgTag.crossOrigin = "anonymous";
+              imgTag.src = PLACEHOLDER_SRC;
+              return; // Trigger new load
+            }
+
+            resolve(null);
+          };
+          imgTag.src = imgEl.src;
+        });
+      } catch (err) {
+        console.error("Error creating fabric image:", err);
+        return null;
+      }
+
+    default:
+      return null;
+  }
+};
+
+// Track loaded fonts globally to avoid duplicated requests
+const fontLoadingSet = new Set<string>();
+
+export const loadFont = (fontFamily: string, fontWeight: number = 400): Promise<void> => {
+  if (!fontFamily || fontFamily === "Arial" || fontFamily === "sans-serif") {
+    return Promise.resolve();
+  }
+  // Cache key includes weight
+  const fontKey = `${fontFamily.replace(/\s+/g, "-").toLowerCase()}-${fontWeight}`;
+
+  if (fontLoadingSet.has(fontKey)) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve) => {
+    // Inject CSS link (one per family)
+    const linkId = `font-${fontFamily.replace(/\s+/g, "-").toLowerCase()}`;
+    if (!document.getElementById(linkId)) {
+      const link = document.createElement("link");
+      link.id = linkId;
+      link.href = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(
+        /\s+/g,
+        "+",
+      )}:wght@400;500;600;700;800;900&display=swap`;
+      link.rel = "stylesheet";
+      document.head.appendChild(link);
+    }
+
+    const markLoaded = () => {
+      fontLoadingSet.add(fontKey);
+      resolve();
+    };
+
+    if ("fonts" in document) {
+      const fontSpec = `${fontWeight} 24px "${fontFamily}"`;
+      const fallbackSpec = `24px "${fontFamily}"`;
+
+      document.fonts
+        .load(fontSpec)
+        .then(() => {
+          if (document.fonts.check(fontSpec)) {
+            markLoaded();
+          } else {
+            return document.fonts.load(fallbackSpec).then(() => {
+              markLoaded();
+            });
+          }
+        })
+        .catch(() => {
+          document.fonts
+            .load(fallbackSpec)
+            .then(() => markLoaded())
+            .catch(() => {
+              setTimeout(markLoaded, 200);
+            });
+        });
+    } else {
+      setTimeout(markLoaded, 500);
+    }
+  });
+};

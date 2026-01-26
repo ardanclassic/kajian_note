@@ -147,7 +147,7 @@ export default function Donation() {
                   {/* Glow Effect */}
                   {isSelected && (
                     <div className="absolute inset-0 opacity-20">
-                      <div className={`absolute inset-0 bg-gradient-to-br ${method.color} blur-xl`} />
+                      <div className={`absolute inset-0 bg-linear-to-br ${method.color} blur-xl`} />
                     </div>
                   )}
 
@@ -215,7 +215,7 @@ export default function Donation() {
                 </div>
               </div>
 
-              <div className="h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent" />
+              <div className="h-px bg-linear-to-r from-transparent via-gray-800 to-transparent" />
 
               {/* QRIS QR Code */}
               {selectedPayment.id === "qris" && (
