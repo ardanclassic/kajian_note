@@ -3,9 +3,9 @@
 import { create } from "zustand";
 import { persist, subscribeWithSelector } from "zustand/middleware";
 import { v4 as uuidv4 } from "uuid";
-import type { Slide, CanvasElement, Ratio, HistoryEntry } from "@/types/contentStudio.types";
+import type { Slide, CanvasElement, TextElement, Ratio, HistoryEntry } from "@/types/contentStudio.types";
 import { RATIO_DIMENSIONS } from "@/types/contentStudio.types";
-import { parseBlueprint, reGenerateSlide } from "@/utils/contentStudio/blueprintParser";
+import { parseBlueprint, validateBlueprint, adjustSlideLayout } from "@/utils/contentStudio/blueprint-parser";
 
 const MAX_HISTORY_SIZE = 50;
 
@@ -30,9 +30,11 @@ interface EditorState {
     logoUrl: string;
     topic: string;
   } | null;
+  currentBlueprint: any | null;
   caption: string;
   hashtags: string[];
-  clipboard: CanvasElement | null;
+  clipboard: CanvasElement[];
+  croppingElementId: string | null;
 }
 
 interface EditorActions {
@@ -51,16 +53,17 @@ interface EditorActions {
   removeElement: (elementId: string) => void;
   removeElements: (elementIds: string[]) => void; // Batch remove
   duplicateElement: (elementId: string) => void;
+  duplicateElements: (elementIds: string[]) => void; // Batch duplicate
   updateElement: (elementId: string, updates: Partial<CanvasElement>, pushHistory?: boolean) => void;
   updateElements: (updates: { id: string; changes: Partial<CanvasElement> }[]) => void;
   selectElement: (elementId: string | null, multi?: boolean) => void; // Modified signature
   selectElements: (elementIds: string[]) => void; // Explicit multi-select
   reorderElements: (elementId: string, direction: "up" | "down" | "top" | "bottom") => void;
+  setCroppingElementId: (id: string | null) => void;
 
   // Canvas settings
   setRatio: (ratio: Ratio) => void;
   setZoom: (zoom: number) => void;
-  setSlideVariant: (variant: "A" | "B") => void;
 
   // History
   undo: () => void;
@@ -73,6 +76,7 @@ interface EditorActions {
   // Blueprint
   loadBlueprint: (blueprint: any) => void;
   setCaption: (caption: string) => void;
+  setHashtags: (hashtags: string[]) => void;
 
   // Reset
   reset: () => void;
@@ -117,9 +121,11 @@ const initialState: EditorState = {
   history: [],
   historyIndex: -1,
   blueprintMeta: null,
+  currentBlueprint: null,
   caption: "",
   hashtags: [],
-  clipboard: null,
+  clipboard: [],
+  croppingElementId: null,
 };
 
 export const useEditorStore = create<EditorState & EditorActions>()(
@@ -264,7 +270,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
 
             const newElement = { ...elementToAdd, zIndex: maxZIndex + 1 };
             const newSlides = state.slides.map((slide, i) =>
-              i === state.currentSlideIndex ? { ...slide, elements: [...slide.elements, newElement] } : slide
+              i === state.currentSlideIndex ? { ...slide, elements: [...slide.elements, newElement] } : slide,
             );
 
             return {
@@ -288,7 +294,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
             }));
 
             const newSlides = state.slides.map((slide, i) =>
-              i === state.currentSlideIndex ? { ...slide, elements: [...slide.elements, ...newElements] } : slide
+              i === state.currentSlideIndex ? { ...slide, elements: [...slide.elements, ...newElements] } : slide,
             );
 
             const newIds = newElements.map((el) => el.id);
@@ -306,7 +312,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
             const newSlides = state.slides.map((slide, i) =>
               i === state.currentSlideIndex
                 ? { ...slide, elements: slide.elements.filter((el) => el.id !== elementId) }
-                : slide
+                : slide,
             );
 
             return {
@@ -323,7 +329,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
             const newSlides = state.slides.map((slide, i) =>
               i === state.currentSlideIndex
                 ? { ...slide, elements: slide.elements.filter((el) => !elementIds.includes(el.id)) }
-                : slide
+                : slide,
             );
 
             return {
@@ -349,13 +355,47 @@ export const useEditorStore = create<EditorState & EditorActions>()(
             };
 
             const newSlides = state.slides.map((slide, i) =>
-              i === state.currentSlideIndex ? { ...slide, elements: [...slide.elements, newElement] } : slide
+              i === state.currentSlideIndex ? { ...slide, elements: [...slide.elements, newElement] } : slide,
             );
 
             return {
               slides: newSlides,
               selectedElementId: newElement.id,
               selectedElementIds: [newElement.id],
+            };
+          });
+        },
+
+        duplicateElements: (elementIds) => {
+          get().pushToHistory();
+          set((state) => {
+            const currentSlide = state.slides[state.currentSlideIndex];
+            const elementsToDuplicate = currentSlide.elements.filter((el) => elementIds.includes(el.id));
+
+            if (elementsToDuplicate.length === 0) return state;
+
+            const maxZIndex = currentSlide.elements.reduce((max, el) => Math.max(max, el.zIndex), 0);
+
+            // Create duplicates with new IDs and offset positions
+            const newElements = elementsToDuplicate.map((element, index) => ({
+              ...JSON.parse(JSON.stringify(element)), // Deep clone
+              id: uuidv4(),
+              position: {
+                x: element.position.x + 20,
+                y: element.position.y + 20,
+              },
+              zIndex: maxZIndex + index + 1,
+            }));
+
+            const newSlides = state.slides.map((slide, i) =>
+              i === state.currentSlideIndex ? { ...slide, elements: [...slide.elements, ...newElements] } : slide,
+            );
+
+            const newIds = newElements.map((el) => el.id);
+            return {
+              slides: newSlides,
+              selectedElementId: newIds[0] || null,
+              selectedElementIds: newIds,
             };
           });
         },
@@ -370,16 +410,17 @@ export const useEditorStore = create<EditorState & EditorActions>()(
                 ? {
                     ...slide,
                     elements: slide.elements.map((el) =>
-                      el.id === elementId ? ({ ...el, ...updates } as CanvasElement) : el
+                      el.id === elementId ? ({ ...el, ...updates } as CanvasElement) : el,
                     ),
                   }
-                : slide
+                : slide,
             );
             return { slides: newSlides };
           });
         },
 
         updateElements: (updatesList) => {
+          get().pushToHistory();
           set((state) => {
             const updatesMap = new Map(updatesList.map((u) => [u.id, u.changes]));
 
@@ -392,7 +433,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
                       return changes ? ({ ...el, ...changes } as CanvasElement) : el;
                     }),
                   }
-                : slide
+                : slide,
             );
             return { slides: newSlides };
           });
@@ -485,29 +526,26 @@ export const useEditorStore = create<EditorState & EditorActions>()(
           });
         },
 
+        setCroppingElementId: (id) => {
+          set({ croppingElementId: id });
+        },
+
         // ============ CANVAS SETTINGS ============
 
         setRatio: (ratio) => {
           get().pushToHistory();
-          set({ ratio });
+          set((state) => {
+            // Automatically adjust visual layout for all slides based on new ratio
+            const newSlides = state.slides.map((slide) => adjustSlideLayout(slide, ratio));
+            return {
+              ratio,
+              slides: newSlides,
+            };
+          });
         },
 
         setZoom: (zoom) => {
           set({ zoomLevel: Math.max(25, Math.min(200, zoom)) });
-        },
-
-        setSlideVariant: (variant) => {
-          get().pushToHistory();
-          set((state) => {
-            const currentSlide = state.slides[state.currentSlideIndex];
-            // Call reGenerateSlide
-            const newSlide = reGenerateSlide(currentSlide, variant, state.ratio, DEFAULT_COLOR_PALETTE);
-
-            const newSlides = [...state.slides];
-            newSlides[state.currentSlideIndex] = newSlide;
-
-            return { slides: newSlides };
-          });
         },
 
         // ============ HISTORY ============
@@ -563,36 +601,41 @@ export const useEditorStore = create<EditorState & EditorActions>()(
         },
 
         copy: () => {
-          const { slides, currentSlideIndex, selectedElementId } = get();
-          if (!selectedElementId) return;
-          const element = slides[currentSlideIndex].elements.find((el) => el.id === selectedElementId);
-          if (element) {
-            set({ clipboard: element });
+          const { slides, currentSlideIndex, selectedElementIds } = get();
+          if (selectedElementIds.length === 0) return;
+
+          const currentSlide = slides[currentSlideIndex];
+          const elementsToCopy = currentSlide.elements.filter((el) => selectedElementIds.includes(el.id));
+
+          if (elementsToCopy.length > 0) {
+            // Deep clone to prevent reference issues
+            set({ clipboard: JSON.parse(JSON.stringify(elementsToCopy)) });
           }
         },
 
         cut: () => {
           get().copy();
-          const { selectedElementId } = get();
-          if (selectedElementId) {
-            get().removeElement(selectedElementId);
+          const { selectedElementIds } = get();
+          if (selectedElementIds.length > 0) {
+            get().removeElements(selectedElementIds);
           }
         },
 
         paste: () => {
           const { clipboard } = get();
-          if (!clipboard) return;
+          if (clipboard.length === 0) return;
 
-          const newElement = {
-            ...clipboard,
+          // Create new elements with new IDs and offset positions
+          const newElements = clipboard.map((element) => ({
+            ...element,
             id: uuidv4(),
             position: {
-              x: clipboard.position.x + 20,
-              y: clipboard.position.y + 20,
+              x: element.position.x + 20,
+              y: element.position.y + 20,
             },
-          };
+          }));
 
-          get().addElement(newElement);
+          get().addElements(newElements);
         },
 
         // ============ BLUEPRINT ============
@@ -601,28 +644,39 @@ export const useEditorStore = create<EditorState & EditorActions>()(
           get().pushToHistory();
 
           try {
-            // Use blueprint parser to generate slides with templates
             const { ratio } = get();
-            const slides = parseBlueprint(blueprint, ratio, DEFAULT_COLOR_PALETTE);
+            let slides: Slide[] = [];
 
-            set({
-              slides,
-              currentSlideIndex: 0,
-              selectedElementId: null,
-              blueprintMeta: blueprint.meta || null,
-              caption: blueprint.captions || "",
-              hashtags: [
-                ...(blueprint.hashtags?.primary || []),
-                ...(blueprint.hashtags?.secondary || []),
-                ...(blueprint.hashtags?.engagement || []),
-              ],
-            });
+            if (validateBlueprint(blueprint)) {
+              // Unified parser (formerly V2)
+              slides = parseBlueprint({ blueprint, ratio });
+
+              // Update Meta
+              set({
+                slides,
+                currentSlideIndex: 0,
+                selectedElementId: null,
+                blueprintMeta: {
+                  author: blueprint.metadata?.author?.name || "",
+                  logoUrl: blueprint.metadata?.author?.avatar_url || "",
+                  topic: blueprint.metadata.title,
+                },
+                currentBlueprint: blueprint,
+                caption: blueprint.caption || blueprint.metadata?.description || "",
+                hashtags:
+                  blueprint.hashtags ||
+                  blueprint.metadata?.tags ||
+                  (blueprint.metadata.author.hashtag ? [blueprint.metadata.author.hashtag] : []),
+              });
+              return;
+            }
           } catch (error) {
             console.error("Failed to parse blueprint:", error);
-            // Fallback to simple slide creation
+            console.warn("Falling back to raw slide extraction");
+
+            // Ultimate fallback
             const slides: Slide[] = blueprint.slides?.map((slideData: any) => ({
               id: uuidv4(),
-              // type removed
               elements: [],
               backgroundColor: "#FFFFFF",
             })) || [createEmptySlide()];
@@ -632,18 +686,19 @@ export const useEditorStore = create<EditorState & EditorActions>()(
               currentSlideIndex: 0,
               selectedElementId: null,
               blueprintMeta: blueprint.meta || null,
+              currentBlueprint: blueprint,
               caption: blueprint.captions || "",
-              hashtags: [
-                ...(blueprint.hashtags?.primary || []),
-                ...(blueprint.hashtags?.secondary || []),
-                ...(blueprint.hashtags?.engagement || []),
-              ],
+              hashtags: [],
             });
           }
         },
 
         setCaption: (caption) => {
           set({ caption });
+        },
+
+        setHashtags: (hashtags) => {
+          set({ hashtags });
         },
 
         // ============ RESET ============
@@ -653,6 +708,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
             ...initialState,
             history: [],
             historyIndex: -1,
+            currentBlueprint: null,
           });
         },
       }),
@@ -663,10 +719,11 @@ export const useEditorStore = create<EditorState & EditorActions>()(
           currentSlideIndex: state.currentSlideIndex,
           ratio: state.ratio,
           blueprintMeta: state.blueprintMeta,
+          currentBlueprint: state.currentBlueprint,
           caption: state.caption,
           hashtags: state.hashtags,
         }),
-      }
-    )
-  )
+      },
+    ),
+  ),
 );

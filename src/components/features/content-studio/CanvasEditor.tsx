@@ -1,13 +1,18 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import { Canvas } from 'fabric';
+import { FloatingSelectionMenu } from './components/FloatingSelectionMenu';
 import { motion } from 'framer-motion';
 import { useEditorStore } from '@/store/contentStudioStore';
 import { useCanvas } from './hooks/useCanvas';
 import { RATIO_DIMENSIONS, DISPLAY_DIMENSIONS } from '@/types/contentStudio.types';
 import {
   Plus, Grid, Monitor, ChevronDown, ChevronUp,
-  Trash2, Copy, Eye, EyeOff, Undo2, Redo2
+  Trash2, Copy, Eye, EyeOff, Undo2, Redo2,
+  Lock, Unlock
 } from 'lucide-react';
-import type { Ratio } from '@/types/contentStudio.types';
+import { LayerOrderPopover } from './components/toolbar/LayerOrderPopover';
+import { TransparencyControl } from './components/toolbar/TransparencyControl';
+import type { Ratio, CanvasElement } from '@/types/contentStudio.types';
 import { cn } from "@/lib/utils";
 
 interface SlideCanvasProps {
@@ -42,15 +47,18 @@ const SlideCanvas = ({
 
   const displayDimensions = DISPLAY_DIMENSIONS[ratio];
   const scaledWidth = (displayDimensions.width * zoomLevel) / 100;
+  const scaledHeight = (displayDimensions.height * zoomLevel) / 100;
 
   // Icon settings for better visibility
   const iconSize = 18;
   const iconStrokeWidth = 2;
 
+  const [fabricCanvas, setFabricCanvas] = useState<Canvas | null>(null);
+
   // Initialize canvas management hook for this specific slide
   useCanvas(
     containerRef,
-    { ratio, zoom: zoomLevel },
+    { ratio, zoom: zoomLevel, onMount: setFabricCanvas },
     canvasElRef,
     slide,  // Directly pass slide data to ensure hook has latest state
     index   // Index needed for active slide checks
@@ -96,9 +104,21 @@ const SlideCanvas = ({
             value={slide.title || ''}
             placeholder="Add page title"
             onChange={(e) => onUpdate({ title: e.target.value })}
-            // Stops canvas keyboard shortcuts when typing
             onKeyDown={(e) => e.stopPropagation()}
           />
+          <span className="w-px h-4 bg-white/10 mx-1"></span>
+          <div className="relative flex items-center justify-center p-1.5 rounded hover:bg-white/15 cursor-pointer transition-colors group" title="Change Background Color">
+            <div
+              className="w-4 h-4 rounded-full border border-white/30 shadow-sm"
+              style={{ backgroundColor: slide.backgroundColor || '#ffffff' }}
+            />
+            <input
+              type="color"
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              value={slide.backgroundColor || '#ffffff'}
+              onChange={(e) => onUpdate({ backgroundColor: e.target.value })}
+            />
+          </div>
         </div>
 
         <div className="flex items-center gap-1.5">
@@ -176,6 +196,7 @@ const SlideCanvas = ({
             display: 'block'
           }}
         />
+        <FloatingSelectionMenu canvas={fabricCanvas} />
         {/* Overlay for Hidden Page */}
         {slide.isHidden && (
           <div className="absolute top-0 left-0 w-full h-full bg-black/5 flex items-center justify-center pointer-events-none">
@@ -216,8 +237,33 @@ export function CanvasEditor() {
     selectedElementIds,
     setCurrentSlide,
     undo,
-    redo
+    redo,
+    // Added for Footer Controls
+    selectedElementId,
+    updateElement,
+    duplicateElement,
+    removeElement,
+    reorderElements
   } = useEditorStore();
+
+  const currentSlide = slides[currentSlideIndex];
+  const selectedElement = selectedElementId ? currentSlide?.elements.find(e => e.id === selectedElementId) : null;
+
+  const handleElementUpdate = (updates: Partial<CanvasElement>) => {
+    if (!selectedElementId) return;
+
+    if (selectedElementIds.length > 1) {
+      // Multi-selection update
+      const updatesList = selectedElementIds.map(id => ({
+        id,
+        changes: updates
+      }));
+      updateElements(updatesList);
+    } else {
+      // Single selection update
+      updateElement(selectedElementId, updates);
+    }
+  };
 
   const dimensions = RATIO_DIMENSIONS[ratio];
 
@@ -460,6 +506,8 @@ export function CanvasEditor() {
           >
             <Redo2 size={16} />
           </button>
+
+
         </div>
 
         <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3">

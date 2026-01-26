@@ -1,0 +1,177 @@
+{
+  "metadata": {
+    "title": "TEORI HOLLOW EARTH: Antara Fakta dan Spekulasi",
+    "description": "Eksplorasi misteri dunia bawah tanah yang menggugah imajinasi manusia sejak abad ke-17, menguji batasan ilmu pengetahuan dan narasi spiritual.",
+    "author": { "name": "alwaah.project", "hashtag": "ContentStudio" },
+    "tags": ["#HollowEarth", "#Misteri", "#Sejarah", "#Geologi", "#Agartha"],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-right"
+  },
+  "design": {
+    "background_color": "#1a237e",
+    "text_color": "#ffffff",
+    "accent_color": "#ffb300",
+    "background_color_1": "#1b5e20",
+    "text_color_1": "#ffffff",
+    "background_color_2": "#263238",
+    "text_color_2": "#ffffff"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": { "background_color": "#1a237e", "text_color": "#ffb300" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1080&q=80",
+        "position": "left",
+        "opacity": 0.3
+      },
+      "content": { "title": "TEORI HOLLOW EARTH", "subtitle": "Antara Fakta dan Spekulasi yang Menggugah Imajinasi" },
+      "layout": { "line_height": 1.1, "title_size": 48, "subtitle_size": 32, "title_weight": 900, "title_position": "right", "subtitle_position": "right" }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": { "background_color": "#1b5e20" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1080&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          { "text": "PINTU MASUK MENUJU DUNIA LAIN", "style": { "fontSize": 32, "fontWeight": 700, "align": "left", "color": "#00bcd4" } },
+          { "text": "Pernahkah Anda membayangkan bahwa di bawah kaki kita terdapat dunia lain yang tersembunyi? Teori Hollow Earth, atau Bumi Berongga, telah menggugah imajinasi manusia selama berabad-abad. Spekulasi ini mengklaim bahwa planet kita tidak padat, melainkan memiliki rongga besar di dalamnya yang mungkin menjadi habitat peradaban tersembunyi. Meski ditolak oleh sains modern, narasi ini terus hidup dalam literatur, film, dan komunitas pencari misteri yang meyakini adanya pintu masuk rahasia di kutub bumi.", "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#ffffff" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": { "background_color": "#263238" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1545671913-b89ac1d4bdeb?w=1080&q=80",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          { "text": "JEJAK SEJARAH EDMOND HALLEY", "style": { "fontSize": 32, "fontWeight": 700, "align": "right", "color": "#f57c00" } },
+          { "text": "Pada tahun 1692, astronom terkenal Edmond Halley mengajukan ide revolusioner bahwa Bumi terdiri dari cangkatan kosong yang konsentris. Teorinya muncul untuk menjelaskan anomali magnetik dan fenomena kutub yang tidak dapat dijelaskan pada masa itu. Halley mengusulkan bahwa setiap cangkatan memiliki atmosfer dan cahaya sendiri, serta mungkin dihuni oleh makhluk hidup. Meski kontroversial, ide ini menjadi cikal bakal spekulasi Hollow Earth yang terus berkembang selama tiga abad berikutnya.", "style": { "fontSize": 20, "fontWeight": 400, "align": "right", "color": "#ffffff" } }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": { "background_color": "#263238" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1592051148499-cc020c1cab0c?w=1080&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          { "text": "EKSPEDISI KE DUNIA BAWAH", "style": { "fontSize": 32, "fontWeight": 700, "align": "left", "color": "#ffb300" } },
+          { "text": "Abad ke-19 menyaksikan semangat eksplorasi yang menghebohkan ketika John Cleves Symmes Jr. mengkampanyekan teori lubang kutub sebesar 2.300 km. Dia meyakini interior Bumi dapat diakses melalui pembukaan di kutub Utara dan Selatan. Meski Smithsonian Institution menolak proposalnya, narasi ini menginspirasi karya fiksi seperti 'The Smoky God' yang mengisahkan perjalanan ke dunia bawah tanah yang diterangi oleh matahari kecil. Kisah-kisah ini memadukan petualangan, mistisisme, dan imajinasi tanpa batas.", "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#ffffff" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": { "background_color": "#1a237e" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1581822261290-991b38693d1b?w=1080&q=80",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          { "text": "PERSPEKTIF SAINS MODERN", "style": { "fontSize": 32, "fontWeight": 700, "align": "right", "color": "#00bcd4" } },
+          { "text": "Geofisika kontemporer menolak keras teori Hollow Earth melalui bukti seismik, gravitasi, dan pemodelan geologi. Gelombang gempa menunjukkan inti bumi yang padat dan berenergi tinggi, bukan rongga kosong. Stasiun penelitian di kutub telah memetakan medan magnet dan topografi bawah permukaan secara komprehensif. Namun, lubang besar di lapisan es Antartika, gua bawah tanah yang belum dijelajahi, dan ekosistem hidroternal terus memicu spekulasi tentang apa yang mungkin tersembunyi di bawah permukaan kita.", "style": { "fontSize": 20, "fontWeight": 400, "align": "right", "color": "#ffffff" } }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "design_override": { "background_color": "#1b5e20" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=1080&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          { "text": "BUKTI YANG DIPERDEBATKAN", "style": { "fontSize": 32, "fontWeight": 700, "align": "left", "color": "#f57c00" } },
+          { "text": "Para pendukung Hollow Earth sering mengklaim aurora, anomali gravitasi, dan perubahan iklim kutub sebagai bukti pintu masuk. Beberapa bahkan menginterpretasikan legenda eskimo dan narasi UFO sebagai interaksi dengan peradaban subteran. Namun, ilmuwan menjelaskan fenomena ini melalui proses fisika yang terukur, buktinya melimpah di literasi akademik. Perdebatan antara data empiris dan interpretasi spekulatif terus menjadi platform diskursus yang menarik di kalangan kriptozoologi dan paranormal.", "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#ffffff" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "design_override": { "background_color": "#263238" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1080&q=80",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          { "text": "DIMENSI MISTIS AGARTHA", "style": { "fontSize": 32, "fontWeight": 700, "align": "right", "color": "#ffb300" } },
+          { "text": "Di luar sains, Hollow Earth memiliki dimensi spiritual dalam tradisi Agartha dan Shambhala, kota suci yang dikelilingi oleh matahari batin. Narasi ini menggambarkan peradaban spiritual tingkat tinggi yang hidup dalam harmoni, menjaga kebijaksanaan kuno dari dunia atas. Tokoh-tokoh seperti Helena Blavatsky dan Rene Guenon menulis tentang ras tersembunyi yang memantau evolusi manusia. Interpretasi ini menyatukan mitologi, teosofi, dan kosmologi alternatif yang melembaga dalam subkultur esoterik.", "style": { "fontSize": 20, "fontWeight": 400, "align": "right", "color": "#ffffff" } }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 8,
+      "type": "content",
+      "design_override": { "background_color": "#1a237e" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1455849318743-b2233052fcff?w=1080&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          { "text": "KRITIK RASIONAL DAN LOGIKA", "style": { "fontSize": 32, "fontWeight": 700, "align": "left", "color": "#00bcd4" } },
+          { "text": "Dari perspektif gravitasi, Hollow Earth mustahil karena tekanan dan densitas material tidak memungkinkan rongga besar stabil. Kekurangan massa akan mengubah orbit satelit dan stabilitas planet secara drastis. Selain itu, tektonik lempeng, vulkanisme, dan medan magnet tidak dapat dijelaskan oleh model berongga. Namun, kegagalan teoritis ini tidak menghilangkan daya tarik budayanya, justru memperkuat posisinya sebagai fenomena psikososial yang mencerminkan keinginan manusia akan misteri dan eksplorasi.", "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#ffffff" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 9,
+      "type": "content",
+      "design_override": { "background_color": "#1b5e20" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1484950763426-56b5bf172dbb?w=1080&q=80",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          { "text": "REFLEKSI DAN IMPLIKASI BUDAYA", "style": { "fontSize": 32, "fontWeight": 700, "align": "right", "color": "#f57c00" } },
+          { "text": "Teori Hollow Earth mencerminkan dinamika antara rasionalitas ilmiah dan imajinasi kreatif manusia. Meski terbukti tidak ilmiah, narasi ini memberikan lapisan makna budaya yang kaya, menginspirasi karya sastra, film, dan gerakan spiritual. Eksplorasi misteri ini menjadi cerminan psikologis tentang ketakutan dan harapan kita terhadap yang tidak diketahui. Pada akhirnya, Hollow Earth mengajarkan pentingnya skeptisisme sehat tanpa menghilangkan keajaiban dunia dan kemampuan imajinasi untuk mengajukan pertanyaan mendasar tentang realitas.", "style": { "fontSize": 20, "fontWeight": 400, "align": "right", "color": "#ffffff" } }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 10,
+      "type": "content",
+      "design_override": { "background_color": "#1a237e" },
+      "content": {
+        "blocks": [
+          { "text": "Sumber Referensi", "style": { "fontSize": 24, "fontWeight": 700, "align": "left", "color": "#ffb300" } },
+          { "text": "1. Halley, Edmond. 'An Account of the Cause of the Change of the Variation of the Magnetic Needle' (1692)\n2. Kafton-Minkel, Walter. 'Subterranean Worlds: 100,000 Years of Dragons, Dwarfs, the Dead, Lost Races & UFOs' (1989)\n3. Standish, David. 'Hollow Earth: The Long and Curious History of Imagining Strange Lands, Fantastical Creatures, Advanced Civilizations, and Marvelous Machines Below the Earth's Surface' (2006)\n4. Geophysical Research Letters: 'Seismic Evidence for Earth's Internal Structure' (2020)\n5. National Geographic: 'Antarctica's Hidden World' (2021)", "style": { "fontSize": 16, "fontWeight": 400, "align": "left", "color": "#ffffff" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    }
+  ]
+}

@@ -138,9 +138,34 @@ const updateProfile = async (userId: string, data: UpdateProfileData): Promise<U
 
     if (data.fullName !== undefined) updateData.full_name = data.fullName;
     if (data.phone !== undefined) updateData.phone = data.phone;
-    if (data.paymentEmail !== undefined) updateData.payment_email = data.paymentEmail; // NEW
     if (data.bio !== undefined) updateData.bio = data.bio;
     if (data.avatarUrl !== undefined) updateData.avatar_url = data.avatarUrl;
+
+    // Handle email update with 14-day restriction
+    if (data.email !== undefined) {
+      // 1. Check last email change
+      const changes = await getProfileChanges(userId);
+      const lastEmailChange = changes.find((c) => c.fieldChanged === "email");
+
+      if (lastEmailChange) {
+        const daysSinceLastChange =
+          (Date.now() - new Date(lastEmailChange.changedAt).getTime()) / (1000 * 60 * 60 * 24);
+        if (daysSinceLastChange < 14) {
+          throw new Error("Anda hanya dapat mengubah email setiap 14 hari sekali.");
+        }
+      }
+
+      // 2. Update email in Supabase Auth (trigger confirmation)
+      const { error: authError } = await supabase.auth.updateUser({ email: data.email });
+      if (authError) throw authError;
+
+      // Note: We don't update 'email' in public.users table yet.
+      // It will be updated via webhook or trigger when user confirms the new email.
+      // However, for the purpose of the requirement "email must be updatable",
+      // we usually treat the auth update as the action.
+      // But we need to log this attempt so strict checking works next time.
+      await logProfileChange(userId, "email", null, data.email, userId);
+    }
 
     const updated = await db.update("users", userId, updateData);
     if (!updated) throw new Error("Gagal mengubah profil");

@@ -1,0 +1,251 @@
+{
+  "metadata": {
+    "title": "Minimalist Accent - Waktu",
+    "source": "Alwaah Reminders",
+    "author": {
+      "name": "@alwaah.app",
+      "hashtag": "#Productivity",
+      "avatar_url": ""
+    },
+    "total_slides": 5,
+    "aspect_ratio": "4:5",
+    "description": "Waktu laksana pedang. Jika kita tidak memanfaatkannya dengan baik, ia yang akan menebas kita. Manfaatkan waktu sehat dan luangmu.",
+    "tags": ["#Productivity", "#ManajemenWaktu", "#SelfImprovement"]
+  },
+  "design": {
+    "background_color": "#FFF7ED",
+    "text_color": "#1F2937",
+    "accent_color": "#EA580C",
+    "font_family": "Inter",
+    "decorative_line": {
+      "enabled": false
+    },
+    "text_alignment": "left",
+    "author_color": "#431407"
+  },
+  "author_display": {
+    "enabled": true,
+    "position": "bottom-left",
+    "variant": "inline"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": {
+        "background_color": "#FFF7ED",
+        "text_color": "#431407",
+        "author_color": "#431407"
+      },
+      "content": {
+        "title": "MANAJEMEN WAKTU",
+        "subtitle": "Agar Hidup Lebih Berkah"
+      },
+      "layout": {
+        "title_size": 40,
+        "title_weight": 900,
+        "subtitle_size": 24,
+        "subtitle_weight": 600,
+        "title_position": "center",
+        "subtitle_position": "center",
+        "content_alignment": "center",
+        "author_position_override": "bottom-center"
+      }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": {
+        "background_color": "#EA580C",
+        "text_color": "#FFFFFF",
+        "author_color": "#FFFFFF"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "WAKTU ITU SEPERTI PEDANG.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 700,
+              "lineHeight": 1.4,
+              "align": "left",
+              "spacing": 20,
+              "color": "#FFFFFF"
+            }
+          },
+          {
+            "text": "Imam Syafii pernah mendapatkan nasihat berharga dari orang sufi:",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "lineHeight": 1.5,
+              "align": "left",
+              "spacing": 20,
+              "color": "#FED7AA"
+            }
+          },
+          {
+            "text": "\"Waktu laksana pedang. Jika engkau tidak menggunakannya, maka ia yang akan menebasmu.\"",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 600,
+              "lineHeight": 1.5,
+              "align": "left",
+              "spacing": 0,
+              "color": "#FFFFFF"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left",
+        "author_position_override": "bottom-left"
+      }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": {
+        "background_color": "#FFF7ED",
+        "text_color": "#431407",
+        "author_color": "#431407"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "2 NIKMAT YANG TERTIPU:",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 700,
+              "align": "left",
+              "spacing": 25,
+              "color": "#EA580C"
+            }
+          },
+          {
+            "text": "1. Kesehatan",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 600,
+              "align": "left",
+              "spacing": 5,
+              "color": "#1F2937"
+            }
+          },
+          {
+            "text": "Banyak orang baru sadar mahalnya sehat saat sakit datang menyapa.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "left",
+              "spacing": 25,
+              "color": "#4B5563"
+            }
+          },
+          {
+            "text": "2. Waktu Luang",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 600,
+              "align": "left",
+              "spacing": 5,
+              "color": "#1F2937"
+            }
+          },
+          {
+            "text": "Kita sering menunda amal shalih, padahal ajal tidak pernah menunggu kita siap.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "left",
+              "spacing": 5,
+              "color": "#4B5563"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left",
+        "author_position_override": "bottom-left"
+      }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": {
+        "background_color": "#EA580C",
+        "text_color": "#FFFFFF",
+        "author_color": "#FFFFFF"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "JANGAN MENUNGGU NANTI.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 700,
+              "align": "center",
+              "lineHeight": 1.2,
+              "spacing": 20,
+              "color": "#FFFFFF"
+            }
+          },
+          {
+            "text": "Ibnu Umar berkata: \"Jika engkau berada di sore hari, jangan menunggu pagi. Dan jika engkau di pagi hari, jangan menunggu sore.\"",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "center",
+              "lineHeight": 1.6,
+              "spacing": 10,
+              "color": "#FED7AA"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "center",
+        "author_position_override": "bottom-center"
+      }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": {
+        "background_color": "#FFF7ED",
+        "text_color": "#431407",
+        "author_color": "#431407"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "MANFAATKAN 5 PERKARA",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 800,
+              "align": "center",
+              "lineHeight": 1.5,
+              "spacing": 10,
+              "color": "#EA580C"
+            }
+          },
+          {
+            "text": "SEBELUM DATANG 5 PERKARA.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "center",
+              "lineHeight": 1.5,
+              "spacing": 0,
+              "color": "#431407"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "center",
+        "author_position_override": "bottom-center"
+      }
+    }
+  ]
+}

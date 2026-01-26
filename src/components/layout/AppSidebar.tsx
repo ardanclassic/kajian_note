@@ -12,7 +12,9 @@ import {
   Heart,
   Info,
   X,
-  Palette
+  Palette,
+  Wand2,
+  Target
 } from "lucide-react";
 
 import {
@@ -84,6 +86,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       url: "/content-studio",
       icon: Palette,
       isActive: location.pathname.startsWith("/content-studio"),
+    },
+    {
+      title: "Prompt Studio",
+      url: "/prompt-studio",
+      icon: Wand2,
+      isActive: location.pathname.startsWith("/prompt-studio"),
+    },
+    {
+      title: "Quest",
+      url: "/quest",
+      icon: Target,
+      isActive: location.pathname.startsWith("/quest"),
     },
   ];
 

@@ -50,8 +50,8 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon: Icon, title, descriptio
 
         {/* Sharp Edge Highlight */}
         <div className="absolute top-0 right-0 w-24 h-24">
-          <div className="absolute top-0 right-0 w-px h-12 bg-gradient-to-b from-emerald-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="absolute top-0 right-0 h-px w-12 bg-gradient-to-l from-emerald-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute top-0 right-0 w-px h-12 bg-linear-to-b from-emerald-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute top-0 right-0 h-px w-12 bg-linear-to-l from-emerald-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
       </div>
     </motion.div>

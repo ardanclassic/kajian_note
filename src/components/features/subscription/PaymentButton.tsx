@@ -15,21 +15,25 @@ import { supabase } from "@/lib/supabase";
 interface PaymentButtonProps {
   tier: SubscriptionTier;
   userEmail: string;
-  paymentEmail: string;
   userName?: string;
   className?: string;
   children?: React.ReactNode;
 }
 
-export function PaymentButton({ tier, userEmail, paymentEmail, userName, className, children }: PaymentButtonProps) {
+export function PaymentButton({ tier, userEmail, userName, className, children }: PaymentButtonProps) {
   const [loading, setLoading] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const [preparedPaymentUrl, setPreparedPaymentUrl] = useState<string>("");
+  const [paymentData, setPaymentData] = useState<{
+    userId: string;
+    refId: string;
+    paymentUrl: string;
+    amount: number;
+  } | null>(null);
 
   const handleCopyEmail = async () => {
     try {
-      await navigator.clipboard.writeText(paymentEmail);
+      await navigator.clipboard.writeText(userEmail);
       setEmailCopied(true);
       toast.success("Email disalin ke clipboard!", {
         description: "Paste email ini saat checkout di Lynk.id",
@@ -54,7 +58,7 @@ export function PaymentButton({ tier, userEmail, paymentEmail, userName, classNa
       // 1. Validasi user exists
       const { data: userExists, error: userError } = await supabase
         .from("users")
-        .select("id, email, username, payment_email")
+        .select("id, email, username")
         .eq("email", userEmail)
         .single();
 
@@ -64,13 +68,7 @@ export function PaymentButton({ tier, userEmail, paymentEmail, userName, classNa
         return;
       }
 
-      // 2. Update payment_email untuk webhook matching
-      await supabase
-        .from("users")
-        .update({
-          payment_email: paymentEmail,
-        })
-        .eq("id", userExists.id);
+      // 2. (Removed) Update payment_email karena sekarang pakai email utama
 
       // 3. Generate unique reference untuk tracking
       const refId = `SUB-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -85,30 +83,22 @@ export function PaymentButton({ tier, userEmail, paymentEmail, userName, classNa
         return;
       }
 
-      // 5. Simpan payment attempt untuk tracking
-      const { error: insertError } = await supabase.from("payment_attempts").insert({
-        user_id: userExists.id,
-        reference_id: refId,
-        email: userEmail,
-        tier,
-        amount: getPrice(tier),
-        payment_url: baseLink,
-        status: "pending",
-      });
-
-      if (insertError) {
-        console.error("Failed to save payment attempt:", insertError);
-      }
+      // 5. (Deferred) Simpan payment attempt dipindah ke handleConfirmPayment
 
       // 6. Auto-copy email to clipboard
       try {
-        await navigator.clipboard.writeText(paymentEmail);
+        await navigator.clipboard.writeText(userEmail);
       } catch (e) {
         console.log("Auto-copy failed, user will copy manually");
       }
 
-      // 7. Store payment URL and show confirmation dialog
-      setPreparedPaymentUrl(baseLink);
+      // 7. Store payment data and show confirmation dialog
+      setPaymentData({
+        userId: userExists.id,
+        refId,
+        paymentUrl: baseLink,
+        amount: getPrice(tier),
+      });
       setShowConfirmDialog(true);
       setLoading(false);
     } catch (error: any) {
@@ -118,7 +108,25 @@ export function PaymentButton({ tier, userEmail, paymentEmail, userName, classNa
     }
   };
 
-  const handleConfirmPayment = () => {
+  const handleConfirmPayment = async () => {
+    if (!paymentData) return;
+
+    // Insert payment attempt here
+    const { error: insertError } = await supabase.from("payment_attempts").insert({
+      user_id: paymentData.userId,
+      reference_id: paymentData.refId,
+      email: userEmail,
+      tier,
+      amount: paymentData.amount,
+      payment_url: paymentData.paymentUrl,
+      status: "pending",
+    });
+
+    if (insertError) {
+      console.error("Failed to save payment attempt:", insertError);
+      // Continue anyway as we want to allow payment
+    }
+
     setShowConfirmDialog(false);
 
     // Show instruction toast
@@ -129,14 +137,14 @@ export function PaymentButton({ tier, userEmail, paymentEmail, userName, classNa
 
     // Redirect ke Lynk.id
     setTimeout(() => {
-      window.open(preparedPaymentUrl, "_blank");
+      window.open(paymentData.paymentUrl, "_blank");
 
       // Show reminder after redirect
       setTimeout(() => {
         toast.warning("📋 Gunakan email ini saat checkout:", {
           description: (
             <div className="flex items-center gap-2 mt-2">
-              <code className="text-xs bg-white/10 px-2 py-1 rounded">{paymentEmail}</code>
+              <code className="text-xs bg-white/10 px-2 py-1 rounded">{userEmail}</code>
             </div>
           ),
           duration: 10000,
@@ -147,7 +155,7 @@ export function PaymentButton({ tier, userEmail, paymentEmail, userName, classNa
 
   const handleCancelPayment = () => {
     setShowConfirmDialog(false);
-    setPreparedPaymentUrl("");
+    setPaymentData(null);
     toast.info("Pembayaran dibatalkan");
   };
 
@@ -159,7 +167,7 @@ export function PaymentButton({ tier, userEmail, paymentEmail, userName, classNa
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
               <div className="text-xs font-bold text-emerald-400 mb-1.5 uppercase tracking-wide">Email Terdaftar</div>
-              <code className="text-sm font-mono font-bold text-white break-all">{paymentEmail}</code>
+              <code className="text-sm font-mono font-bold text-white break-all">{userEmail}</code>
             </div>
 
             <Button
@@ -229,7 +237,7 @@ export function PaymentButton({ tier, userEmail, paymentEmail, userName, classNa
               {/* Email Highlight */}
               <div className="p-4 bg-black/50 border border-emerald-500/30 rounded-xl mb-6">
                 <code className="text-sm font-mono font-bold text-emerald-400 break-all block text-center">
-                  {paymentEmail}
+                  {userEmail}
                 </code>
               </div>
 

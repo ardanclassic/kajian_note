@@ -1,0 +1,292 @@
+{
+  "metadata": {
+    "title": "Keajaiban Segitiga",
+    "description": "Mengungkap bentuk geometris yang paling kuat, stabil, dan penuh misteri dalam sejarah manusia.",
+    "author": {
+      "name": "alwaah.project",
+      "hashtag": "#ContentStudio"
+    },
+    "tags": ["#Segitiga", "#Geometri", "#Matematika", "#Simbol", "#Desain"],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-center"
+  },
+  "design": {
+    "font_family": "Inter",
+    "background_color": "#0F172A",
+    "text_color": "#F8FAFC",
+    "accent_color": "#38BDF8",
+    "background_color_1": "#0F172A",
+    "text_color_1": "#F8FAFC",
+    "accent_color_1": "#38BDF8",
+    "background_color_2": "#F8FAFC",
+    "text_color_2": "#0F172A",
+    "accent_color_2": "#F59E0B",
+    "background_color_3": "#EA580C",
+    "text_color_3": "#FFFFFF",
+    "accent_color_3": "#FEF3C7"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": {
+        "background_color": "#38BDF8",
+        "text_color": "#0F172A",
+        "author_color": "#0F172A"
+      },
+      "content": {
+        "title": "SEGITIGA",
+        "subtitle": "Bentuk Yang Mengubah Dunia"
+      },
+      "layout": {
+        "title_size": 64,
+        "subtitle_size": 48,
+        "title_weight": 900,
+        "title_position": "left",
+        "subtitle_position": "left",
+        "line_height": 1.0
+      }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": {
+        "background_color": "#0F172A"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "STABILITAS",
+            "style": {
+              "fontSize": 48,
+              "fontWeight": 900,
+              "color": "#38BDF8",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Bentuk paling kokoh",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 600,
+              "color": "#F8FAFC",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Segitiga adalah satu-satunya bentuk poligon yang tidak berubah saat diberi tekanan. Inilah mengapa digunakan dalam jembatan, menara, dan struktur bangunan yang membutuhkan kekuatan maksimal.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#F59E0B",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": {
+        "background_color": "#F8FAFC"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "SIMBOL",
+            "style": {
+              "fontSize": 46,
+              "fontWeight": 800,
+              "color": "#F59E0B",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Makna universal",
+            "style": {
+              "fontSize": 30,
+              "fontWeight": 500,
+              "color": "#0F172A",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Dalam berbagai budaya, segitiga melambangkan trinitas: pikiran, tubuh, jiwa; masa lalu, sekarang, masa depan; kelahiran, kehidupan, kematian. Simbol yang sederhana namun penuh makna filosofis.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#EA580C",
+              "align": "right"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "right"
+      }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": {
+        "background_color": "#EA580C"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "PIRAMIDA",
+            "style": {
+              "fontSize": 52,
+              "fontWeight": 900,
+              "color": "#FEF3C7",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Keajaiban arsitektur",
+            "style": {
+              "fontSize": 34,
+              "fontWeight": 600,
+              "color": "#FFFFFF",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Piramida Mesir adalah bukti abadi kekuatan segitiga. Struktur raksasa ini telah bertahan ribuan tahun, menantang gravitasi dan waktu berkat desain segitiga yang sempurna.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 400,
+              "color": "#0F172A",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": {
+        "background_color": "#0F172A"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "MATEMATIKA",
+            "style": {
+              "fontSize": 44,
+              "fontWeight": 800,
+              "color": "#38BDF8",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Teorema Pythagoras",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 500,
+              "color": "#F59E0B",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Hubungan a² + b² = c² adalah fondasi geometri. Teorema ini mengungkap rahasia segitiga siku-siku, digunakan dalam navigasi, konstruksi, dan teknologi modern.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#F8FAFC",
+              "align": "right"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "right"
+      }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "design_override": {
+        "background_color": "#F8FAFC"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "ALAM",
+            "style": {
+              "fontSize": 48,
+              "fontWeight": 900,
+              "color": "#EA580C",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Bentuk dalam kehidupan",
+            "style": {
+              "fontSize": 30,
+              "fontWeight": 600,
+              "color": "#0F172A",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Segitiga muncul di sarang lebah, kristal salju, struktur molekul DNA, dan pola sayap kupu-kupu. Alam menggunakan efisiensi segitiga untuk menciptakan kekuatan dengan material minimal.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#F59E0B",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "design_override": {
+        "background_color": "#EA580C"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Referensi & Sumber",
+            "style": {
+              "fontSize": 36,
+              "fontWeight": 700,
+              "color": "#FEF3C7",
+              "align": "left"
+            }
+          },
+          {
+            "text": "1. \"The Geometry of Art and Life\" - Matila Ghyka\n2. \"Structures: Or Why Things Don't Fall Down\" - J.E. Gordon\n3. \"The Power of Limits: Proportional Harmonies in Nature, Art, and Architecture\" - György Doczi\n4. Ensiklopedia Matematika - Britannica\n5. Jurnal Arsitektur dan Desain Struktural",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#FFFFFF",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    }
+  ]
+}

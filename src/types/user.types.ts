@@ -61,6 +61,7 @@ export interface UserSummary {
 export interface UpdateProfileData {
   fullName?: string;
   phone?: string;
+  email?: string; // NEW: Allow updating email
   paymentEmail?: string;
   bio?: string;
   avatarUrl?: string;

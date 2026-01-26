@@ -20,7 +20,6 @@ export function UserSettings() {
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
-    paymentEmail: "",
     bio: "",
   });
 
@@ -32,7 +31,6 @@ export function UserSettings() {
       setFormData({
         fullName: user.fullName || "",
         phone: user.phone || "",
-        paymentEmail: user.paymentEmail || "",
         bio: user.bio || "",
       });
     }
@@ -50,10 +48,6 @@ export function UserSettings() {
       newErrors.phone = "Format nomor telepon tidak valid";
     }
 
-    if (formData.paymentEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.paymentEmail)) {
-      newErrors.paymentEmail = "Format email tidak valid";
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -68,7 +62,6 @@ export function UserSettings() {
       await updateProfile(user.id, {
         fullName: formData.fullName,
         phone: formData.phone || undefined,
-        paymentEmail: formData.paymentEmail || undefined,
         bio: formData.bio || undefined,
       });
 
@@ -154,26 +147,7 @@ export function UserSettings() {
             {errors.phone && <p className="text-xs text-destructive">{errors.phone}</p>}
           </div>
 
-          {/* Payment Email */}
-          <div className="space-y-2">
-            <Label htmlFor="paymentEmail">Email untuk Pembayaran</Label>
-            <div className="flex items-center gap-2">
-              <Mail className="h-4 w-4 text-muted-foreground" />
-              <Input
-                id="paymentEmail"
-                name="paymentEmail"
-                type="email"
-                value={formData.paymentEmail}
-                onChange={handleChange}
-                placeholder="email@example.com"
-                aria-invalid={!!errors.paymentEmail}
-              />
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Email ini akan digunakan untuk mencocokkan pembayaran Lynk.id dengan akun Anda
-            </p>
-            {errors.paymentEmail && <p className="text-xs text-destructive">{errors.paymentEmail}</p>}
-          </div>
+          {/* Payment Email removed */}
 
           {/* Bio */}
           <div className="space-y-2">

@@ -23,13 +23,14 @@ import ViewNote from "@/pages/notes/ViewNote";
 import EditNote from "@/pages/notes/EditNote";
 import CreateDeepNote from "@/pages/deepnote/CreateDeepNote";
 import ListDeepNote from "@/pages/deepnote/ListDeepNote";
-// Memory Journey Routes
-import ListMemoryJourney from "@/pages/memory-journey/ListMemoryJourney";
-import CreateMemoryJourney from "@/pages/memory-journey/CreateMemoryJourney";
-import ViewMemoryJourney from "@/pages/memory-journey/ViewMemoryJourney";
+
 // Content Studio Routes
 import ListContentStudio from "@/pages/content-studio/ListContentStudio";
 import ContentStudio from "@/pages/content-studio/ContentStudio";
+// Prompt Studio Routes
+import PromptStudio from "@/pages/prompt-studio";
+// Quest Routes
+import { QuestPage } from "@/components/features/quest";
 import UserManagement from "@/pages/admin/UserManagement";
 import APITest from "@/pages/APITest";
 import { ManualPaymentRecovery } from '@/pages/admin/ManualPaymentRecovery';
@@ -77,14 +78,17 @@ export const AppRoutes = () => {
         <Route path="/deep-note/create" element={<CreateDeepNote />} />
         <Route path="/deep-note/:id" element={<ViewNote />} />
 
-        {/* Memory Journey Routes */}
-        <Route path="/memory-journey" element={<ListMemoryJourney />} />
-        <Route path="/memory-journey/create" element={<CreateMemoryJourney />} />
-        <Route path="/memory-journey/:id" element={<ViewMemoryJourney />} />
+
 
         {/* Content Studio Routes */}
         <Route path="/content-studio" element={<ListContentStudio />} />
         <Route path="/content-studio/create" element={<ContentStudio />} />
+
+        {/* Prompt Studio Routes */}
+        <Route path="/prompt-studio" element={<PromptStudio />} />
+
+        {/* Quest Routes */}
+        <Route path="/quest" element={<QuestPage />} />
 
         {/* Tools */}
         <Route path="/api-test" element={<APITest />} />

@@ -117,119 +117,121 @@
 }
 
 /* Base Elements */
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  font-family: var(--font-sans);
-  font-size: var(--text-base);
-  line-height: var(--leading-normal);
-  font-weight: var(--font-normal);
-  /* Improve font rendering */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@layer base {
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    font-weight: var(--font-normal);
+    /* Improve font rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-/* Headings - Adjusted Hierachy */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-sans);
-  font-weight: var(--font-bold); /* Normalized weight */
-  line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-tight);
-  color: var(--foreground);
-  margin: 0;
-}
+  /* Headings - Adjusted Hierachy */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-bold); /* Normalized weight */
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--foreground);
+    margin: 0;
+  }
 
-h1 {
-  font-size: var(--text-4xl); /* More controlled H1 */
-  font-weight: var(--font-extrabold);
-  letter-spacing: var(--tracking-tight);
-}
+  h1 {
+    font-size: var(--text-4xl); /* More controlled H1 */
+    font-weight: var(--font-extrabold);
+    letter-spacing: var(--tracking-tight);
+  }
 
-h2 {
-  font-size: var(--text-3xl);
-  font-weight: var(--font-bold);
-}
+  h2 {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+  }
 
-h3 {
-  font-size: var(--text-2xl);
-  font-weight: var(--font-semibold);
-}
+  h3 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-semibold);
+  }
 
-h4 {
-  font-size: var(--text-xl);
-  font-weight: var(--font-semibold);
-}
+  h4 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+  }
 
-h5 {
-  font-size: var(--text-lg);
-  font-weight: var(--font-semibold);
-}
+  h5 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+  }
 
-h6 {
-  font-size: var(--text-base);
-  font-weight: var(--font-semibold);
-  text-transform: uppercase; /* Distinctive for smallest heading */
-  letter-spacing: var(--tracking-wide);
-}
+  h6 {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    text-transform: uppercase; /* Distinctive for smallest heading */
+    letter-spacing: var(--tracking-wide);
+  }
 
-/* Paragraphs */
-p {
-  margin: 0;
-  line-height: var(--leading-relaxed);
-  /* margin-bottom: 0.5em; Add natural spacing */
-}
+  /* Paragraphs */
+  p {
+    margin: 0;
+    line-height: var(--leading-relaxed);
+    /* margin-bottom: 0.5em; Add natural spacing */
+  }
 
-/* Links */
-a {
-  font-weight: var(--font-medium);
-  color: #10b981; /* emerald-500 */
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
+  /* Links */
+  a {
+    font-weight: var(--font-medium);
+    color: #10b981; /* emerald-500 */
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
 
-a:hover {
-  color: #059669; /* emerald-600 */
-}
+  a:hover {
+    color: #059669; /* emerald-600 */
+  }
 
-/* Strong & Bold */
-strong,
-b {
-  font-weight: var(--font-bold);
-}
+  /* Strong & Bold */
+  strong,
+  b {
+    font-weight: var(--font-bold);
+  }
 
-/* Emphasis */
-em,
-i {
-  font-style: italic;
-}
+  /* Emphasis */
+  em,
+  i {
+    font-style: italic;
+  }
 
-/* Small Text */
-small {
-  font-size: var(--text-sm);
-}
+  /* Small Text */
+  small {
+    font-size: var(--text-sm);
+  }
 
-/* Code */
-code {
-  font-family: var(--font-mono);
-  font-size: 0.9em;
-}
+  /* Code */
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
 
-/* Button base styles - minimal to avoid conflicts with component libraries */
-button {
-  font-family: inherit;
-  cursor: pointer;
-}
+  /* Button base styles - minimal to avoid conflicts with component libraries */
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
 
-/* Remove default focus outline - let components handle their own focus styles */
-button:focus,
-button:focus-visible {
-  outline: none;
+  /* Remove default focus outline - let components handle their own focus styles */
+  button:focus,
+  button:focus-visible {
+    outline: none;
+  }
 }
 
 /* ============================================

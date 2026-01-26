@@ -1,0 +1,162 @@
+{
+  "metadata": {
+    "title": "Lautan 5% & Misteri Monster",
+    "description": "Eksplorasi motivasional tentang petualangan lautan dan kemungkinan keberadaan makhluk besar yang belum ditemukan.",
+    "author": { "name": "alwaah.project", "hashtag": "ContentStudio" },
+    "tags": ["#Petualangan", "#Laut", "#Misteri", "#Motivasi"],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-left"
+  },
+  "design": {
+    "background_color": "#0B3D32",
+    "text_color": "#E6F2F0",
+    "accent_color": "#FF6B6B",
+    "background_color_1": "#1A1A2E",
+    "text_color_1": "#F0F7FF",
+    "background_color_2": "#FFEEDD",
+    "text_color_2": "#222831"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": { "background_color": "#1A1A2E", "text_color": "#FFD166", "author_color": "#F0F7FF" },
+      "content": { "title": "LAUTAN 5%", "subtitle": "dan Misteri Monster yang Belum Terungkap" },
+      "layout": { "line_height": 1.0, "title_size": 56, "subtitle_size": 38, "title_weight": 900, "title_position": "center", "subtitle_position": "center" }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": { "background_color": "#0B3D32", "text_color": "#E6F2F0" },
+      "content": {
+        "blocks": [
+          { "text": "95%", "style": { "fontSize": 72, "fontWeight": 900, "align": "center", "color": "#FFD166" } },
+          { "text": "LAUTAN BELUM TERJELAJAHI.", "style": { "fontSize": 32, "fontWeight": 800, "align": "center", "color": "#E6F2F0" } },
+          { "text": "Kita baru menyentuh permukaannya. Selebihnya? Kegelapan, tekanan, dan kemungkinan tak terbatas.", "style": { "fontSize": 22, "fontWeight": 400, "align": "center", "color": "#E6F2F0" } }
+        ]
+      },
+      "layout": { "content_alignment": "center" }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": { "background_color": "#222831", "text_color": "#FFEEDD" },
+      "content": {
+        "blocks": [
+          { "text": "RAKSASA LAUT", "style": { "fontSize": 48, "fontWeight": 900, "align": "left", "color": "#00ADB5" } },
+          { "text": "Adakah mereka nyata di kedalaman 5% yang kita ketahui?", "style": { "fontSize": 26, "fontWeight": 600, "align": "left", "color": "#FFEEDD" } },
+          { "text": "Sejarah penuh dengan legenda: Kraken, Leviathan, Megalodon. Bukan sekadar dongeng, tapi petunjuk.", "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#FFEEDD" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": { "background_color": "#FFEEDD", "text_color": "#222831" },
+      "content": {
+        "blocks": [
+          { "text": "PELUANG", "style": { "fontSize": 64, "fontWeight": 900, "align": "right", "color": "#FF6B6B" } },
+          { "text": "Bukan tentang ketakutan.", "style": { "fontSize": 28, "fontWeight": 700, "align": "right", "color": "#222831" } },
+          { "text": "Tapi tentang keberanian menjelajahi yang tak diketahui. Setiap penemuan dimulai dengan pertanyaan berani.", "style": { "fontSize": 22, "fontWeight": 400, "align": "right", "color": "#222831" } }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": { "background_color": "#393E46", "text_color": "#FFD166" },
+      "content": {
+        "blocks": [
+          { "text": "ZONA APHOTIK", "style": { "fontSize": 40, "fontWeight": 800, "align": "center", "color": "#00ADB5" } },
+          { "text": "Tempat sinar matahari tak pernah sampai.", "style": { "fontSize": 24, "fontWeight": 600, "align": "center", "color": "#FFD166" } },
+          { "text": "Di sini, kehidupan berevolusi dengan cara ekstrem. Ukuran besar bisa jadi strategi survival.", "style": { "fontSize": 20, "fontWeight": 400, "align": "center", "color": "#FFD166" } }
+        ]
+      },
+      "layout": { "content_alignment": "center" }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "design_override": { "background_color": "#1B1B2F", "text_color": "#A7D2CB" },
+      "content": {
+        "blocks": [
+          { "text": "PENEMUAN", "style": { "fontSize": 52, "fontWeight": 900, "align": "left", "color": "#FF9A76" } },
+          { "text": "Cumi-cumi Kolosal. Ikan Oar. Ubur-ubur Lion's Mane.", "style": { "fontSize": 26, "fontWeight": 700, "align": "left", "color": "#A7D2CB" } },
+          { "text": "Mereka membuktikan: lautan masih menyimpan kejutan berukuran raksasa. Siapa lagi yang menunggu?", "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#A7D2CB" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "design_override": { "background_color": "#FFB6B9", "text_color": "#2D3047" },
+      "content": {
+        "blocks": [
+          { "text": "MINDSET", "style": { "fontSize": 58, "fontWeight": 900, "align": "right", "color": "#2D3047" } },
+          { "text": "Jangan takut pada yang belum kamu ketahui.", "style": { "fontSize": 30, "fontWeight": 800, "align": "right", "color": "#2D3047" } },
+          { "text": "Taklukan ketidaktahuan dengan rasa ingin tahu. Lautan adalah metafora kehidupan: luas dan penuh potensi.", "style": { "fontSize": 22, "fontWeight": 400, "align": "right", "color": "#2D3047" } }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 8,
+      "type": "content",
+      "design_override": { "background_color": "#2D3047", "text_color": "#FFB6B9" },
+      "content": {
+        "blocks": [
+          { "text": "TEKNOLOGI", "style": { "fontSize": 46, "fontWeight": 900, "align": "center", "color": "#4ECDC4" } },
+          { "text": "ROV, AUV, Sonar Mapping.", "style": { "fontSize": 28, "fontWeight": 700, "align": "center", "color": "#FFB6B9" } },
+          { "text": "Mata dan tangan kita semakin jauh masuk. Setiap alat baru membuka jendela menuju kemungkinan baru.", "style": { "fontSize": 20, "fontWeight": 400, "align": "center", "color": "#FFB6B9" } }
+        ]
+      },
+      "layout": { "content_alignment": "center" }
+    },
+    {
+      "slide_number": 9,
+      "type": "content",
+      "design_override": { "background_color": "#4ECDC4", "text_color": "#1A1A2E" },
+      "content": {
+        "blocks": [
+          { "text": "AJAKAN", "style": { "fontSize": 60, "fontWeight": 900, "align": "left", "color": "#1A1A2E" } },
+          { "text": "Jadilah Penjelajah 5% itu.", "style": { "fontSize": 34, "fontWeight": 800, "align": "left", "color": "#1A1A2E" } },
+          { "text": "Dalam karir, bisnis, atau passion-mu. Beranilah masuk ke wilayah yang belum dipetakan. Di situlah legenda lahir.", "style": { "fontSize": 22, "fontWeight": 400, "align": "left", "color": "#1A1A2E" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 10,
+      "type": "content",
+      "design_override": { "background_color": "#FFD166", "text_color": "#0B3D32" },
+      "content": {
+        "blocks": [
+          { "text": "LAUTANMU", "style": { "fontSize": 68, "fontWeight": 900, "align": "center", "color": "#0B3D32" } },
+          { "text": "Apa 'monster laut' yang ingin kamu temui?", "style": { "fontSize": 32, "fontWeight": 800, "align": "center", "color": "#0B3D32" } },
+          { "text": "Tantangan terbesar? Peluang terluas? Mulailah eksplorasi. Kedalaman selalu menyimpan keajaiban bagi yang berani menyelam.", "style": { "fontSize": 24, "fontWeight": 400, "align": "center", "color": "#0B3D32" } }
+        ]
+      },
+      "layout": { "content_alignment": "center" }
+    },
+    {
+      "slide_number": 11,
+      "type": "content",
+      "design_override": { "background_color": "#1A1A2E", "text_color": "#F0F7FF" },
+      "content": {
+        "blocks": [
+          { "text": "Sumber Referensi & Inspirasi", "style": { "fontSize": 28, "fontWeight": 700, "align": "left", "color": "#FFD166" } },
+          { "text": "1. NOAA Ocean Exploration & Research\n2. \"The Deep\" oleh Claire Nouvian\n3. Jurnal \"Progress in Oceanography\"\n4. Dokumenter \"Blue Planet II\" (BBC)\n5. Data pemetaan batimetri GEBCO", "style": { "fontSize": 18, "fontWeight": 400, "align": "left", "color": "#F0F7FF" } },
+          { "text": "Eksplorasi lebih lanjut disarankan melalui sumber ilmiah terpercaya dan institusi kelautan resmi.", "style": { "fontSize": 16, "fontWeight": 400, "align": "left", "color": "#A7D2CB" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+[
+  {
+    "topic_slug": "sirah-nabawiyah",
+    "question_text": "Wahyu pertama turun di...",
+    "options": [
+      { "id": "A", "text": "Gua Tsur" },
+      { "id": "B", "text": "Gua Hira" },
+      { "id": "C", "text": "Padang Arafah" },
+      { "id": "D", "text": "Rumah Khadijah" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Wahyu pertama (Surah Al-Alaq 1-5) turun di Gua Hira.",
+      "dalil": "HR. Bukhari",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-nabawiyah",
+    "question_text": "Dakwah Nabi di Mekkah berlangsung selama...",
+    "options": [
+      { "id": "A", "text": "10 tahun" },
+      { "id": "B", "text": "13 tahun" },
+      { "id": "C", "text": "23 tahun" },
+      { "id": "D", "text": "3 tahun" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Periode Mekkah berlangsung selama kurang lebih 13 tahun.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-nabawiyah",
+    "question_text": "Hijrah pertama kaum muslimin (sebelum ke Madinah) adalah ke negeri...",
+    "options": [
+      { "id": "A", "text": "Thaif" },
+      { "id": "B", "text": "Yaman" },
+      { "id": "C", "text": "Habasyah (Ethiopia)" },
+      { "id": "D", "text": "Mesir" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Hijrah pertama adalah ke Habasyah untuk menghindari siksaan Quraisy dan mencari perlindungan Raja Najasyi.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-nabawiyah",
+    "question_text": "Tahun kesedihan (Amul Huzni) adalah tahun di mana Nabi kehilangan dua pelindungnya, yaitu...",
+    "options": [
+      { "id": "A", "text": "Ayah & Ibu" },
+      { "id": "B", "text": "Kakek & Paman" },
+      { "id": "C", "text": "Khadijah & Abu Thalib" },
+      { "id": "D", "text": "Hamzah & Ja'far" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Khadijah (istri tercinta) dan Abu Thalib (paman pelindung) wafat pada tahun yang sama, yang membuat Nabi sangat bersedih.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-nabawiyah",
+    "question_text": "Perang besar pertama antara Muslim dan Quraisy disebut perang...",
+    "options": [
+      { "id": "A", "text": "Uhud" },
+      { "id": "B", "text": "Khandaq" },
+      { "id": "C", "text": "Badr" },
+      { "id": "D", "text": "Tabuk" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Perang Badr (Badr Kubra) adalah pertempuran besar pertama yang dimenangkan oleh kaum Muslimin.",
+      "dalil": "QS. Ali Imran: 123",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-nabawiyah",
+    "question_text": "Pada perang Uhud, pasukan pemanah melanggar perintah Nabi untuk...",
+    "options": [
+      { "id": "A", "text": "Tidak meninggalkan bukit" },
+      { "id": "B", "text": "Menyerang lebih dulu" },
+      { "id": "C", "text": "Mundur" },
+      { "id": "D", "text": "Berpuasa" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Kekalahan di Uhud disebabkan pasukan pemanah yang turun dari bukit (Rumaat) karena tergiur ghanimah, padahal Nabi melarangnya.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-nabawiyah",
+    "question_text": "Perjanjian damai antara Nabi SAW dan Quraisy Mekkah yang memberi jeda perang 10 tahun disebut...",
+    "options": [
+      { "id": "A", "text": "Piagam Madinah" },
+      { "id": "B", "text": "Perjanjian Hudaibiyah" },
+      { "id": "C", "text": "Bai'at Aqabah" },
+      { "id": "D", "text": "Hilful Fudhul" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Perjanjian Hudaibiyah menjadi titik balik diplomasi yang menguntungkan Islam dalam jangka panjang.",
+      "dalil": "QS. Al-Fath: 1",
+      "resources": []
+    },
+    "points": 15,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-nabawiyah",
+    "question_text": "Fathu Makkah (Pembebasan Mekkah) terjadi pada tahun...",
+    "options": [
+      { "id": "A", "text": "2 H" },
+      { "id": "B", "text": "6 H" },
+      { "id": "C", "text": "8 H" },
+      { "id": "D", "text": "10 H" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Fathu Makkah terjadi pada tahun 8 Hijriyah.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-nabawiyah",
+    "question_text": "Haji terakhir yang dilakukan Nabi SAW disebut...",
+    "options": [
+      { "id": "A", "text": "Haji Mabrur" },
+      { "id": "B", "text": "Haji Qiran" },
+      { "id": "C", "text": "Haji Wada'" },
+      { "id": "D", "text": "Haji Ifrad" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Haji Wada' artinya Haji Perpisahan, karena dilakukan menjelang wafatnya beliau.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "sirah-nabawiyah",
+    "question_text": "Masjid pertama yang dibangun Nabi SAW saat tiba di Madinah (Quba) adalah...",
+    "options": [
+      { "id": "A", "text": "Masjid Nabawi" },
+      { "id": "B", "text": "Masjid Quba" },
+      { "id": "C", "text": "Masjid Qiblatain" },
+      { "id": "D", "text": "Masjidil Haram" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Masjid Quba adalah masjid pertama yang dibangun atas dasar takwa saat Nabi berhijrah.",
+      "dalil": "QS. At-Taubah: 108",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  }
+]

@@ -40,6 +40,10 @@ export default function EditProfileForm() {
   const { user, setUser }: any = useAuthStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [emailRestriction, setEmailRestriction] = useState<{ restricted: boolean; daysRemaining: number }>({
+    restricted: false,
+    daysRemaining: 0,
+  });
   const [success, setSuccess] = useState(false);
   const [copiedUsername, setCopiedUsername] = useState(false);
 
@@ -52,9 +56,34 @@ export default function EditProfileForm() {
     defaultValues: {
       fullName: user?.fullName || "",
       phone: user?.phone || "",
-      paymentEmail: (user as any)?.paymentEmail || "",
+      email: user?.email || "",
       bio: user?.bio || "",
     },
+  });
+
+  // Check email update restriction on mount
+  useState(() => {
+    const checkRestriction = async () => {
+      if (!user) return;
+      try {
+        const changes = await userService.getProfileChanges(user.id);
+        const lastEmailChange = changes.find((c) => c.fieldChanged === "email");
+
+        if (lastEmailChange) {
+          const daysSinceLastChange =
+            (Date.now() - new Date(lastEmailChange.changedAt).getTime()) / (1000 * 60 * 60 * 24);
+          if (daysSinceLastChange < 14) {
+            setEmailRestriction({
+              restricted: true,
+              daysRemaining: Math.ceil(14 - daysSinceLastChange),
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Failed to check profile changes:", error);
+      }
+    };
+    checkRestriction();
   });
 
   const onSubmit = async (data: UpdateProfileFormData) => {
@@ -65,6 +94,11 @@ export default function EditProfileForm() {
     setSuccess(false);
 
     try {
+      // Remove email from data if it hasn't changed to avoid unnecessary auth calls/checks
+      if (data.email === user.email) {
+        delete data.email;
+      }
+
       const updatedUser = await userService.updateProfile(user.id, data);
       setUser(updatedUser);
       setSuccess(true);
@@ -156,6 +190,44 @@ export default function EditProfileForm() {
             )}
           </div>
 
+          {/* Email (Replaces Payment Email) */}
+          <div className="space-y-2.5">
+            <Label htmlFor="email" className="text-sm font-semibold text-white flex items-center gap-2">
+              <Mail className="w-4 h-4 text-emerald-400" />
+              Email
+              {emailRestriction.restricted && (
+                <span className="text-xs font-normal text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full">
+                  Dapat diubah {emailRestriction.daysRemaining} hari lagi
+                </span>
+              )}
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              {...register("email")}
+              placeholder="email@contoh.com"
+              disabled={isSubmitting || emailRestriction.restricted}
+              className={`h-11 bg-black/50 border-gray-800 focus-visible:border-emerald-500/50 focus-visible:ring-emerald-500/20 ${emailRestriction.restricted ? "opacity-60 cursor-not-allowed" : ""
+                }`}
+            />
+            {errors.email && (
+              <motion.p
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-xs text-red-400 flex items-center gap-1.5"
+              >
+                <AlertCircle className="w-3 h-3" />
+                {errors.email.message}
+              </motion.p>
+            )}
+            <p className="text-xs text-gray-500 flex items-start gap-1.5">
+              <span className="text-emerald-400 mt-0.5">💡</span>
+              <span>
+                Email ini digunakan untuk login dan identifikasi pembayaran. Perubahan dibatasi 14 hari sekali.
+              </span>
+            </p>
+          </div>
+
           {/* Phone */}
           <div className="space-y-2.5">
             <Label htmlFor="phone" className="text-sm font-semibold text-white flex items-center gap-2">
@@ -183,36 +255,6 @@ export default function EditProfileForm() {
             <p className="text-xs text-gray-500 flex items-start gap-1.5">
               <span className="text-emerald-400 mt-0.5">💡</span>
               <span>Nomor ini digunakan untuk fitur "Send to WhatsApp"</span>
-            </p>
-          </div>
-
-          {/* Payment Email */}
-          <div className="space-y-2.5">
-            <Label htmlFor="paymentEmail" className="text-sm font-semibold text-white flex items-center gap-2">
-              <Mail className="w-4 h-4 text-emerald-400" />
-              Email untuk Pembayaran
-            </Label>
-            <Input
-              id="paymentEmail"
-              type="email"
-              {...register("paymentEmail")}
-              placeholder="email@contoh.com"
-              disabled={isSubmitting}
-              className="h-11 bg-black/50 border-gray-800 focus-visible:border-emerald-500/50 focus-visible:ring-emerald-500/20"
-            />
-            {errors.paymentEmail && (
-              <motion.p
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-xs text-red-400 flex items-center gap-1.5"
-              >
-                <AlertCircle className="w-3 h-3" />
-                {errors.paymentEmail.message}
-              </motion.p>
-            )}
-            <p className="text-xs text-gray-500 flex items-start gap-1.5">
-              <span className="text-emerald-400 mt-0.5">💡</span>
-              <span>Email ini digunakan untuk mencocokkan pembayaran Lynk.id dengan akun Anda</span>
             </p>
           </div>
 

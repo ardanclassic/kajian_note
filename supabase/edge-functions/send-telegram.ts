@@ -173,7 +173,7 @@ function generateCaption(noteTitle: string, noteId?: string): string {
   }
 
   lines.push("━━━━━━━━━━━━━━━");
-  lines.push("by Kajian Note_");
+  lines.push("by Alwaah");
 
   return lines.join("\n");
 }

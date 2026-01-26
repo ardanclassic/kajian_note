@@ -38,6 +38,7 @@ export const roleSchema = z.enum(["admin", "panitia", "ustadz", "member"]);
 export const updateProfileSchema = z.object({
   fullName: fullNameSchema,
   phone: phoneSchema,
+  email: z.string().email("Format email tidak valid").optional(), // NEW: Email update
   paymentEmail: paymentEmailSchema, // NEW: Payment email field
   bio: bioSchema,
 });

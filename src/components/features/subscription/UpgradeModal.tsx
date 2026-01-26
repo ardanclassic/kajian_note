@@ -11,13 +11,17 @@ import { PAYMENT_CONFIG, formatPrice, type SubscriptionTier } from "@/config/pay
 import { Check, X, Sparkles, Crown, FileText, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+
+
 interface UpgradeModalProps {
   open: boolean;
   onClose: () => void;
   selectedTier: SubscriptionTier;
   userEmail: string;
-  paymentEmail: string;
 }
+
+
+
 
 // Animation variants
 const modalVariants: any = {
@@ -50,7 +54,7 @@ const itemVariants: any = {
   }),
 };
 
-export function UpgradeModal({ open, onClose, selectedTier, userEmail, paymentEmail }: UpgradeModalProps) {
+export function UpgradeModal({ open, onClose, selectedTier, userEmail }: UpgradeModalProps) {
   const tierConfig = {
     free: {
       label: "Free",
@@ -180,16 +184,14 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail, paymentEm
                         initial="hidden"
                         animate="visible"
                         variants={itemVariants}
-                        className={`flex items-center gap-3 p-2.5 rounded-lg border transition-colors ${
-                          feature.enabled
-                            ? "bg-black border-gray-800 hover:border-emerald-500/30"
-                            : "bg-black border-gray-800 opacity-40"
-                        }`}
+                        className={`flex items-center gap-3 p-2.5 rounded-lg border transition-colors ${feature.enabled
+                          ? "bg-black border-gray-800 hover:border-emerald-500/30"
+                          : "bg-black border-gray-800 opacity-40"
+                          }`}
                       >
                         <div
-                          className={`shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${
-                            feature.enabled ? "bg-emerald-500/20" : "bg-gray-800"
-                          }`}
+                          className={`shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${feature.enabled ? "bg-emerald-500/20" : "bg-gray-800"
+                            }`}
                         >
                           {feature.enabled ? (
                             <Check className="h-3 w-3 text-emerald-400" />
@@ -198,9 +200,8 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail, paymentEm
                           )}
                         </div>
                         <span
-                          className={`text-sm font-medium ${
-                            feature.enabled ? "text-gray-300" : "text-gray-600 line-through"
-                          }`}
+                          className={`text-sm font-medium ${feature.enabled ? "text-gray-300" : "text-gray-600 line-through"
+                            }`}
                         >
                           {feature.text}
                         </span>
@@ -213,7 +214,6 @@ export function UpgradeModal({ open, onClose, selectedTier, userEmail, paymentEm
                     <PaymentButton
                       tier={selectedTier}
                       userEmail={userEmail}
-                      paymentEmail={paymentEmail}
                       className="w-full h-12 text-sm font-bold bg-gray-900 border border-emerald-500/50 text-white hover:bg-gray-800 shadow-lg shadow-emerald-500/20"
                     >
                       <Sparkles className="h-4 w-4 mr-2" />

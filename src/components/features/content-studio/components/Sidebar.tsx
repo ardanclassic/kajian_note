@@ -5,9 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useEditorStore } from '@/store/contentStudioStore';
 import { ElementToolbar } from './ElementToolbar';
 import { SupportingBoxesToolbar } from './SupportingBoxesToolbar';
+import { ConfirmationDialog } from './ConfirmationDialog';
+import { LoadingOverlay } from './LoadingOverlay';
 
 import { CaptionDisplay } from './CaptionDisplay';
 import { ExportButton } from './ExportButton';
+import { PromptGeneratorDialog } from '@/components/features/content-studio/components/PromptGeneratorDialog';
 import type { Ratio, ColorPalette } from '@/types/contentStudio.types';
 import {
   Upload,
@@ -17,7 +20,7 @@ import {
   ChevronRight,
   ChevronLeft,
   Trash2,
-  Settings
+  AlertTriangle
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from "@/lib/utils";
@@ -32,10 +35,10 @@ export function Sidebar() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [expandedSections, setExpandedSections] = useState({
-    slideSettings: true,
     ratio: true,
     elements: true,
     supportingBoxes: true,
+    captionHashtags: true,
   });
 
   const {
@@ -45,10 +48,12 @@ export function Sidebar() {
     reset,
     slides,
     currentSlideIndex,
-    setSlideVariant
+    currentBlueprint
   } = useEditorStore();
 
+  // Check if canvas is empty
   const currentSlide = slides[currentSlideIndex];
+  const isCanvasEmpty = !currentSlide || currentSlide.elements.length === 0;
 
   const toggleSection = (section: keyof typeof expandedSections) => {
     setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
@@ -58,21 +63,75 @@ export function Sidebar() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    setLoadingMessage("Lagi Import Blueprint...");
+    setIsChangingLayout(true);
+    setLoadingRatio(null);
+
     const reader = new FileReader();
     reader.onload = (event) => {
-      try {
-        const json = JSON.parse(event.target?.result as string);
-        loadBlueprint(json);
-      } catch (error) {
-        console.error('Failed to parse JSON:', error);
-        alert('Invalid JSON file');
-      }
+      // Artificial delay for UX
+      setTimeout(() => {
+        try {
+          const json = JSON.parse(event.target?.result as string);
+          loadBlueprint(json);
+        } catch (error) {
+          console.error('Failed to parse JSON:', error);
+          alert('Invalid JSON file');
+        }
+
+        setTimeout(() => {
+          setIsChangingLayout(false);
+          setLoadingMessage(undefined);
+        }, 3500); // Increased for consistency with ratio change premium feel
+      }, 600);
     };
     reader.readAsText(file);
 
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
+  };
+
+  const [pendingRatio, setPendingRatio] = useState<Ratio | null>(null);
+  const [isChangingLayout, setIsChangingLayout] = useState(false);
+  const [loadingRatio, setLoadingRatio] = useState<Ratio | null>(null);
+  const [loadingMessage, setLoadingMessage] = useState<string | undefined>(undefined);
+  const [pendingReset, setPendingReset] = useState(false);
+
+  const handleResetConfirm = () => {
+    setPendingReset(false);
+    setLoadingMessage("Lagi Reset Design...");
+    setIsChangingLayout(true);
+
+    setTimeout(() => {
+      reset(); // Use store reset
+      setTimeout(() => {
+        setIsChangingLayout(false);
+        setLoadingMessage(undefined);
+      }, 300); // Reduced for faster reset
+    }, 200); // Reduced for faster reset
+  };
+
+  const handleRatioConfirm = () => {
+    if (!pendingRatio) return;
+
+    setLoadingRatio(pendingRatio);
+    setIsChangingLayout(true);
+    setPendingRatio(null);
+
+    // Smooth transition delay
+    setTimeout(() => {
+      setRatio(pendingRatio);
+      if (currentBlueprint) {
+        setTimeout(() => loadBlueprint(currentBlueprint), 0);
+      }
+
+      // Artificial delay for premium feel
+      setTimeout(() => {
+        setIsChangingLayout(false);
+        setLoadingRatio(null);
+      }, 3500); // Increased for premium feel transition
+    }, 400);
   };
 
   return (
@@ -92,6 +151,11 @@ export function Sidebar() {
           <h2 className="text-xl font-bold text-white m-0">Content Studio</h2>
         </div>
         <span className="text-[11px] font-semibold px-2.5 py-1 bg-blue-500/20 text-blue-400 rounded-xl">v2.0</span>
+      </div>
+
+      {/* AI Tools Section */}
+      <div className="px-5 py-4 border-b border-white/[0.08]">
+        <PromptGeneratorDialog />
       </div>
 
       {/* Quick Actions */}
@@ -116,47 +180,16 @@ export function Sidebar() {
         <ExportButton />
         <button
           className="flex-1 flex items-center justify-center gap-2 p-3 h-[42px] bg-red-700/20 border border-red-700/40 rounded-lg text-red-400 cursor-pointer text-[13px] font-medium transition-all hover:bg-red-700/40 hover:border-red-700/60 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
-          onClick={reset}
-          title="Reset All"
+          onClick={() => setPendingReset(true)}
+          title={isCanvasEmpty ? "Canvas kosong" : "Reset All"}
+          disabled={isCanvasEmpty}
         >
           <Trash2 size={18} />
           <span>Reset</span>
         </button>
       </div>
 
-      {/* Slide Settings Section */}
-      <CollapsibleSection
-        title="Slide Settings"
-        icon={<Settings size={16} />}
-        expanded={expandedSections.slideSettings}
-        onToggle={() => toggleSection('slideSettings')}
-      >
-        <div className="px-5 pb-5">
-          <div className="flex justify-between items-center mb-2.5">
-            <label className="text-white text-sm font-medium">Layout Style</label>
-            <div className="flex bg-white/10 rounded-md p-0.5">
-              <button
-                onClick={() => setSlideVariant('A')}
-                className={cn(
-                  "px-3 py-1 bg-transparent border-none rounded text-white cursor-pointer text-xs font-semibold transition-colors",
-                  (currentSlide?.styleVariant === 'A' || !currentSlide?.styleVariant) && "bg-blue-500/50"
-                )}
-              >
-                A
-              </button>
-              <button
-                onClick={() => setSlideVariant('B')}
-                className={cn(
-                  "px-3 py-1 bg-transparent border-none rounded text-white cursor-pointer text-xs font-semibold transition-colors",
-                  currentSlide?.styleVariant === 'B' && "bg-blue-500/50"
-                )}
-              >
-                B
-              </button>
-            </div>
-          </div>
-        </div>
-      </CollapsibleSection>
+
 
       {/* Ratio Section */}
       <CollapsibleSection
@@ -173,7 +206,13 @@ export function Sidebar() {
                 "flex-1 flex items-center justify-center gap-2 p-2.5 bg-white/5 border border-white/10 rounded-lg text-white/80 cursor-pointer text-center transition-all hover:bg-white/10 hover:border-white/20",
                 ratio === r.value && "bg-blue-500/20 border-blue-500"
               )}
-              onClick={() => setRatio(r.value)}
+              onClick={() => {
+                if (currentBlueprint) {
+                  setPendingRatio(r.value);
+                } else {
+                  setRatio(r.value);
+                }
+              }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               title={r.label}
@@ -205,8 +244,37 @@ export function Sidebar() {
         <SupportingBoxesToolbar />
       </CollapsibleSection>
 
-      {/* Caption & Hashtags */}
-      <CaptionDisplay />
+      {/* Caption & Hashtags Section */}
+      <CollapsibleSection
+        title="Caption & Hashtags"
+        icon={<span>💬</span>}
+        expanded={expandedSections.captionHashtags}
+        onToggle={() => toggleSection('captionHashtags')}
+      >
+        <CaptionDisplay />
+      </CollapsibleSection>
+
+      <ConfirmationDialog
+        isOpen={!!pendingRatio || pendingReset}
+        onCancel={() => {
+          setPendingRatio(null);
+          setPendingReset(false);
+        }}
+        onConfirm={pendingRatio ? handleRatioConfirm : handleResetConfirm}
+        title={pendingReset ? "Reset Desain Total?" : undefined}
+        description={pendingReset ? (
+          <p>
+            Semua design dan perubahan kamu bakal <span className="text-white font-medium">dihapus total</span> dan balik ke awal banget. Yakin mau hapus semua?
+          </p>
+        ) : undefined}
+        confirmLabel={pendingReset ? "Reset Aja" : undefined}
+      />
+
+      <LoadingOverlay
+        isVisible={isChangingLayout}
+        targetRatio={loadingRatio}
+        message={loadingMessage}
+      />
     </div>
   );
 }

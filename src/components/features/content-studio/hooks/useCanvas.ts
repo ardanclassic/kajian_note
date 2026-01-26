@@ -13,9 +13,9 @@
  */
 
 import { useEffect, useRef } from "react";
-import { Canvas, Textbox, FabricObject, ActiveSelection, FabricImage } from "fabric";
+import { Canvas, Textbox, FabricObject, ActiveSelection, FabricImage, util, Point } from "fabric";
 import { useEditorStore } from "@/store/contentStudioStore";
-import type { TextElement, ShapeElement, Ratio } from "@/types/contentStudio.types";
+import type { TextElement, ShapeElement, ImageElement, Ratio } from "@/types/contentStudio.types";
 import { RATIO_DIMENSIONS, DISPLAY_DIMENSIONS } from "@/types/contentStudio.types";
 
 declare module "fabric" {
@@ -24,7 +24,7 @@ declare module "fabric" {
   }
 }
 
-import { createFabricObject, CONTROL_DEFAULTS, loadFont } from "@/utils/contentStudio/fabricUtils";
+import { createFabricObject, CONTROL_DEFAULTS, loadFont, createGradient } from "@/utils/contentStudio/fabricUtils";
 import {
   setupShapeTextEditing,
   setupMultiSelectTracking,
@@ -37,6 +37,7 @@ import type { Slide } from "@/types/contentStudio.types";
 interface UseCanvasOptions {
   ratio: Ratio;
   zoom: number;
+  onMount?: (canvas: Canvas) => void;
 }
 
 export function useCanvas(
@@ -44,7 +45,7 @@ export function useCanvas(
   options: UseCanvasOptions,
   canvasElRef: React.RefObject<HTMLCanvasElement | null>,
   slide: Slide, // Direct prop access ensures we render the correct slide data during reorder operations
-  slideIndex: number // Used to detect if this canvas is the currently "active" slide in the viewport
+  slideIndex: number, // Used to detect if this canvas is the currently "active" slide in the viewport
 ) {
   const canvasRef = useRef<Canvas | null>(null);
   const isRenderingRef = useRef(false);
@@ -80,6 +81,7 @@ export function useCanvas(
     selectElements,
     pushToHistory,
     setCurrentSlide, // Added
+    setCroppingElementId,
   } = useEditorStore();
 
   // CRITICAL FIX: Use slide from props instead of deriving from store
@@ -130,6 +132,7 @@ export function useCanvas(
     });
 
     canvasRef.current = canvas;
+    if (options.onMount) options.onMount(canvas);
 
     // Set zoom level
     canvas.setZoom(scaleFactor);
@@ -166,8 +169,38 @@ export function useCanvas(
     // ========== SELECTION STATE SYNC ==========
     const handleSelection = (selected: any[]) => {
       if (isInternalSelectionUpdateRef.current || isRenderingRef.current) return;
-      const ids = selected.map((obj) => obj.customData?.id).filter(Boolean);
-      selectElements(ids);
+
+      // ONLY filter locked objects from MULTI-selection (2+ objects)
+      // Single locked objects should still be selectable (so users can unlock them)
+      if (selected.length > 1) {
+        const unlocked = selected.filter((obj) => !obj.lockMovementX && !obj.lockMovementY);
+
+        // If we filtered out some locked objects
+        if (unlocked.length !== selected.length && unlocked.length > 0) {
+          isInternalSelectionUpdateRef.current = true;
+          canvas.discardActiveObject();
+
+          if (unlocked.length === 1) {
+            canvas.setActiveObject(unlocked[0]);
+          } else {
+            const newSelection = new ActiveSelection(unlocked, {
+              canvas: canvas,
+              ...CONTROL_DEFAULTS,
+            });
+            canvas.setActiveObject(newSelection);
+          }
+
+          canvas.requestRenderAll();
+          isInternalSelectionUpdateRef.current = false;
+        }
+
+        const ids = unlocked.map((obj) => obj.customData?.id).filter(Boolean);
+        selectElements(ids);
+      } else {
+        // Single selection - allow locked objects to be selected
+        const ids = selected.map((obj) => obj.customData?.id).filter(Boolean);
+        selectElements(ids);
+      }
     };
 
     const handleSelectionCleared = () => {
@@ -231,14 +264,136 @@ export function useCanvas(
       pushToHistory,
       updateElements,
       lastSyncedElementsRef,
-      selectElement
+      selectElement,
     );
 
     canvas.on("selection:created", onSelectionCreated);
     canvas.on("selection:cleared", onSelectionCleared);
 
+    // ========== LOCKED ELEMENT CLICK SELECTION ==========
+    // Handle clicking on locked elements (which have evented:false)
+    // Since locked elements have evented:false for drag selection, we need to manually detect clicks
+    let clickStartPoint: { x: number; y: number } | null = null;
+    let clickStartTarget: any = null;
+
+    canvas.on("mouse:down", (e) => {
+      if (e.pointer) {
+        clickStartPoint = { x: e.pointer.x, y: e.pointer.y };
+        // Find object at this point (even if evented:false or selectable:false)
+        const point = canvas.getPointer(e.e);
+        const objects = canvas.getObjects();
+
+        // Find topmost object at click point (reverse order for top-to-bottom)
+        // We check ALL objects including those with evented:false
+        for (let i = objects.length - 1; i >= 0; i--) {
+          const obj = objects[i];
+          // Manual containsPoint check works even for evented:false objects
+          if (obj.containsPoint(point)) {
+            clickStartTarget = obj;
+            break;
+          }
+        }
+      }
+    });
+
+    canvas.on("mouse:up", (e) => {
+      if (clickStartPoint && clickStartTarget && e.pointer) {
+        const dx = e.pointer.x - clickStartPoint.x;
+        const dy = e.pointer.y - clickStartPoint.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // If movement is less than 5px, consider it a click (not drag)
+        if (distance < 5) {
+          const target = clickStartTarget;
+
+          // Check if it's a locked element (evented:false due to lock)
+          // Locked elements have evented:false to allow drag selection to pass through
+          if (!target.evented && target.lockMovementX && target.customData?.id) {
+            const isShiftKey = e.e.shiftKey;
+
+            if (isShiftKey) {
+              // Shift+Click: toggle selection (not supported well for locked, just select)
+              selectElement(target.customData.id);
+            } else {
+              // Normal click: select only this element
+              selectElement(target.customData.id);
+            }
+          }
+        }
+      }
+
+      clickStartPoint = null;
+      clickStartTarget = null;
+    });
+
     // ========== OBJECT MODIFICATION ==========
     canvas.on("object:modified", setupObjectModification(canvas, pushToHistory, updateElement));
+
+    // ========== ROTATION FEEDBACK (Smart Rules) ==========
+    canvas.on("object:rotating", (e: any) => {
+      const target = e.target;
+      if (!target || !canvas.contextTop) return;
+
+      const angle = target.angle % 360;
+      const normalizedAngle = angle < 0 ? angle + 360 : angle;
+      const displayAngle = Math.round(normalizedAngle);
+
+      // Draw the label
+      const ctx = canvas.contextTop;
+      const p = target.getCenterPoint();
+      // Adjust position to be above the object
+      // We use the object's bounding box to determine a good offset?
+      // Or just a fixed offset from center. Fixed is stable.
+      // But if object is large, center might be far.
+      // Let's use the object's top-center point in scalar coordinates?
+      // Actually center is safest.
+
+      const offset = 60 + target.getScaledHeight() / 2;
+      // But for rotation, the top changes.
+      // Let's stick to simple center offset for now, or use the cursor position if available?
+      // target.getCenterPoint() is canvas coordinate.
+
+      ctx.save();
+      // Reset transform because contextTop might have transformations active?
+      // Usually contextTop is identity transform identity, but Fabric logic can be complex.
+      // Safe bet: Identity.
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+      const text = `${displayAngle}°`;
+      const padding = 8;
+      const fontSize = 12;
+      ctx.font = `600 ${fontSize}px Inter, sans-serif`;
+      const textWidth = ctx.measureText(text).width;
+      const bgWidth = textWidth + padding * 2;
+      const bgHeight = fontSize + padding * 2;
+
+      // Position logic: Center of object - Y offset
+      // We need to convert canvas coordinates to viewport coordinates for contextTop drawing?
+      // No, contextTop matches canvas dimensions usually.
+      // Wait, if zoom is active, getCenterPoint returns zoomed coords.
+      const vpt = canvas.viewportTransform;
+      const px = p.x * vpt[0] + vpt[4];
+      const py = p.y * vpt[3] + vpt[5];
+
+      const x = px;
+      // Move to BOTTOM to avoid overlapping with Floating Menu (which is on top)
+      const visualHalfHeight = (target.getScaledHeight() / 2) * vpt[3];
+      const y = py + visualHalfHeight + 50;
+
+      // Draw pill background
+      ctx.fillStyle = "#1e1e1e";
+      ctx.beginPath();
+      ctx.roundRect(x - bgWidth / 2, y - bgHeight / 2, bgWidth, bgHeight, 4);
+      ctx.fill();
+
+      // Draw text
+      ctx.fillStyle = "#ffffff";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, x, y + 1); // +1 looks better visually
+
+      ctx.restore();
+    });
 
     // ========== CLEANUP ==========
     return () => {
@@ -322,7 +477,6 @@ export function useCanvas(
     canvas.renderAll();
   }, [options.ratio, options.zoom, dimensions, displayDimensions, slideIndex]);
 
-  // Update background color
   // Update background (Color & Image)
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -372,22 +526,34 @@ export function useCanvas(
       canvas.requestRenderAll();
     }
 
-    // 3. Add double-click handler for background image restoration
+    // 3. Add double-click handler for background image restoration AND IMAGE CROP
     const handleCanvasDblClick = (e: any) => {
-      // Only trigger if clicking on empty canvas (no object selected)
-      if (!e.target && currentSlide?.backgroundImage && currentSlide?.metadata?.previousBackgroundElement) {
-        const prevElement = currentSlide.metadata.previousBackgroundElement;
-        const { wasBackground, ...elementData } = prevElement;
+      // Check if double-clicked target is an IMAGE
+      const target = e.target;
+      if (target && target.get("type") === "image" && target.customData?.id && !target.customData?.isBackground) {
+        setCroppingElementId(target.customData.id);
+        return;
+      }
 
-        // Restore element
-        useEditorStore.getState().updateSlide(currentSlideIndex, {
-          backgroundImage: undefined,
-          metadata: {
-            ...currentSlide.metadata,
-            previousBackgroundElement: undefined,
-          },
-        });
-        useEditorStore.getState().addElement(elementData);
+      // Check for background image restore
+      if (currentSlide?.backgroundImage && currentSlide?.metadata?.previousBackgroundElement) {
+        // Logic for restoring background element...
+        // We check if the click target was "null" (empty canvas) or the background object
+        const isBackground = !target || target.customData?.isBackground;
+
+        if (isBackground) {
+          const prevElement = currentSlide.metadata.previousBackgroundElement;
+          const { wasBackground, ...elementData } = prevElement;
+
+          useEditorStore.getState().updateSlide(currentSlideIndex, {
+            backgroundImage: undefined,
+            metadata: {
+              ...currentSlide.metadata,
+              previousBackgroundElement: undefined,
+            },
+          });
+          useEditorStore.getState().addElement(elementData);
+        }
       }
     };
 
@@ -405,83 +571,30 @@ export function useCanvas(
     currentSlideIndex,
   ]);
 
+  // EFFECT: Handle Rich Text Formatting Commands
+
   // ========== REFACTORED: SEPARATE ELEMENT SYNC FROM SELECTION SYNC ==========
 
   // Refs moved to top of file...
 
-  // EFFECT 1: Sync ELEMENTS from store to canvas (NO selection dependency!)
+  // Use a Ref to track IDs currently being created (Async Image Loading)
+  // This prevents "Duplicate Image" race condition where a 2nd render starts before 1st image loads
+  const pendingCreationIdsRef = useRef<Set<string>>(new Set());
+
+  // EFFECT 1: Sync ELEMENTS from store to canvas (SMART SYNC - In-Place Mutation)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !currentSlide) return;
 
-    // Skip if editing text
-    // Skip if editing text
+    // Skip if editing text (let Fabric handle the UI, we sync later)
     if (isEditingRef.current) return;
 
-    // Create a fingerprint of current elements for future optimization
     const elementsFingerprint = JSON.stringify({
       slideId: currentSlide.id,
-      // slideIndex removed - with stable keys, position change doesn't require canvas rebuild
-      elements: currentSlide.elements.map((el) => ({
-        id: el.id,
-        position: el.position,
-        rotation: el.rotation,
-        size: (el as any).size,
-        opacity: el.opacity,
-        locked: el.locked,
-        // Add other mutable properties
-        ...(el.type === "text"
-          ? {
-              content: (el as any).content,
-              fontSize: (el as any).fontSize,
-              fontFamily: (el as any).fontFamily,
-              fontWeight: (el as any).fontWeight,
-              fontStyle: (el as any).fontStyle,
-              textDecoration: (el as any).textDecoration,
-              textAlign: (el as any).textAlign,
-              fill: (el as any).fill,
-              lineHeight: (el as any).lineHeight,
-              letterSpacing: (el as any).letterSpacing,
-              textTransform: (el as any).textTransform,
-            }
-          : {}),
-        ...(el.type === "image"
-          ? {
-              src: (el as any).src,
-              scaleX: (el as any).scaleX,
-              scaleY: (el as any).scaleY,
-              cornerRadius: (el as any).cornerRadius,
-            }
-          : {}),
-        ...(el.type === "shape"
-          ? {
-              fill: (el as any).fill,
-              stroke: (el as any).stroke,
-              strokeWidth: (el as any).strokeWidth,
-              strokeDashArray: (el as any).strokeDashArray,
-              cornerRadius: (el as any).cornerRadius,
-              // Text properties for shape
-              textContent: (el as any).textContent,
-              textFontFamily: (el as any).textFontFamily,
-              textFontSize: (el as any).textFontSize,
-              textFontWeight: (el as any).textFontWeight,
-              textFill: (el as any).textFill,
-              textAlign: (el as any).textAlign,
-              // Line properties
-              lineStart: (el as any).lineStart,
-              lineEnd: (el as any).lineEnd,
-            }
-          : {}),
-      })),
+      elements: currentSlide.elements, // simple fingerprint is enough for check
     });
 
-    // Only skip if fingerprint matches AND objects map is populated AND slide index is same
-    // This ensures reorder triggers rebuild to prevent blank page
-    if (
-      lastSyncedElementsRef.current === elementsFingerprint &&
-      fabricObjectsMapRef.current.size > 0 &&
-      prevSlideIndexRef.current === slideIndex
-    ) {
+    if (lastSyncedElementsRef.current === elementsFingerprint && prevSlideIndexRef.current === slideIndex) {
       return;
     }
 
@@ -489,132 +602,387 @@ export function useCanvas(
     prevSlideIndexRef.current = slideIndex;
     isRenderingRef.current = true;
 
-    const textElements = currentSlide.elements.filter((el) => el.type === "text") as TextElement[];
-    const shapeElements = currentSlide.elements.filter((el) => el.type === "shape") as ShapeElement[];
-
-    const fontPromises = [
-      ...textElements.map((el) => loadFont(el.fontFamily, el.fontWeight)),
-      // Load fonts for shapes with text
-      ...shapeElements
-        .filter((el) => el.textContent && el.textFontFamily)
-        .map((el) => loadFont(el.textFontFamily!, el.textFontWeight || 400)),
-    ];
-
-    Promise.all(fontPromises).then(async () => {
-      if (!canvasRef.current) return;
-
-      // Preserve background image across clears
-      const savedBg = canvas.backgroundImage;
-      canvas.clear();
+    // Handle Background sync
+    if (canvas.backgroundColor !== currentSlide.backgroundColor) {
       canvas.backgroundColor = currentSlide.backgroundColor;
-      if (savedBg) {
-        canvas.backgroundImage = savedBg;
+    }
+
+    // 1. Map Existing Canvas Objects
+    // Source of Truth: The Canvas itself.
+    const currentObjects = canvas.getObjects();
+    const canvasMap = new Map<string, FabricObject>();
+
+    currentObjects.forEach((obj) => {
+      if (obj.customData?.id) {
+        canvasMap.set(obj.customData.id, obj);
       }
-
-      const sortedElements = [...currentSlide.elements].sort((a, b) => a.zIndex - b.zIndex);
-
-      const newFabricObjectsMap = new Map<string, FabricObject>();
-
-      for (const element of sortedElements) {
-        try {
-          const fabricObj = await createFabricObject(element);
-          if (fabricObj) {
-            (fabricObj as FabricObject & { customData?: { id: string } }).customData = { id: element.id };
-
-            // Lock movement/scaling if locked
-            fabricObj.lockMovementX = element.locked;
-            fabricObj.lockMovementY = element.locked;
-            fabricObj.lockScalingX = element.locked;
-            fabricObj.lockScalingY = element.locked;
-            fabricObj.lockRotation = element.locked;
-
-            canvas.add(fabricObj);
-            newFabricObjectsMap.set(element.id, fabricObj);
-          }
-        } catch (err) {
-          console.error("Error creating fabric object for element:", element.id, err);
-          // Continue rendering other elements
-        }
-      }
-
-      // Store map for selection sync
-      fabricObjectsMapRef.current = newFabricObjectsMap;
-
-      // Restore selection if any (but only within this sync, not as a separate trigger)
-      if (selectedElementIds && selectedElementIds.length > 0) {
-        if (selectedElementIds.length === 1) {
-          const obj = newFabricObjectsMap.get(selectedElementIds[0]);
-          if (obj) {
-            canvas.setActiveObject(obj);
-          }
-        } else {
-          const objects = selectedElementIds
-            .map((id) => newFabricObjectsMap.get(id))
-            .filter((obj) => !!obj) as FabricObject[];
-
-          if (objects.length > 0) {
-            const selection = new ActiveSelection(objects, {
-              canvas: canvas,
-              ...CONTROL_DEFAULTS,
-            });
-            canvas.setActiveObject(selection);
-          }
-        }
-      }
-
-      canvas.requestRenderAll();
-      // Double render and Recalc to catch lazy loaded fonts
-      setTimeout(() => {
-        const c = canvasRef.current;
-        if (c) {
-          // Force layout recalculation:
-          // Setup might have run with fallback font metrics (1 line), but new font needs 2 lines.
-          // We trigger a re-set of fontFamily to force Fabric to re-measure boundaries.
-          c.getObjects().forEach((obj) => {
-            if (obj.type === "textbox") {
-              // 1. Toggle Font to clear metric cache
-              const originalFont = (obj as any).fontFamily;
-              obj.set("fontFamily", "sans-serif");
-              obj.set("fontFamily", originalFont);
-
-              // 2. Dirty Hack: Modify text to force line-wrapping engine to run again
-              // This fixes cases where width is correct but wrapping didn't trigger
-              const t = (obj as any).text;
-              (obj as any).set("text", t + " ");
-              (obj as any).set("text", t);
-            }
-          });
-          c.requestRenderAll();
-        }
-        // Mark rendering complete
-        isRenderingRef.current = false;
-
-        // Force render and offset update after element sync
-        // This ensures objects appear correctly after reorder when slideIndex fingerprint triggers rebuild
-        try {
-          canvas.calcOffset();
-          canvas.renderAll();
-        } catch (e) {
-          // Safe to ignore
-        }
-
-        // Additional delayed offset recalc for layout settling
-        setTimeout(() => {
-          if (canvas) {
-            try {
-              canvas.calcOffset();
-              canvas.renderAll();
-            } catch (e) {
-              // Safe to ignore - canvas will recalc on next interaction
-            }
-          }
-        }, 100);
-      }, 300);
     });
 
-    // Ensure re-render when currentSlide.id changes (component reuse with different data)
-    // Also include currentSlide?.elements to catch element updates within the same slide
+    const activeElementIds = new Set<string>();
+
+    // Sort elements by z-index to ensure correct visual stacking
+    // Note: In Smart Sync, we might need to use canvas.moveTo() if order changes,
+    // but usually simply creating them in order or not reordering is fine for performance.
+    // Logic: We first create/update, then we can enforce z-index if really needed.
+    const sortedElements = [...currentSlide.elements].sort((a, b) => a.zIndex - b.zIndex);
+
+    // 2. Loop Data Elements: Update or Create
+    // 2. Loop Data Elements: Update or Create
+    const processElements = async () => {
+      // TRACKING VARS
+      let processedCount = 0;
+
+      for (const [index, element] of sortedElements.entries()) {
+        try {
+          activeElementIds.add(element.id);
+
+          const existingObj = canvasMap.get(element.id);
+
+          // NAN SAFETY HELPERS
+          const safeNum = (val: any, def: number = 0) => (isNaN(Number(val)) ? def : Number(val));
+
+          if (existingObj) {
+            // --- A. UPDATE EXISTING (Zero Lag) ---
+
+            // If ID exists, just update its properties!
+            // This skips expensive texture loading / object creation.
+
+            let needsRecreation = false;
+
+            // Special check for Image URL change
+            if (element.type === "image" && existingObj instanceof FabricImage) {
+              if ((element as ImageElement).src !== existingObj.getSrc()) {
+                needsRecreation = true;
+              }
+            }
+
+            if (needsRecreation) {
+              canvas.remove(existingObj);
+              canvasMap.delete(element.id);
+              // Fall through to Creation logic below...
+            } else {
+              // Update standard properties
+              const isLocked = element.locked;
+
+              // CRITICAL: Prevent NaN poisoning
+              const updates: any = {
+                opacity: safeNum(element.opacity, 1),
+                lockMovementX: isLocked,
+                lockMovementY: isLocked,
+                lockScalingX: isLocked,
+                lockScalingY: isLocked,
+                lockRotation: isLocked,
+                selectable: true,
+                evented: !isLocked,
+                hasControls: !isLocked,
+              };
+
+              // FREEZE GROUP POSITIONS STRATEGY:
+              // Don't update position/rotation for objects in a group (multi-selected)
+              // This prevents the "snap-back" bug when changing properties while grouped
+              // Positions will be correctly saved when the group is deselected via onSelectionCleared
+              if (!existingObj.group) {
+                updates.left = safeNum(element.position.x);
+                updates.top = safeNum(element.position.y);
+                updates.angle = safeNum(element.rotation);
+              }
+
+              existingObj.set(updates);
+
+              // Update Type-Specific Properties
+              if (element.type === "text" && existingObj instanceof Textbox) {
+                const t = element as TextElement;
+
+                // Pre-load font if it changed to prevent FOUT (Flash of Unstyled Text)
+                if (t.fontFamily && t.fontFamily !== existingObj.fontFamily) {
+                  await loadFont(t.fontFamily, t.fontWeight || 400);
+                }
+
+                // Only set text if changed (avoids cursor jumps if we were editing)
+                if (existingObj.text !== t.content) existingObj.set("text", t.content);
+
+                existingObj.set({
+                  fontSize: safeNum(t.fontSize, 16),
+                  fontFamily: t.fontFamily || "Inter",
+                  fontWeight: t.fontWeight || 400,
+                  fill: t.fill,
+                  textAlign: t.textAlign || "left",
+                  width: safeNum(t.size.width),
+                  scaleX: safeNum(t.scaleX, 1),
+                  scaleY: safeNum(t.scaleY, 1),
+                  underline: t.textDecoration === "underline",
+                  linethrough: t.textDecoration === "line-through",
+                  lineHeight: safeNum(t.lineHeight, 1.2),
+                  charSpacing: safeNum(t.letterSpacing, 0) * 10,
+                  shadow: t.shadow,
+                });
+                existingObj.setCoords();
+                processedCount++;
+                continue; // Done with text
+              } else if (element.type === "shape") {
+                const s = element as ShapeElement;
+                existingObj.set({
+                  width: safeNum(s.size.width),
+                  height: safeNum(s.size.height),
+                  fill: createGradient(s.fill),
+                  stroke: s.stroke,
+                  strokeWidth: safeNum(s.strokeWidth),
+                  strokeDashArray: s.strokeDashArray || undefined,
+                  scaleX: safeNum(s.scaleX, 1),
+                  scaleY: safeNum(s.scaleY, 1),
+                });
+
+                if (s.shapeType === "rect") {
+                  // Ensure rx/ry are set for uniform fallbacks/compatibility
+                  existingObj.set({
+                    rx: s.cornerRadius || 0,
+                    ry: s.cornerRadius || 0,
+                  });
+
+                  if (s.cornerRadii && s.cornerRadii.length === 4) {
+                    (existingObj as any).cornerRadii = s.cornerRadii;
+                  } else {
+                    // If invalid or switching to uniform, remove the property
+                    delete (existingObj as any).cornerRadii;
+                  }
+
+                  // ALWAYS use our robust custom render for rects that might have corners
+                  // This function handles BOTH uniform (via rx fallback) and partial radii
+                  existingObj._render = function (ctx: CanvasRenderingContext2D) {
+                    const w = this.width || 0;
+                    const h = this.height || 0;
+
+                    // Fallback to uniform rx if cornerRadii is missing
+                    // Fabric stores rx in this.rx.
+                    const rx = (this as any).rx || 0;
+                    const radii = (this as any).cornerRadii || [rx, rx, rx, rx];
+
+                    // Calculate rounded path
+                    const x = -w / 2;
+                    const y = -h / 2;
+                    // Clamp radii to half width/height to prevent visual glitches
+                    const [tl, tr, bl, br] = radii.map((r: number) => Math.min(r, w / 2, h / 2));
+
+                    ctx.beginPath();
+                    ctx.moveTo(x + tl, y);
+                    ctx.lineTo(x + w - tr, y);
+                    ctx.quadraticCurveTo(x + w, y, x + w, y + tr);
+                    ctx.lineTo(x + w, y + h - br);
+                    ctx.quadraticCurveTo(x + w, y + h, x + w - br, y + h);
+                    ctx.lineTo(x + bl, y + h);
+                    ctx.quadraticCurveTo(x, y + h, x, y + h - bl);
+                    ctx.lineTo(x, y + tl);
+                    ctx.quadraticCurveTo(x, y, x + tl, y);
+                    ctx.closePath();
+
+                    this._renderFill(ctx);
+                    this._renderStroke(ctx);
+                  };
+
+                  // CRITICAL: Force cache invalidation since we modified the render function and custom props
+                  existingObj.set("dirty", true);
+                } else if (s.shapeType === "triangle") {
+                  // Handle Triangle Corners
+                  if (s.cornerRadii && s.cornerRadii.length === 3) {
+                    (existingObj as any).cornerRadii = s.cornerRadii;
+                  } else if (s.cornerRadius) {
+                    // Uniform fallback
+                    (existingObj as any).cornerRadii = [s.cornerRadius, s.cornerRadius, s.cornerRadius];
+                  } else {
+                    delete (existingObj as any).cornerRadii;
+                  }
+
+                  // If we have custom radii (or uniform simulated via list), we need custom render
+                  // Fabric Triangle doesn't support rx/ry natively like Rect does.
+                  if ((existingObj as any).cornerRadii) {
+                    existingObj._render = function (ctx: CanvasRenderingContext2D) {
+                      const w = this.width || 0;
+                      const h = this.height || 0;
+                      const radii = (this as any).cornerRadii || [0, 0, 0];
+                      // [Top, BottomLeft, BottomRight]
+
+                      const [r0, r1, r2] = radii;
+
+                      // Points for standard Fabric Triangle: (0, -h/2), (-w/2, h/2), (w/2, h/2)
+                      // Relative to center
+                      const p0 = { x: 0, y: -h / 2 };
+                      const p1 = { x: -w / 2, y: h / 2 };
+                      const p2 = { x: w / 2, y: h / 2 };
+
+                      const getPointAtDist = (from: any, to: any, d: number) => {
+                        const len = Math.sqrt((to.x - from.x) ** 2 + (to.y - from.y) ** 2);
+                        const t = Math.min(d / len, 0.5);
+                        return {
+                          x: from.x + (to.x - from.x) * t,
+                          y: from.y + (to.y - from.y) * t,
+                        };
+                      };
+
+                      const p0_1 = getPointAtDist(p0, p1, r0);
+                      const p0_2 = getPointAtDist(p0, p2, r0);
+                      const p1_0 = getPointAtDist(p1, p0, r1);
+                      const p1_2 = getPointAtDist(p1, p2, r1);
+                      const p2_0 = getPointAtDist(p2, p0, r2);
+                      const p2_1 = getPointAtDist(p2, p1, r2);
+
+                      ctx.beginPath();
+                      ctx.moveTo(p0_1.x, p0_1.y);
+                      ctx.quadraticCurveTo(p0.x, p0.y, p0_2.x, p0_2.y);
+                      ctx.lineTo(p2_0.x, p2_0.y);
+                      ctx.quadraticCurveTo(p2.x, p2.y, p2_1.x, p2_1.y);
+                      ctx.lineTo(p1_2.x, p1_2.y);
+                      ctx.quadraticCurveTo(p1.x, p1.y, p1_0.x, p1_0.y);
+                      ctx.closePath();
+
+                      this._renderFill(ctx);
+                      this._renderStroke(ctx);
+                    };
+                  } else {
+                    // Revert to original?
+                    // For triangle, deleting _render might be enough if we didn't overwrite it permanently on prototype usually.
+                    // But if we defined it on the instance, we can just delete it to fallback to prototype?
+                    delete (existingObj as any)._render;
+                  }
+                  existingObj.set("dirty", true);
+                }
+                existingObj.setCoords();
+                processedCount++;
+                continue; // Done with shape
+              } else if (element.type === "image") {
+                const i = element as ImageElement;
+
+                // Check if crop dimensions changed - if so, we need to RECREATE
+                // Fabric.js doesn't handle width/height updates on cropped images well
+                const cropChanged =
+                  (existingObj as any).cropX !== (i.cropX || 0) ||
+                  (existingObj as any).cropY !== (i.cropY || 0) ||
+                  existingObj.width !== i.size.width ||
+                  existingObj.height !== i.size.height;
+
+                if (cropChanged) {
+                  // Mark for recreation by removing and falling through to CREATE
+                  canvas.remove(existingObj);
+                  canvasMap.delete(element.id);
+                  // DO NOT continue - let it fall through to CREATE block
+                } else {
+                  // Only safe updates (scale, position, opacity)
+                  existingObj.set({
+                    scaleX: safeNum(i.scaleX, 1),
+                    scaleY: safeNum(i.scaleY, 1),
+                  });
+                  existingObj.setCoords();
+                  processedCount++;
+                  continue; // Done with image
+                }
+              }
+            }
+          }
+
+          // --- B. CREATE NEW (Only if missing) ---
+
+          try {
+            // Determine if we need to load font first
+            if (element.type === "text" || (element.type === "shape" && (element as any).textContent)) {
+              const family = (element as any).fontFamily || (element as any).textFontFamily;
+              if (family) await loadFont(family, (element as any).fontWeight || 400);
+            }
+
+            const newObj = await createFabricObject(element);
+
+            // Check if race condition occurred (slide changed while loading)
+            if (newObj) {
+              // CRITICAL: LAST MILE CHECK
+              if (canvasRef.current) {
+                const existing = canvasRef.current.getObjects().find((o: any) => o.customData?.id === element.id);
+                if (existing) {
+                  return;
+                }
+              }
+
+              (newObj as any).customData = { id: element.id };
+              const isLocked = element.locked;
+              newObj.set({
+                lockMovementX: isLocked,
+                lockMovementY: isLocked,
+                lockScalingX: isLocked,
+                lockScalingY: isLocked,
+                lockRotation: isLocked,
+                selectable: true,
+                evented: !isLocked,
+                hasControls: !isLocked,
+              });
+
+              canvas.add(newObj);
+
+              processedCount++;
+            }
+          } catch (error) {
+            console.error("Failed to create object", element.id, error);
+          }
+        } catch (elemErr) {
+          console.error("Error processing element", element.id, elemErr);
+        }
+      }
+
+      // 3. DELETE REMOVED ELEMENTS
+
+      // CRITICAL SAFETY CHECK:
+      // If we had input elements, but activeElementIds is empty, it means the loop CRASHED efficiently enough
+      // to skip everything, or inputs were malformed.
+      // WE MUST NOT WIPE THE CANVAS IN THIS CASE.
+      if (sortedElements.length > 0 && activeElementIds.size === 0) {
+        console.warn("Canvas Sync Safety Triggered: Aborting cleanup content because no elements were processed.");
+        isRenderingRef.current = false;
+        return;
+      }
+
+      // Any object in canvas that is NOT in the current data -> Remove it
+      // Any object in canvas that is NOT in the current data -> Remove it
+      currentObjects.forEach((obj) => {
+        const id = obj.customData?.id;
+        if (id && !activeElementIds.has(id)) {
+          canvas.remove(obj);
+        }
+      });
+
+      // 4. REORDER (Visual Stacking)
+      // Ensure visual order matches data order
+      sortedElements.forEach((el, idx) => {
+        const obj = canvas.getObjects().find((o) => o.customData?.id === el.id);
+        if (obj) {
+          const currentObjects = canvas.getObjects();
+          const currentIdx = currentObjects.indexOf(obj);
+
+          if (currentIdx !== idx) {
+            if (typeof (canvas as any).moveObjectTo === "function") {
+              (canvas as any).moveObjectTo(obj, idx);
+            } else if (typeof (canvas as any).moveTo === "function") {
+              (canvas as any).moveTo(obj, idx);
+            }
+          }
+        }
+      });
+
+      canvas.requestRenderAll();
+      isRenderingRef.current = false;
+
+      // Lazy layout fix
+      setTimeout(() => {
+        if (canvasRef.current) canvasRef.current.calcOffset();
+      }, 100);
+    };
+
+    processElements();
   }, [currentSlide?.id, currentSlide?.elements, currentSlideIndex, slideIndex, loadFont]);
+
+  // Helper to extract slideId from fingerprint to detect navigation races
+  const elementFingerprintSlideId = (fp: string) => {
+    try {
+      return JSON.parse(fp).slideId;
+    } catch {
+      return "";
+    }
+  };
 
   // EFFECT 2: Sync SELECTION only (NO canvas.clear!)
   // This runs when selection changes but doesn't rebuild the canvas
@@ -631,9 +999,21 @@ export function useCanvas(
     // Skip during multi-select modification
     if (isMultiSelectModifyingRef.current) return;
 
-    const fabricObjectsMap = fabricObjectsMapRef.current;
+    // Build map fresh from canvas (Fixes broken ref issue)
+    const currentObjects = canvas.getObjects();
+    const fabricObjectsMap = new Map<string, FabricObject>(); // Reusing name to keep downstream logic valid
 
-    // If no objects in map, skip (will be handled by element sync)
+    currentObjects.forEach((obj) => {
+      if (obj.customData?.id) {
+        fabricObjectsMap.set(obj.customData.id, obj);
+      }
+    });
+
+    // DYNAMIC EVENTED STATE REMOVED:
+    // We keep locked objects ALWAYS evented: false to allow drag selection to pass through.
+    // Interaction is handled by manual click detection.
+
+    // If no objects in map, skip
     if (fabricObjectsMap.size === 0) return;
 
     // Get current canvas selection
@@ -645,8 +1025,8 @@ export function useCanvas(
             .map((o: any) => o.customData?.id)
             .filter(Boolean)
         : currentActive?.customData?.id
-        ? [currentActive.customData.id]
-        : [];
+          ? [currentActive.customData.id]
+          : [];
 
     // Check if selection actually needs to change
     const selectionMatches =
@@ -667,15 +1047,25 @@ export function useCanvas(
         canvas.setActiveObject(obj);
       }
     } else {
-      const objects = selectedElementIds.map((id) => fabricObjectsMap.get(id)).filter((obj) => !!obj) as FabricObject[];
+      // Filter out locked objects from multi-selection
+      const objects = selectedElementIds
+        .map((id) => fabricObjectsMap.get(id))
+        .filter((obj) => !!obj && !obj.lockMovementX && !obj.lockMovementY) as FabricObject[];
 
       if (objects.length > 0) {
         canvas.discardActiveObject();
-        const selection = new ActiveSelection(objects, {
-          canvas: canvas,
-          ...CONTROL_DEFAULTS,
-        });
-        canvas.setActiveObject(selection);
+
+        if (objects.length === 1) {
+          // If only one unlocked object remains, select it individually
+          canvas.setActiveObject(objects[0]);
+        } else {
+          // Multiple unlocked objects - create ActiveSelection
+          const selection = new ActiveSelection(objects, {
+            canvas: canvas,
+            ...CONTROL_DEFAULTS,
+          });
+          canvas.setActiveObject(selection);
+        }
       }
     }
 

@@ -1,0 +1,282 @@
+[
+  {
+    "schema_name": "cron",
+    "table_name": "job",
+    "policy_name": "cron_job_policy",
+    "command": "ALL",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "(username = CURRENT_USER)",
+    "check_expression": null
+  },
+  {
+    "schema_name": "cron",
+    "table_name": "job_run_details",
+    "policy_name": "cron_job_run_details_policy",
+    "command": "ALL",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "(username = CURRENT_USER)",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "imagekit_temp_uploads",
+    "policy_name": "Service role has full access",
+    "command": "ALL",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "((auth.jwt() ->> 'role'::text) = 'service_role'::text)",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "imagekit_temp_uploads",
+    "policy_name": "Users can delete their own uploads",
+    "command": "DELETE",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "(auth.uid() = user_id)",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "imagekit_temp_uploads",
+    "policy_name": "Users can insert their own uploads",
+    "command": "INSERT",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": null,
+    "check_expression": "(auth.uid() = user_id)"
+  },
+  {
+    "schema_name": "public",
+    "table_name": "imagekit_temp_uploads",
+    "policy_name": "Users can update their own uploads",
+    "command": "UPDATE",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "(auth.uid() = user_id)",
+    "check_expression": "(auth.uid() = user_id)"
+  },
+  {
+    "schema_name": "public",
+    "table_name": "imagekit_temp_uploads",
+    "policy_name": "Users can view their own uploads",
+    "command": "SELECT",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "(auth.uid() = user_id)",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "notes",
+    "policy_name": "notes_delete_by_staff",
+    "command": "DELETE",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "((auth.jwt() ->> 'role'::text) = ANY (ARRAY['admin'::text, 'panitia'::text]))",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "notes",
+    "policy_name": "notes_delete_own",
+    "command": "DELETE",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "(user_id IN ( SELECT u.id\n   FROM users u\n  WHERE (u.auth_user_id = auth.uid())))",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "notes",
+    "policy_name": "notes_insert_own",
+    "command": "INSERT",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": null,
+    "check_expression": "(user_id IN ( SELECT u.id\n   FROM users u\n  WHERE (u.auth_user_id = auth.uid())))"
+  },
+  {
+    "schema_name": "public",
+    "table_name": "notes",
+    "policy_name": "notes_select_own_or_public",
+    "command": "SELECT",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "((user_id IN ( SELECT u.id\n   FROM users u\n  WHERE (u.auth_user_id = auth.uid()))) OR (is_public = true))",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "notes",
+    "policy_name": "notes_update_own",
+    "command": "UPDATE",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "(user_id IN ( SELECT u.id\n   FROM users u\n  WHERE (u.auth_user_id = auth.uid())))",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "payment_webhooks",
+    "policy_name": "Admin view all webhooks",
+    "command": "SELECT",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM users u\n  WHERE ((u.auth_user_id = auth.uid()) AND (u.role = 'admin'::text))))",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "payment_webhooks",
+    "policy_name": "System insert webhooks",
+    "command": "INSERT",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": null,
+    "check_expression": "true"
+  },
+  {
+    "schema_name": "public",
+    "table_name": "payment_webhooks",
+    "policy_name": "System update webhooks",
+    "command": "UPDATE",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "true",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "payment_webhooks",
+    "policy_name": "webhooks_insert_system",
+    "command": "INSERT",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": null,
+    "check_expression": "true"
+  },
+  {
+    "schema_name": "public",
+    "table_name": "payment_webhooks",
+    "policy_name": "webhooks_select_admin",
+    "command": "SELECT",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "((auth.jwt() ->> 'role'::text) = 'admin'::text)",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "payment_webhooks",
+    "policy_name": "webhooks_update_system",
+    "command": "UPDATE",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "true",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "profile_changes",
+    "policy_name": "profile_changes_insert_system",
+    "command": "INSERT",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": null,
+    "check_expression": "true"
+  },
+  {
+    "schema_name": "public",
+    "table_name": "profile_changes",
+    "policy_name": "profile_changes_select_own",
+    "command": "SELECT",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "((user_id IN ( SELECT u.id\n   FROM users u\n  WHERE (u.auth_user_id = auth.uid()))) OR ((auth.jwt() ->> 'role'::text) = 'admin'::text))",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "subscriptions",
+    "policy_name": "subscriptions_insert_system",
+    "command": "INSERT",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": null,
+    "check_expression": "true"
+  },
+  {
+    "schema_name": "public",
+    "table_name": "subscriptions",
+    "policy_name": "subscriptions_select_own",
+    "command": "SELECT",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "((user_id = ( SELECT users.id\n   FROM users\n  WHERE (users.auth_user_id = auth.uid())\n LIMIT 1)) OR ((auth.jwt() ->> 'role'::text) = 'admin'::text))",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "subscriptions",
+    "policy_name": "subscriptions_update_system",
+    "command": "UPDATE",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "true",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "users",
+    "policy_name": "users_delete_by_admin",
+    "command": "DELETE",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "(((auth.jwt() ->> 'role'::text) = 'admin'::text) AND (auth.uid() <> auth_user_id))",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "users",
+    "policy_name": "users_insert_own",
+    "command": "INSERT",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": null,
+    "check_expression": "(auth.uid() = auth_user_id)"
+  },
+  {
+    "schema_name": "public",
+    "table_name": "users",
+    "policy_name": "users_select_unified",
+    "command": "SELECT",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "((auth.uid() = auth_user_id) OR ((auth.jwt() ->> 'role'::text) = ANY (ARRAY['admin'::text, 'panitia'::text, 'ustadz'::text])))",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "users",
+    "policy_name": "users_update_by_admin",
+    "command": "UPDATE",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "(((auth.jwt() ->> 'role'::text) = 'admin'::text) AND (auth.uid() <> auth_user_id))",
+    "check_expression": null
+  },
+  {
+    "schema_name": "public",
+    "table_name": "users",
+    "policy_name": "users_update_own",
+    "command": "UPDATE",
+    "permissive": "PERMISSIVE",
+    "role": null,
+    "using_expression": "(auth.uid() = auth_user_id)",
+    "check_expression": null
+  }
+]

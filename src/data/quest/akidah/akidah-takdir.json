@@ -1,0 +1,182 @@
+[
+  {
+    "topic_slug": "akidah-takdir",
+    "question_text": "Iman kepada Qada dan Qadar adalah rukun iman ke-...",
+    "options": [
+      { "id": "A", "text": "4" },
+      { "id": "B", "text": "5" },
+      { "id": "C", "text": "6" },
+      { "id": "D", "text": "3" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Iman kepada Takdir (Qada dan Qadar) baik buruknya adalah rukun iman yang ke-6.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-takdir",
+    "question_text": "Segala sesuatu yang terjadi di alam semesta ini terjadi atas...",
+    "options": [
+      { "id": "A", "text": "Kehendak Allah semata" },
+      { "id": "B", "text": "Kehendak Manusia semata" },
+      { "id": "C", "text": "Kebetulan" },
+      { "id": "D", "text": "Hukum Alam tanpa campur tangan Tuhan" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Segala sesuatu terjadi atas Iradah (Kehendak) dan Masya'ah (Kehendak) Allah SWT.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-takdir",
+    "question_text": "Kitab di mana Allah menuliskan segala takdir makhluk sebelum penciptaan disebut...",
+    "options": [
+      { "id": "A", "text": "Lauh Mahfuzh" },
+      { "id": "B", "text": "Mushaf Utsmani" },
+      { "id": "C", "text": "Kitab Sijjin" },
+      { "id": "D", "text": "Kitab Illiyyin" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Takdir seluruh makhluk telah dicatat Allah di Lauh Mahfuzh 50.000 tahun sebelum penciptaan langit dan bumi.",
+      "dalil": "HR. Muslim",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-takdir",
+    "question_text": "Apakah manusia dipaksa dalam perbuatannya (Jabariyah) atau bebas mutlak (Qadariyah)?",
+    "options": [
+      { "id": "A", "text": "Dipaksa sepenuhnya" },
+      { "id": "B", "text": "Bebas mutlak tanpa takdir" },
+      { "id": "C", "text": "Memiliki ikhtiar namun di bawah kehendak Allah" },
+      { "id": "D", "text": "Tidak memiliki pilihan sama sekali" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Aqidah Ahlus Sunnah adalah pertengahan: Manusia memiliki kehendak dan kemampuan untuk berikhtiar, namun kehendak mereka tidak lepas dari kehendak Allah.",
+      "dalil": "QS. At-Takwir: 29",
+      "resources": []
+    },
+    "points": 15,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-takdir",
+    "question_text": "Salah satu hikmah beriman kepada takdir adalah...",
+    "options": [
+      { "id": "A", "text": "Menjadi malas berusaha" },
+      { "id": "B", "text": "Menghilangkan kesedihan berlarut-larut saat musibah" },
+      { "id": "C", "text": "Menyalahkan orang lain" },
+      { "id": "D", "text": "Pasrah tanpa usaha" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Iman kepada takdir membuat hati tenang, tidak terlalu bersedih atas apa yang luput, dan tidak sombong atas apa yang didapat.",
+      "dalil": "QS. Al-Hadid: 22-23",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-takdir",
+    "question_text": "Nabi bersabda: 'Janganlah kalian mengatakan 'Seandainya aku melakukan ini...', tapi katakanlah...'",
+    "options": [
+      { "id": "A", "text": "Sial sekali nasibku" },
+      { "id": "B", "text": "Qadarullah wa maa syaa-a fa'ala" },
+      { "id": "C", "text": "Kenapa ini harus terjadi" },
+      { "id": "D", "text": "Coba saja dulu begini" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Kata 'seandainya' membuka pintu syetan untuk penyesalan. Muslim diajarkan mengucapkan 'Qadarullah' (Ini takdir Allah, apa yang Dia kehendaki pasti terjadi).",
+      "dalil": "HR. Muslim",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-takdir",
+    "question_text": "Takdir yang bisa berubah dengan doa dan amal shalih (seperti umur dan rezeki) disebut takdir...",
+    "options": [
+      { "id": "A", "text": "Mubram" },
+      { "id": "B", "text": "Mu'allaq" },
+      { "id": "C", "text": "Azali" },
+      { "id": "D", "text": "Abadi" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Takdir Mu'allaq adalah takdir yang dikaitkan dengan sebab-sebab tertentu, yang bisa berubah (dalam catatan malaikat) dengan doa atau silaturahmi.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 15,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-takdir",
+    "question_text": "Kapan takdir janin (rezeki, ajal, amal, bahagia/celaka) ditetapkan oleh malaikat?",
+    "options": [
+      { "id": "A", "text": "Saat lahir" },
+      { "id": "B", "text": "Usia 4 bulan dalam kandungan" },
+      { "id": "C", "text": "Usia 7 bulan dalam kandungan" },
+      { "id": "D", "text": "Saat akil baligh" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Hadits Ibnu Mas'ud menyebutkan malaikat diutus meniupkan ruh dan mencatat 4 hal saat janin berusia 4 bulan (120 hari).",
+      "dalil": "HR. Bukhari Muslim",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-takdir",
+    "question_text": "Menyalahkan takdir atas perbuatan dosa yang sengaja dilakukan hukumnya...",
+    "options": [
+      { "id": "A", "text": "Boleh" },
+      { "id": "B", "text": "Dianjurkan" },
+      { "id": "C", "text": "Dilarang/Batil" },
+      { "id": "D", "text": "Makruh" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Tidak boleh berdalih dengan takdir untuk membenarkan maksiat (seperti kaum Musyrikin), karena manusia diberi akal dan pilihan.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-takdir",
+    "question_text": "Doa dapat mengubah takdir. Pernyataan ini...",
+    "options": [
+      { "id": "A", "text": "Salah Mutlak" },
+      { "id": "B", "text": "Benar, sesuai hadits Nabi" },
+      { "id": "C", "text": "Hanya mitos" },
+      { "id": "D", "text": "Tidak ada dasarnya" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Nabi SAW bersabda: 'Tidak ada yang dapat menolak takdir kecuali doa'.",
+      "dalil": "HR. Tirmidzi",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  }
+]

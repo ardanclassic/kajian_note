@@ -1,0 +1,337 @@
+{
+  "metadata": {
+    "title": "Tokoh-Tokoh Matematika yang Mengubah Dunia",
+    "description": "Perjalanan pemikiran para ilmuwan paling berpengaruh yang meletakkan fondasi matematika modern.",
+    "author": {
+      "name": "alwaah.project",
+      "hashtag": "ContentStudio"
+    },
+    "tags": ["#Matematika", "#SejarahSains", "#Ilmuwan", "#Edukasi"],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-right"
+  },
+  "design": {
+    "background_color": "#0C1A2A",
+    "text_color": "#F0F7FF",
+    "accent_color": "#E63946",
+    "background_color_1": "#1D2D44",
+    "text_color_1": "#E9F5DB",
+    "background_color_2": "#FFE5D4",
+    "text_color_2": "#2A2D34"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": {
+        "background_color": "#1A1F2C",
+        "text_color": "#FFD166",
+        "author_color": "#A8DADC"
+      },
+      "content": {
+        "title": "PEMIKIRAN ABADI",
+        "subtitle": "Ilmuwan Paling Berpengaruh di Bidang Matematika"
+      },
+      "layout": {
+        "line_height": 1.0,
+        "title_size": 58,
+        "subtitle_size": 42,
+        "title_weight": 900,
+        "title_position": "center",
+        "subtitle_position": "center"
+      }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": {
+        "background_color": "#264653"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "BUKAN ANGKA SEMATA",
+            "style": {
+              "fontSize": 36,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#2A9D8F"
+            }
+          },
+          {
+            "text": "Matematika adalah bahasa alam semesta. Para tokoh ini tidak hanya menghitung, tetapi menemukan logika, struktur, dan keindahan yang mendasari realitas.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#E9C46A"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": {
+        "background_color": "#F4A261"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "BAPAK MATEMATIKA",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 800,
+              "align": "right",
+              "color": "#9B2226"
+            }
+          },
+          {
+            "text": "Thales of Miletus (624-546 SM) dianggap sebagai matematikawan pertama yang menggunakan deduksi logis, menggeser matematika dari praktik ke pembuktian.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "right",
+              "color": "#0A0908"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "right"
+      }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": {
+        "background_color": "#E9F5DB"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "GEOMETRI ABADI",
+            "style": {
+              "fontSize": 34,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#386641"
+            }
+          },
+          {
+            "text": "Euclid (abad ke-3 SM) menyusun 'Elements', karya monumental yang menjadi landasan geometri selama lebih dari 2000 tahun. Metode aksiomatiknya membentuk standar rigor matematika.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#1B4332"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": {
+        "background_color": "#9D4EDD"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "RAJA ANALISIS",
+            "style": {
+              "fontSize": 36,
+              "fontWeight": 800,
+              "align": "right",
+              "color": "#FFD166"
+            }
+          },
+          {
+            "text": "Leonhard Euler (1707-1783) adalah raja produktivitas. Kontribusinya meliputi notasi fungsi f(x), bilangan e, analisis kompleks, teori graf, dan mekanika fluida.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "right",
+              "color": "#CBF3F0"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "right"
+      }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "design_override": {
+        "background_color": "#003049"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "PRINSIP KETIDAKPASTIAN",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#FDF0D5"
+            }
+          },
+          {
+            "text": "Kurt Gödel (1906-1978) mengguncang fondasi matematika dengan Teorema Ketidaklengkapan. Ia membuktikan bahwa dalam sistem formal yang cukup kuat, selalu ada pernyataan yang tidak dapat dibuktikan benar atau salah.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#669BBC"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "design_override": {
+        "background_color": "#FFB4A2"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "KEINDAHAN SIMETRI",
+            "style": {
+              "fontSize": 34,
+              "fontWeight": 800,
+              "align": "right",
+              "color": "#6A040F"
+            }
+          },
+          {
+            "text": "Évariste Galois (1811-1832), jenius yang meninggal muda, menciptakan Teori Galois. Karyanya menyelesaikan problem klasik dan mengaitkan teori persamaan dengan struktur grup, membuka jalan bagi aljabar abstrak.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "right",
+              "color": "#370617"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "right"
+      }
+    },
+    {
+      "slide_number": 8,
+      "type": "content",
+      "design_override": {
+        "background_color": "#588157"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "PERINTIS KOMPUTASI",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#DAD7CD"
+            }
+          },
+          {
+            "text": "Ada Lovelace (1815-1852) adalah programmer pertama di dunia. Ia melihat potensi Mesin Analitis Babbage melampaui sekadar kalkulasi, merancang algoritma pertama untuk dijalankan oleh mesin, meletakkan fondasi ilmu komputer.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#A3B18A"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 9,
+      "type": "content",
+      "design_override": {
+        "background_color": "#FFCAD4"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "WARISAN ABADI",
+            "style": {
+              "fontSize": 36,
+              "fontWeight": 800,
+              "align": "center",
+              "color": "#9D0208"
+            }
+          },
+          {
+            "text": "Warisan mereka bukan sekadar rumus. Ia adalah cara berpikir, kerangka logika, dan alat untuk menguak misteri alam. Matematika mereka hidup dalam setiap chip komputer, kriptografi, dan eksplorasi ruang angkasa.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "align": "center",
+              "color": "#03071E"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "center"
+      }
+    },
+    {
+      "slide_number": 10,
+      "type": "content",
+      "design_override": {
+        "background_color": "#2A2D34"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Sumber Referensi",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#FFD166"
+            }
+          },
+          {
+            "text": "1. 'The History of Mathematics: A Very Short Introduction' (Jacqueline Stedall)\n2. 'Men of Mathematics' (E.T. Bell)\n3. 'The Mathematical Universe' (William Dunham)\n4. 'Ada's Algorithm: How Lord Byron's Daughter Ada Lovelace Launched the Digital Age' (James Essinger)\n5. Stanford Encyclopedia of Philosophy - Entri tentang Kurt Gödel & Euclid\n6. MacTutor History of Mathematics Archive (University of St Andrews)",
+            "style": {
+              "fontSize": 18,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F0F7FF"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    }
+  ]
+}

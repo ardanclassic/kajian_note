@@ -1,0 +1,337 @@
+{
+  "metadata": {
+    "title": "Mengungkap Hukum Alam",
+    "description": "Perjalanan para ilmuwan fisika yang merevolusi pemahaman kita tentang alam semesta.",
+    "author": {
+      "name": "alwaah.project",
+      "hashtag": "ContentStudio"
+    },
+    "tags": ["#Fisika", "#Ilmuwan", "#Sains", "#Edukasi"],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-right"
+  },
+  "design": {
+    "background_color": "#0F1B3D",
+    "text_color": "#F1F8FF",
+    "accent_color": "#FF6B6B",
+    "background_color_1": "#2A2D43",
+    "text_color_1": "#E2F1FF",
+    "background_color_2": "#FFE8D6",
+    "text_color_2": "#2A2D34"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": {
+        "background_color": "#1A1F2C",
+        "text_color": "#4ECDC4",
+        "author_color": "#A8DADC"
+      },
+      "content": {
+        "title": "REVOLUSI PEMIKIRAN",
+        "subtitle": "Ilmuwan Fisika Paling Berpengaruh Sepanjang Masa"
+      },
+      "layout": {
+        "line_height": 1.0,
+        "title_size": 58,
+        "subtitle_size": 40,
+        "title_weight": 900,
+        "title_position": "center",
+        "subtitle_position": "center"
+      }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": {
+        "background_color": "#264653"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "BUKAN KEBETULAN",
+            "style": {
+              "fontSize": 36,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#2A9D8F"
+            }
+          },
+          {
+            "text": "Fisika adalah upaya memahami pola dan hukum yang mengatur alam semesta. Setiap penemuan mengungkap keteraturan yang menakjubkan dari partikel terkecil hingga galaksi terjauh.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#E9C46A"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": {
+        "background_color": "#F4A261"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "BAPAK FISIKA MODERN",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 800,
+              "align": "right",
+              "color": "#9B2226"
+            }
+          },
+          {
+            "text": "Galileo Galilei (1564-1642) meletakkan fondasi metode ilmiah dengan eksperimen dan observasi. Teleskopnya mengungkap bulan Jupiter dan mendukung model heliosentris, mengubah pandangan alam semesta.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "right",
+              "color": "#0A0908"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "right"
+      }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": {
+        "background_color": "#E9F5DB"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "HUKUM GERAK & GRAVITASI",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#386641"
+            }
+          },
+          {
+            "text": "Isaac Newton (1643-1727) menyatukan langit dan bumi dengan tiga hukum gerak dan hukum gravitasi universal. Karyanya menjadi dasar mekanika klasik selama 200 tahun.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#1B4332"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": {
+        "background_color": "#9D4EDD"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "REVOLUSI RELATIVITAS",
+            "style": {
+              "fontSize": 34,
+              "fontWeight": 800,
+              "align": "right",
+              "color": "#FFD166"
+            }
+          },
+          {
+            "text": "Albert Einstein (1879-1955) mengguncang fisika dengan teori relativitas khusus dan umum. E=mc² dan konsep ruang-waktu yang melengkung mengubah pemahaman fundamental tentang alam.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "right",
+              "color": "#CBF3F0"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "right"
+      }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "design_override": {
+        "background_color": "#003049"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "MEKANIKA KUANTUM",
+            "style": {
+              "fontSize": 34,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#FDF0D5"
+            }
+          },
+          {
+            "text": "Niels Bohr, Werner Heisenberg, dan Erwin Schrödinger membangun dasar mekanika kuantum. Dunia subatomik mereka penuh probabilistik dan dualitas gelombang-partikel yang menantang intuisi klasik.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#669BBC"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "design_override": {
+        "background_color": "#FFB4A2"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "STRUKTUR ATOM",
+            "style": {
+              "fontSize": 36,
+              "fontWeight": 800,
+              "align": "right",
+              "color": "#6A040F"
+            }
+          },
+          {
+            "text": "Marie Curie (1867-1934) adalah pionir radioaktivitas dan satu-satunya pemenang Nobel di dua bidang sains berbeda. Penemuannya membuka jalan bagi fisika nuklir dan aplikasi medis.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "right",
+              "color": "#370617"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "right"
+      }
+    },
+    {
+      "slide_number": 8,
+      "type": "content",
+      "design_override": {
+        "background_color": "#588157"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "MODEL STANDAR",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#DAD7CD"
+            }
+          },
+          {
+            "text": "Richard Feynman, Murray Gell-Mann, dan lainnya menyusun Model Standar fisika partikel. Diagram Feynman dan teori quark mereka menjelaskan partikel fundamental dan interaksi dasar alam.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#A3B18A"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 9,
+      "type": "content",
+      "design_override": {
+        "background_color": "#FFCAD4"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "WARISAN ABADI",
+            "style": {
+              "fontSize": 36,
+              "fontWeight": 800,
+              "align": "center",
+              "color": "#9D0208"
+            }
+          },
+          {
+            "text": "Mereka meninggalkan lebih dari rumus. Mereka memberikan cara baru melihat realitas. Warisan mereka hidup dalam setiap teknologi, dari GPS yang bergantung relativitas hingga komputer kuantum.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "align": "center",
+              "color": "#03071E"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "center"
+      }
+    },
+    {
+      "slide_number": 10,
+      "type": "content",
+      "design_override": {
+        "background_color": "#2A2D34"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Sumber Referensi",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#FFD166"
+            }
+          },
+          {
+            "text": "1. 'A Brief History of Time' (Stephen Hawking)\n2. 'The Feynman Lectures on Physics' (Richard Feynman)\n3. 'Einstein: His Life and Universe' (Walter Isaacson)\n4. 'The Character of Physical Law' (Richard Feynman)\n5. 'Quantum: Einstein, Bohr, and the Great Debate About the Nature of Reality' (Manjit Kumar)\n6. Stanford Encyclopedia of Philosophy - Entri tentang Fisika Modern",
+            "style": {
+              "fontSize": 18,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F0F7FF"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    }
+  ]
+}

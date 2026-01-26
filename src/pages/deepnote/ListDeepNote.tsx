@@ -7,8 +7,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { DeepNoteList } from "@/components/features/deep-note/DeepNoteList";
-import { SummarySearch } from "@/components/features/note-summary/SummarySearch";
-import { SubscriptionLimitBanner } from "@/components/features/note-workspace/SubscriptionLimitBanner";
+import { NoteSearch } from "@/components/features/notes/list/NoteSearch";
+import { SubscriptionLimitBanner } from "@/components/features/notes/common/SubscriptionLimitBanner";
 import { ScrollToTopButton } from "@/components/common/ScrollToTopButton";
 import { TopHeader } from "@/components/layout/TopHeader";
 import {
@@ -171,7 +171,7 @@ export default function ListDeepNote() {
         <div className="relative container mx-auto px-4 py-6">
           <div className="max-w-7xl mx-auto space-y-4">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-lg bg-gray-900 border border-purple-500/50 flex items-center justify-center shadow-lg shadow-purple-500/10 flex-shrink-0">
+              <div className="w-10 h-10 rounded-lg bg-gray-900 border border-purple-500/50 flex items-center justify-center shadow-lg shadow-purple-500/10 shrink-0">
                 <Sparkles className="w-5 h-5 text-purple-400" />
               </div>
               <div className="flex-1 min-w-0">
@@ -191,7 +191,7 @@ export default function ListDeepNote() {
           {usage && <SubscriptionLimitBanner usage={usage} compact />}
 
           {/* Search & Filter */}
-          <SummarySearch availableTags={userNotes.flatMap(n => n.tags)} onSearch={handleSearch} onClear={handleClearSearch} />
+          <NoteSearch availableTags={userNotes.flatMap(n => n.tags)} onSearch={handleSearch} onClear={handleClearSearch} />
 
           {/* Loading State */}
           {isLoading && !deepNotes.length && (

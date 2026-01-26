@@ -1,0 +1,182 @@
+[
+  {
+    "topic_slug": "akidah-hari-akhir",
+    "question_text": "Hari di mana manusia dibangkitkan dari kuburnya disebut Yaumul...",
+    "options": [
+      { "id": "A", "text": "Hisab" },
+      { "id": "B", "text": "Ba'ats" },
+      { "id": "C", "text": "Mizan" },
+      { "id": "D", "text": "Jaza" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Yaumul Ba'ats adalah hari kebangkitan manusia dari kubur.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-hari-akhir",
+    "question_text": "Alam perantara antara dunia dan akhirat (setelah mati sebelum kiamat) disebut alam...",
+    "options": [
+      { "id": "A", "text": "Barzakh" },
+      { "id": "B", "text": "Mahsyar" },
+      { "id": "C", "text": "Arwah" },
+      { "id": "D", "text": "Ghaib" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Alam Barzakh (dinding) adalah alam kubur tempat manusia menanti hari kiamat.",
+      "dalil": "QS. Al-Mu'minun: 100",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-hari-akhir",
+    "question_text": "Malaikat yang bertugas menanyai manusia di alam kubur adalah...",
+    "options": [
+      { "id": "A", "text": "Jibril & Mikail" },
+      { "id": "B", "text": "Malik & Ridwan" },
+      { "id": "C", "text": "Munkar & Nakir" },
+      { "id": "D", "text": "Raqib & Atid" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Munkar dan Nakir adalah dua malaikat yang bertugas memberikan fitnah kubur (pertanyaan).",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-hari-akhir",
+    "question_text": "Jembatan yang terbentang di atas neraka Jahannam yang harus dilewati manusia disebut...",
+    "options": [
+      { "id": "A", "text": "Shiratul Mustaqim" },
+      { "id": "B", "text": "Shirat" },
+      { "id": "C", "text": "A'raf" },
+      { "id": "D", "text": "Qantarah" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Ash-Shirat adalah jembatan yang terbentang di atas neraka Jahannam.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-hari-akhir",
+    "question_text": "Di antara tanda besar Kiamat (Kiamat Kubra) adalah munculnya...",
+    "options": [
+      { "id": "A", "text": "Banyak gempa bumi" },
+      { "id": "B", "text": "Wanita berpakaian tapi telanjang" },
+      { "id": "C", "text": "Dajjal" },
+      { "id": "D", "text": "Banyak pembunuhan" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Gempa, maksiat, pembunuhan adalah tanda kecil. Munculnya Dajjal adalah salah satu dari 10 tanda besar Kiamat.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-hari-akhir",
+    "question_text": "Istilah untuk timbangan amal di hari kiamat adalah...",
+    "options": [
+      { "id": "A", "text": "Mizan" },
+      { "id": "B", "text": "Hisab" },
+      { "id": "C", "text": "Shuhuf" },
+      { "id": "D", "text": "Haudh" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Al-Mizan adalah timbangan yang sangat akurat untuk menimbang amal perbuatan manusia.",
+      "dalil": "QS. Al-Anbiya: 47",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-hari-akhir",
+    "question_text": "Manusia yang menerima catatan amal dengan tangan kanannya menandakan dia...",
+    "options": [
+      { "id": "A", "text": "Celaka" },
+      { "id": "B", "text": "Beruntung/Ahlul Jannah" },
+      { "id": "C", "text": "Munafik" },
+      { "id": "D", "text": "Kafir" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Orang yang menerima kitab amal dari sebelah kanan (Ashabul Yamin) adalah tanda keselamatan dan masuk surga.",
+      "dalil": "QS. Al-Inshiqaq: 7",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-hari-akhir",
+    "question_text": "Telaga Nabi Muhammad SAW di padang Mahsyar yang airnya lebih putih dari susu disebut...",
+    "options": [
+      { "id": "A", "text": "Al-Kautsar/Al-Haudh" },
+      { "id": "B", "text": "Zamzam" },
+      { "id": "C", "text": "Salsabila" },
+      { "id": "D", "text": "Tasnim" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Al-Haudh (Telaga) adalah tempat umat Nabi minum sebelum masuk surga, yang sumber airnya dari sungai Al-Kautsar.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-hari-akhir",
+    "question_text": "Syafa'at terbesar (Syafa'atul Uzma) yang dimiliki Nabi Muhammad SAW adalah...",
+    "options": [
+      { "id": "A", "text": "Memasukkan umatnya ke surga tanpa hisab" },
+      { "id": "B", "text": "Mengeluarkan pelaku dosa besar dari neraka" },
+      { "id": "C", "text": "Memulai persidangan (hisab) di Padang Mahsyar" },
+      { "id": "D", "text": "Meringankan azab paman beliau" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Syafa'at Uzma adalah permohonan Nabi kepada Allah agar segera memutuskan perkara (memulai hisab) bagi seluruh makhluk yang menunggu lama di Mahsyar.",
+      "dalil": "",
+      "resources": []
+    },
+    "points": 15,
+    "spare": null
+  },
+  {
+    "topic_slug": "akidah-hari-akhir",
+    "question_text": "Surga tertinggi yang menjadi atapnya 'Arsy Allah adalah...",
+    "options": [
+      { "id": "A", "text": "Surga 'Adn" },
+      { "id": "B", "text": "Surga Firdaus" },
+      { "id": "C", "text": "Surga Na'im" },
+      { "id": "D", "text": "Surga Ma'wa" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Firdaus adalah surga tertinggi dan paling tengah, atapnya adalah 'Arsy Allah.",
+      "dalil": "HR. Bukhari",
+      "resources": []
+    },
+    "points": 10,
+    "spare": null
+  }
+]

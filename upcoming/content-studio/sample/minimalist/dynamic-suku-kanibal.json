@@ -1,0 +1,340 @@
+{
+  "metadata": {
+    "title": "Suku Kanibal di Berbagai Belahan Dunia",
+    "description": "Eksplorasi motif, sejarah, dan perspektif modern tentang kanibalisme di berbagai budaya.",
+    "author": {
+      "name": "alwaah.project",
+      "hashtag": "ContentStudio"
+    },
+    "tags": ["#Antropologi", "#Sejarah", "#Budaya", "#Mitos"],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-right"
+  },
+  "design": {
+    "background_color": "#0F172A",
+    "text_color": "#F8FAFC",
+    "accent_color": "#F59E0B",
+    "background_color_1": "#111827",
+    "text_color_1": "#E5E7EB",
+    "background_color_2": "#FEF3C7",
+    "text_color_2": "#92400E"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": {
+        "background_color": "#1E293B",
+        "text_color": "#FDE68A",
+        "author_color": "#CBD5E1"
+      },
+      "content": {
+        "title": "SUKU KANIBAL",
+        "subtitle": "Mitos, Ritual, dan Realitas di Dunia"
+      },
+      "layout": {
+        "line_height": 1.0,
+        "title_size": 58,
+        "subtitle_size": 36,
+        "title_weight": 900,
+        "title_position": "center",
+        "subtitle_position": "center"
+      }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": {
+        "background_color": "#312E81"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "BUKAN SEKADAR LEGENDA",
+            "style": {
+              "fontSize": 44,
+              "fontWeight": 900,
+              "align": "center",
+              "color": "#A5B4FC"
+            }
+          },
+          {
+            "text": "Kanibalisme tercatat dalam sejarah, bukan hanya cerita seram.",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 400,
+              "align": "center",
+              "color": "#C7D2FE"
+            }
+          },
+          {
+            "text": "Dari ritual spiritual hingga paksaan survival.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "align": "center",
+              "color": "#C7D2FE"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "center"
+      }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": {
+        "background_color": "#FEF3C7"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "MOTIF DI BALIK TINDAKAN",
+            "style": {
+              "fontSize": 38,
+              "fontWeight": 800,
+              "align": "left",
+              "color": "#92400E"
+            }
+          },
+          {
+            "text": "RITUAL: Memperoleh kekuatan atau jiwa musuh.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 600,
+              "align": "left",
+              "color": "#B45309"
+            }
+          },
+          {
+            "text": "SURVIVAL: Saat kelaparan ekstrem melanda.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 600,
+              "align": "left",
+              "color": "#B45309"
+            }
+          },
+          {
+            "text": "PEMAKAMAN: Sebagai bentuk penghormatan terakhir.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 600,
+              "align": "left",
+              "color": "#B45309"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": {
+        "background_color": "#064E3B"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "KAORO",
+            "style": {
+              "fontSize": 56,
+              "fontWeight": 900,
+              "align": "right",
+              "color": "#6EE7B7"
+            }
+          },
+          {
+            "text": "PAPUA NUGINI",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "right",
+              "color": "#A7F3D0"
+            }
+          },
+          {
+            "text": "Melakukan 'endo-kanibalisme' – memakan kerabat sendiri yang telah meninggal.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "align": "right",
+              "color": "#D1FAE5"
+            }
+          },
+          {
+            "text": "Tujuan: menyimpan jiwa dan cinta dalam komunitas.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "right",
+              "color": "#D1FAE5"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "right"
+      }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": {
+        "background_color": "#7C3AED"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "AZTEC",
+            "style": {
+              "fontSize": 52,
+              "fontWeight": 900,
+              "align": "center",
+              "color": "#DDD6FE"
+            }
+          },
+          {
+            "text": "MEKSIKO KUNO",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 700,
+              "align": "center",
+              "color": "#C4B5FD"
+            }
+          },
+          {
+            "text": "Upacara pengorbanan manusia sering kali diikuti konsumsi bagian tubuh, sebagai persembahan kepada dewa.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "center",
+              "color": "#EDE9FE"
+            }
+          },
+          {
+            "text": "Simbolisme: regenerasi kosmis dan kekuatan ilahi.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "center",
+              "color": "#EDE9FE"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "center"
+      }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "design_override": {
+        "background_color": "#BE185D"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "KONTEKS MODERN",
+            "style": {
+              "fontSize": 40,
+              "fontWeight": 800,
+              "align": "left",
+              "color": "#FBCFE8"
+            }
+          },
+          {
+            "text": "Jangan terjebak pada stereotip.",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#F9A8D4"
+            }
+          },
+          {
+            "text": "Kebanyakan praktik kanibalisme kuno telah punah atau sangat terpinggirkan.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#FCE7F3"
+            }
+          },
+          {
+            "text": "Pelajaran penting: memahami konteks budaya sebelum menghakimi.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#FCE7F3"
+            }
+          },
+          {
+            "text": "Bukan tentang kekejaman, tetapi tentang cara manusia mencari makna.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#FCE7F3"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "design_override": {
+        "background_color": "#1E293B"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Sumber Referensi",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#CBD5E1"
+            }
+          },
+          {
+            "text": "1. \"Cannibalism: A Perfectly Natural History\" oleh Bill Schutt\n2. \"The Man-Eating Myth: Anthropology and Anthropophagy\" oleh William Arens\n3. \"Consuming Grief: Compassionate Cannibalism in an Amazonian Society\" oleh Beth A. Conklin\n4. Artikel jurnal National Geographic: \"The Surprising Truth About Cannibalism\"\n5. Encyclopædia Britannica: \"Cannibalism\"",
+            "style": {
+              "fontSize": 16,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#94A3B8"
+            }
+          },
+          {
+            "text": "Semua sumber dipilih berdasarkan kredibilitas akademis dan penelitian antropologis terkini.",
+            "style": {
+              "fontSize": 14,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#64748B"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    }
+  ]
+}

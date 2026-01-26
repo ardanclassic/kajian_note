@@ -20,6 +20,7 @@ import {
   Crown,
   FileText,
   Search,
+  Trophy,
 } from "lucide-react";
 import "@/styles/arabic-font.css";
 import { cn } from "@/lib/utils";
@@ -220,6 +221,38 @@ export default function Dashboard() {
                 <div>
                   <p className="text-xs md:text-sm font-semibold text-white">Deep Notes</p>
                   <p className="text-[10px] md:text-xs text-gray-400">Lihat Arsip</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Quest */}
+            <div
+              onClick={() => navigate('/quest')}
+              className="col-span-2 sm:col-span-1 bg-gray-900/30 rounded-xl md:rounded-2xl p-3 md:p-4 border border-gray-800 hover:bg-gray-900 transition-colors cursor-pointer"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-amber-500/10 flex items-center justify-center shrink-0">
+                  <Trophy className="w-4 h-4 md:w-5 md:h-5 text-amber-400" />
+                </div>
+                <div>
+                  <p className="text-xs md:text-sm font-semibold text-white">Quest</p>
+                  <p className="text-[10px] md:text-xs text-gray-400">Test Knowledge</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Content Studio */}
+            <div
+              onClick={() => navigate('/content-studio')}
+              className="col-span-2 sm:col-span-1 bg-gray-900/30 rounded-xl md:rounded-2xl p-3 md:p-4 border border-gray-800 hover:bg-gray-900 transition-colors cursor-pointer"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-pink-500/10 flex items-center justify-center shrink-0">
+                  <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-pink-400" />
+                </div>
+                <div>
+                  <p className="text-xs md:text-sm font-semibold text-white">Visualist</p>
+                  <p className="text-[10px] md:text-xs text-gray-400">Create Content</p>
                 </div>
               </div>
             </div>

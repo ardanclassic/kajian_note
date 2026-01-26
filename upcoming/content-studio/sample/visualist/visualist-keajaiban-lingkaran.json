@@ -1,0 +1,172 @@
+{
+  "metadata": {
+    "title": "Keajaiban Lingkaran: Bentuk Sempurna yang Mengatur Alam Semesta",
+    "description": "Jelajahi keajaiban dan signifikansi mendalam dari lingkaran, bentuk paling universal dan sempurna di alam.",
+    "author": { "name": "alwaah.project", "hashtag": "ContentStudio" },
+    "tags": ["#Filsafat", "#Matematika", "#Seni", "#Sains", "#Keindahan"],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-right"
+  },
+  "design": {
+    "background_color": "#0B0F19",
+    "text_color": "#F0F3F9",
+    "accent_color": "#FFB347",
+    "background_color_1": "#1A1F2E",
+    "text_color_1": "#F0F3F9",
+    "background_color_2": "#132238",
+    "text_color_2": "#F0F3F9"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": { "background_color": "#0B0F19", "text_color": "#FFB347" },
+      "content": { "title": "KEAJAIBAN LINGKARAN", "subtitle": "Bentuk Sempurna yang Mengatur Alam Semesta" },
+      "layout": { "line_height": 1.0, "title_size": 52, "subtitle_size": 32, "title_weight": 900, "title_position": "center" }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": { "background_color": "#1A1F2E" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1541661538394-6b2a8d2f3b2e?w=800&h=1000&fit=crop",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          { "text": "Simbol Keabadian", "style": { "fontSize": 32, "fontWeight": 700, "align": "left", "color": "#FFB347" } },
+          { "text": "Tanpa awal, tanpa akhir. Lingkaran adalah simbol universal dari kesempurnaan, keabadian, dan siklus alam yang tak terputus.", "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#F0F3F9" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": { "background_color": "#132238" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1589998059171-988d887df646?w=800&h=1000&fit=crop",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          { "text": "Bahasa Matematika", "style": { "fontSize": 32, "fontWeight": 700, "align": "left", "color": "#FFB347" } },
+          { "text": "π (Pi) adalah konstanta ajaib yang menghubungkan keliling dengan diameter, membuka pintu ke dunia geometri yang menakjubkan.", "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#F0F3F9" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": { "background_color": "#1A1F2E" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=800&h=1000&fit=crop",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          { "text": "Di Langit Malam", "style": { "fontSize": 32, "fontWeight": 700, "align": "left", "color": "#FFB347" } },
+          { "text": "Planet, bintang, dan orbitnya. Alam semesta lebih menyukai lingkaran dan bola karena efisiensi dan stabilitasnya yang maksimal.", "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#F0F3F9" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": { "background_color": "#132238" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=800&h=1000&fit=crop",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          { "text": "Ritme Kehidupan", "style": { "fontSize": 32, "fontWeight": 700, "align": "left", "color": "#FFB347" } },
+          { "text": "Siklus siang-malam, pasang-surut, musim, dan bahkan ritme tubuh kita. Semua berputar dalam pola lingkaran yang harmonis.", "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#F0F3F9" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "design_override": { "background_color": "#1A1F2E" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=800&h=1000&fit=crop",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          { "text": "Dalam Seni & Budaya", "style": { "fontSize": 32, "fontWeight": 700, "align": "left", "color": "#FFB347" } },
+          { "text": "Mandala, rose window katedral, kaligrafi, hingga tarian tradisional. Lingkaran adalah motif utama yang menyampaikan makna spiritual.", "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#F0F3F9" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "design_override": { "background_color": "#132238" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1535551951406-a19828b0a76b?w=800&h=1000&fit=crop",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          { "text": "Kekuatan Struktural", "style": { "fontSize": 32, "fontWeight": 700, "align": "left", "color": "#FFB347" } },
+          { "text": "Roda, gear, ring, hingga struktur bangunan. Bentuk lingkaran mendistribusikan tekanan secara merata, menjadi fondasi teknologi.", "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#F0F3F9" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 8,
+      "type": "content",
+      "design_override": { "background_color": "#1A1F2E" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=1000&fit=crop",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          { "text": "Pusat Komunitas", "style": { "fontSize": 32, "fontWeight": 700, "align": "left", "color": "#FFB347" } },
+          { "text": "Meja bundar, arena pertunjukan, lingkaran diskusi. Bentuk ini menciptakan kesetaraan, inklusivitas, dan energi yang terkonsentrasi.", "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#F0F3F9" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 9,
+      "type": "content",
+      "design_override": { "background_color": "#132238" },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=800&h=1000&fit=crop",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          { "text": "Filsafat Keberadaan", "style": { "fontSize": 32, "fontWeight": 700, "align": "left", "color": "#FFB347" } },
+          { "text": "Ouroboros, simbol ular memakan ekornya. Mengajarkan tentang siklus kehidupan, kematian, dan kelahiran kembali yang abadi.", "style": { "fontSize": 20, "fontWeight": 400, "align": "left", "color": "#F0F3F9" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 10,
+      "type": "content",
+      "design_override": { "background_color": "#0B0F19" },
+      "content": {
+        "blocks": [
+          { "text": "Sumber Referensi", "style": { "fontSize": 24, "fontWeight": 700, "align": "left", "color": "#FFB347" } },
+          { "text": "1. \"The Book of Circles\" - Manuel Lima\n2. \"Pi: A Biography of the World's Most Mysterious Number\" - Alfred S. Posamentier\n3. \"Sacred Geometry: Philosophy & Practice\" - Robert Lawlor\n4. \"The Power of Limits\" - György Doczi\n5. Encyclopaedia Britannica - \"Circle (Geometry)\"\n6. National Geographic - \"Why Nature Prefers the Circle\"", "style": { "fontSize": 16, "fontWeight": 400, "align": "left", "color": "#F0F3F9" } }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    }
+  ]
+}

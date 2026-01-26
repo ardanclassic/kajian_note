@@ -98,14 +98,13 @@ export function ImagePositionPopover({
     <div className="relative" ref={wrapperRef}>
       <button
         className={cn(
-          "flex items-center gap-1.5 rounded-md border border-border bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground transition-all hover:bg-muted/80 hover:text-foreground",
-          isOpen && "bg-muted/80 text-foreground"
+          "flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+          isOpen && "bg-accent text-accent-foreground"
         )}
         onClick={() => setIsOpen(!isOpen)}
         title="Align to page"
       >
-        <AlignVerticalJustifyCenter size={14} />
-        <span>Align</span>
+        <AlignVerticalJustifyCenter size={16} />
       </button>
 
       {isOpen && (

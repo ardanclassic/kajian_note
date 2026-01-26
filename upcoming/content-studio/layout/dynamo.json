@@ -1,0 +1,202 @@
+{
+  "metadata": {
+    "title": "Dynamo Content & Image Layout Test",
+    "source": "Content QA Suite",
+    "author": {
+      "name": "@dynamo_content",
+      "hashtag": "#ContentFocus"
+    },
+    "total_slides": 10
+  },
+  "design": {
+    "background_color": "#1a1a2e",
+    "text_color": "#eaeaea",
+    "accent_color": "#d7dae5",
+    "font_family": "Inter",
+    "text_alignment": "left"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "content": {
+        "title": "Content Layout Deep Dive",
+        "subtitle": "Testing Image Positions x Content Types"
+      },
+      "image": { "url": "https://picsum.photos/seed/content_cover/800/600", "position": "center" },
+      "layout": { "author_variant_override": "inline", "author_position_override": "bottom-center" }
+    },
+
+    {
+      "slide_number": 2,
+      "type": "content",
+      "content": {
+        "paragraphs": [
+          "Image Top / Content Bottom - Long Paragraph.",
+          "This is a robust paragraph designed to test the text wrapping capabilities of the layout engine. It visually balances the image above it.",
+          "We ensure that even with multiple lines, the text maintains a safe distance from the image boundary and the footer author element."
+        ]
+      },
+      "image": { "url": "https://picsum.photos/seed/img_top_1/600/400", "position": "top" },
+      "layout": {
+        "content_alignment": "left",
+        "author_variant_override": "inline",
+        "author_position_override": "bottom-center"
+      }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "content": {
+        "paragraphs": [
+          "Image Top / Content Bottom - Bullet List.",
+          "• Key Feature One: Visual Hierarchy.",
+          "• Key Feature Two: Spacing Consistency.",
+          "• Key Feature Three: Iconography integrity."
+        ]
+      },
+      "image": { "url": "https://picsum.photos/seed/img_top_2/600/400", "position": "top" },
+      "layout": {
+        "content_alignment": "left",
+        "author_variant_override": "inline",
+        "author_position_override": "bottom-center"
+      }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "content": {
+        "paragraphs": [
+          "Image Top / Content Bottom - Alignment Center.",
+          "This text block is center-aligned.",
+          "It creates a symmetrical look often used for significant statements or conclusions."
+        ]
+      },
+      "image": { "url": "https://picsum.photos/seed/img_top_3/600/400", "position": "top" },
+      "layout": {
+        "content_alignment": "center",
+        "author_variant_override": "inline",
+        "author_position_override": "bottom-center"
+      }
+    },
+
+    {
+      "slide_number": 5,
+      "type": "content",
+      "content": {
+        "paragraphs": [
+          "Image Bottom / Content Top - Mixed Content.",
+          "Introduction paragraph setting the context.",
+          "1. First ordered item explaining detail.",
+          "2. Second ordered item adding depth.",
+          "Conclusion sentence wrapping up the idea before the image starts."
+        ]
+      },
+      "image": { "url": "https://picsum.photos/seed/img_bot_1/600/400", "position": "bottom" },
+      "layout": {
+        "content_alignment": "left",
+        "author_variant_override": "split",
+        "author_position_override": "top-justify"
+      }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "content": {
+        "paragraphs": [
+          "Image Bottom / Content Top - Quote Style.",
+          "\"Design is intelligence made visible.\"",
+          "- Alina Wheeler",
+          "(Center Aligned for impact)"
+        ]
+      },
+      "image": { "url": "https://picsum.photos/seed/img_bot_2/600/400", "position": "bottom" },
+      "layout": {
+        "content_alignment": "center",
+        "author_variant_override": "split-line",
+        "author_position_override": "top-justify"
+      }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "content": {
+        "paragraphs": [
+          "Image Bottom / Content Top - Right Align.",
+          "A unique layout choice.",
+          "Draws the eye to the edge.",
+          "Creates dynamic tension with the bottom image."
+        ]
+      },
+      "image": { "url": "https://picsum.photos/seed/img_bot_3/600/400", "position": "bottom" },
+      "layout": {
+        "content_alignment": "right",
+        "author_variant_override": "stacked",
+        "author_position_override": "top-left"
+      }
+    },
+
+    {
+      "slide_number": 8,
+      "type": "content",
+      "content": {
+        "paragraphs": [
+          "Stress Test: Very Dense Text Block.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+          "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt."
+        ]
+      },
+      "image": { "url": "https://picsum.photos/seed/stress_1/600/400", "position": "top" },
+      "layout": {
+        "content_alignment": "left",
+        "author_variant_override": "inline",
+        "author_position_override": "bottom-center"
+      }
+    },
+
+    {
+      "slide_number": 9,
+      "type": "content",
+      "content": {
+        "paragraphs": [
+          "Stress Test: List Density.",
+          "• Item 1: Detailed explanation of this point to consume width.",
+          "• Item 2: Another detailed point.",
+          "• Item 3: Point number three.",
+          "• Item 4: Point number four.",
+          "• Item 5: Point number five."
+        ]
+      },
+      "image": { "url": "https://picsum.photos/seed/stress_2/600/400", "position": "bottom" },
+      "layout": {
+        "content_alignment": "left",
+        "author_variant_override": "split",
+        "author_position_override": "top-justify"
+      }
+    },
+
+    {
+      "slide_number": 10,
+      "type": "content",
+      "content": {
+        "paragraphs": [
+          "Final Check: No Image.",
+          "Just pure text content in the center.",
+          "Testing how the layout behaves when no image is present to push the content up or down."
+        ]
+      },
+      "layout": {
+        "content_alignment": "center",
+        "author_variant_override": "inline",
+        "author_position_override": "bottom-center"
+      }
+    }
+  ],
+  "author_display": {
+    "enabled": true,
+    "position": "bottom-center",
+    "variant": "inline"
+  },
+  "hashtags": ["#ContentLayout", "#StressTest"]
+}

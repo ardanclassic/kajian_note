@@ -1,7 +1,5 @@
 import type { CanvasElement, Ratio, ColorPalette } from "@/types/contentStudio.types";
 
-export type GeneratorVariant = "A" | "B";
-
 export interface GeneratorContext {
   ratio: Ratio;
   palette: ColorPalette;
@@ -9,7 +7,7 @@ export interface GeneratorContext {
 }
 
 export interface GeneratorOptions {
-  variant?: GeneratorVariant;
+  // Empty for now, simplified
 }
 
 export type ContentGenerator = (context: GeneratorContext, data: any, options?: GeneratorOptions) => CanvasElement[];

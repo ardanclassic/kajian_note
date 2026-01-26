@@ -9,12 +9,25 @@ import {
   Line,
   Control,
   controlsUtils,
-  Gradient, // Added import
+  Gradient,
+  Pattern,
 } from "fabric";
 import type { CanvasElement, TextElement, ShapeElement, ImageElement, GradientFill } from "@/types/contentStudio.types";
 
-// Helper: Convert GradientFill object to Fabric Gradient
-const createGradient = (fill: string | GradientFill): string | Gradient<"linear"> => {
+// GLOBAL CONTROL OVERRIDES
+// Move rotation handle (mtr) to the BOTTOM to avoid overlapping with Top Floating Menu
+
+// Helper to adjust controls for an instance
+const adjustFabricControls = (obj: any) => {
+  if (obj.controls && obj.controls.mtr) {
+    obj.controls.mtr.y = 0.5; // Bottom edge
+    obj.controls.mtr.offsetY = 40;
+    // Also ensure it is visible
+    obj.controls.mtr.visible = true;
+  }
+};
+
+export const createGradient = (fill: string | GradientFill): string | Gradient<"linear"> => {
   if (typeof fill === "string") return fill;
 
   // Calculate coords based on angle (0-360)
@@ -56,6 +69,74 @@ export const CONTROL_DEFAULTS = {
   cornerStyle: "circle" as "circle",
   borderDashArray: [4, 4],
   borderScaleFactor: 2,
+  // Smart Rotation Rules
+  snapAngle: 15, // Snap every 15 degrees (covers 30, 45, 60, 90)
+  snapThreshold: 5, // Snap when within 5 degrees
+};
+
+// GLOBAL CONTROL OVERRIDES
+// Move rotation handle (mtr) to the BOTTOM to avoid overlapping with Top Floating Menu
+
+const originalControls = FabricObject.prototype.controls;
+if (originalControls && originalControls.mtr) {
+  originalControls.mtr.y = 0.5; // Bottom edge
+  originalControls.mtr.offsetY = 40; // Push out downwards
+}
+
+// Helper: Custom rounded rectangle path for partial corners
+const drawRoundedRectPath = (ctx: CanvasRenderingContext2D, w: number, h: number, radii: number[]) => {
+  const x = -w / 2;
+  const y = -h / 2;
+  const [tl, tr, bl, br] = radii.map((r) => Math.min(r, w / 2, h / 2));
+
+  ctx.beginPath();
+  ctx.moveTo(x + tl, y);
+  ctx.lineTo(x + w - tr, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + tr);
+  ctx.lineTo(x + w, y + h - br);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - br, y + h);
+  ctx.lineTo(x + bl, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - bl);
+  ctx.lineTo(x, y + tl);
+  ctx.quadraticCurveTo(x, y, x + tl, y);
+  ctx.closePath();
+};
+
+// Helper: Custom rounded triangle path for partial corners
+const drawRoundedTrianglePath = (ctx: CanvasRenderingContext2D, w: number, h: number, radii: number[]) => {
+  const [r0, r1, r2] = radii; // Top, Bottom-Left, Bottom-Right
+
+  // Points for standard Fabric Triangle: (0, -h/2), (-w/2, h/2), (w/2, h/2)
+  const p0 = { x: 0, y: -h / 2 };
+  const p1 = { x: -w / 2, y: h / 2 };
+  const p2 = { x: w / 2, y: h / 2 };
+
+  // Helper to get point at distance on a line
+  const getPointAtDist = (from: any, to: any, d: number) => {
+    const len = Math.sqrt((to.x - from.x) ** 2 + (to.y - from.y) ** 2);
+    const t = Math.min(d / len, 0.5); // Clamp to half length
+    return {
+      x: from.x + (to.x - from.x) * t,
+      y: from.y + (to.y - from.y) * t,
+    };
+  };
+
+  // Vertices rounding points
+  const p0_1 = getPointAtDist(p0, p1, r0);
+  const p0_2 = getPointAtDist(p0, p2, r0);
+  const p1_0 = getPointAtDist(p1, p0, r1);
+  const p1_2 = getPointAtDist(p1, p2, r1);
+  const p2_0 = getPointAtDist(p2, p0, r2);
+  const p2_1 = getPointAtDist(p2, p1, r2);
+
+  ctx.beginPath();
+  ctx.moveTo(p0_1.x, p0_1.y);
+  ctx.quadraticCurveTo(p0.x, p0.y, p0_2.x, p0_2.y);
+  ctx.lineTo(p2_0.x, p2_0.y);
+  ctx.quadraticCurveTo(p2.x, p2.y, p2_1.x, p2_1.y);
+  ctx.lineTo(p1_2.x, p1_2.y);
+  ctx.quadraticCurveTo(p1.x, p1.y, p1_0.x, p1_0.y);
+  ctx.closePath();
 };
 
 // Helper: Create shape with text overlay
@@ -242,36 +323,38 @@ export const createFabricObject = async (element: CanvasElement): Promise<Fabric
   switch (element.type) {
     case "text":
       const textEl = element as TextElement;
-      return new Textbox(
-        textEl.textTransform === "uppercase" ? (textEl.content || "").toUpperCase() : textEl.content || "",
-        {
-          left: textEl.position.x,
-          top: textEl.position.y,
-          width: textEl.size.width,
-          angle: textEl.rotation,
-          fontSize: textEl.fontSize,
-          fontFamily: textEl.fontFamily,
-          fontWeight: textEl.fontWeight,
-          fontStyle: textEl.fontStyle,
-          fill: textEl.fill,
-          textAlign: textEl.textAlign,
-          opacity: textEl.opacity,
-          lineHeight: textEl.lineHeight,
-          charSpacing: (textEl.letterSpacing || 0) * 1000,
-          // Map textDecoration to fabric boolean
-          underline: textEl.textDecoration === "underline",
-          linethrough: textEl.textDecoration === "line-through",
+      const textObj = new Textbox(textEl.content || "", {
+        left: textEl.position.x,
+        top: textEl.position.y,
+        originX: (textEl as any).originX || "left",
+        originY: (textEl as any).originY || "top",
+        width: textEl.size.width,
+        angle: textEl.rotation,
+        fontSize: textEl.fontSize || 16,
+        fontFamily: textEl.fontFamily || "Inter",
+        fontWeight: textEl.fontWeight || 400,
+        fill: textEl.fill,
+        textAlign: textEl.textAlign,
+        opacity: textEl.opacity,
+        lineHeight: textEl.lineHeight,
+        charSpacing: (textEl.letterSpacing || 0) * 10,
+        // Map textDecoration to fabric boolean
+        underline: textEl.textDecoration === "underline",
+        linethrough: textEl.textDecoration === "line-through",
 
-          scaleX: 1,
-          scaleY: 1,
-          // Common props
-          lockScalingFlip: true,
-          objectCaching: false, // Better for text editing
-          splitByGrapheme: false,
-          breakWords: true, // Force wrapping if words exceed width
-          ...CONTROL_DEFAULTS,
-        }
-      );
+        scaleX: textEl.scaleX || 1,
+        scaleY: textEl.scaleY || 1,
+        shadow: textEl.shadow,
+        // Common props
+        lockScalingFlip: true,
+        objectCaching: false, // Better for text editing
+        splitByGrapheme: false,
+        breakWords: true, // Force wrapping if words exceed width
+        ...CONTROL_DEFAULTS,
+      });
+      // Adjust controls (rotator at bottom)
+      adjustFabricControls(textObj);
+      return textObj;
 
     case "shape":
       const shapeEl = element as ShapeElement;
@@ -289,9 +372,25 @@ export const createFabricObject = async (element: CanvasElement): Promise<Fabric
           opacity: shapeEl.opacity,
           rx: shapeEl.cornerRadius || 0,
           ry: shapeEl.cornerRadius || 0,
+          scaleX: shapeEl.scaleX || 1,
+          scaleY: shapeEl.scaleY || 1,
           ...CONTROL_DEFAULTS,
         });
-        return createShapeWithText(rect, shapeEl);
+
+        // Handle partial corner radii
+        if (shapeEl.cornerRadii && shapeEl.cornerRadii.length === 4) {
+          (rect as any).cornerRadii = shapeEl.cornerRadii;
+          const originalRender = rect._render.bind(rect);
+          rect._render = function (ctx: CanvasRenderingContext2D) {
+            drawRoundedRectPath(ctx, this.width || 0, this.height || 0, (this as any).cornerRadii);
+            this._renderFill(ctx);
+            this._renderStroke(ctx);
+          };
+        }
+
+        const finalRect = createShapeWithText(rect, shapeEl);
+        adjustFabricControls(finalRect);
+        return finalRect;
       } else if (shapeEl.shapeType === "circle") {
         const circle = new Circle({
           left: shapeEl.position.x,
@@ -303,9 +402,13 @@ export const createFabricObject = async (element: CanvasElement): Promise<Fabric
           strokeWidth: shapeEl.strokeWidth,
           strokeDashArray: shapeEl.strokeDashArray || undefined,
           opacity: shapeEl.opacity,
+          scaleX: shapeEl.scaleX || 1,
+          scaleY: shapeEl.scaleY || 1,
           ...CONTROL_DEFAULTS,
         });
-        return createShapeWithText(circle, shapeEl);
+        const finalCircle = createShapeWithText(circle, shapeEl);
+        adjustFabricControls(finalCircle);
+        return finalCircle;
       } else if (shapeEl.shapeType === "triangle") {
         const triangle = new Triangle({
           left: shapeEl.position.x,
@@ -318,11 +421,28 @@ export const createFabricObject = async (element: CanvasElement): Promise<Fabric
           strokeWidth: shapeEl.strokeWidth,
           strokeDashArray: shapeEl.strokeDashArray || undefined,
           opacity: shapeEl.opacity,
+          scaleX: shapeEl.scaleX || 1,
+          scaleY: shapeEl.scaleY || 1,
           ...CONTROL_DEFAULTS,
         });
-        return createShapeWithText(triangle, shapeEl);
+
+        // Handle partial corner radii for triangle
+        if (shapeEl.cornerRadii && shapeEl.cornerRadii.length === 3) {
+          (triangle as any).cornerRadii = shapeEl.cornerRadii;
+          triangle._render = function (ctx: CanvasRenderingContext2D) {
+            drawRoundedTrianglePath(ctx, this.width || 0, this.height || 0, (this as any).cornerRadii);
+            this._renderFill(ctx);
+            this._renderStroke(ctx);
+          };
+        }
+
+        const finalTriangle = createShapeWithText(triangle, shapeEl);
+        adjustFabricControls(finalTriangle);
+        return finalTriangle;
       } else if (shapeEl.shapeType === "line") {
-        return createLineWithMarkers(shapeEl);
+        const line = createLineWithMarkers(shapeEl);
+        adjustFabricControls(line);
+        return line;
       }
       return null;
 
@@ -331,7 +451,9 @@ export const createFabricObject = async (element: CanvasElement): Promise<Fabric
       try {
         return new Promise<FabricObject | null>((resolve) => {
           const imgTag = document.createElement("img");
-          imgTag.crossOrigin = "anonymous"; // CRITICAL: Prevent canvas tainting
+          if (!imgEl.src.startsWith("data:")) {
+            imgTag.crossOrigin = "anonymous"; // CRITICAL: Prevent canvas tainting for external URLs
+          }
           imgTag.onload = () => {
             // Create FabricImage from the loaded img tag
             const img = new FabricImage(imgTag, {
@@ -341,29 +463,62 @@ export const createFabricObject = async (element: CanvasElement): Promise<Fabric
               opacity: imgEl.opacity,
               scaleX: imgEl.scaleX || 1,
               scaleY: imgEl.scaleY || 1,
+              cropX: imgEl.cropX || 0,
+              cropY: imgEl.cropY || 0,
+              width: imgEl.size.width || imgTag.naturalWidth,
+              height: imgEl.size.height || imgTag.naturalHeight,
               objectCaching: false,
               ...CONTROL_DEFAULTS,
             });
 
-            if (imgEl.cornerRadius && imgEl.cornerRadius > 0) {
+            adjustFabricControls(img);
+
+            if (
+              (imgEl.cornerRadius && imgEl.cornerRadius > 0) ||
+              (imgEl.cornerRadii && imgEl.cornerRadii.length === 4)
+            ) {
               const w = img.width || 0;
               const h = img.height || 0;
-              // Apply clipPath for corner radius
-              // We divide by scale to maintain visual size of radius despite scaling
+              const scaleX = imgEl.scaleX || 1;
+              const scaleY = imgEl.scaleY || 1;
+
+              // Create clipPath Rect
               img.clipPath = new Rect({
                 left: -w / 2,
                 top: -h / 2,
                 width: w,
                 height: h,
-                rx: imgEl.cornerRadius / (imgEl.scaleX || 1),
-                ry: imgEl.cornerRadius / (imgEl.scaleY || 1),
+                rx: (imgEl.cornerRadius || 0) / scaleX,
+                ry: (imgEl.cornerRadius || 0) / scaleY,
               });
+
+              // Apply partial corner radii if provided
+              if (imgEl.cornerRadii && imgEl.cornerRadii.length === 4) {
+                const radii = imgEl.cornerRadii.map((r) => r / scaleX);
+                img.clipPath._render = function (ctx: CanvasRenderingContext2D) {
+                  drawRoundedRectPath(ctx, this.width || 0, this.height || 0, radii);
+                  ctx.fill();
+                };
+              }
             }
 
             resolve(img);
           };
           imgTag.onerror = (e) => {
-            console.error("Error loading image source:", e);
+            console.warn("Image load failed (using fallback):", imgEl.src);
+            // Professional Elegant Abstract (User Preferred)
+            const PLACEHOLDER_SRC =
+              "https://images.unsplash.com/photo-1515787366009-7cbdd2dc587b?q=80&w=1170&auto=format&fit=crop";
+
+            // Allow fallback if not already trying the placeholder
+            if (imgTag.src !== PLACEHOLDER_SRC) {
+              console.warn("Falling back to premium placeholder image...");
+              // Ensure CORS is set for the fallback image to support cropping/export
+              imgTag.crossOrigin = "anonymous";
+              imgTag.src = PLACEHOLDER_SRC;
+              return; // Trigger new load
+            }
+
             resolve(null);
           };
           imgTag.src = imgEl.src;
@@ -400,7 +555,7 @@ export const loadFont = (fontFamily: string, fontWeight: number = 400): Promise<
       link.id = linkId;
       link.href = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(
         /\s+/g,
-        "+"
+        "+",
       )}:wght@400;500;600;700;800;900&display=swap`;
       link.rel = "stylesheet";
       document.head.appendChild(link);

@@ -138,7 +138,9 @@ export function setupMultiSelectTracking(
   const onSelectionCreated = (e: any) => {
     if (e.selected && e.selected.length > 1) {
       selectionCoordsRef.current.clear();
-      e.selected.forEach((obj: any) => {
+      // Only track unlocked objects - locked objects should not be moved in multi-select
+      const unlockedObjects = e.selected.filter((obj: any) => !obj.lockMovementX && !obj.lockMovementY);
+      unlockedObjects.forEach((obj: any) => {
         if (obj.customData?.id) {
           selectionCoordsRef.current.set(obj.customData.id, {
             x: obj.left || 0,
@@ -228,20 +230,31 @@ export function setupObjectModification(
     };
 
     if (["textbox", "text", "i-text"].includes(obj.type)) {
-      const scalingX = obj.scaleX || 1;
-      const scalingY = obj.scaleY || 1;
-      const scaling = Math.max(scalingX, scalingY);
+      const currentScaleX = obj.scaleX || 1;
+      const currentScaleY = obj.scaleY || 1;
+
+      // Separate flip state from resize scale
+      const absScaleX = Math.abs(currentScaleX);
+      const absScaleY = Math.abs(currentScaleY);
+      const scaling = Math.max(absScaleX, absScaleY);
+
       const newFontSize = Math.round(((obj as any).fontSize || 24) * scaling);
-      const newWidth = (obj.width || 0) * scalingX;
+      const newWidth = (obj.width || 0) * absScaleX;
+
+      // Preserve flip state as -1 or 1
+      const flipX = currentScaleX < 0 ? -1 : 1;
+      const flipY = currentScaleY < 0 ? -1 : 1;
 
       (updates as any).fontSize = newFontSize;
-      (updates as any).size = { width: newWidth, height: (obj.height || 0) * scalingY };
+      (updates as any).size = { width: newWidth, height: (obj.height || 0) * absScaleY };
+      (updates as any).scaleX = flipX; // CRITICAL: Save flip state to store!
+      (updates as any).scaleY = flipY;
 
       obj.set({
         fontSize: newFontSize,
         width: newWidth,
-        scaleX: 1,
-        scaleY: 1,
+        scaleX: flipX, // Preserve flip, remove resize
+        scaleY: flipY,
         dirty: true,
       });
     } else if (obj.type === "image") {
@@ -266,15 +279,29 @@ export function setupObjectModification(
       // We don't manually un-scale children here to avoid fighting Fabric's internal group logic.
       // The re-render will handle the "visual correction" of the text font size.
     } else if (["rect", "circle", "triangle", "polygon", "line"].includes(obj.type || "")) {
+      const currentScaleX = obj.scaleX || 1;
+      const currentScaleY = obj.scaleY || 1;
+
+      // Separate flip state from resize scale
+      const absScaleX = Math.abs(currentScaleX);
+      const absScaleY = Math.abs(currentScaleY);
+
+      // Preserve flip state as -1 or 1
+      const flipX = currentScaleX < 0 ? -1 : 1;
+      const flipY = currentScaleY < 0 ? -1 : 1;
+
       (updates as any).size = {
-        width: (obj.width || 0) * (obj.scaleX || 1),
-        height: (obj.height || 0) * (obj.scaleY || 1),
+        width: (obj.width || 0) * absScaleX,
+        height: (obj.height || 0) * absScaleY,
       };
+      (updates as any).scaleX = flipX; // CRITICAL: Save flip state!
+      (updates as any).scaleY = flipY;
+
       obj.set({
-        width: (obj.width || 0) * (obj.scaleX || 1),
-        height: (obj.height || 0) * (obj.scaleY || 1),
-        scaleX: 1,
-        scaleY: 1,
+        width: (obj.width || 0) * absScaleX,
+        height: (obj.height || 0) * absScaleY,
+        scaleX: flipX, // Preserve flip, remove resize
+        scaleY: flipY,
         dirty: true,
       });
     }
@@ -299,6 +326,12 @@ export function handleShiftClickSelection(
   const target = e.target;
 
   if (isShiftKey && target && target.customData?.id) {
+    // Don't allow locked objects to be added to multi-selection
+    // They can still be selected individually (when shift is not pressed)
+    if (target.lockMovementX || target.lockMovementY) {
+      return;
+    }
+
     e.e.preventDefault();
     const clickedId = target.customData.id;
     const currentActive = canvas.getActiveObject();
@@ -341,6 +374,11 @@ export function handleShiftClickSelection(
       isInternalSelectionUpdateRef.current = false;
       canvas.requestRenderAll();
     } else {
+      // Don't allow adding locked object to existing single selection
+      if (currentActive.lockMovementX || currentActive.lockMovementY) {
+        return;
+      }
+
       isInternalSelectionUpdateRef.current = true;
       const newSelection = new ActiveSelection([currentActive, target], {
         canvas: canvas,

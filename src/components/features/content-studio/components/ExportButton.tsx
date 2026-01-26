@@ -74,7 +74,7 @@ export function ExportButton() {
       <motion.button
         className={cn(
           "flex items-center justify-center gap-2 p-3 h-[42px] bg-green-600/20 border border-green-600/40 rounded-lg text-green-400 text-[13px] font-medium cursor-pointer transition-all w-full hover:bg-green-600/40 hover:border-green-600/60 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed",
-          exportSuccess && "bg-gradient-to-br from-blue-500 to-blue-600 border-none text-white shadow-lg"
+          exportSuccess && "bg-linear-to-br from-blue-500 to-blue-600 border-none text-white shadow-lg"
         )}
         onClick={() => setShowMenu(!showMenu)}
         whileHover={{ scale: 1.05 }}

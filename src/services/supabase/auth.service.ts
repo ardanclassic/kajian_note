@@ -19,8 +19,8 @@ import type {
  */
 export const register = async (data: RegisterData): Promise<RegisterResponse> => {
   try {
-    // Generate dummy email for Supabase Auth
-    const dummyEmail = generateDummyEmail(data.username);
+    // Use provided email or generate dummy email
+    const emailToUse = data.email || generateDummyEmail(data.username);
 
     // 1. Check if username already exists
     // ✅ FIX: Use .maybeSingle() instead of .single() to avoid PGRST116 error
@@ -41,7 +41,7 @@ export const register = async (data: RegisterData): Promise<RegisterResponse> =>
 
     // 2. Create auth user in Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.signUp({
-      email: dummyEmail,
+      email: emailToUse,
       password: data.pin, // PIN used as password
       options: {
         data: {
@@ -59,7 +59,7 @@ export const register = async (data: RegisterData): Promise<RegisterResponse> =>
     const { data: userProfile, error: profileError } = await supabase
       .from("users")
       .insert({
-        email: dummyEmail,
+        email: emailToUse,
         auth_user_id: authData.user.id,
         username: data.username,
         full_name: data.fullName,

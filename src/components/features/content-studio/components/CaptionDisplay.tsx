@@ -6,28 +6,27 @@ import { Copy, Check } from 'lucide-react';
 import { useState } from 'react';
 
 export function CaptionDisplay() {
-  const { caption, hashtags } = useEditorStore();
+  const { caption, hashtags, setCaption, setHashtags } = useEditorStore();
   const [copied, setCopied] = useState(false);
 
-  if (!caption && hashtags.length === 0) {
-    return null;
-  }
-
   const copyToClipboard = () => {
-    const fullText = `${caption}\n\n${hashtags.map(tag => `#${tag}`).join(' ')}`;
+    const tags = hashtags.join(' ');
+    const fullText = `${caption}\n\n${tags}`;
     navigator.clipboard.writeText(fullText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleHashtagsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = e.target.value;
+    const tags = val.split(/\s+/).filter(t => t);
+    setHashtags(tags);
+  };
+
   return (
-    <motion.div
-      className="p-4 bg-black/20 rounded-xl m-4"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-    >
-      <div className="flex items-center justify-between mb-3">
-        <h4 className="text-[13px] font-semibold text-white/70 m-0 uppercase tracking-[0.5px]">Caption & Hashtags</h4>
+    <div className="px-5 pb-5">
+      {/* Copy Button */}
+      <div className="flex justify-end mb-3">
         <motion.button
           className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-500/20 border border-blue-500/40 rounded-md text-blue-500 text-xs font-medium cursor-pointer transition-all hover:bg-blue-500/30 hover:border-blue-500"
           onClick={copyToClipboard}
@@ -39,21 +38,25 @@ export function CaptionDisplay() {
         </motion.button>
       </div>
 
-      {caption && (
-        <div className="mb-3 p-3 bg-white/5 rounded-lg">
-          <p className="text-[13px] leading-relaxed text-white/80 m-0 whitespace-pre-wrap">{caption}</p>
-        </div>
-      )}
+      {/* Caption Textarea */}
+      <div className="mb-3 p-1 bg-white/5 rounded-lg border border-transparent focus-within:border-blue-500/50 transition-colors">
+        <textarea
+          className="w-full min-h-[80px] bg-transparent border-none text-[13px] leading-relaxed text-white/90 p-2 focus:outline-none resize-none custom-scrollbar font-sans"
+          placeholder="Write a caption..."
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+        />
+      </div>
 
-      {hashtags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
-          {hashtags.map((tag, index) => (
-            <span key={index} className="inline-block px-2.5 py-1 bg-blue-500/15 border border-blue-500/30 rounded-xl text-blue-400 text-[11px] font-medium">
-              #{tag}
-            </span>
-          ))}
-        </div>
-      )}
-    </motion.div>
+      {/* Hashtags Textarea */}
+      <div className="p-1 bg-white/5 rounded-lg border border-transparent focus-within:border-blue-500/50 transition-colors">
+        <textarea
+          className="w-full min-h-[40px] bg-transparent border-none text-[13px] leading-relaxed text-blue-400 p-2 focus:outline-none resize-none custom-scrollbar font-mono"
+          placeholder="#hashtags"
+          value={hashtags.join(" ")}
+          onChange={handleHashtagsChange}
+        />
+      </div>
+    </div>
   );
 }

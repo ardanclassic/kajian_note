@@ -77,15 +77,6 @@ export default function ListContentStudio() {
         {/* Hero Section - Mobile Stacked */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10 md:mb-16">
           <div className="space-y-3 md:space-y-2">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-2"
-            >
-              <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] md:text-xs font-bold uppercase tracking-wider border border-emerald-500/20">
-                Beta Preview
-              </span>
-            </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -140,23 +131,6 @@ export default function ListContentStudio() {
             </motion.div>
           ))}
         </div>
-
-        {/* Hero Visual / Placeholder */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="mt-16 relative overflow-hidden rounded-3xl border border-gray-800 bg-gray-900/40 p-12 text-center"
-        >
-          <div className="absolute inset-0 bg-linear-to-b from-transparent to-black/80 z-0" />
-          <div className="relative z-10 space-y-4">
-            <h3 className="text-2xl font-bold text-white mb-5!">Galeri Project Anda</h3>
-            <p className="text-gray-400 max-w-lg mx-auto">
-              Belum ada project yang dibuat. Mulai buat project pertama Anda untuk mengisi galeri ini dengan karya dakwah yang indah.
-            </p>
-            <Palette className="w-24 h-24 text-gray-800 mx-auto mt-8 opacity-50" />
-          </div>
-        </motion.div>
 
       </motion.div>
     </div>

@@ -54,7 +54,7 @@ const endpoints = {
  */
 const defaultConfig = {
   languages: "id,en", // Try Indonesian first, then English
-  maxTokens: 50000,
+  maxTokens: 4000,
   polling: {
     interval: 2000, // 2 seconds
     maxAttempts: 150, // 150 * 2s = 300s = 5 minutes
@@ -95,7 +95,7 @@ const defaultConfigDeepNote = {
 export const fetchVideoMetadata = async (
   url: string,
   extractSpeaker: boolean = defaultConfig.metadata.extractSpeaker,
-  model: string = defaultConfig.metadata.defaultModel
+  model: string = defaultConfig.metadata.defaultModel,
 ): Promise<VideoMetadataResponse> => {
   try {
     const response = await youtubeAPI.post<VideoMetadataResponse>(endpoints.videoMetadata, {
@@ -138,7 +138,7 @@ export const extractVideoId = async (url: string): Promise<string> => {
  */
 export const fetchTranscript = async (
   videoId: string,
-  languages: string = defaultConfig.languages
+  languages: string = defaultConfig.languages,
 ): Promise<TranscriptResponse> => {
   try {
     const response = await youtubeAPI.post<TranscriptResponse>(endpoints.transcript, {
@@ -159,7 +159,7 @@ export const fetchTranscript = async (
 export const fetchTranscriptText = async (
   videoId: string,
   languages: string = defaultConfig.languages,
-  includeTimestamps: boolean = true
+  includeTimestamps: boolean = true,
 ): Promise<string> => {
   try {
     const response = await youtubeAPI.post<TranscriptTextResponse>(endpoints.transcriptText, {
@@ -183,7 +183,7 @@ export const fetchTranscriptSummary = async (
   videoId: string,
   languages: string = defaultConfig.languages,
   model: string = env.openRouter.defaultModel,
-  maxTokens: number = defaultConfig.maxTokens
+  maxTokens: number = defaultConfig.maxTokens,
 ): Promise<TranscriptSummarizeResponse> => {
   try {
     const response = await youtubeAPI.post<TranscriptSummarizeResponse>(endpoints.transcriptSummarize, {
@@ -214,7 +214,7 @@ export const submitSummarizeTask = async (
   videoId: string,
   languages: string = defaultConfig.languages,
   model: string = env.openRouter.defaultModel,
-  maxTokens: number = defaultConfig.maxTokens
+  maxTokens: number = defaultConfig.maxTokens,
 ): Promise<SubmitSummarizeTaskResponse> => {
   try {
     const response = await youtubeAPI.post<SubmitSummarizeTaskResponse>(endpoints.transcriptSummarizeTask, {
@@ -259,7 +259,7 @@ export const pollTaskStatus = async (taskId: string, signal?: AbortSignal): Prom
 const pollWithRetry = async (
   taskId: string,
   signal?: AbortSignal,
-  onProgress?: (attempt: number, maxAttempts: number) => void
+  onProgress?: (attempt: number, maxAttempts: number) => void,
 ): Promise<TranscriptSummarizeResponse> => {
   let attempts = 0;
   let retryCount = 0;
@@ -334,7 +334,7 @@ export const fetchTranscriptSummaryAsync = async (
   model: string = env.openRouter.defaultModel,
   maxTokens: number = defaultConfig.maxTokens,
   signal?: AbortSignal,
-  onProgress?: (attempt: number, maxAttempts: number) => void
+  onProgress?: (attempt: number, maxAttempts: number) => void,
 ): Promise<TranscriptSummarizeResponse> => {
   try {
     // Step 1: Submit task
@@ -371,7 +371,7 @@ export const submitCleanupTask = async (
   languages: string = defaultConfigDeepNote.languages,
   model: string = env.openRouter.geminiModel,
   maxTokensPerChunk: number = defaultConfigDeepNote.maxTokensPerChunk,
-  outputLanguage: string = defaultConfigDeepNote.outputLanguage
+  outputLanguage: string = defaultConfigDeepNote.outputLanguage,
 ): Promise<SubmitCleanupTaskResponse> => {
   try {
     const response = await youtubeAPI.post<SubmitCleanupTaskResponse>(endpoints.transcriptCleanupTask, {
@@ -395,7 +395,7 @@ export const submitCleanupTask = async (
  */
 export const pollCleanupTaskStatus = async (
   taskId: string,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ): Promise<PollCleanupTaskStatusResponse> => {
   try {
     const response = await youtubeAPI.get<PollCleanupTaskStatusResponse>(`${endpoints.taskStatus}/${taskId}`, {
@@ -418,7 +418,7 @@ export const pollCleanupTaskStatus = async (
 const pollCleanupWithRetry = async (
   taskId: string,
   signal?: AbortSignal,
-  onProgress?: (attempt: number, maxAttempts: number) => void
+  onProgress?: (attempt: number, maxAttempts: number) => void,
 ): Promise<CleanupTaskResult> => {
   let attempts = 0;
   let retryCount = 0;
@@ -490,7 +490,7 @@ export const fetchDeepNoteAsync = async (
   maxTokensPerChunk: number = defaultConfigDeepNote.maxTokensPerChunk,
   outputLanguage: string = defaultConfigDeepNote.outputLanguage,
   signal?: AbortSignal,
-  onProgress?: (attempt: number, maxAttempts: number) => void
+  onProgress?: (attempt: number, maxAttempts: number) => void,
 ): Promise<CleanupTaskResult> => {
   try {
     // Step 1: Submit task
@@ -561,7 +561,7 @@ export const importYouTubeVideo = async (options: YouTubeImportOptions): Promise
         options.languages,
         options.model,
         undefined,
-        options.signal
+        options.signal,
       );
 
       // Use metadata title, fallback to generated title

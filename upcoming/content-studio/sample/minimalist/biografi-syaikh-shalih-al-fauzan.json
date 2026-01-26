@@ -1,0 +1,448 @@
+{
+  "metadata": {
+    "title": "Biografi Syaikh Shalih Al Fauzan",
+    "description": "Mengenal perjalanan hidup, keilmuan, dan peran seorang ulama besar kontemporer, penjaga aqidah Ahlus Sunnah wal Jama'ah.",
+    "author": {
+      "name": "alwaah.project",
+      "hashtag": "#ContentStudio"
+    },
+    "tags": ["#Ulama", "#Biografi", "#SyaikhFauzan", "#Islam", "#Aqidah"],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-center"
+  },
+  "design": {
+    "font_family": "Inter",
+    "background_color": "#111827",
+    "text_color": "#F9FAFB",
+    "accent_color": "#10B981",
+    "background_color_1": "#111827",
+    "text_color_1": "#F9FAFB",
+    "accent_color_1": "#10B981",
+    "background_color_2": "#FEF3C7",
+    "text_color_2": "#1F2937",
+    "accent_color_2": "#B45309",
+    "background_color_3": "#1E40AF",
+    "text_color_3": "#E0F2FE",
+    "accent_color_3": "#FDE68A"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": { "background_color": "#0a3326", "text_color": "#111827" },
+      "content": { "title": "SYAIKH SHALIH AL FAUZAN", "subtitle": "Penjaga Aqidah di Zaman Fitnah" },
+      "layout": { "title_size": 40, "subtitle_size": 28, "title_weight": 900, "title_position": "center" }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": { "background_color": "#111827" },
+      "content": {
+        "blocks": [
+          {
+            "text": "KELAHIRAN & NASAB",
+            "style": {
+              "fontSize": 42,
+              "fontWeight": 800,
+              "color": "#10B981",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Lahir tahun 1354 H (1935 M) di Al Qashim, Arab Saudi. Nama lengkap: Shalih bin Fauzan bin Abdullah dari keluarga Al Fauzan.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 500,
+              "color": "#FDE68A",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Berasal dari kawasan yang dikenal dengan kekuatan agama dan komitmennya terhadap Sunnah Nabi ﷺ.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "color": "#F9FAFB",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": { "background_color": "#FEF3C7" },
+      "content": {
+        "blocks": [
+          {
+            "text": "PERJALANAN MENUNTUT ILMU",
+            "style": {
+              "fontSize": 38,
+              "fontWeight": 800,
+              "color": "#B45309",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Belajar di sekolah dasar pemerintah, lalu melanjutkan ke Ma'had Al 'Ilmi di Riyadh. Berguru kepada para ulama besar.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 500,
+              "color": "#1E40AF",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Termasuk Syaikh Abdul Aziz bin Baz, Syaikh Muhammad bin Shalih Al 'Utsaimin, dan lainnya.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "color": "#1F2937",
+              "align": "right"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": { "background_color": "#1E40AF" },
+      "content": {
+        "blocks": [
+          {
+            "text": "GURU-GURU BESAR",
+            "style": {
+              "fontSize": 44,
+              "fontWeight": 900,
+              "color": "#FDE68A",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Duduk di majelis Syaikh Abdul Aziz bin Baz Radhiyallahu 'anhu selama bertahun-tahun.",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 600,
+              "color": "#10B981",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Juga mengambil ilmu dari Syaikh Abdullah bin Humaid, Syaikh Muhammad Amin Asy-Syinqithi, dan ulama lainnya.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#E0F2FE",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": { "background_color": "#111827" },
+      "content": {
+        "blocks": [
+          {
+            "text": "KARIR & JABATAN",
+            "style": {
+              "fontSize": 40,
+              "fontWeight": 800,
+              "color": "#FDE68A",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Dosen di Universitas Islam Madinah, kemudian di Universitas Imam Muhammad bin Su'ud.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 500,
+              "color": "#10B981",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Anggota Hai'ah Kibaril Ulama (Dewan Ulama Senior) Arab Saudi, dan Komite Tetap Fatwa.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#F9FAFB",
+              "align": "right"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "design_override": { "background_color": "#FEF3C7" },
+      "content": {
+        "blocks": [
+          {
+            "text": "KARYA TULIS",
+            "style": {
+              "fontSize": 46,
+              "fontWeight": 900,
+              "color": "#1E40AF",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Penulis produktif dengan puluhan kitab, terutama dalam bidang Aqidah, Fikih, dan Bantahan terhadap kesesatan.",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 600,
+              "color": "#B45309",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Kitab \"Al Mulakhkhash Al Fiqhi\" dan \"I'anaatul Mustafid\" sangat terkenal.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#1F2937",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "design_override": { "background_color": "#1E40AF" },
+      "content": {
+        "blocks": [
+          {
+            "text": "MANHAJ & AQIDAH",
+            "style": {
+              "fontSize": 42,
+              "fontWeight": 800,
+              "color": "#FDE68A",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Berasas Aqidah Salafush Shalih, mengikuti manhaj Salaful Ummah dalam beragama dan bermuamalah.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 500,
+              "color": "#10B981",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Gigih membela Sunnah dan memperingatkan umat dari bid'ah, syirik, dan kelompok menyimpang.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "color": "#E0F2FE",
+              "align": "right"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 8,
+      "type": "content",
+      "design_override": { "background_color": "#111827" },
+      "content": {
+        "blocks": [
+          {
+            "text": "PERAN DAKWAH",
+            "style": {
+              "fontSize": 44,
+              "fontWeight": 900,
+              "color": "#10B981",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Dikenal dengan ceramah, fatwa, dan pelajaran yang jelas, tegas, dan mudah dipahami.",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 600,
+              "color": "#FDE68A",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Mengajar di Masjid Nabawi dan aktif membimbing penuntut ilmu dari seluruh dunia.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#F9FAFB",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 9,
+      "type": "content",
+      "design_override": { "background_color": "#FEF3C7" },
+      "content": {
+        "blocks": [
+          {
+            "text": "UJIAN & KETEGUHAN",
+            "style": {
+              "fontSize": 40,
+              "fontWeight": 800,
+              "color": "#B45309",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Tetap istiqamah dalam menyampaikan kebenaran meski menghadapi kritikan dan fitnah.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 500,
+              "color": "#1E40AF",
+              "align": "right"
+            }
+          },
+          {
+            "text": "Banyak memberikan nasihat kepada pemerintah dan umat dengan hikmah dan nasehat yang baik.",
+            "style": {
+              "fontSize": 22,
+              "fontWeight": 400,
+              "color": "#1F2937",
+              "align": "right"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "right" }
+    },
+    {
+      "slide_number": 10,
+      "type": "content",
+      "design_override": { "background_color": "#1E40AF" },
+      "content": {
+        "blocks": [
+          {
+            "text": "PENGARUH GLOBAL",
+            "style": {
+              "fontSize": 42,
+              "fontWeight": 800,
+              "color": "#FDE68A",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Fatwa dan karya beliau tersebar luas, menjadi rujukan bagi kaum muslimin di berbagai negara.",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 600,
+              "color": "#10B981",
+              "align": "left"
+            }
+          },
+          {
+            "text": "Dikenal sebagai salah satu ulama yang paling banyak dijadikan rujukan fatwa kontemporer.",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 400,
+              "color": "#E0F2FE",
+              "align": "left"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "left" }
+    },
+    {
+      "slide_number": 11,
+      "type": "content",
+      "design_override": { "background_color": "#111827" },
+      "content": {
+        "blocks": [
+          {
+            "text": "PENGHARGAAN",
+            "style": {
+              "fontSize": 46,
+              "fontWeight": 900,
+              "color": "#10B981",
+              "align": "center"
+            }
+          },
+          {
+            "text": "Mendapat penghargaan dari Raja Arab Saudi atas kontribusi besarnya dalam ilmu dan dakwah.",
+            "style": {
+              "fontSize": 30,
+              "fontWeight": 700,
+              "color": "#FDE68A",
+              "align": "center"
+            }
+          },
+          {
+            "text": "Dianggap sebagai salah satu ulama yang paling berpengaruh di abad ini.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 500,
+              "color": "#F9FAFB",
+              "align": "center"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "center" }
+    },
+    {
+      "slide_number": 12,
+      "type": "content",
+      "design_override": { "background_color": "#FEF3C7" },
+      "content": {
+        "blocks": [
+          {
+            "text": "PELAJARAN PENTING",
+            "style": {
+              "fontSize": 48,
+              "fontWeight": 900,
+              "color": "#B45309",
+              "align": "center"
+            }
+          },
+          {
+            "text": "Kehidupan Syaikh Fauzan mengajarkan kita tentang pentingnya menuntut ilmu, istiqamah, dan keberanian dalam membela kebenaran.",
+            "style": {
+              "fontSize": 28,
+              "fontWeight": 600,
+              "color": "#1E40AF",
+              "align": "center"
+            }
+          },
+          {
+            "text": "Semoga Allah ﷻ menjaga beliau dan memberikan kita taufiq untuk mengikuti jalan kebenaran.",
+            "style": {
+              "fontSize": 26,
+              "fontWeight": 500,
+              "color": "#1F2937",
+              "align": "center"
+            }
+          }
+        ]
+      },
+      "layout": { "content_alignment": "center" }
+    }
+  ]
+}

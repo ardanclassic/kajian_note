@@ -1,0 +1,379 @@
+{
+  "metadata": {
+    "title": "Teori Hollow Earth: Misteri di Dalam Bumi",
+    "description": "Menyelami salah satu teori konspirasi paling misterius tentang struktur bumi yang berlubang dan kehidupan di dalamnya.",
+    "author": {
+      "name": "alwaah.project",
+      "hashtag": "ContentStudio"
+    },
+    "tags": [
+      "#HollowEarth",
+      "#TeoriKonspirasi",
+      "#MisteriBumi",
+      "#SainsPseudo",
+      "#Eksplorasi"
+    ],
+    "aspect_ratio": "4:5"
+  },
+  "author_display": {
+    "enabled": true,
+    "variant": "inline",
+    "position": "bottom-center"
+  },
+  "design": {
+    "background_color": "#0A1128",
+    "text_color": "#F0F4F8",
+    "accent_color": "#FFB627",
+    "background_color_1": "#1C2541",
+    "text_color_1": "#E8ECF1",
+    "background_color_2": "#0B3D5D",
+    "text_color_2": "#F5F7FA"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "cover",
+      "design_override": {
+        "background_color": "#0A1128",
+        "text_color": "#FFB627"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=1080&q=80",
+        "position": "right",
+        "opacity": 0.3
+      },
+      "content": {
+        "title": "HOLLOW EARTH",
+        "subtitle": "Teori Kontroversial tentang Bumi Berongga"
+      },
+      "layout": {
+        "line_height": 1.1,
+        "title_size": 52,
+        "subtitle_size": 32,
+        "title_weight": 900,
+        "title_position": "left",
+        "subtitle_position": "left"
+      }
+    },
+    {
+      "slide_number": 2,
+      "type": "content",
+      "design_override": {
+        "background_color": "#1C2541"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1080&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "APA ITU HOLLOW EARTH?",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#FFB627"
+            }
+          },
+          {
+            "text": "Teori Hollow Earth mengklaim bahwa planet Bumi sebenarnya memiliki struktur berongga di dalamnya. Konsep ini menyatakan bahwa terdapat ruang kosong atau bahkan peradaban tersembunyi di bawah permukaan bumi. Beberapa versi teori ini bahkan mengatakan ada matahari kecil di dalam bumi yang menerangi dunia interior tersebut. Teori ini telah menarik perhatian banyak penulis, peneliti, dan penggemar konspirasi selama berabad-abad.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#E8ECF1"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "design_override": {
+        "background_color": "#0B3D5D"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1476231790875-69f3e3863d93?w=1080&q=80",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "ASAL MULA TEORI",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#FFB627"
+            }
+          },
+          {
+            "text": "Ide tentang bumi berongga pertama kali dipopulerkan oleh Edmund Halley pada tahun 1692. Ia mengusulkan bahwa bumi terdiri dari beberapa lapisan cangkang konsentris yang terpisah. Pada abad ke-19, John Cleves Symmes Jr. mengkampanyekan teori bahwa ada lubang besar di kutub utara dan selatan yang bisa menjadi pintu masuk ke dunia interior. Konsep ini kemudian menginspirasi berbagai karya fiksi ilmiah dan legenda urban.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F5F7FA"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "design_override": {
+        "background_color": "#1C2541"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1464802686167-b939a6910659?w=1080&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "PINTU MASUK DI KUTUB",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#FFB627"
+            }
+          },
+          {
+            "text": "Salah satu klaim paling terkenal adalah adanya bukaan atau lubang besar di kutub utara dan selatan yang konon menjadi akses menuju interior bumi. Para penganut teori ini sering merujuk pada foto satelit dengan anomali visual di wilayah kutub sebagai bukti. Mereka percaya pemerintah menyembunyikan keberadaan lubang ini dari publik. Namun, eksplorasi ilmiah modern telah membuktikan bahwa tidak ada lubang seperti itu di kutub bumi.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#E8ECF1"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "design_override": {
+        "background_color": "#0B3D5D"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=1080&q=80",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "PERADABAN DALAM BUMI",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#FFB627"
+            }
+          },
+          {
+            "text": "Beberapa varian teori Hollow Earth mengklaim adanya peradaban maju yang tinggal di dalam bumi. Legenda tentang Agartha dan Shambhala sering dikaitkan dengan konsep ini. Cerita-cerita ini menggambarkan masyarakat dengan teknologi canggih yang hidup tersembunyi dari dunia luar. Konon, makhluk atau ras superior ini kadang muncul ke permukaan melalui terowongan rahasia. Namun, tidak ada bukti arkeologis atau ilmiah yang mendukung klaim fantastis ini.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F5F7FA"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "design_override": {
+        "background_color": "#1C2541"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45?w=1080&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "KLAIM ILMIAH YANG KELIRU",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#FFB627"
+            }
+          },
+          {
+            "text": "Teori Hollow Earth bertentangan dengan pemahaman modern tentang struktur geologi bumi. Studi seismologi telah menunjukkan bahwa bumi memiliki lapisan-lapisan padat: kerak, mantel, inti luar cair, dan inti dalam padat. Gelombang seismik dari gempa bumi memberikan data akurat tentang kepadatan dan komposisi interior planet. Gravitasi bumi juga konsisten dengan model planet yang padat, bukan berongga. Teori ini gagal menjelaskan fenomena geomagnetisme dan mekanisme lempeng tektonik.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#E8ECF1"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "design_override": {
+        "background_color": "#0B3D5D"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1080&q=80",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "EKSPEDISI ADMIRAL BYRD",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#FFB627"
+            }
+          },
+          {
+            "text": "Salah satu narasi paling populer melibatkan Admiral Richard E. Byrd yang konon menemukan daratan hijau di balik kutub selama ekspedisi tahun 1947. Para penganut teori percaya ini adalah bukti akses ke dunia interior. Namun, catatan resmi ekspedisi Byrd tidak pernah menyebutkan penemuan semacam itu. Cerita ini kemungkinan besar berasal dari interpretasi keliru atau fabrikasi belakangan. Byrd adalah penjelajah kutub terkemuka, tetapi tidak pernah mengklaim menemukan hollow earth.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F5F7FA"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 8,
+      "type": "content",
+      "design_override": {
+        "background_color": "#1C2541"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=1080&q=80",
+        "position": "top"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "PENGARUH BUDAYA POPULER",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#FFB627"
+            }
+          },
+          {
+            "text": "Teori Hollow Earth telah menginspirasi banyak karya fiksi, dari novel Jules Verne hingga film Hollywood modern. Konsep ini menawarkan setting yang menarik untuk petualangan dan eksplorasi fantastis. Banyak game, komik, dan serial TV juga mengadopsi tema ini. Popularitas dalam budaya pop membuat teori ini tetap hidup meskipun telah dibantah sains. Daya tarik misteri dan kemungkinan dunia tersembunyi terus memikat imajinasi manusia hingga sekarang.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#E8ECF1"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 9,
+      "type": "content",
+      "design_override": {
+        "background_color": "#0B3D5D"
+      },
+      "image": {
+        "url": "https://images.unsplash.com/photo-1545243424-0ce743321e11?w=1080&q=80",
+        "position": "bottom"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "KESIMPULAN ILMIAH",
+            "style": {
+              "fontSize": 32,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#FFB627"
+            }
+          },
+          {
+            "text": "Meskipun menarik sebagai konsep fiksi, teori Hollow Earth tidak memiliki dasar ilmiah yang valid. Semua bukti geologi, seismologi, dan fisika modern menunjukkan bahwa bumi adalah planet padat dengan struktur berlapis. Teknologi pencitraan modern dan eksplorasi kutub telah menghilangkan kemungkinan adanya lubang besar atau dunia interior. Teori ini lebih tepat dianggap sebagai pseudosains atau mitologi modern daripada hipotesis yang dapat dipertanggungjawabkan secara ilmiah.",
+            "style": {
+              "fontSize": 20,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F5F7FA"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    },
+    {
+      "slide_number": 10,
+      "type": "content",
+      "design_override": {
+        "background_color": "#0A1128"
+      },
+      "content": {
+        "blocks": [
+          {
+            "text": "Sumber Referensi",
+            "style": {
+              "fontSize": 24,
+              "fontWeight": 700,
+              "align": "left",
+              "color": "#FFB627"
+            }
+          },
+          {
+            "text": "1. Seismology and the Earth's Deep Interior (Shearer, P.M.)\n2. The Hollow Earth: The Greatest Geographical Discovery in History (Raymond Bernard)\n3. Journey to the Center of the Earth (Jules Verne)\n4. Polar Exploration Archives - National Geographic\n5. Modern Geophysical Studies on Earth's Interior Structure",
+            "style": {
+              "fontSize": 16,
+              "fontWeight": 400,
+              "align": "left",
+              "color": "#F0F4F8"
+            }
+          }
+        ]
+      },
+      "layout": {
+        "content_alignment": "left"
+      }
+    }
+  ]
+}

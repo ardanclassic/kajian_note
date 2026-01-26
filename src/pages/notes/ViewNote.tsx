@@ -7,8 +7,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { NoteViewer } from "@/components/features/note-workspace/NoteViewer";
-import { ExportActionsDropdown } from "@/components/features/note-workspace/ExportActionsDropdown";
+import { NoteViewer } from "@/components/features/notes/viewer/NoteViewer";
+import { ExportActionsDropdown } from "@/components/features/notes/common/ExportActionsDropdown";
 import { useAuthStore } from "@/store/authStore";
 import { useNotesStore } from "@/store/notesStore";
 import { BookOpen, Loader2, AlertCircle, ArrowLeft, Edit, Trash2, Share2, MoreVertical } from "lucide-react";

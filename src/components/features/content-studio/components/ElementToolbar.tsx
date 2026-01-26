@@ -11,7 +11,7 @@ import {
   Square,
   Circle,
   Triangle,
-  Minus
+  Minus,
 } from 'lucide-react';
 import { useRef } from 'react';
 import type { ImageElement } from '@/types/contentStudio.types';
@@ -32,6 +32,8 @@ export function ElementToolbar() {
     locked: false,
     visible: true,
     zIndex: 0,
+    scaleX: 1,
+    scaleY: 1,
     content: 'Double click to edit',
     fontFamily: 'Inter',
     fontSize: 20,
@@ -55,6 +57,8 @@ export function ElementToolbar() {
     locked: false,
     visible: true,
     zIndex: 0,
+    scaleX: 1,
+    scaleY: 1,
     content: 'Heading Text',
     fontFamily: 'Inter',
     fontSize: 28,
@@ -68,7 +72,7 @@ export function ElementToolbar() {
     textTransform: 'none'
   });
 
-  const createShapeElement = (shapeType: 'rect' | 'circle' | 'triangle' | 'star' | 'line'): ShapeElement => {
+  const createShapeElement = (shapeType: 'rect' | 'circle' | 'triangle' | 'line'): ShapeElement => {
     const baseShape = {
       id: uuidv4(),
       type: 'shape' as const,
@@ -77,7 +81,9 @@ export function ElementToolbar() {
       locked: false,
       visible: true,
       zIndex: 0,
-      shapeType,
+      scaleX: 1,
+      scaleY: 1,
+      shapeType: shapeType as any, // Cast to any to satisfy 'polygon' union mismatch if any
       fill: DEFAULT_COLOR_PALETTE.colors.primary,
       stroke: DEFAULT_COLOR_PALETTE.colors.accent_1,
       strokeWidth: 2,
@@ -88,20 +94,14 @@ export function ElementToolbar() {
     if (shapeType === 'line') {
       return {
         ...baseShape,
+        shapeType: 'line', // Explicitly set
         position: { x: dimensions.width / 2 - 60, y: dimensions.height / 2 },
         size: { width: 120, height: 0 },
         fill: 'transparent'
       };
     }
 
-    if (shapeType === 'star') {
-      return {
-        ...baseShape,
-        position: { x: dimensions.width / 2 - 40, y: dimensions.height / 2 - 40 },
-        size: { width: 80, height: 80 },
-        points: 5
-      };
-    }
+    /* Star logic removed as it's not supported in types */
 
     return {
       ...baseShape,
@@ -127,6 +127,7 @@ export function ElementToolbar() {
     scaleX: 1,
     scaleY: 1
   });
+
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -194,7 +195,7 @@ export function ElementToolbar() {
       <div className="grid grid-cols-2 gap-2">
         {tools.map((tool, index) => (
           <motion.button
-            key={tool.label}
+            key={tool.label + index}
             className={cn(
               "flex flex-col items-center justify-center gap-1.5 p-3 rounded-lg bg-white/5 border border-white/[0.08] text-white/80 cursor-pointer transition-all hover:bg-blue-500/20 hover:border-blue-500/40 hover:text-white",
               tool.className === 'heading-icon' && "[&_svg]:scale-125"

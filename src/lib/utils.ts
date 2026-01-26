@@ -65,7 +65,7 @@ export function formatPhoneNumber(phone: string): string {
  * Format: {username}@kajiannote.local
  */
 export function generateDummyEmail(username: string): string {
-  return `${username}@kajiannote.com`;
+  return `${username}@alwaah.com`;
 }
 
 /**
