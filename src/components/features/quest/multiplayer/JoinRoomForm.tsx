@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Loader2, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/authStore';
-import { questAppwriteService } from '@/services/appwrite/questService';
+import { multiplayerService } from '@/services/supabase/multiplayerService';
 import { toast } from 'sonner';
 
 interface Props {
@@ -21,17 +21,17 @@ export const JoinRoomForm = ({ onJoined, onCancel }: Props) => {
 
     setIsSubmitting(true);
     try {
-      const room = await questAppwriteService.joinRoom(
+      const room = await multiplayerService.joinRoom(
         code.toUpperCase(), // Normalize case
         {
           uid: user.id || 'anon',
           name: user.fullName || user.username || 'Player',
-          avatar: user.avatarUrl || 'https://api.dicebear.com/7.x/micah/svg?seed=' + user.id
+          avatar: user.avatarUrl || 'https://api.dicebear.com/9.x/bottts-neutral/svg?seed=' + user.id
         }
       );
 
       toast.success("Berhasil bergabung!");
-      onJoined(room.$id, room.room_code);
+      onJoined(room.id, room.room_code);
 
     } catch (error: any) {
       console.error(error);

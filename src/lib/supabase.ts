@@ -175,6 +175,20 @@ export type Database = {
         Insert: Omit<Database["public"]["Tables"]["profile_changes"]["Row"], "id" | "changed_at">;
         Update: Partial<Database["public"]["Tables"]["profile_changes"]["Insert"]>;
       };
+      quest_sessions: {
+        Row: {
+          id: string;
+          room_code: string;
+          host_uid: string;
+          status: "WAITING" | "PLAYING" | "FINISHED";
+          topic_config: any; // JSON
+          players: any[]; // JSON
+          current_question_idx: number;
+          created_at: string;
+        };
+        Insert: Omit<Database["public"]["Tables"]["quest_sessions"]["Row"], "id" | "created_at">;
+        Update: Partial<Database["public"]["Tables"]["quest_sessions"]["Insert"]>;
+      };
     };
   };
 };

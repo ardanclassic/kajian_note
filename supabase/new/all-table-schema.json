@@ -517,6 +517,21 @@
             "name": "updated_at",
             "type": "timestamp with time zone",
             "nullable": true
+          },
+          {
+            "name": "game_mode",
+            "type": "text",
+            "nullable": false
+          },
+          {
+            "name": "match_id",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "subtopic_slug",
+            "type": "text",
+            "nullable": true
           }
         ]
       },

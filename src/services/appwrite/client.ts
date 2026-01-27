@@ -24,5 +24,4 @@ export const COLLECTIONS = {
   TOPICS: import.meta.env.VITE_APPWRITE_COLLECTION_TOPICS || "topics",
   SUBTOPICS: import.meta.env.VITE_APPWRITE_COLLECTION_SUBTOPICS || "subtopics",
   QUESTIONS: import.meta.env.VITE_APPWRITE_COLLECTION_QUESTIONS || "questions",
-  ACTIVE_SESSIONS: "active_sessions",
 } as const;

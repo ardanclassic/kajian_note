@@ -1,39 +1,23 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Loader2, Play, Users, Crown, LogOut, XCircle } from 'lucide-react';
+import { Copy, Loader2, Play, Users, Star, LogOut, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/authStore';
-import { questAppwriteService } from '@/services/appwrite/questService';
-import { appwriteDatabases, APPWRITE_DATABASE_ID, COLLECTIONS } from '@/services/appwrite/client';
+import { multiplayerService } from '@/services/supabase/multiplayerService';
 import { toast } from 'sonner';
+import type { QuestSession } from '@/types/quest.types';
 
 interface Props {
-  roomId: string;
+  roomId: string; // This is Supabase ID now
   onStartGame: () => void;
   onExit: () => void;
 }
 
-interface Player {
-  supabase_id: string;
-  username: string;
-  avatar_url: string;
-  is_host: boolean;
-  score: number;
-}
-
-interface RoomData {
-  $id: string;
-  room_code: string;
-  host_uid: string;
-  status: string;
-  players: string; // JSON string
-  topic_config: string; // JSON string
-}
-
 export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
+  const navigate = useNavigate();
   const { user } = useAuthStore();
-  const [roomData, setRoomData] = useState<RoomData | null>(null);
-  const [players, setPlayers] = useState<Player[]>([]);
+  const [roomData, setRoomData] = useState<QuestSession | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isStarting, setIsStarting] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
@@ -41,13 +25,13 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
   // 1. Initial Fetch
   const fetchRoom = async () => {
     try {
-      const doc = await appwriteDatabases.getDocument(
-        APPWRITE_DATABASE_ID,
-        COLLECTIONS.ACTIVE_SESSIONS,
-        roomId
-      );
-      setRoomData(doc as any);
-      setPlayers(JSON.parse(doc.players || "[]"));
+      const room = await multiplayerService.getRoom(roomId);
+      if (!room) {
+        toast.error("Room tidak ditemukan");
+        onExit();
+        return;
+      }
+      setRoomData(room);
       setIsLoading(false);
     } catch (error) {
       console.error("Failed to load room:", error);
@@ -60,32 +44,23 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
     fetchRoom();
   }, [roomId]);
 
-  // 2. Realtime Subscription
+  // 2. Realtime Listener
+  // Replace polling with Supabase Realtime
   useEffect(() => {
-    const unsubscribe = questAppwriteService.subscribeToRoom(roomId, (payload) => {
+    const channel = multiplayerService.subscribeToRoom(roomId, (updatedRoom) => {
+      setRoomData(updatedRoom);
 
-      // Handle Deletion Event
-      if (payload.events.some((e: string) => e.includes('.delete'))) {
-        toast.info("Room telah dibubarkan oleh Host.");
-        onExit();
-        return;
+      if (updatedRoom.status === 'PLAYING') {
+        onStartGame();
       }
-
-      // Handle Update Event
-      if (payload.events.some((e: string) => e.includes('.update'))) {
-        const updatedDoc = payload.payload as RoomData;
-        setRoomData(updatedDoc);
-        setPlayers(JSON.parse(updatedDoc.players || "[]"));
-
-        // Check Game Start Trigger
-        if (updatedDoc.status === 'PLAYING') {
-          onStartGame();
-        }
-      }
+    }, () => {
+      // on delete
+      toast.info("Room telah dibubarkan host.");
+      onExit();
     });
 
     return () => {
-      unsubscribe();
+      multiplayerService.unsubscribe(channel);
     };
   }, [roomId]);
 
@@ -94,7 +69,7 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
     if (!roomData) return;
     setIsStarting(true);
     try {
-      await questAppwriteService.startGame(roomData.$id);
+      await multiplayerService.startGame(roomData.id);
     } catch (e) {
       console.error(e);
       toast.error("Gagal memulai game");
@@ -107,13 +82,15 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
     setIsExiting(true);
 
     try {
+      const isHost = user.id === roomData.host_uid;
+
       if (isHost) {
         // HOST: Delete Room & Exit Immediately
-        await questAppwriteService.deleteRoom(roomData.$id);
+        await multiplayerService.deleteRoom(roomData.id);
         toast.success("Room berhasil dibubarkan.");
         onExit();
       } else {
-        // GUEST: Just leave locally (Todo: remove self from players array ideally)
+        // GUEST: Just leave locally (Todo: remove self from players array ideally, not implemented in UI yet but service supports updates)
         // For MVP, just exiting view.
         onExit();
       }
@@ -124,10 +101,26 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
     }
   };
 
-  const copyCode = () => {
-    if (roomData) {
-      navigator.clipboard.writeText(roomData.room_code);
-      toast.success("Kode disalin!");
+  const copyCode = async () => {
+    if (!roomData) return;
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(roomData.room_code);
+        toast.success("Kode disalin!");
+      } else {
+        // Fallback
+        const textArea = document.createElement("textarea");
+        textArea.value = roomData.room_code;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        toast.success("Kode disalin! (Fallback)");
+      }
+    } catch (err) {
+      console.error('Failed to copy', err);
+      toast.error("Gagal menyalin kode");
     }
   };
 
@@ -141,8 +134,13 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
   }
 
   const isHost = user?.id === roomData.host_uid;
-  const config = JSON.parse(roomData.topic_config || "{}");
+  const config = roomData.topic_config; // Typed object now
+  // Note: config.subtopic might be Partial<Subtopic> but we access title. Safecheck.
+  const subtopicTitle = config.subtopic?.title || "Unknown Topic";
+  const players = roomData.players || [];
+  const maxPlayers = (config as any).max_players || 2;
   const canStart = players.length >= 2;
+  const isFull = players.length >= maxPlayers;
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-4 space-y-8 pb-32">
@@ -170,7 +168,7 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
       <div className="text-center space-y-2">
         <h2 className="text-3xl font-bold text-white tracking-tight">Menunggu Pemain...</h2>
         <p className="text-gray-400">
-          Topik: <span className="text-white font-semibold">{config.subtopic?.title}</span> • {config.totalQuestions} Soal
+          Topik: <span className="text-white font-semibold">{subtopicTitle}</span> • {config.totalQuestions} Soal
         </p>
       </div>
 
@@ -184,19 +182,48 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
             {roomData.room_code}
           </span>
         </div>
-        <Button variant="ghost" size="sm" onClick={copyCode} className="text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10">
+        <Button variant="ghost" size="sm" onClick={copyCode} className="text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 z-10 relative">
           <Copy className="w-4 h-4 mr-2" /> Salin Kode
         </Button>
       </div>
 
       {/* Player Grid */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between text-sm text-gray-400 px-2">
-          <span className="flex items-center gap-2"><Users className="w-4 h-4" /> {players.length} Pemain Bergabung</span>
-          {!canStart && isHost && (
-            <span className="text-orange-400 text-xs flex items-center gap-1">
-              <XCircle className="w-3 h-3" /> Butuh min. 2 pemain
+        <div className="flex flex-col gap-2 px-2">
+          <div className="flex items-center justify-between text-sm text-gray-400">
+            <span className={`flex items-center gap-2 font-medium ${isFull ? 'text-orange-400' : ''}`}>
+              <Users className="w-4 h-4" />
+              {players.length}/{maxPlayers} Pemain Bergabung
+              {isFull && <span className="text-xs bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded text-orange-400 ml-2">Penuh</span>}
             </span>
+            {!canStart && isHost && (
+              <span className="text-orange-400 text-xs flex items-center gap-1">
+                <XCircle className="w-3 h-3" /> Butuh min. 2 pemain
+              </span>
+            )}
+          </div>
+
+          {/* Premium Upsell for Host */}
+          {isHost && isFull && maxPlayers < 10 && (
+            <div className="w-full p-3 rounded-lg bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 flex items-center justify-between gap-3 animate-in fade-in slide-in-from-top-2">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-yellow-500/20 rounded-lg">
+                  <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                </div>
+                <div className="text-left">
+                  <p className="text-sm font-bold text-yellow-500">Upgrade ke Premium</p>
+                  <p className="text-xs text-yellow-500/80">Unlock hingga 10 pemain dalam satu room.</p>
+                </div>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                className="border-yellow-500/30 hover:bg-yellow-500/10 text-yellow-500 text-xs h-8"
+                onClick={() => navigate('/subscription')}
+              >
+                Upgrade
+              </Button>
+            </div>
           )}
         </div>
 
@@ -204,7 +231,7 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
           <AnimatePresence>
             {players.map((player) => (
               <motion.div
-                key={player.supabase_id}
+                key={player.id}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
@@ -213,7 +240,7 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
               >
                 {player.is_host && (
                   <div className="absolute top-2 right-2 text-yellow-500" title="Host">
-                    <Crown className="w-4 h-4 fill-yellow-500" />
+                    <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
                   </div>
                 )}
                 <img
@@ -225,7 +252,6 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
                   {player.username}
                 </span>
 
-                {/* Status Badge */}
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/20">
                   Ready
                 </span>
@@ -235,25 +261,35 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
         </div>
       </div>
 
-      {/* Footer Action */}
-      <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black/90 to-transparent flex justify-center pb-8 md:pb-12 z-20 pointer-events-none">
-        <div className="pointer-events-auto flex gap-4 w-full max-w-md">
-          {isHost ? (
-            <Button
-              size="lg"
-              className={`w-full h-14 text-lg shadow-[0_0_20px_rgba(79,70,229,0.4)] ${!canStart ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-500'}`}
-              onClick={handleStart}
-              disabled={isStarting || !canStart} // Disabled if < 2 players
-            >
-              {isStarting ? <Loader2 className="w-6 h-6 animate-spin" /> : <><Play className="w-5 h-5 mr-2 fill-current" /> {canStart ? "Mulai Game" : "Menunggu Pemain Lain..."}</>}
-            </Button>
-          ) : (
-            <div className="w-full bg-gray-900/80 backdrop-blur border border-white/10 rounded-xl p-4 text-center text-gray-400 animate-pulse">
-              Menunggu Host memulai permainan...
-            </div>
-          )}
-        </div>
+      {/* Action Area */}
+      <div className="pt-8 flex justify-center">
+        {isHost ? (
+          <Button
+            size="lg"
+            className={`w-full md:max-w-md h-14 text-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${!canStart
+              ? 'bg-gray-800 text-gray-500 cursor-not-allowed border border-white/5'
+              : 'bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white shadow-[0_0_30px_rgba(16,185,129,0.3)] border border-emerald-500/20'
+              }`}
+            onClick={handleStart}
+            disabled={isStarting || !canStart}
+          >
+            {isStarting ? (
+              <Loader2 className="w-6 h-6 animate-spin" />
+            ) : (
+              <>
+                <Play className="w-5 h-5 mr-3 fill-current" />
+                {canStart ? "Mulai Pertandingan" : "Menunggu Pemain Lain..."}
+              </>
+            )}
+          </Button>
+        ) : (
+          <div className="w-full max-w-md mx-auto bg-gray-900/80 backdrop-blur border border-white/10 rounded-xl p-4 text-center text-gray-400 animate-pulse flex items-center justify-center gap-3">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            Menunggu Host memulai permainan...
+          </div>
+        )}
       </div>
+
 
     </div>
   );
