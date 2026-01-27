@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, ArrowLeft, BookOpen, Layers, Trophy, Star, Target } from 'lucide-react';
+import { Loader2, ArrowLeft, BookOpen, Layers, Trophy, Star, Target, Swords, Zap } from 'lucide-react';
 import { useQuestStore } from '@/store/questStore';
 import { TopHeader } from '@/components/layout/TopHeader';
 import { QuizSession } from './QuizSession';
@@ -126,9 +126,13 @@ export const QuestPage = () => {
 
                 <Button
                   onClick={() => setView('MULTIPLAYER')}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white border border-indigo-500/50 shadow-[0_0_20px_rgba(79,70,229,0.3)] animate-pulse hover:animate-none transition-all"
+                  className="relative group overflow-hidden bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white border border-white/10 shadow-[0_0_30px_rgba(124,58,237,0.3)] hover:shadow-[0_0_50px_rgba(124,58,237,0.6)] transition-all duration-300 h-10 md:h-12 px-5 md:px-8 rounded-full"
                 >
-                  <span className="mr-2">🎮</span> Multiplayer Arena
+                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 blur-xl" />
+                  <div className="relative flex items-center gap-2 md:gap-3">
+                    <Swords className="w-4 h-4 md:w-5 md:h-5 text-violet-200 group-hover:text-white transition-colors animate-pulse" />
+                    <span className="font-bold tracking-wide uppercase text-xs md:text-sm">Live Challenge</span>
+                  </div>
                 </Button>
               </div>
 

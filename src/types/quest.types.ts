@@ -72,7 +72,7 @@ export interface Question {
 }
 
 // ============================================================================
-// STATE & SESSION TYPES
+// STATE & SESSION TYPES (SINGLE PLAYER)
 // ============================================================================
 
 export interface QuizSessionState {
@@ -123,4 +123,66 @@ export interface QuestStore {
   submitAnswer: (questionId: string, optionId: string) => void;
   nextQuestion: () => void;
   resetQuiz: () => void;
+}
+
+// ============================================================================
+// MULTIPLAYER (SUPABASE REALTIME) TYPES
+// ============================================================================
+
+export interface Player {
+  id: string; // Supabase Auth ID
+  username: string;
+  avatar_url: string;
+  score: number;
+  status: "ready" | "playing" | "disconnected";
+  is_host: boolean;
+
+  // NEW: Individual Pace
+  current_question_idx: number;
+  is_finished: boolean;
+  streak: number; // NEW: Consecutive correct answers
+  redemption_used?: boolean; // NEW: Track if player used their one-time redemption
+
+  // NEW: Power-Ups
+  inventory: PowerUpInventory;
+  active_effects: PowerUpType[];
+}
+
+export type PowerUpType = "STREAK_SAVER" | "DOUBLE_POINTS" | "FIFTY_FIFTY" | "TIME_FREEZE";
+
+export type PowerUpInventory = {
+  [key in PowerUpType]?: number; // Count of specific powerup
+};
+
+// NEW: Answer Log for Scoring Calculation
+export interface AnswerLogEntry {
+  uid: string;
+  correct: boolean;
+  timestamp: number;
+  is_redemption?: boolean; // NEW: Mark if this was a redemption answer
+}
+
+/**
+ * Structure stored in 'questions_data' JSONB column in Supabase
+ */
+export interface QuestSessionState {
+  room_code: string;
+  status: "WAITING" | "PLAYING" | "FINISHED";
+  topic_config: {
+    topic: Partial<Topic> | null;
+    subtopic: Partial<Subtopic> | null;
+    totalQuestions: number;
+  };
+  players: Player[];
+  current_question_idx: number; // Global index (maybe for reference or forced sync)
+  answer_logs?: Record<string, AnswerLogEntry[]>; // NEW: Map "q_0" -> logs
+}
+
+/**
+ * Full Session Object (DB Row + Parsed JSON)
+ */
+export interface QuestSession extends QuestSessionState {
+  id: string;
+  host_uid: string;
+  created_at?: string;
 }
