@@ -46,7 +46,7 @@
     ],
     "correct": "true",
     "explanation": {
-      "text": "Awalnya diperintah 50 waktu, lalu berkat saran Nabi Musa AS, Nabi meminta keringanan hingga menjadi 5 waktu.",
+      "text": "Awalnya diperintah 50 waktu, lalu berkat saran Nabi Musa عليه السلام, Nabi meminta keringanan hingga menjadi 5 waktu.",
       "dalil": ""
     },
     "points": 10
@@ -211,7 +211,7 @@
     "subtopic_id": "sirah-nabawiyah",
     "topic_slug": "sirah-nabawiyah",
     "type": "true_false",
-    "question_text": "Nabi Muhammad SAW melakukan ibadah Haji hanya satu kali selama hidupnya.",
+    "question_text": "Nabi Muhammad ﷺ melakukan ibadah Haji hanya satu kali selama hidupnya.",
     "options": [
       { "id": "true", "text": "Benar" },
       { "id": "false", "text": "Salah" }

@@ -3,7 +3,7 @@
     "subtopic_id": "sirah-shahabat",
     "topic_slug": "sirah-shahabat",
     "type": "multiple_choice",
-    "question_text": "Siapakah Khalifah pertama setelah wafatnya Rasulullah SAW?",
+    "question_text": "Siapakah Khalifah pertama setelah wafatnya Rasulullah ﷺ?",
     "options": [
       { "id": "A", "text": "Umar bin Khattab" },
       { "id": "B", "text": "Abu Bakar As-Siddiq" },
@@ -167,7 +167,7 @@
     ],
     "correct": "B",
     "explanation": {
-      "text": "Aisyah RA adalah wanita yang paling cerdas di zamannya dan menjadi rujukan para sahabat.",
+      "text": "Aisyah رضي الله عنها adalah wanita yang paling cerdas di zamannya dan menjadi rujukan para sahabat.",
       "dalil": ""
     },
     "points": 10

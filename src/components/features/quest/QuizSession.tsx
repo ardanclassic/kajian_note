@@ -130,16 +130,7 @@ export const QuizSession = ({
                         </div>
                       )}
 
-                      {currentQuestion.type !== 'true_false' && (
-                        <div className={`
-                            flex items-center justify-center w-8 h-8 rounded-full border text-sm font-bold shrink-0 transition-colors
-                            ${isCorrect && currentAnswer ? 'border-emerald-500 bg-emerald-500 text-white' :
-                            isSelected && currentAnswer && !isCorrect ? 'border-red-500 bg-red-500 text-white' :
-                              'border-gray-600 text-gray-400'}
-                            `}>
-                          {option.id}
-                        </div>
-                      )}
+                      {/* Alphabet label removed to avoid confusion when shuffled */}
 
                       <span className={`font-medium ${contentClass} ${currentQuestion.type === 'true_false' ? 'text-xl font-bold uppercase tracking-widest' : 'text-sm md:text-lg leading-relaxed'}`}>
                         {option.text}

@@ -359,6 +359,7 @@ export const MultiplayerGame = ({ roomId, onFinish }: Props) => {
                   options={currentQuestion.options}
                   correct={currentQuestion.correct}
                   hasAnswered={hasAnswered}
+                  isCorrect={isCorrect}
                   onSubmit={(ids: any) => handleAnswer(ids)}
                 />
               ) : (
@@ -412,13 +413,7 @@ export const MultiplayerGame = ({ roomId, onFinish }: Props) => {
                           </div>
                         )}
 
-                        {currentQuestion.type !== 'true_false' && (
-                          <div
-                            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border ${hasAnswered && option.id === currentQuestion.correct ? "bg-emerald-500 border-emerald-500 text-black" : "border-current opacity-50"}`}
-                          >
-                            {option.id}
-                          </div>
-                        )}
+                        {/* Alphabet label removed to avoid confusion when shuffled */}
 
                         <span className={`font-medium ${contentColor} ${currentQuestion.type === 'true_false' ? 'text-xl font-bold uppercase tracking-widest' : 'flex-1'}`}>
                           {option.text}
@@ -468,7 +463,7 @@ export const MultiplayerGame = ({ roomId, onFinish }: Props) => {
           {/* Action Button - Moved Here for Better UX */}
           {hasAnswered && (
             <div className="flex justify-end animate-in fade-in slide-in-from-bottom-4">
-              <Button size="lg" onClick={handleNextQuestion} className="bg-white text-black hover:bg-gray-200">
+              <Button size="lg" onClick={handleNextQuestion} className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg shadow-emerald-900/20">
                 {localQuestionIdx < questions.length - 1 && !isRedemptionMode ? "Soal Selanjutnya" : isRedemptionMode ? "Selesai & Lihat Hasil" : "Selesaikan Kuis"} <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
@@ -494,32 +489,49 @@ export const MultiplayerGame = ({ roomId, onFinish }: Props) => {
           <div className="bg-gray-900/60 border border-white/10 rounded-2xl p-4 sticky top-6 space-y-4">
             <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Leaderboard</h3>
 
-            {/* TEAM MODE: Show Team Rankings */}
+            {/* TEAM MODE: Show Team Rankings with Members */}
             {roomData.game_mode === "TEAM" && roomData.teams && roomData.teams.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-xs text-gray-500 uppercase font-semibold">Tim</p>
+              <div className="space-y-3">
+                <p className="text-xs text-gray-500 uppercase font-semibold">Peringkat Tim</p>
                 {roomData.teams
                   .sort((a, b) => b.total_score - a.total_score)
-                  .map((team, idx) => (
-                    <div
-                      key={team.id}
-                      className="flex items-center gap-3 p-3 rounded-lg bg-gray-800/50 border"
-                      style={{ borderColor: `${team.color}40` }}
-                    >
-                      <div className="w-6 text-center font-bold text-sm" style={{ color: team.color }}>
-                        #{idx + 1}
-                      </div>
+                  .map((team, idx) => {
+                    const teamMembers = roomData.players.filter(p => p.team_id === team.id);
+                    return (
                       <div
-                        className="w-3 h-3 rounded-full"
-                        style={{ backgroundColor: team.color }}
-                      />
-                      <div className="flex-1">
-                        <div className="text-sm font-medium text-white">{team.name}</div>
-                        <div className="text-[10px] text-gray-500">{team.member_count} Anggota</div>
+                        key={team.id}
+                        className="rounded-lg bg-gray-800/50 border overflow-hidden"
+                        style={{ borderColor: `${team.color}40` }}
+                      >
+                        {/* Team Header */}
+                        <div className="flex items-center gap-3 p-3">
+                          <div className="w-6 text-center font-bold text-sm" style={{ color: team.color }}>
+                            #{idx + 1}
+                          </div>
+                          <div
+                            className="w-3 h-3 rounded-full"
+                            style={{ backgroundColor: team.color }}
+                          />
+                          <div className="flex-1">
+                            <div className="text-sm font-medium text-white">{team.name}</div>
+                            <div className="text-[10px] text-gray-500">{team.member_count} Anggota</div>
+                          </div>
+                          <div className="font-mono font-bold text-emerald-400">{team.total_score.toFixed(1)}</div>
+                        </div>
+
+                        {/* Team Members */}
+                        <div className="px-3 pb-2 space-y-1">
+                          {teamMembers.map(member => (
+                            <div key={member.id} className="flex items-center gap-2 p-1.5 rounded bg-black/20">
+                              <img src={member.avatar_url} className="w-5 h-5 rounded-full" />
+                              <span className="text-xs text-gray-300 flex-1 truncate">{member.username}</span>
+                              <span className="text-xs font-mono text-emerald-400">{member.score.toFixed(0)}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <div className="font-mono font-bold text-emerald-400">{team.total_score.toFixed(1)}</div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 <div className="border-t border-gray-800 my-2" />
               </div>
             )}
@@ -569,7 +581,7 @@ export const MultiplayerGame = ({ roomId, onFinish }: Props) => {
 // ------------------------------------------------------------------
 // PUZZLE ORDER VIEW COMPONENT
 // ------------------------------------------------------------------
-const PuzzleOrderView = ({ options, correct, hasAnswered, onSubmit }: any) => {
+const PuzzleOrderView = ({ options, correct, hasAnswered, isCorrect, onSubmit }: any) => {
   // We need to shuffle initial state but keep it stable for this question
   const [items, setItems] = useState<any[]>([]);
 
@@ -628,7 +640,9 @@ const PuzzleOrderView = ({ options, correct, hasAnswered, onSubmit }: any) => {
 
               <span className="flex-1 text-white/90 font-medium select-none">{item.text}</span>
 
-              {hasAnswered && <CheckCircle2 className="w-5 h-5 text-emerald-500/50" />}
+              {/* Show correct/incorrect indicator */}
+              {hasAnswered && isCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-500" />}
+              {hasAnswered && isCorrect === false && <XCircle className="w-5 h-5 text-red-500" />}
             </div>
           </Reorder.Item>
         ))}
@@ -640,7 +654,7 @@ const PuzzleOrderView = ({ options, correct, hasAnswered, onSubmit }: any) => {
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-6 text-lg shadow-lg shadow-indigo-500/20 border border-indigo-400/20"
             onClick={() => onSubmit(items.map(i => i.id))}
           >
-            Kunci Jawaban <CheckCircle2 className="ml-2 w-5 h-5" />
+            Submit Jawaban <CheckCircle2 className="ml-2 w-5 h-5" />
           </Button>
         </motion.div>
       )}

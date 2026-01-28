@@ -3,7 +3,7 @@
     "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
     "type": "multiple_choice",
-    "question_text": "Kapan Nabi Muhammad SAW dilahirkan?",
+    "question_text": "Kapan Nabi Muhammad ﷺ dilahirkan?",
     "options": [
       { "id": "A", "text": "12 Rabiul Awal Tahun Gajah" },
       { "id": "B", "text": "1 Ramadan Tahun Gajah" },
@@ -12,7 +12,7 @@
     ],
     "correct": "A",
     "explanation": {
-      "text": "Nabi Muhammad SAW lahir pada tanggal 12 Rabiul Awal di tahun Gajah (Amul Fil).",
+      "text": "Nabi Muhammad ﷺ lahir pada tanggal 12 Rabiul Awal di tahun Gajah (Amul Fil).",
       "dalil": ""
     },
     "points": 10
@@ -21,7 +21,7 @@
     "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
     "type": "multiple_choice",
-    "question_text": "Siapakah nama ibunda Nabi Muhammad SAW?",
+    "question_text": "Siapakah nama ibunda Nabi Muhammad ﷺ?",
     "options": [
       { "id": "A", "text": "Khadijah" },
       { "id": "B", "text": "Aminah" },
@@ -39,7 +39,7 @@
     "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
     "type": "true_false",
-    "question_text": "Nabi Muhammad SAW disusui oleh Halimah As-Sa'diyah dari kabilah Bani Sa'ad.",
+    "question_text": "Nabi Muhammad ﷺ disusui oleh Halimah As-Sa'diyah dari kabilah Bani Sa'ad.",
     "options": [
       { "id": "true", "text": "Benar" },
       { "id": "false", "text": "Salah" }
@@ -55,7 +55,7 @@
     "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
     "type": "true_false",
-    "question_text": "Ayah Nabi Muhammad SAW wafat setelah Nabi Muhammad SAW berusia 6 tahun.",
+    "question_text": "Ayah Nabi Muhammad ﷺ wafat setelah Nabi Muhammad ﷺ berusia 6 tahun.",
     "options": [
       { "id": "true", "text": "Benar" },
       { "id": "false", "text": "Salah" }
@@ -71,7 +71,7 @@
     "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
     "type": "puzzle_order",
-    "question_text": "Urutkan pengasuh Nabi Muhammad SAW sejak kecil hingga dewasa:",
+    "question_text": "Urutkan pengasuh Nabi Muhammad ﷺ sejak kecil hingga dewasa:",
     "options": [
       { "id": "O_1", "text": "Aminah (Ibu)" },
       { "id": "O_2", "text": "Halimah As-Sa'diyah (Ibu Susu)" },
@@ -107,7 +107,7 @@
     "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
     "type": "multiple_choice",
-    "question_text": "Wahyu pertama turun kepada Nabi Muhammad SAW di...",
+    "question_text": "Wahyu pertama turun kepada Nabi Muhammad ﷺ di...",
     "options": [
       { "id": "A", "text": "Masjidil Haram" },
       { "id": "B", "text": "Gua Hira" },
@@ -176,7 +176,7 @@
     "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
     "type": "true_false",
-    "question_text": "Nabi Muhammad SAW memiliki 7 orang anak (3 laki-laki dan 4 perempuan).",
+    "question_text": "Nabi Muhammad ﷺ memiliki 7 orang anak (3 laki-laki dan 4 perempuan).",
     "options": [
       { "id": "true", "text": "Benar" },
       { "id": "false", "text": "Salah" }
@@ -210,7 +210,7 @@
     "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
     "type": "true_false",
-    "question_text": "Nabi Muhammad SAW buta huruf (Ummi) bukan karena kekurangan, tapi sebagai tanda kemurnian wahyu.",
+    "question_text": "Nabi Muhammad ﷺ buta huruf (Ummi) bukan karena kekurangan, tapi sebagai tanda kemurnian wahyu.",
     "options": [
       { "id": "true", "text": "Benar" },
       { "id": "false", "text": "Salah" }
@@ -226,7 +226,7 @@
     "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
     "type": "puzzle_order",
-    "question_text": "Susun silsilah singkat Nabi Muhammad SAW:",
+    "question_text": "Susun silsilah singkat Nabi Muhammad ﷺ:",
     "options": [
       { "id": "S_1", "text": "Muhammad bin Abdullah" },
       { "id": "S_2", "text": "bin Abdul Muthalib" },
@@ -235,7 +235,7 @@
     ],
     "correct": ["S_1", "S_2", "S_3", "S_4"],
     "explanation": {
-      "text": "Urutan nasab mulia Nabi Muhammad SAW.",
+      "text": "Urutan nasab mulia Nabi Muhammad ﷺ.",
       "dalil": ""
     },
     "points": 20
@@ -262,7 +262,7 @@
     "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
     "type": "true_false",
-    "question_text": "Nabi Muhammad SAW wafat pada usia 63 tahun.",
+    "question_text": "Nabi Muhammad ﷺ wafat pada usia 63 tahun.",
     "options": [
       { "id": "true", "text": "Benar" },
       { "id": "false", "text": "Salah" }

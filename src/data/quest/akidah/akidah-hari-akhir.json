@@ -155,14 +155,14 @@
     "subtopic_id": "akidah-hari-akhir",
     "topic_slug": "akidah-hari-akhir",
     "type": "true_false",
-    "question_text": "Tidak ada seorangpun yang tahu kapan hari kiamat terjadi kecuali Allah SWT.",
+    "question_text": "Tidak ada seorangpun yang tahu kapan hari kiamat terjadi kecuali Allah ﷻ.",
     "options": [
       { "id": "true", "text": "Benar" },
       { "id": "false", "text": "Salah" }
     ],
     "correct": "true",
     "explanation": {
-      "text": "Ilmu tentang hari kiamat hanyalah milik Allah, bahkan Nabi dan Malaikat tidak mengetahuinya.",
+      "text": "Ilmu tentang hari kiamat hanyalah milik Allah ﷻ, bahkan Nabi dan Malaikat tidak mengetahuinya.",
       "dalil": "QS. Al-A'raf: 187"
     },
     "points": 10
@@ -230,7 +230,7 @@
     ],
     "correct": "true",
     "explanation": {
-      "text": "Nabi SAW menjelaskan Dajjal buta sebelah matanya seperti anggur yang menonjol.",
+      "text": "Nabi ﷺ menjelaskan Dajjal buta sebelah matanya seperti anggur yang menonjol.",
       "dalil": "HR. Bukhari"
     },
     "points": 10
@@ -242,13 +242,13 @@
     "question_text": "Apa yang dimaksud dengan Telaga (Al-Haudh)?",
     "options": [
       { "id": "A", "text": "Tempat mandi di surga" },
-      { "id": "B", "text": "Pemberian Allah bagi Nabi di Mahsyar" },
+      { "id": "B", "text": "Pemberian Allah ﷻ bagi Nabi ﷺ di Mahsyar" },
       { "id": "C", "text": "Sumur di Padang Pasir" },
       { "id": "D", "text": "Hujan di hari kiamat" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Al-Haudh adalah telaga milik Nabi Muhammad SAW yang airnya diminum umatnya sebelum masuk surga.",
+      "text": "Al-Haudh adalah telaga milik Nabi Muhammad ﷺ yang airnya diminum umatnya sebelum masuk surga.",
       "dalil": ""
     },
     "points": 10
@@ -257,14 +257,14 @@
     "subtopic_id": "akidah-hari-akhir",
     "topic_slug": "akidah-hari-akhir",
     "type": "true_false",
-    "question_text": "Nabi Isa AS akan turun kembali ke bumi untuk membunuh Dajjal.",
+    "question_text": "Nabi Isa عليه السلام akan turun kembali ke bumi untuk membunuh Dajjal.",
     "options": [
       { "id": "true", "text": "Benar" },
       { "id": "false", "text": "Salah" }
     ],
     "correct": "true",
     "explanation": {
-      "text": "Setelah Dajjal berbuat kerusakan, Nabi Isa AS akan turun di menara putih Damaskus.",
+      "text": "Setelah Dajjal berbuat kerusakan, Nabi Isa عليه السلام akan turun di menara putih Damaskus.",
       "dalil": ""
     },
     "points": 10
@@ -276,13 +276,13 @@
     "question_text": "Urutkan tanda-tanda kiamat besar berikut (yang terjadi berurutan):",
     "options": [
       { "id": "T_1", "text": "Dajjal" },
-      { "id": "T_2", "text": "Nabi Isa AS" },
+      { "id": "T_2", "text": "Nabi Isa عليه السلام" },
       { "id": "T_3", "text": "Ya'juj Ma'juj" },
       { "id": "T_4", "text": "Terbit Matahari dari Barat" }
     ],
     "correct": ["T_1", "T_2", "T_3", "T_4"],
     "explanation": {
-      "text": "Dimulai dari fitnah Dajjal, dibunuh Nabi Isa, muncul perusak Ya'juj Ma'juj, hingga tanda pemungkas.",
+      "text": "Dimulai dari fitnah Dajjal, dibunuh Nabi Isa عليه السلام, muncul perusak Ya'juj Ma'juj, hingga tanda pemungkas.",
       "dalil": ""
     },
     "points": 20
@@ -309,14 +309,14 @@
     "subtopic_id": "akidah-hari-akhir",
     "topic_slug": "akidah-hari-akhir",
     "type": "true_false",
-    "question_text": "Syafa'at Uzma hanya diberikan kepada Nabi Muhammad SAW.",
+    "question_text": "Syafa'at Uzma hanya diberikan kepada Nabi Muhammad ﷺ.",
     "options": [
       { "id": "true", "text": "Benar" },
       { "id": "false", "text": "Salah" }
     ],
     "correct": "true",
     "explanation": {
-      "text": "Syafa'at Uzma adalah hak khusus Nabi kita untuk memulai proses hisab di Mahsyar.",
+      "text": "Syafa'at Uzma adalah hak khusus Nabi kita ﷺ untuk memulai proses hisab di Mahsyar.",
       "dalil": ""
     },
     "points": 10
