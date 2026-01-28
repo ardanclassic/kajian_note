@@ -21,8 +21,7 @@ import Notes from "@/pages/notes";
 import CreateNote from "@/pages/notes/CreateNote";
 import ViewNote from "@/pages/notes/ViewNote";
 import EditNote from "@/pages/notes/EditNote";
-import CreateDeepNote from "@/pages/deepnote/CreateDeepNote";
-import ListDeepNote from "@/pages/deepnote/ListDeepNote";
+
 
 // Content Studio Routes
 import ListContentStudio from "@/pages/content-studio/ListContentStudio";
@@ -73,10 +72,7 @@ export const AppRoutes = () => {
         <Route path="/notes/:id" element={<ViewNote />} />
         <Route path="/notes/:id/edit" element={<EditNote />} />
 
-        {/* Deep Note Routes */}
-        <Route path="/deep-note" element={<ListDeepNote />} />
-        <Route path="/deep-note/create" element={<CreateDeepNote />} />
-        <Route path="/deep-note/:id" element={<ViewNote />} />
+
 
 
 

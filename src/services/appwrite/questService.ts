@@ -34,6 +34,7 @@ const mapToQuestion = (doc: any): Question => {
     explanation: explanation,
     correct: doc.correct,
     points: doc.points || 10,
+    type: (doc.type as any) || "multiple_choice",
     spare: doc.spare,
   };
 };

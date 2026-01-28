@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Loader2, Play, Users, Star, LogOut, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/authStore';
-import { multiplayerService } from '@/services/supabase/multiplayerService';
+import { questMultiplayerService } from '@/services/supabase/QuestMultiplayerService';
 import { toast } from 'sonner';
 import type { QuestSession } from '@/types/quest.types';
 
@@ -25,7 +25,7 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
   // 1. Initial Fetch
   const fetchRoom = async () => {
     try {
-      const room = await multiplayerService.getRoom(roomId);
+      const room = await questMultiplayerService.getRoom(roomId);
       if (!room) {
         toast.error("Room tidak ditemukan");
         onExit();
@@ -47,7 +47,7 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
   // 2. Realtime Listener
   // Replace polling with Supabase Realtime
   useEffect(() => {
-    const channel = multiplayerService.subscribeToRoom(roomId, (updatedRoom) => {
+    const channel = questMultiplayerService.subscribeToRoom(roomId, (updatedRoom) => {
       setRoomData(updatedRoom);
 
       if (updatedRoom.status === 'PLAYING') {
@@ -60,7 +60,7 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
     });
 
     return () => {
-      multiplayerService.unsubscribe(channel);
+      questMultiplayerService.unsubscribe(channel);
     };
   }, [roomId]);
 
@@ -69,7 +69,7 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
     if (!roomData) return;
     setIsStarting(true);
     try {
-      await multiplayerService.startGame(roomData.id);
+      await questMultiplayerService.startGame(roomData.id);
     } catch (e) {
       console.error(e);
       toast.error("Gagal memulai game");
@@ -86,7 +86,7 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
 
       if (isHost) {
         // HOST: Delete Room & Exit Immediately
-        await multiplayerService.deleteRoom(roomData.id);
+        await questMultiplayerService.deleteRoom(roomData.id);
         toast.success("Room berhasil dibubarkan.");
         onExit();
       } else {
@@ -124,6 +124,17 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
     }
   };
 
+  const handleJoinTeam = async (teamId: string) => {
+    if (!roomData || !user) return;
+    try {
+      await questMultiplayerService.joinTeam(roomData.id, user.id, teamId);
+      toast.success(`Bergabung dengan tim!`);
+    } catch (e) {
+      console.error(e);
+      toast.error("Gagal bergabung tim");
+    }
+  };
+
   if (isLoading || !roomData) {
     return (
       <div className="flex flex-col items-center justify-center h-64 space-y-4">
@@ -139,8 +150,29 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
   const subtopicTitle = config.subtopic?.title || "Unknown Topic";
   const players = roomData.players || [];
   const maxPlayers = (config as any).max_players || 2;
-  const canStart = players.length >= 2;
+
+  // Validation Logic
+  const isTeamMode = roomData.game_mode === "TEAM";
+  const teams = roomData.teams || [];
+  const teamA = teams[0];
+  const teamB = teams[1];
+
+  const hasMinPlayers = players.length >= 2;
+  const isTeamBalanced = !isTeamMode || (isTeamMode && teamA?.member_count > 0 && teamB?.member_count > 0);
+
+  const canStart = hasMinPlayers && isTeamBalanced;
   const isFull = players.length >= maxPlayers;
+
+  const handleAutoBalance = async () => {
+    if (!roomData || !isHost) return;
+    try {
+      await questMultiplayerService.autoBalanceTeams(roomData.id);
+      toast.success("Tim diacak ulang!");
+    } catch (e) {
+      console.error(e);
+      toast.error("Gagal mengacak tim");
+    }
+  };
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-4 space-y-8 pb-32">
@@ -187,18 +219,83 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
         </Button>
       </div>
 
+      {/* TEAM MODE: Team Selection */}
+      {roomData.game_mode === "TEAM" && roomData.teams && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="text-left">
+              <h3 className="text-lg font-bold text-white mb-1">Pilih Timmu</h3>
+              <p className="text-sm text-gray-400">Klik tim untuk bergabung</p>
+            </div>
+
+            {/* Auto Balance Button (Host Only) */}
+            {isHost && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleAutoBalance}
+                className="border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/10 text-xs h-8"
+              >
+                ⚡ Auto Balance
+              </Button>
+            )}
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            {roomData.teams.map((team) => {
+              const isMyTeam = user && roomData.players.find(p => p.id === user.id)?.team_id === team.id;
+              const teamMembers = roomData.players.filter(p => p.team_id === team.id);
+
+              return (
+                <button
+                  key={team.id}
+                  onClick={() => handleJoinTeam(team.id)}
+                  disabled={!!isMyTeam}
+                  className={`p-4 rounded-xl border-2 transition-all ${isMyTeam
+                    ? 'border-white/30 bg-white/10 ring-2 ring-white/20'
+                    : 'border-white/10 hover:border-white/30 hover:bg-white/5'
+                    }`}
+                  style={{ borderColor: isMyTeam ? team.color : undefined }}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="font-bold text-white text-lg">{team.name}</h4>
+                    <div
+                      className="w-4 h-4 rounded-full"
+                      style={{ backgroundColor: team.color }}
+                    />
+                  </div>
+                  <div className="text-sm text-gray-400 text-left space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Users className="w-3 h-3" />
+                      <span>{team.member_count} Anggota</span>
+                    </div>
+                    {isMyTeam && (
+                      <div className="text-xs text-emerald-400 font-semibold mt-2">
+                        ✓ Tim Kamu
+                      </div>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Player Grid */}
       <div className="space-y-4">
         <div className="flex flex-col gap-2 px-2">
-          <div className="flex items-center justify-between text-sm text-gray-400">
+          <div className="flex items-center justify-between text-sm text-gray-400 flex-wrap gap-2">
             <span className={`flex items-center gap-2 font-medium ${isFull ? 'text-orange-400' : ''}`}>
               <Users className="w-4 h-4" />
               {players.length}/{maxPlayers} Pemain Bergabung
               {isFull && <span className="text-xs bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded text-orange-400 ml-2">Penuh</span>}
             </span>
+
             {!canStart && isHost && (
-              <span className="text-orange-400 text-xs flex items-center gap-1">
-                <XCircle className="w-3 h-3" /> Butuh min. 2 pemain
+              <span className="text-orange-400 text-xs flex items-center gap-1 font-semibold">
+                <XCircle className="w-3 h-3" />
+                {!hasMinPlayers ? "Butuh min. 2 pemain" : "Tim tidak seimbang (Keduanya harus terisi)"}
               </span>
             )}
           </div>
@@ -229,34 +326,59 @@ export const LobbyRoom = ({ roomId, onStartGame, onExit }: Props) => {
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <AnimatePresence>
-            {players.map((player) => (
-              <motion.div
-                key={player.id}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                layout
-                className="bg-gray-900/50 border border-white/5 rounded-xl p-4 flex flex-col items-center gap-3 relative"
-              >
-                {player.is_host && (
-                  <div className="absolute top-2 right-2 text-yellow-500" title="Host">
-                    <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
-                  </div>
-                )}
-                <img
-                  src={player.avatar_url}
-                  alt={player.username}
-                  className="w-16 h-16 rounded-full border-2 border-indigo-500/30 p-1 bg-black/40"
-                />
-                <span className="font-semibold text-white truncate max-w-full text-center px-2">
-                  {player.username}
-                </span>
+            {players.map((player) => {
+              const playerTeam = roomData.game_mode === "TEAM" && roomData.teams
+                ? roomData.teams.find(t => t.id === player.team_id)
+                : null;
 
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/20">
-                  Ready
-                </span>
-              </motion.div>
-            ))}
+              return (
+                <motion.div
+                  key={player.id}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  layout
+                  className="bg-gray-900/50 border border-white/5 rounded-xl p-4 flex flex-col items-center gap-3 relative"
+                  style={{
+                    borderColor: playerTeam ? `${playerTeam.color}40` : undefined,
+                  }}
+                >
+                  {player.is_host && (
+                    <div className="absolute top-2 right-2 text-yellow-500" title="Host">
+                      <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
+                    </div>
+                  )}
+                  <img
+                    src={player.avatar_url}
+                    alt={player.username}
+                    className="w-16 h-16 rounded-full border-2 p-1 bg-black/40"
+                    style={{
+                      borderColor: playerTeam ? playerTeam.color : '#6366f1',
+                    }}
+                  />
+                  <span className="font-semibold text-white truncate max-w-full text-center px-2">
+                    {player.username}
+                  </span>
+
+                  {playerTeam ? (
+                    <span
+                      className="text-[10px] px-2 py-0.5 rounded-full border font-semibold"
+                      style={{
+                        backgroundColor: `${playerTeam.color}20`,
+                        color: playerTeam.color,
+                        borderColor: `${playerTeam.color}40`,
+                      }}
+                    >
+                      {playerTeam.name}
+                    </span>
+                  ) : (
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-700/50 text-gray-400 border border-gray-600">
+                      {roomData.game_mode === "TEAM" ? "Belum Pilih Tim" : "Ready"}
+                    </span>
+                  )}
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
         </div>
       </div>

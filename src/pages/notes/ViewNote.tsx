@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { NoteViewer } from "@/components/features/notes/viewer/NoteViewer";
 import { ExportActionsDropdown } from "@/components/features/notes/common/ExportActionsDropdown";
@@ -23,15 +23,12 @@ import Loading from "@/components/common/Loading";
 export default function ViewNote() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const location = useLocation();
+
   const { user } = useAuthStore();
   const { currentNote, isLoading, error, fetchNoteById, deleteNote, clearCurrentNote, clearError } = useNotesStore();
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [showActions, setShowActions] = useState(false);
-
-  // Detect context
-  const isDeepNoteContext = location.pathname.startsWith('/deep-note');
 
   // Fetch note on mount
   useEffect(() => {
@@ -54,11 +51,7 @@ export default function ViewNote() {
 
   // Handle back
   const handleBack = () => {
-    if (isDeepNoteContext) {
-      navigate("/deep-note");
-    } else {
-      navigate("/notes");
-    }
+    navigate("/notes");
   };
 
   // Handle edit
@@ -66,9 +59,7 @@ export default function ViewNote() {
     if (id) {
       // For now, edit always goes to standard note edit
       // Ideal flow: create separate edit route or handle context in edit page too
-      navigate(`/notes/${id}/edit`, {
-        state: { fromDeepNote: isDeepNoteContext }
-      });
+      navigate(`/notes/${id}/edit`);
     }
   };
 

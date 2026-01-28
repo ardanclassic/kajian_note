@@ -1,181 +1,351 @@
 [
   {
+    "subtopic_id": "akidah-tauhid",
     "topic_slug": "akidah-tauhid",
-    "question_text": "Apa arti dari 'Tauhid' secara bahasa?",
+    "type": "multiple_choice",
+    "question_text": "Menyekutukan Allah dengan sesuatu yang lain disebut...",
     "options": [
-      { "id": "A", "text": "Menduakan sesuatu" },
-      { "id": "B", "text": "Mengesakan sesuatu" },
-      { "id": "C", "text": "Menyekutukan sesuatu" },
-      { "id": "D", "text": "Memisahkan sesuatu" }
-    ],
-    "correct": "B",
-    "explanation": {
-      "text": "Tauhid secara bahasa bermakna menjadikan sesuatu itu satu (mengesakan). Dalam konteks syariat, artinya mengesakan Allah dalam hal-hal yang menjadi kekhususan-Nya.",
-      "dalil": "QS. Al-Ikhlas: 1",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "akidah-tauhid",
-    "question_text": "Meyakini bahwa Allah adalah satu-satunya Pencipta, Pemilik, dan Pengatur alam semesta disebut Tauhid...",
-    "options": [
-      { "id": "A", "text": "Uluhiyah" },
-      { "id": "B", "text": "Rububiyah" },
-      { "id": "C", "text": "Asma wa Sifat" },
-      { "id": "D", "text": "Mulkiyah" }
-    ],
-    "correct": "B",
-    "explanation": {
-      "text": "Tauhid Rububiyah adalah keyakinan bahwa Allah satu-satunya Rabb (Pencipta, Pemilik, Pengatur) alam semesta.",
-      "dalil": "QS. Al-Fatihah: 2",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "akidah-tauhid",
-    "question_text": "Apa lawan dari Tauhid?",
-    "options": [
-      { "id": "A", "text": "Nifaq" },
-      { "id": "B", "text": "Syirik" },
-      { "id": "C", "text": "Fasiq" },
-      { "id": "D", "text": "Bid'ah" }
-    ],
-    "correct": "B",
-    "explanation": {
-      "text": "Syirik adalah menyekutukan Allah dengan makhluk-Nya, yang merupakan lawan dari Tauhid (mengesakan Allah).",
-      "dalil": "QS. An-Nisa: 48",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "akidah-tauhid",
-    "question_text": "Manakah di bawah ini yang termasuk pembagian Tauhid menurut para ulama?",
-    "options": [
-      { "id": "A", "text": "Tauhid Zat, Sifat, Af'al" },
-      { "id": "B", "text": "Tauhid Rububiyah, Uluhiyah, Asma wa Sifat" },
-      { "id": "C", "text": "Tauhid Awal, Tengah, Akhir" },
-      { "id": "D", "text": "Tauhid Langit, Bumi, Manusia" }
-    ],
-    "correct": "B",
-    "explanation": {
-      "text": "Pembagian yang masyhur di kalangan ulama Ahlus Sunnah adalah Rububiyah, Uluhiyah, dan Asma wa Sifat.",
-      "dalil": "",
-      "resources": []
-    },
-    "points": 15,
-    "spare": null
-  },
-  {
-    "topic_slug": "akidah-tauhid",
-    "question_text": "Rukun Iman yang pertama adalah...",
-    "options": [
-      { "id": "A", "text": "Iman kepada Malaikat" },
-      { "id": "B", "text": "Iman kepada Rasul" },
-      { "id": "C", "text": "Iman kepada Allah" },
-      { "id": "D", "text": "Iman kepada Takdir" }
-    ],
-    "correct": "C",
-    "explanation": {
-      "text": "Rukun Iman yang pertama dan paling utama adalah Iman kepada Allah.",
-      "dalil": "Hadits Jibril (HR. Muslim)",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "akidah-tauhid",
-    "question_text": "Berdoa kepada selain Allah (misal: kepada penghuni kubur) termasuk pelanggaran terhadap Tauhid...",
-    "options": [
-      { "id": "A", "text": "Rububiyah" },
-      { "id": "B", "text": "Uluhiyah" },
-      { "id": "C", "text": "Asma wa Sifat" },
-      { "id": "D", "text": "Zatiyah" }
-    ],
-    "correct": "B",
-    "explanation": {
-      "text": "Doa adalah ibadah. Memalingkan ibadah kepada selain Allah melanggar Tauhid Uluhiyah (mengesakan Allah dalam ibadah).",
-      "dalil": "QS. Al-Jin: 18",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "akidah-tauhid",
-    "question_text": "Syirik yang dapat mengeluarkan pelakunya dari Islam disebut...",
-    "options": [
-      { "id": "A", "text": "Syirik Kecil (Asghar)" },
-      { "id": "B", "text": "Syirik Besar (Akbar)" },
-      { "id": "C", "text": "Syirik Tersembunyi (Khafi)" }
-    ],
-    "correct": "B",
-    "explanation": {
-      "text": "Syirik Akbar (Besar) menghapuskan seluruh amal dan mengeluarkan pelakunya dari Islam.",
-      "dalil": "",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "akidah-tauhid",
-    "question_text": "Riya' (ingin dipuji orang lain dalam ibadah) termasuk kategori...",
-    "options": [
-      { "id": "A", "text": "Syirik Besar" },
-      { "id": "B", "text": "Syirik Kecil" },
-      { "id": "C", "text": "Kufur Besar" },
-      { "id": "D", "text": "Kufur Nikmat" }
-    ],
-    "correct": "B",
-    "explanation": {
-      "text": "Riya' disebut oleh Nabi SAW sebagai Syirik Asghar (Syirik Kecil) atau Syirik Khafi (Samar).",
-      "dalil": "",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "akidah-tauhid",
-    "question_text": "Nama-nama Allah yang indah dan sempurna disebut...",
-    "options": [
-      { "id": "A", "text": "Asmaul Husna" },
-      { "id": "B", "text": "Sifat Wajib 20" },
-      { "id": "C", "text": "Ismul A'zam" },
-      { "id": "D", "text": "Kalimat Thayyibah" }
+      { "id": "A", "text": "Syirik" },
+      { "id": "B", "text": "Fasik" },
+      { "id": "C", "text": "Munafik" },
+      { "id": "D", "text": "Zalim" }
     ],
     "correct": "A",
     "explanation": {
-      "text": "Allah memiliki nama-nama yang paling indah yang disebut Asmaul Husna.",
-      "dalil": "QS. Al-A'raf: 180",
-      "resources": []
+      "text": "Syirik adalah dosa paling besar yaitu menyekutukan Allah dalam ibadah atau sifat-sifat-Nya.",
+      "dalil": "QS. An-Nisa: 48"
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "akidah-tauhid",
     "topic_slug": "akidah-tauhid",
-    "question_text": "Surah dalam Al-Quran yang nilainya setara dengan sepertiga Al-Quran karena kemurnian kandungan tauhidnya adalah...",
+    "type": "multiple_choice",
+    "question_text": "Kalimat 'Laa ilaha illallah' disebut kalimat...",
     "options": [
-      { "id": "A", "text": "Al-Fatihah" },
-      { "id": "B", "text": "Al-Ikhlas" },
-      { "id": "C", "text": "Al-Falaq" },
-      { "id": "D", "text": "An-Nas" }
+      { "id": "A", "text": "Tasbih" },
+      { "id": "B", "text": "Tahmid" },
+      { "id": "C", "text": "Tauhid/Tahlil" },
+      { "id": "D", "text": "Takbir" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Laa ilaha illallah adalah kalimat Tauhid yang bermakna Tiada Tuhan yang berhak disembah selain Allah.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "multiple_choice",
+    "question_text": "Tauhid dibagi menjadi tiga bagian utama oleh para ulama, yaitu...",
+    "options": [
+      { "id": "A", "text": "Rububiyah, Uluhiyah, Asma wa Sifat" },
+      { "id": "B", "text": "Zat, Sifat, Af'al" },
+      { "id": "C", "text": "Dunia, Kubur, Akhirat" },
+      { "id": "D", "text": "Wajib, Mustahil, Jaiz" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Pembagian tauhid yang masyhur adalah Rububiyah (Penciptaan), Uluhiyah (Ibadah), dan Asma wa Sifat (Nama & Sifat).",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "multiple_choice",
+    "question_text": "Meyakini bahwa Allah satu-satunya Pencipta, Pemilik, dan Pengatur alam semesta adalah pengertian dari...",
+    "options": [
+      { "id": "A", "text": "Tauhid Uluhiyah" },
+      { "id": "B", "text": "Tauhid Rububiyah" },
+      { "id": "C", "text": "Tauhid Asma wa Sifat" },
+      { "id": "D", "text": "Tauhid Mulkiyah" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Surah Al-Ikhlas memuat kandungan tauhid yang murni tentang keesaan Allah, sehingga Nabi SAW menyebutnya sebanding dengan sepertiga Al-Quran.",
-      "dalil": "HR. Bukhari",
-      "resources": []
+      "text": "Rububiyah berkaitan dengan perbuatan Allah seperti mencipta, memberi rezeki, dan mengatur.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "true_false",
+    "question_text": "Memakai jimat untuk menangkal bahaya termasuk perbuatan syirik.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Menggantungkan jimat dengan keyakinan bisa menolak bala adalah bentuk syirik (bisa kecil atau besar tergantung keyakinan).",
+      "dalil": "HR. Ahmad"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "true_false",
+    "question_text": "Berdoa meminta kepada penghuni kubur yang shaleh diperbolehkan dalam Islam sebagai perantara.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "false",
+    "explanation": {
+      "text": "Berdoa (meminta) kepada selain Allah, termasuk kepada orang mati, adalah bentuk Syirik Akbar.",
+      "dalil": "QS. Al-Jinn: 18"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "true_false",
+    "question_text": "Riya' (pamer ibadah) disebut juga dengan Syirik Kecil (Syirik Asghar).",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Nabi SAW mengkhawatirkan syirik kecil atas umatnya, yaitu Riya'.",
+      "dalil": "HR. Ahmad"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "puzzle_order",
+    "question_text": "Urutkan Rukun Iman berikut dengan benar:",
+    "options": [
+      { "id": "IMAN_1", "text": "Iman kepada Allah" },
+      { "id": "IMAN_2", "text": "Iman kepada Malaikat" },
+      { "id": "IMAN_3", "text": "Iman kepada Kitab" },
+      { "id": "IMAN_4", "text": "Iman kepada Rasul" },
+      { "id": "IMAN_5", "text": "Iman kepada Hari Akhir" },
+      { "id": "IMAN_6", "text": "Iman kepada Takdir" }
+    ],
+    "correct": ["IMAN_1", "IMAN_2", "IMAN_3", "IMAN_4", "IMAN_5", "IMAN_6"],
+    "explanation": {
+      "text": "Urutan Rukun Iman: Allah, Malaikat, Kitab, Rasul, Hari Akhir, Qada & Qadar.",
+      "dalil": "Hadits Jibril"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "multiple_choice",
+    "question_text": "Lawan dari Tauhid adalah...",
+    "options": [
+      { "id": "A", "text": "Syirik" },
+      { "id": "B", "text": "Kufur" },
+      { "id": "C", "text": "Nifaq" },
+      { "id": "D", "text": "Fasiq" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Tauhid adalah mengesakan Allah, lawannya adalah Syirik (menyekutukan Allah).",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "multiple_choice",
+    "question_text": "Allah memiliki nama-nama yang indah yang disebut...",
+    "options": [
+      { "id": "A", "text": "Asmaul Husna" },
+      { "id": "B", "text": "Sifat Wajib" },
+      { "id": "C", "text": "Kalam Ilahi" },
+      { "id": "D", "text": "Lauhul Mahfuzh" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Asmaul Husna artinya nama-nama yang paling baik/indah milik Allah.",
+      "dalil": "QS. Al-A'raf: 180"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "multiple_choice",
+    "question_text": "Sikap seorang mukmin ketika mendapatkan nikmat adalah...",
+    "options": [
+      { "id": "A", "text": "Bersyukur" },
+      { "id": "B", "text": "Bersabar" },
+      { "id": "C", "text": "Takabur" },
+      { "id": "D", "text": "Riya" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Mukmin yang baik bersyukur saat diberi nikmat dan bersabar saat diuji.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "true_false",
+    "question_text": "Percaya kepada ramalan bintang (zodiak) tidak mempengaruhi kesempurnaan tauhid.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "false",
+    "explanation": {
+      "text": "Mempercayai ramalan nasib (zodiak) bisa merusak tauhid bahkan bisa jatuh pada kesyirikan.",
+      "dalil": "HR. Abu Daud"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "puzzle_order",
+    "question_text": "Urutkan tingkatan agama Islam dari yang paling dasar ke yang paling tinggi:",
+    "options": [
+      { "id": "LVL_1", "text": "Islam (Amalan Lahir)" },
+      { "id": "LVL_2", "text": "Iman (Keyakinan Hati)" },
+      { "id": "LVL_3", "text": "Ihsan (Merasa diawasi Allah)" }
+    ],
+    "correct": ["LVL_1", "LVL_2", "LVL_3"],
+    "explanation": {
+      "text": "Tiga tingkatan agama: Islam, Iman, dan Ihsan.",
+      "dalil": "Hadits Jibril"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "multiple_choice",
+    "question_text": "Arti dari sifat Allah 'Al-Ahad' adalah...",
+    "options": [
+      { "id": "A", "text": "Maha Esa / Satu" },
+      { "id": "B", "text": "Maha Pengasih" },
+      { "id": "C", "text": "Maha Kuasa" },
+      { "id": "D", "text": "Maha Melihat" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Al-Ahad bermakna Allah Maha Esa, tidak beranak dan tidak diperanakkan.",
+      "dalil": "QS. Al-Ikhlas: 1"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "multiple_choice",
+    "question_text": "Dosa yang tidak akan diampuni oleh Allah jika pelakunya mati sebelum bertaubat adalah...",
+    "options": [
+      { "id": "A", "text": "Syirik" },
+      { "id": "B", "text": "Membunuh" },
+      { "id": "C", "text": "Berzina" },
+      { "id": "D", "text": "Mencuri" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Sesungguhnya Allah tidak mengampuni dosa syirik, dan mengampuni dosa selain itu bagi siapa yang Dia kehendaki.",
+      "dalil": "QS. An-Nisa: 48"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "true_false",
+    "question_text": "Bersumpah dengan nama selain Allah (misal: Demi Ayahku) adalah hal yang dilarang/syirik.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Barangsiapa bersumpah dengan selain Allah maka ia telah berbuat kekufuran atau kesyirikan.",
+      "dalil": "HR. Tirmidzi"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "multiple_choice",
+    "question_text": "Tujuan utama penciptaan manusia adalah...",
+    "options": [
+      { "id": "A", "text": "Beribadah kepada Allah" },
+      { "id": "B", "text": "Menjadi kaya" },
+      { "id": "C", "text": "Menguasai bumi" },
+      { "id": "D", "text": "Bersenang-senang" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Tidak Aku ciptakan jin dan manusia kecuali untuk beribadah kepada-Ku.",
+      "dalil": "QS. Adz-Dzariyat: 56"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "multiple_choice",
+    "question_text": "Sifat Wajib bagi Allah 'Wujud' artinya...",
+    "options": [
+      { "id": "A", "text": "Ada" },
+      { "id": "B", "text": "Terdahulu" },
+      { "id": "C", "text": "Kekal" },
+      { "id": "D", "text": "Berbeda dengan makhluk" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Wujud artinya Ada. Allah itu ada dengan zat-Nya sendiri.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "true_false",
+    "question_text": "Nifaq (Kemunafikan) adalah menampakkan keislaman tetapi menyembunyikan kekafiran.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Itu adalah definisi Nifaq I'tiqadi (Keyakinan/Besar).",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-tauhid",
+    "topic_slug": "akidah-tauhid",
+    "type": "puzzle_order",
+    "question_text": "Susunlah potongan ayat Kursi berikut ini:",
+    "options": [
+      { "id": "P_1", "text": "Allahu laa ilaaha illa huwal" },
+      { "id": "P_2", "text": "Hayyul Qayyum" },
+      { "id": "P_3", "text": "Laa ta'khudzuhu sinatuw" },
+      { "id": "P_4", "text": "Walaa naum" }
+    ],
+    "correct": ["P_1", "P_2", "P_3", "P_4"],
+    "explanation": {
+      "text": "Allah, tidak ada Tuhan selain Dia. Yang Mahahidup, Yang terus-menerus mengurus (makhluk-Nya).",
+      "dalil": "QS. Al-Baqarah: 255"
+    },
+    "points": 25
   }
 ]

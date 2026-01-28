@@ -1,182 +1,348 @@
 [
   {
+    "subtopic_id": "fiqih-muamalat",
     "topic_slug": "fiqih-muamalat",
-    "question_text": "Jual beli dengan sistem melebihkan pembayaran karena penangguhan waktu (hutang berbunga) disebut...",
+    "type": "multiple_choice",
+    "question_text": "Hukum asal dalam muamalat (transaksi) adalah...",
     "options": [
-      { "id": "A", "text": "Riba Fadhl" },
-      { "id": "B", "text": "Riba Nasi'ah" },
-      { "id": "C", "text": "Jual Beli Salam" },
-      { "id": "D", "text": "Murabahah" }
+      { "id": "A", "text": "Haram kecuali ada dalil yang membolehkan" },
+      { "id": "B", "text": "Mubah (Boleh) kecuali ada dalil yang melarang" },
+      { "id": "C", "text": "Wajib dilakukan" },
+      { "id": "D", "text": "Makruh" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Riba Nasi'ah adalah tambahan yang disyaratkan yang diambil oleh pemberi hutang dari orang yang berhutang sebagai imbalan penangguhan (tempo).",
-      "dalil": "",
-      "resources": []
+      "text": "Kaidah fiqih menyatakan hukum asal muamalah adalah mubah, berbeda dengan ibadah yang hukum asalnya haram (harus menunggu perintah).",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "fiqih-muamalat",
     "topic_slug": "fiqih-muamalat",
-    "question_text": "Hukum asal muamalah (transaksi duniawi) adalah...",
+    "type": "multiple_choice",
+    "question_text": "Apa arti dari Riba secara bahasa?",
     "options": [
-      { "id": "A", "text": "Haram sampai ada dalil yang membolehkan" },
-      { "id": "B", "text": "Boleh (Mubah) sampai ada dalil yang melarang" },
-      { "id": "C", "text": "Makruh" },
-      { "id": "D", "text": "Wajib" }
-    ],
-    "correct": "B",
-    "explanation": {
-      "text": "Kaidah Fiqih menyatakan hukum asal dalam urusan dunia/muamalah adalah mubah (boleh) kecuali ada dalil yang mengharamkannya.",
-      "dalil": "Kaidah Fiqih",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "fiqih-muamalat",
-    "question_text": "Jual beli barang yang tidak jelas (gharar), seperti 'jual burung di udara', hukumnya...",
-    "options": [
-      { "id": "A", "text": "Sah" },
-      { "id": "B", "text": "Haram/Tidak Sah" },
-      { "id": "C", "text": "Makruh" },
-      { "id": "D", "text": "Sunnah" }
-    ],
-    "correct": "B",
-    "explanation": {
-      "text": "Nabi SAW melarang jual beli Gharar (ketidakjelasan) karena berpotensi merugikan salah satu pihak.",
-      "dalil": "HR. Muslim",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "fiqih-muamalat",
-    "question_text": "Khiyar dalam jual beli artinya...",
-    "options": [
-      { "id": "A", "text": "Hak memilih lanjut atau batal" },
-      { "id": "B", "text": "Keuntungan" },
-      { "id": "C", "text": "Kerugian" },
-      { "id": "D", "text": "Tawar menawar" }
+      { "id": "A", "text": "Ziyadah (Tambahan)" },
+      { "id": "B", "text": "Pengurangan" },
+      { "id": "C", "text": "Pertukaran" },
+      { "id": "D", "text": "Sedekah" }
     ],
     "correct": "A",
     "explanation": {
-      "text": "Khiyar adalah hak pilih bagi penjual dan pembeli untuk melangsungkan akad atau membatalkannya dalam kondisi tertentu.",
-      "dalil": "",
-      "resources": []
+      "text": "Riba secara bahasa berarti tambahan di atas modal pokok.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "fiqih-muamalat",
     "topic_slug": "fiqih-muamalat",
-    "question_text": "Akad kerjasama usaha dimana satu pihak memberi modal dan pihak lain mengelola, dengan bagi hasil disebut...",
+    "type": "true_false",
+    "question_text": "Jual beli Ijon (membeli buah yang masih di pohon dan belum layak panen) diperbolehkan dalam Islam.",
     "options": [
-      { "id": "A", "text": "Murabahah" },
-      { "id": "B", "text": "Mudharabah" },
-      { "id": "C", "text": "Wadiah" },
-      { "id": "D", "text": "Ijarah" }
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
     ],
-    "correct": "B",
+    "correct": "false",
     "explanation": {
-      "text": "Mudharabah adalah akad kerjasama permodalan dan pengelola dengan pembagian keuntungan nisbah.",
-      "dalil": "",
-      "resources": []
+      "text": "Jual beli ini dilarang karena mengandung unsur Gharar (ketidakpastian) dan potensi kerugian salah satu pihak.",
+      "dalil": ""
     },
-    "points": 15,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "fiqih-muamalat",
     "topic_slug": "fiqih-muamalat",
-    "question_text": "Menimbun barang pokok saat langka agar harganya naik (Ihtikar) hukumnya...",
+    "type": "true_false",
+    "question_text": "Setiap hutang yang membawa manfaat (tambahan) bagi pemberi hutang adalah Riba.",
     "options": [
-      { "id": "A", "text": "Boleh (Strategi Bisnis)" },
-      { "id": "B", "text": "Haram" },
-      { "id": "C", "text": "Makruh" },
-      { "id": "D", "text": "Sunnah" }
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
     ],
-    "correct": "B",
+    "correct": "true",
     "explanation": {
-      "text": "Menimbun (Ihtikar) barang kebutuhan pokok yang merugikan orang banyak hukumnya haram.",
-      "dalil": "HR. Muslim",
-      "resources": []
+      "text": "Ini adalah kaidah yang disepakati ulama mengenai riba dalam hutang piutang (Riba Qardh).",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 15
   },
   {
+    "subtopic_id": "fiqih-muamalat",
     "topic_slug": "fiqih-muamalat",
-    "question_text": "Luqathah adalah istilah fiqih untuk...",
+    "type": "puzzle_order",
+    "question_text": "Urutkan rukun jual beli berikut ini:",
     "options": [
-      { "id": "A", "text": "Barang gadaian" },
-      { "id": "B", "text": "Barang temuan" },
-      { "id": "C", "text": "Barang curian" },
-      { "id": "D", "text": "Barang titipan" }
+      { "id": "R_1", "text": "Adanya Penjual & Pembeli (Aqidain)" },
+      { "id": "R_2", "text": "Adanya barang yang dijual (Ma'qud 'Alaih)" },
+      { "id": "R_3", "text": "Adanya Harga (Tsaman)" },
+      { "id": "R_4", "text": "Adanya Serah Terima (Sighat/Ijab Qabul)" }
     ],
-    "correct": "B",
+    "correct": ["R_1", "R_2", "R_3", "R_4"],
     "explanation": {
-      "text": "Luqathah adalah harta yang ditemukan (barang temuan) yang tidak diketahui pemiliknya.",
-      "dalil": "",
-      "resources": []
+      "text": "Empat rukun utama yang harus ada dalam transaksi jual beli agar sah.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 20
   },
   {
+    "subtopic_id": "fiqih-muamalat",
     "topic_slug": "fiqih-muamalat",
-    "question_text": "Mengurangi timbangan atau takaran dalam berdagang termasuk dosa yang diancam dalam surah...",
+    "type": "multiple_choice",
+    "question_text": "Hak untuk memilih antara melanjutkan atau membatalkan jual beli disebut...",
     "options": [
-      { "id": "A", "text": "Al-Ma'un" },
-      { "id": "B", "text": "Al-Muthaffifin" },
-      { "id": "C", "text": "Al-Humazah" },
-      { "id": "D", "text": "At-Takatsur" }
-    ],
-    "correct": "B",
-    "explanation": {
-      "text": "Surah Al-Muthaffifin (Orang-orang yang curang) berisi ancaman bagi mereka yang mengurangi takaran dan timbangan.",
-      "dalil": "QS. Al-Muthaffifin: 1-3",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "fiqih-muamalat",
-    "question_text": "Hukum memakan harta anak yatim secara zalim adalah...",
-    "options": [
-      { "id": "A", "text": "Dosa Besar" },
-      { "id": "B", "text": "Makruh" },
-      { "id": "C", "text": "Dosa Kecil" },
-      { "id": "D", "text": "Mubah" }
+      { "id": "A", "text": "Khiyar" },
+      { "id": "B", "text": "Ijarah" },
+      { "id": "C", "text": "Syirkah" },
+      { "id": "D", "text": "Muzara'ah" }
     ],
     "correct": "A",
     "explanation": {
-      "text": "Memakan harta anak yatim adalah salah satu dari 7 dosa besar yang membinasakan.",
-      "dalil": "QS. An-Nisa: 10",
-      "resources": []
+      "text": "Khiyar memberikan kesempatan bagi penjual/pembeli untuk mempertimbangkan transaksinya.",
+      "dalil": "HR. Bukhari Muslim"
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "fiqih-muamalat",
     "topic_slug": "fiqih-muamalat",
-    "question_text": "Akad sewa menyewa barang atau jasa disebut...",
+    "type": "multiple_choice",
+    "question_text": "Akad sewa-menyewa atau pemberian jasa dengan upah disebut...",
     "options": [
       { "id": "A", "text": "Ijarah" },
-      { "id": "B", "text": "Wakalah" },
-      { "id": "C", "text": "Kafalah" },
-      { "id": "D", "text": "Hiwalah" }
+      { "id": "B", "text": "Rahn" },
+      { "id": "C", "text": "Wadi'ah" },
+      { "id": "D", "text": "Hawalah" }
     ],
     "correct": "A",
     "explanation": {
-      "text": "Ijarah adalah akad pemindahan hak guna (manfaat) atas suatu barang atau jasa dengan upah.",
-      "dalil": "",
-      "resources": []
+      "text": "Ijarah adalah akad atas manfaat (jasa) dengan imbalan ('iwad).",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
+  },
+  {
+    "subtopic_id": "fiqih-muamalat",
+    "topic_slug": "fiqih-muamalat",
+    "type": "true_false",
+    "question_text": "Diharamkan merahasiakan cacat barang yang dijual kepada pembeli.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Seorang muslim adalah saudara bagi muslim lainnya, tidak halal baginya menjual barang yang ada cacatnya kecuali ia jelaskan.",
+      "dalil": "HR. Ibnu Majah"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "fiqih-muamalat",
+    "topic_slug": "fiqih-muamalat",
+    "type": "puzzle_order",
+    "question_text": "Urutkan prioritas pembagian harta warisan (Tirkah):",
+    "options": [
+      { "id": "W_1", "text": "Biaya pengurusan jenazah" },
+      { "id": "W_2", "text": "Pelunasan hutang si mayat" },
+      { "id": "W_3", "text": "Pelaksanaan wasiat (maks 1/3)" },
+      { "id": "W_4", "text": "Pembagian kepada ahli waris" }
+    ],
+    "correct": ["W_1", "W_2", "W_3", "W_4"],
+    "explanation": {
+      "text": "Waris baru boleh dibagi setelah biaya tajhiz, hutang, dan wasiat diselesaikan.",
+      "dalil": ""
+    },
+    "points": 25
+  },
+  {
+    "subtopic_id": "fiqih-muamalat",
+    "topic_slug": "fiqih-muamalat",
+    "type": "multiple_choice",
+    "question_text": "Akad kerjasama dua pihak atau lebih untuk usaha dengan bagi hasil disebut...",
+    "options": [
+      { "id": "A", "text": "Syirkah (Musyarakah)" },
+      { "id": "B", "text": "Mudharabah" },
+      { "id": "C", "text": "Murabahah" },
+      { "id": "D", "text": "Wakalah" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Syirkah adalah pencampuran harta atau tenaga untuk mencari keuntungan bersama.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "fiqih-muamalat",
+    "topic_slug": "fiqih-muamalat",
+    "type": "true_false",
+    "question_text": "Najasy (menawar barang dengan harga tinggi tanpa niat membeli untuk mengelabui orang lain) dilarang dalam Islam.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Najasy adalah bentuk penipuan dalam perdagangan.",
+      "dalil": "HR. Bukhari Muslim"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "fiqih-muamalat",
+    "topic_slug": "fiqih-muamalat",
+    "type": "multiple_choice",
+    "question_text": "Seseorang yang meminjamkan uang namun mengharuskan peminjam untuk memberikan hadiah kepadanya termasuk...",
+    "options": [
+      { "id": "A", "text": "Riba" },
+      { "id": "B", "text": "Sedekah" },
+      { "id": "C", "text": "Hibah" },
+      { "id": "D", "text": "Khiyar" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Segala manfaat yang disyaratkan dalam hutang piutang adalah riba.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "fiqih-muamalat",
+    "topic_slug": "fiqih-muamalat",
+    "type": "true_false",
+    "question_text": "Dalam akad Mudharabah, jika rugi materi (uang), maka kerugian tersebut ditanggung oleh pengelola jika bukan karena kelalaiannya.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "false",
+    "explanation": {
+      "text": "Dalam Mudharabah, kerugian finansial ditanggung pemilik modal, sementara pengelola rugi waktu dan tenaga.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "fiqih-muamalat",
+    "topic_slug": "fiqih-muamalat",
+    "type": "puzzle_order",
+    "question_text": "Urutkan jenis benda yang terkena kewajiban Zakat Mal:",
+    "options": [
+      { "id": "Z_1", "text": "Emas & Perak (Uang)" },
+      { "id": "Z_2", "text": "Hewan Ternak (An'am)" },
+      { "id": "Z_3", "text": "Hasil Pertanian (Zuru')" },
+      { "id": "Z_4", "text": "Harta Temuan (Rikaz)" }
+    ],
+    "correct": ["Z_1", "Z_2", "Z_3", "Z_4"],
+    "explanation": {
+      "text": "Empat kategori besar harta yang wajib dizakati menurut kaidah fiqih.",
+      "dalil": ""
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "fiqih-muamalat",
+    "topic_slug": "fiqih-muamalat",
+    "type": "multiple_choice",
+    "question_text": "Apa arti dari Rahn?",
+    "options": [
+      { "id": "A", "text": "Gadai (Menjamin hutang dengan barang)" },
+      { "id": "B", "text": "Sewa" },
+      { "id": "C", "text": "Titipan" },
+      { "id": "D", "text": "Pindah hutang" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Rahn adalah menjadikan harta sebagai jaminan atas hutang.",
+      "dalil": "QS. Al-Baqarah: 283"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "fiqih-muamalat",
+    "topic_slug": "fiqih-muamalat",
+    "type": "true_false",
+    "question_text": "Jual beli anjing dan babi hukumnya sah dalam Islam.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "false",
+    "explanation": {
+      "text": "Salah satu syarat barang yang dijual adalah suci dan bermanfaat. Anjing dan babi adalah najis (kecuali anjing buruan menurut sebagian ulama).",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "fiqih-muamalat",
+    "topic_slug": "fiqih-muamalat",
+    "type": "multiple_choice",
+    "question_text": "Gharar dalam muamalat artinya...",
+    "options": [
+      { "id": "A", "text": "Ketidakjelasan / Penipuan" },
+      { "id": "B", "text": "Keadilan" },
+      { "id": "C", "text": "Keuntungan besar" },
+      { "id": "D", "text": "Kerelaan" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Nabi SAW melarang jual beli yang mengandung Gharar (Spekulatif/Kabur).",
+      "dalil": "HR. Muslim"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "fiqih-muamalat",
+    "topic_slug": "fiqih-muamalat",
+    "type": "true_false",
+    "question_text": "Diperbolehkan menjual barang yang bukan milik kita tanpa seizin pemiliknya.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "false",
+    "explanation": {
+      "text": "Janganlah engkau menjual barang yang tidak engkau miliki.",
+      "dalil": "HR. Abu Daud"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "fiqih-muamalat",
+    "topic_slug": "fiqih-muamalat",
+    "type": "multiple_choice",
+    "question_text": "Upah bagi pekerja harus dibayarkan...",
+    "options": [
+      { "id": "A", "text": "Sebelum keringatnya kering" },
+      { "id": "B", "text": "Tahun depan" },
+      { "id": "C", "text": "Setelah dipotong pajaknya" },
+      { "id": "D", "text": "Tergantung perasaannya" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Berikanlah upah kepada pekerja sebelum keringatnya kering.",
+      "dalil": "HR. Ibnu Majah"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "fiqih-muamalat",
+    "topic_slug": "fiqih-muamalat",
+    "type": "puzzle_order",
+    "question_text": "Susun rukun akad nikah menurut jumhur ulama:",
+    "options": [
+      { "id": "N_1", "text": "Calon Suami & Istri" },
+      { "id": "N_2", "text": "Wali Nikah" },
+      { "id": "N_3", "text": "Dua Saksi yang Adil" },
+      { "id": "N_4", "text": "Ijab Qabul" }
+    ],
+    "correct": ["N_1", "N_2", "N_3", "N_4"],
+    "explanation": {
+      "text": "Rukun nikah yang harus terpenuhi agar pernikahan sah secara syariat.",
+      "dalil": ""
+    },
+    "points": 25
   }
 ]

@@ -8,7 +8,7 @@ Untuk memahami sistem Quest & Multiplayer yang berjalan saat ini, berikut adalah
 
 ### 1. Multiplayer Logic & State (Supabase)
 
-- **Service:** `src/services/supabase/multiplayerService.ts`
+- **Service:** `src/services/supabase/QuestMultiplayerService.ts` (Renamed from `multiplayerService`)
   - _Core Backend Logic:_ Mengatur pembuatan room, real-time subscription, logic scoring (Dynamic Scoring System), dan state management.
 - **Database Schema:** `supabase/new/all-table-schema.json`
   - _Reference:_ Cek tabel `quest_sessions`. Kolom `questions_data` (JSONB) menyimpan flow permainan, sedangkan `match_id`, `game_mode` tracking history.
@@ -36,65 +36,50 @@ Untuk memahami sistem Quest & Multiplayer yang berjalan saat ini, berikut adalah
 
 ## 1. Fitur Utama yang Direncanakan
 
-### A. Redemption Question (Kesempatan Kedua) 🔄
+### A. Redemption Question (Kesempatan Kedua) 🔄 ✅ [COMPLETED]
 
 Memberikan kesempatan kepada pemain untuk menjawab ulang satu soal yang salah di akhir sesi permainan.
 
-- **Tujuan:** Memberikan harapan bagi pemain yang tertinggal dan memperkuat proses belajar lewat perbaikan kesalahan.
-- **Mekanisme:**
-  - Sistem mencatat soal-soal yang dijawab salah oleh pemain.
-  - Sebelum Final Leaderboard, pemain ditawari "Redemption Round".
-  - Jika benar, poin bertambah (biasanya parsial, misal 50%).
-- **Kompleksitas:** **Low - Medium**.
-- **Database Impact:**
-  - **Appwrite:** Tidak ada.
-  - **Supabase:** Perlu update logic validasi di `submitAnswer` untuk mengizinkan input ganda pada `question_id` yang sama khusus sesi redemption.
+- **Status:** **Sudah Terimplementasi**
+- **Detail:** Pemain ditawari menebus kesalahan untuk 1 soal sebelum game berakhir. Skor 50% jika benar.
 
-### B. Power-Ups (Defense & Boost) 🔥
+### B. Power-Ups (Defense & Boost) 🔥 ✅ [COMPLETED]
 
 Item khusus yang bisa digunakan pemain untuk memodifikasi jalannya permainan.
 
-- **Konsep:** Fokus pada _Self-Boost_ dan _Defense_ (bukan menyerang pemain lain), sesuai nilai _fastabiqul khairat_.
-- **Contoh Item:**
-  - **Streak Saver:** Melindungi streak agar tidak hilang jika salah menjawab 1x.
-  - **Double Points:** Menggandakan poin untuk satu soal berikutnya.
-  - **50-50:** Menghilangkan 2 jawaban yang salah.
-  - **Time Freeze:** Menghentikan durasi waktu (untuk time bonus maskimal) selama beberapa detik.
-- **Kompleksitas:** **Medium - High**.
-- **Database Impact:**
-  - **Appwrite:** Tidak ada.
-  - **Supabase:** Perlu field `inventory` pada objek player dan logic validasi skor tambahan di backend.
+- **Status:** **Sudah Terimplementasi**
+- **Detail:**
+  - `Streak Saver`, `Double Points`, `50-50`, `Time Freeze`.
+  - Inventory tersimpan di JSONB.
+  - UI aktivasi di dalam game.
 
-### C. Team Mode 🤝
+### C. Team Mode 🤝 ✅ [COMPLETED]
 
 Mode permainan berbasis tim (misal: Ikhwan vs Akhwat, Tim A vs Tim B).
 
-- **Tujuan:** Mendorong kolaborasi dan semangat kebersamaan (ukhuwah).
-- **Mekanisme:**
-  - Pemain memilih tim di Lobby.
-  - Skor individu diakumulasi menjadi Skor Tim.
-  - Leaderboard menampilkan ranking Tim terlebih dahulu.
-- **Kompleksitas:** **Medium - High**.
-- **Database Impact:**
-  - **Appwrite:** Tidak ada.
-  - **Supabase:** Perlu field `team_id` pada objek Player. Logic Leaderboard dan kalkulasi skor perlu disesuaikan.
+- **Status:** **Sudah Terimplementasi**
+- **Detail:**
+  - Opsi toggle di `CreateRoomForm`.
+  - Pemilihan Tim di `LobbyRoom` dengan Auto-Balance.
+  - Scoring akumulatif tim + Individual.
+  - Supabase Column: `game_mode` ("MULTIPLAYER"), `match_id`, `subtopic_slug` terisi.
 
-### D. Question Types Variety 🧩
+### D. Question Types Variety 🧩 ✅ [COMPLETED]
 
 Variasi tipe soal selain Multiple Choice standar.
 
 - **Tipe Baru:**
-  - **True / False:** Variasi sederhana dari multiple choice (2 opsi).
-  - **Puzzle / Order:** Mengurutkan jawaban (misal: Urutkan Rukun Islam, Urutkan Ayat).
+  - **True / False:** Variasi sederhana dari multiple choice (2 opsi). ✅
+  - **Puzzle / Order:** Mengurutkan jawaban (misal: Urutkan Rukun Islam, Urutkan Ayat). ✅
   - _(Note: Type Answer ditiadakan untuk simplifikasi UX mobile)_.
 - **Kompleksitas:** **Very High**.
 - **Database Impact:**
-  - **Appwrite (High Impact):**
-    - Tabel `Questions` butuh kolom `type` (Enum).
-    - Struktur kolom `correct` harus diubah/disesuaikan untuk mendukung Array urutan (JSON), bukan string tunggal.
-  - **Supabase (High Impact):**
-    - Logic validasi jawaban `submitAnswer` harus dinamis mengikuti tipe soal.
-    - Frontend butuh UI component baru (Drag & Drop list).
+  - **Appwrite (High Impact):** ✅ [Schema & Sync Updated]
+    - Tabel `Questions` sudah ditambah kolom `type`.
+    - Kolom `correct` sudah diperbesar untuk menampung JSON Array.
+  - **Supabase (High Impact):** ✅ [Logic Updated]
+    - Logic validasi jawaban `submitAnswer` sudah dinamis mengikuti tipe soal.
+    - Frontend menggunakan `framer-motion` Reorder untuk UI Puzzle/Order.
 
 ---
 

@@ -1,182 +1,347 @@
 [
   {
+    "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
-    "question_text": "Julukan Nabi Muhammad SAW sebelum menjadi Rasul karena kejujurannya adalah...",
+    "type": "multiple_choice",
+    "question_text": "Kapan Nabi Muhammad SAW dilahirkan?",
+    "options": [
+      { "id": "A", "text": "12 Rabiul Awal Tahun Gajah" },
+      { "id": "B", "text": "1 Ramadan Tahun Gajah" },
+      { "id": "C", "text": "10 Muharram" },
+      { "id": "D", "text": "27 Rajab" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Nabi Muhammad SAW lahir pada tanggal 12 Rabiul Awal di tahun Gajah (Amul Fil).",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-rasulullah",
+    "topic_slug": "sirah-rasulullah",
+    "type": "multiple_choice",
+    "question_text": "Siapakah nama ibunda Nabi Muhammad SAW?",
+    "options": [
+      { "id": "A", "text": "Khadijah" },
+      { "id": "B", "text": "Aminah" },
+      { "id": "C", "text": "Halimah" },
+      { "id": "D", "text": "Fatimah" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Ibunda beliau adalah Aminah binti Wahab.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-rasulullah",
+    "topic_slug": "sirah-rasulullah",
+    "type": "true_false",
+    "question_text": "Nabi Muhammad SAW disusui oleh Halimah As-Sa'diyah dari kabilah Bani Sa'ad.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Merupakan tradisi Arab Quraisy menitipkan bayi mereka ke pedalaman agar bahasanya fasih dan fisiknya kuat.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-rasulullah",
+    "topic_slug": "sirah-rasulullah",
+    "type": "true_false",
+    "question_text": "Ayah Nabi Muhammad SAW wafat setelah Nabi Muhammad SAW berusia 6 tahun.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "false",
+    "explanation": {
+      "text": "Ayah beliau, Abdullah, wafat saat Nabi masih di dalam kandungan ibunya (Yatim).",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-rasulullah",
+    "topic_slug": "sirah-rasulullah",
+    "type": "puzzle_order",
+    "question_text": "Urutkan pengasuh Nabi Muhammad SAW sejak kecil hingga dewasa:",
+    "options": [
+      { "id": "O_1", "text": "Aminah (Ibu)" },
+      { "id": "O_2", "text": "Halimah As-Sa'diyah (Ibu Susu)" },
+      { "id": "O_3", "text": "Abdul Muthalib (Kakek)" },
+      { "id": "O_4", "text": "Abu Thalib (Paman)" }
+    ],
+    "correct": ["O_1", "O_2", "O_3", "O_4"],
+    "explanation": {
+      "text": "Setelah ibundanya wafat, beliau diasuh kakeknya, lalu setelah kakeknya wafat diasuh pamannya.",
+      "dalil": ""
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "sirah-rasulullah",
+    "topic_slug": "sirah-rasulullah",
+    "type": "multiple_choice",
+    "question_text": "Gelar yang diberikan penduduk Makkah kepada Nabi karena kejujurannya adalah...",
     "options": [
       { "id": "A", "text": "Al-Faruq" },
       { "id": "B", "text": "Al-Amin" },
       { "id": "C", "text": "As-Siddiq" },
-      { "id": "D", "text": "Saifullah" }
+      { "id": "D", "text": "Dzun Nurain" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Al-Amin artinya Yang Terpercaya. Gelar ini diberikan penduduk Mekkah karena beliau sangat jujur dan amanah.",
-      "dalil": "",
-      "resources": []
+      "text": "Al-Amin artinya Yang Terpercaya. Beliau sangat dipercayai bahkan oleh musuh-musuhnya.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
-    "question_text": "Nama ayahanda Nabi Muhammad SAW adalah...",
+    "type": "multiple_choice",
+    "question_text": "Wahyu pertama turun kepada Nabi Muhammad SAW di...",
     "options": [
-      { "id": "A", "text": "Abdul Muthalib" },
-      { "id": "B", "text": "Abu Thalib" },
-      { "id": "C", "text": "Abdullah" },
-      { "id": "D", "text": "Hamzah" }
-    ],
-    "correct": "C",
-    "explanation": {
-      "text": "Ayah Nabi SAW adalah Abdullah bin Abdul Muthalib.",
-      "dalil": "",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "sirah-rasulullah",
-    "question_text": "Ibu susu Nabi SAW dari kabilah Bani Sa'ad adalah...",
-    "options": [
-      { "id": "A", "text": "Syuwaibah" },
-      { "id": "B", "text": "Halimah As-Sa'diyah" },
-      { "id": "C", "text": "Aminah" },
-      { "id": "D", "text": "Ummu Aiman" }
+      { "id": "A", "text": "Masjidil Haram" },
+      { "id": "B", "text": "Gua Hira" },
+      { "id": "C", "text": "Gua Tsur" },
+      { "id": "D", "text": "Baitul Maqdis" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Halimah As-Sa'diyah adalah wanita yang menyusui dan mengasuh Nabi SAW di pedalaman.",
-      "dalil": "",
-      "resources": []
+      "text": "Nabi menerima wahyu pertama (Al-Alaq 1-5) di Gua Hira melalui Malaikat Jibril.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
-    "question_text": "Ciri fisik Nabi SAW: Rambut beliau...",
+    "type": "true_false",
+    "question_text": "Ciri fisik Nabi digambarkan memiliki rambut yang sangat keriting dan kulit yang sangat hitam.",
     "options": [
-      { "id": "A", "text": "Gundul" },
-      { "id": "B", "text": "Keriting pekat" },
-      { "id": "C", "text": "Lurus kaku" },
-      { "id": "D", "text": "Ikal bergelombang (Wavy)" }
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
     ],
-    "correct": "D",
+    "correct": "false",
     "explanation": {
-      "text": "Dalam Syama'il Muhammadiyah, rambut beliau disifatkan tidak keriting pekat dan tidak lurus kaku, melainkan ikal bergelombang.",
-      "dalil": "Kitab Syama'il Muhammadiyah",
-      "resources": []
+      "text": "Dalam kitab Syamail, rambut Nabi tidak terlalu keriting dan tidak terlalu lurus, kulitnya putih kemerah-merahan.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
-    "question_text": "Akhlak Nabi SAW digambarkan oleh Aisyah RA sebagai...",
+    "type": "puzzle_order",
+    "question_text": "Urutkan istri-istri Nabi berikut berdasarkan masa pernikahannya:",
     "options": [
-      { "id": "A", "text": "Seperti Malaikat" },
-      { "id": "B", "text": "Al-Quran yang berjalan" },
-      { "id": "C", "text": "Raja yang tegas" },
-      { "id": "D", "text": "Pertapa yang diam" }
+      { "id": "W_1", "text": "Khadijah binti Khuwailid" },
+      { "id": "W_2", "text": "Saudah binti Zam'ah" },
+      { "id": "W_3", "text": "Aisyah binti Abi Bakar" }
     ],
-    "correct": "B",
+    "correct": ["W_1", "W_2", "W_3"],
     "explanation": {
-      "text": "Ketika ditanya tentang akhlak Rasulullah, Aisyah menjawab: 'Maka sesungguhnya akhlak beliau adalah Al-Quran'.",
-      "dalil": "HR. Muslim",
-      "resources": []
+      "text": "Khadijah adalah istri pertama, setelah beliau wafat Nabi menikah dengan Saudah, lalu Aisyah.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 15
   },
   {
+    "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
-    "question_text": "Kakek yang mengasuh Nabi SAW setelah ibunya wafat adalah...",
+    "type": "multiple_choice",
+    "question_text": "Paman Nabi yang paling memusuhi dakwah beliau adalah...",
     "options": [
-      { "id": "A", "text": "Abu Thalib" },
-      { "id": "B", "text": "Abdul Muthalib" },
+      { "id": "A", "text": "Hamzah" },
+      { "id": "B", "text": "Abbas" },
       { "id": "C", "text": "Abu Lahab" },
-      { "id": "D", "text": "Abbas" }
-    ],
-    "correct": "B",
-    "explanation": {
-      "text": "Abdul Muthalib sangat menyayangi Nabi SAW dan mengasuhnya setelah Aminah wafat, sebelum kemudian diasuh Abu Thalib.",
-      "dalil": "",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "sirah-rasulullah",
-    "question_text": "Nabi Muhammad SAW wafat pada usia...",
-    "options": [
-      { "id": "A", "text": "53 tahun" },
-      { "id": "B", "text": "60 tahun" },
-      { "id": "C", "text": "63 tahun" },
-      { "id": "D", "text": "65 tahun" }
+      { "id": "D", "text": "Abu Thalib" }
     ],
     "correct": "C",
     "explanation": {
-      "text": "Nabi SAW wafat pada usia 63 tahun (dalam hitungan Qamariyah).",
-      "dalil": "",
-      "resources": []
+      "text": "Abu Lahab (Abdul Uzza) sangat memusuhi dakwah Nabi hingga diabadikan dalam surat Al-Lahab.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
-    "question_text": "Putri Nabi SAW yang menikah dengan Ali bin Abi Thalib adalah...",
+    "type": "true_false",
+    "question_text": "Nabi Muhammad SAW memiliki 7 orang anak (3 laki-laki dan 4 perempuan).",
     "options": [
-      { "id": "A", "text": "Zainab" },
-      { "id": "B", "text": "Ruqayyah" },
-      { "id": "C", "text": "Ummu Kultsum" },
-      { "id": "D", "text": "Fatimah Az-Zahra" }
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
     ],
-    "correct": "D",
+    "correct": "true",
     "explanation": {
-      "text": "Fatimah Az-Zahra adalah putri bungsu Nabi yang menikah dengan Ali bin Abi Thalib.",
-      "dalil": "",
-      "resources": []
+      "text": "Putra: Al-Qasim, Abdullah, Ibrahim. Putri: Zainab, Ruqayyah, Ummu Kultsum, Fatimah.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 15
   },
   {
+    "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
-    "question_text": "Sahabat yang menemani Nabi SAW di Gua Hira saat wahyu pertama turun...",
+    "type": "multiple_choice",
+    "question_text": "Apa nama pedang Nabi yang paling masyhur?",
     "options": [
-      { "id": "A", "text": "Tidak ada (Sendirian)" },
-      { "id": "B", "text": "Abu Bakar" },
-      { "id": "C", "text": "Khadijah" },
-      { "id": "D", "text": "Zaid bin Haritsah" }
+      { "id": "A", "text": "Zulfikar" },
+      { "id": "B", "text": "Dhu Al-Faqar" },
+      { "id": "C", "text": "Al-Batar" },
+      { "id": "D", "text": "Al-'Udb" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Dhu Al-Faqar adalah salah satu pedang Nabi yang sangat terkenal.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-rasulullah",
+    "topic_slug": "sirah-rasulullah",
+    "type": "true_false",
+    "question_text": "Nabi Muhammad SAW buta huruf (Ummi) bukan karena kekurangan, tapi sebagai tanda kemurnian wahyu.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Agar orang kafir tidak menuduh Nabi mengarang Al-Qur'an dari kitab-kitap terdahulu.",
+      "dalil": "QS. Al-Ankabut: 48"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-rasulullah",
+    "topic_slug": "sirah-rasulullah",
+    "type": "puzzle_order",
+    "question_text": "Susun silsilah singkat Nabi Muhammad SAW:",
+    "options": [
+      { "id": "S_1", "text": "Muhammad bin Abdullah" },
+      { "id": "S_2", "text": "bin Abdul Muthalib" },
+      { "id": "S_3", "text": "bin Hashim" },
+      { "id": "S_4", "text": "bin Abdu Manaf" }
+    ],
+    "correct": ["S_1", "S_2", "S_3", "S_4"],
+    "explanation": {
+      "text": "Urutan nasab mulia Nabi Muhammad SAW.",
+      "dalil": ""
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "sirah-rasulullah",
+    "topic_slug": "sirah-rasulullah",
+    "type": "multiple_choice",
+    "question_text": "Berapakah jumlah uban di rambut dan jenggot Nabi saat beliau wafat?",
+    "options": [
+      { "id": "A", "text": "Hampir semuanya putih" },
+      { "id": "B", "text": "Tidak lebih dari 20 helai" },
+      { "id": "C", "text": "Tidak ada sama sekali" },
+      { "id": "D", "text": "Hanya di bagian jenggot" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Anas bin Malik menjelaskan uban di kepala dan jenggot Nabi sangat sedikit, tidak sampai 20 helai.",
+      "dalil": ""
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "sirah-rasulullah",
+    "topic_slug": "sirah-rasulullah",
+    "type": "true_false",
+    "question_text": "Nabi Muhammad SAW wafat pada usia 63 tahun.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Beliau wafat di Madinah pada hari Senin tahun 11 Hijriah.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-rasulullah",
+    "topic_slug": "sirah-rasulullah",
+    "type": "multiple_choice",
+    "question_text": "Apa pekerjaan Nabi saat masa mudanya?",
+    "options": [
+      { "id": "A", "text": "Berdagang & Menggembala kambing" },
+      { "id": "B", "text": "Bertani kurma" },
+      { "id": "C", "text": "Menjadi prajurit bayaran" },
+      { "id": "D", "text": "Menulis kitab" }
     ],
     "correct": "A",
     "explanation": {
-      "text": "Saat wahyu pertama turun, Nabi SAW sedang berkhalwat (menyendiri) di Gua Hira.",
-      "dalil": "",
-      "resources": []
+      "text": "Seluruh Nabi pernah menggembala kambing, dan Nabi Muhammad pun demikian, lalu berdagang mengikuti pamannya.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "sirah-rasulullah",
     "topic_slug": "sirah-rasulullah",
-    "question_text": "Mukjizat terbesar Nabi Muhammad SAW yang masih ada hingga sekarang adalah...",
+    "type": "true_false",
+    "question_text": "Khadijah binti Khuwailid merupakan istri tercinta Nabi yang memberikan keturunan terbanyak.",
     "options": [
-      { "id": "A", "text": "Terbelahnya bulan" },
-      { "id": "B", "text": "Air keluar dari jari" },
-      { "id": "C", "text": "Al-Quran" },
-      { "id": "D", "text": "Perjalanan Isra Mi'raj" }
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
     ],
-    "correct": "C",
+    "correct": "true",
     "explanation": {
-      "text": "Al-Quran adalah mukjizat maknawi yang abadi dan terjaga hingga kiamat.",
-      "dalil": "",
-      "resources": []
+      "text": "Seluruh anak Nabi berasal dari Khadijah, kecuali Ibrahim yang lahir dari Maria Al-Qibtiyah.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-rasulullah",
+    "topic_slug": "sirah-rasulullah",
+    "type": "multiple_choice",
+    "question_text": "Siapakah pendeta Nasrani yang melihat tanda kenabian pada Muhammad saat kecil?",
+    "options": [
+      { "id": "A", "text": "Waraqah bin Naufal" },
+      { "id": "B", "text": "Buhaira" },
+      { "id": "C", "text": "Najasyi" },
+      { "id": "D", "text": "Hiraql" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Pendeta Buhaira melihat awan memayungi Nabi dan tanda di punggungnya saat melakukan perjalanan dagang ke Syam.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-rasulullah",
+    "topic_slug": "sirah-rasulullah",
+    "type": "puzzle_order",
+    "question_text": "Urutkan orang-orang pertama yang masuk Islam (Assabiqunal Awwalun):",
+    "options": [
+      { "id": "A_1", "text": "Khadijah (Wanita)" },
+      { "id": "A_2", "text": "Abu Bakar (Pria Dewasa)" },
+      { "id": "A_3", "text": "Ali bin Abi Thalib (Anak-anak)" },
+      { "id": "A_4", "text": "Zaid bin Haritsah (Mantan Budak)" }
+    ],
+    "correct": ["A_1", "A_2", "A_3", "A_4"],
+    "explanation": {
+      "text": "Urutan empat pilar pertama pengikut dakwah Nabi di Makkah.",
+      "dalil": ""
+    },
+    "points": 25
   }
 ]

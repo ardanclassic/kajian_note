@@ -312,21 +312,6 @@ export default function Notes() {
                   <Plus className="w-4 h-4 mr-2" />
                   Buat Catatan Pertama
                 </Button>
-
-                <div className="flex flex-wrap gap-2 justify-center pt-4 border-t border-gray-800">
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-900 border border-gray-800 text-gray-400 rounded-lg text-xs">
-                    <Tag className="w-3.5 h-3.5" />
-                    Gunakan tags
-                  </div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-900 border border-gray-800 text-gray-400 rounded-lg text-xs">
-                    <Globe className="w-3.5 h-3.5" />
-                    Bagikan publik
-                  </div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-900 border border-gray-800 text-gray-400 rounded-lg text-xs">
-                    <FileText className="w-3.5 h-3.5" />
-                    Export PDF
-                  </div>
-                </div>
               </div>
             </div>
           )}
