@@ -109,13 +109,16 @@ async function createCollections() {
   await delay(200);
   await appwriteRequest('POST', `/databases/${DATABASE_ID}/collections/${COL_QUESTIONS}/attributes/string`, { key: 'options', size: 5000, required: true }); // Reduced to 5k
   await delay(200);
-  await appwriteRequest('POST', `/databases/${DATABASE_ID}/collections/${COL_QUESTIONS}/attributes/string`, { key: 'correct', size: 10, required: true });
+  await appwriteRequest('POST', `/databases/${DATABASE_ID}/collections/${COL_QUESTIONS}/attributes/string`, { key: 'correct', size: 2000, required: true }); // Increased for JSON arrays
   await delay(200);
   await appwriteRequest('POST', `/databases/${DATABASE_ID}/collections/${COL_QUESTIONS}/attributes/string`, { key: 'explanation', size: 3000, required: false }); // Reduced to 3k
   await delay(200);
   await appwriteRequest('POST', `/databases/${DATABASE_ID}/collections/${COL_QUESTIONS}/attributes/integer`, { key: 'points', required: false, default: 10 });
   await delay(200);
   await appwriteRequest('POST', `/databases/${DATABASE_ID}/collections/${COL_QUESTIONS}/attributes/string`, { key: 'subtopic_id', size: 100, required: true });
+  await delay(200);
+  // NEW: Question Type (multiple_choice, true_false, puzzle_order)
+  await appwriteRequest('POST', `/databases/${DATABASE_ID}/collections/${COL_QUESTIONS}/attributes/string`, { key: 'type', size: 50, required: false, default: 'multiple_choice' });
   await delay(200);
   // NEW: Spare Attribute
   await appwriteRequest('POST', `/databases/${DATABASE_ID}/collections/${COL_QUESTIONS}/attributes/string`, { key: 'spare', size: 2000, required: false });

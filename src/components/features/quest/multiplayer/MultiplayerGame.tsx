@@ -1,12 +1,11 @@
-// POWER UP STATE
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Check, X, Trophy, ArrowRight, Loader2, Hourglass, Zap, Shield } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import { motion, Reorder, AnimatePresence } from 'framer-motion';
+import { Check, X, Trophy, ArrowRight, Loader2, Hourglass, Zap, Shield, GripVertical, CheckCircle2, XCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/authStore';
 import { questAppwriteService } from '@/services/appwrite/questService';
-import { multiplayerService } from '@/services/supabase/multiplayerService';
+import { questMultiplayerService } from '@/services/supabase/QuestMultiplayerService';
 import type { Question, QuestSession } from '@/types/quest.types';
 import confetti from 'canvas-confetti';
 
@@ -43,7 +42,7 @@ export const MultiplayerGame = ({ roomId, onFinish }: Props) => {
   useEffect(() => {
     const init = async () => {
       try {
-        const doc = await multiplayerService.getRoom(roomId);
+        const doc = await questMultiplayerService.getRoom(roomId);
         if (!doc) {
           console.error("Room not found");
           return;
@@ -80,7 +79,7 @@ export const MultiplayerGame = ({ roomId, onFinish }: Props) => {
 
   // 2. Realtime Listener
   useEffect(() => {
-    const channel = multiplayerService.subscribeToRoom(roomId, (updatedRoom) => {
+    const channel = questMultiplayerService.subscribeToRoom(roomId, (updatedRoom) => {
       setRoomData(updatedRoom);
 
       // Detect GAME FINISH (Global)
@@ -91,7 +90,7 @@ export const MultiplayerGame = ({ roomId, onFinish }: Props) => {
     });
 
     return () => {
-      multiplayerService.unsubscribe(channel);
+      questMultiplayerService.unsubscribe(channel);
     };
   }, [roomId]);
 
@@ -125,62 +124,52 @@ export const MultiplayerGame = ({ roomId, onFinish }: Props) => {
     }
 
     // Call Server
-    await multiplayerService.usePowerUp(roomId, user.id, type);
+    await questMultiplayerService.usePowerUp(roomId, user.id, type);
     toast.success(`${type.replace("_", " ")} Activated!`);
   };
 
-  const handleAnswer = async (optionId: string) => {
+  const handleAnswer = async (answer: string | string[]) => {
     if (hasAnswered || !roomData || !user) return;
 
     const currentQ = questions[localQuestionIdx];
-    const isAnsCorrect = optionId === currentQ.correct;
+    let isAnsCorrect = false;
+
+    if (currentQ.type === 'puzzle_order') {
+      const userAnswerJson = JSON.stringify(answer);
+      // Clean up string comparison (remove spaces from JSON if any)
+      const normalizedCorrect = currentQ.correct.replace(/\s/g, '');
+      const normalizedUser = userAnswerJson.replace(/\s/g, '');
+      isAnsCorrect = normalizedUser === normalizedCorrect;
+    } else {
+      isAnsCorrect = answer === currentQ.correct;
+    }
+
     const basePoints = currentQ.points || 10;
 
-    setSelectedOption(optionId);
+    setSelectedOption(typeof answer === 'string' ? answer : 'PUZZLE_SUBMITTED');
     setHasAnswered(true);
     setIsCorrect(isAnsCorrect);
 
     if (isAnsCorrect) confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
 
-    // Check Time Freeze
-    const me = roomData.players.find(p => p.id === user.id);
-    const isTimeFrozen = me?.active_effects?.includes("TIME_FREEZE"); // Note: Time Freeze logic in backend isn't persistent in active_effects for long, but let's assume if it was just activated locally we count it. 
-    // Actually, for TIME_FREEZE, since we consume it immediately, we should track it locally or assume fast enough.
-    // Better approach: If I wanted to support Time Freeze purely, I should send a flag or just send 0 timeSpent.
-    // Let's rely on checking if I just activated it. But since state update is async, let's look at `me.inventory` vs previous... complex.
-    // SIMPLIFICATION: If "TIME_FREEZE" is in active_effects (server sync might be slow).
-    // Let's cheat a bit: if I clicked Time Freeze, server put it in active_effects? No, my logic for Time Freeze was just consume.
-    // FIX: Update usePowerUp in backend to add TIME_FREEZE to active_effects too? 
-    // Or just check if I have 0 timeSpent manually. 
-    // Let's implement: Active Effects includes TIME_FREEZE? Yes, let's update backend logic for Time Freeze to be persistent for 1 turn too.
-
-    // WAIT! I didn't add TIME_FREEZE to active_effects in backend previous step. Let's handle it client side for now by sending 0.
-    // Assuming user activated it just now.
-    // To be safe, let's just use normal time. Time Freeze is hard to sync perfectly without persistent effect.
-    // Alternative: Use 50:50 and others only.
-    // Let's try to detect if TIME_FREEZE is active.
-    // Backtrack: In previous step backend, I only added DOUBLE_POINTS and STREAK_SAVER to effects.
-    // So TIME_FREEZE is just consumed.
-    // Let's ignore Time Freeze benefit for now or assume it gives 0 ms if we can track it.
-
     const timeSpentMs = Date.now() - startTime;
 
-    // Submit Answer to Server (Calculates Score with Dynamic Logic)
-    await multiplayerService.submitAnswer(
+    // Submit Answer to Server
+    await questMultiplayerService.submitAnswer(
       roomId,
       user.id,
       localQuestionIdx,
       isAnsCorrect,
       basePoints,
       timeSpentMs,
-      isRedemptionMode, // Pass Redemption Flag
+      isRedemptionMode,
     );
   };
 
   const finishGame = async () => {
     setIsWaitingOthers(true);
     if (user) {
-      await multiplayerService.finishPlayer(roomId, user.id, questions.length);
+      await questMultiplayerService.finishPlayer(roomId, user.id, questions.length);
     }
   };
 
@@ -312,10 +301,24 @@ export const MultiplayerGame = ({ roomId, onFinish }: Props) => {
           {isRedemptionMode ? <span className="text-orange-400 text-sm uppercase tracking-wider font-extrabold animate-pulse">Redemption Round</span> : `Soal ${localQuestionIdx + 1}`}
           <span className="text-gray-500 text-base font-normal">/ {questions.length}</span>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 bg-gray-900 rounded-full border border-white/10">
-          <div className="flex items-center gap-1.5">
-            <span className="text-orange-500 animate-pulse">🔥</span>
-            <span className="text-white font-bold">{roomData?.players.find((p) => p.id === user?.id)?.streak || 0}x Streak</span>
+        <div className="flex items-center gap-3">
+          {roomData.game_mode === "TEAM" && me.team_id && (
+            <div
+              className="px-3 py-1 rounded-full text-[10px] font-bold border"
+              style={{
+                backgroundColor: `${roomData.teams?.find(t => t.id === me.team_id)?.color}20`,
+                color: roomData.teams?.find(t => t.id === me.team_id)?.color,
+                borderColor: `${roomData.teams?.find(t => t.id === me.team_id)?.color}40`
+              }}
+            >
+              {roomData.teams?.find(t => t.id === me.team_id)?.name}
+            </div>
+          )}
+          <div className="flex items-center gap-2 px-4 py-2 bg-gray-900 rounded-full border border-white/10">
+            <div className="flex items-center gap-1.5">
+              <span className="text-orange-500 animate-pulse">🔥</span>
+              <span className="text-white font-bold">{roomData?.players.find((p) => p.id === user?.id)?.streak || 0}x Streak</span>
+            </div>
           </div>
         </div>
       </div>
@@ -343,43 +346,91 @@ export const MultiplayerGame = ({ roomId, onFinish }: Props) => {
               )}
             </div>
 
-            <h2 className="text-xl md:text-2xl font-bold text-white leading-relaxed mb-8">{currentQuestion.text}</h2>
+            <div className="flex flex-col mb-8">
+              <h2 className="text-xl md:text-2xl font-bold text-white leading-relaxed">{currentQuestion.text}</h2>
+              {currentQuestion.type === 'puzzle_order' && !hasAnswered && (
+                <span className="text-xs text-indigo-400 font-bold uppercase tracking-widest mt-2 animate-pulse">Drag to reorder & submit</span>
+              )}
+            </div>
 
             <div className="space-y-3">
-              {currentQuestion.options.map((option) => {
-                // 50:50 Logic
-                if (hiddenOptions.includes(option.id)) {
-                  return <div key={option.id} className="h-[74px] rounded-xl border border-white/5 bg-transparent opacity-20" />
-                }
+              {currentQuestion.type === 'puzzle_order' ? (
+                <PuzzleOrderView
+                  options={currentQuestion.options}
+                  correct={currentQuestion.correct}
+                  hasAnswered={hasAnswered}
+                  onSubmit={(ids: any) => handleAnswer(ids)}
+                />
+              ) : (
+                <div className={`grid grid-cols-1 ${currentQuestion.type === 'true_false' ? 'md:grid-cols-2 gap-4' : 'gap-3'}`}>
+                  {currentQuestion.options.map((option) => {
+                    // 50:50 Logic
+                    if (hiddenOptions.includes(option.id)) {
+                      return <div key={option.id} className="h-[74px] rounded-xl border border-white/5 bg-transparent opacity-20" />
+                    }
 
-                const isSelected = selectedOption === option.id;
-                let btnClass = "bg-gray-800/50 border-gray-700 hover:bg-gray-800";
+                    const isSelected = selectedOption === option.id;
+                    let btnClass = "bg-gray-800/50 border-gray-700 hover:bg-gray-800";
+                    let contentColor = "text-white/90";
 
-                if (hasAnswered) {
-                  if (option.id === currentQuestion.correct) btnClass = "bg-emerald-500/20 border-emerald-500 text-emerald-400";
-                  else if (isSelected) btnClass = "bg-red-500/20 border-red-500 text-red-400";
-                } else if (isSelected) {
-                  btnClass = "bg-indigo-600 border-indigo-500 text-white";
-                }
+                    // TRUE / FALSE STYLING
+                    if (currentQuestion.type === 'true_false') {
+                      const isTrue = option.id === 'true';
+                      btnClass = isTrue
+                        ? "bg-emerald-500/10 border-emerald-500/30 hover:bg-emerald-500/20"
+                        : "bg-red-500/10 border-red-500/30 hover:bg-red-500/20";
 
-                return (
-                  <button
-                    key={option.id}
-                    disabled={hasAnswered}
-                    onClick={() => handleAnswer(option.id)}
-                    className={`w-full p-4 rounded-xl border flex items-center gap-4 transition-all text-left ${btnClass}`}
-                  >
-                    <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border ${hasAnswered && option.id === currentQuestion.correct ? "bg-emerald-500 border-emerald-500 text-black" : "border-current opacity-50"}`}
-                    >
-                      {option.id}
-                    </div>
-                    <span className="flex-1 font-medium text-white/90">{option.text}</span>
-                    {hasAnswered && option.id === currentQuestion.correct && <Check className="w-5 h-5 text-emerald-500" />}
-                    {hasAnswered && isSelected && option.id !== currentQuestion.correct && <X className="w-5 h-5 text-red-500" />}
-                  </button>
-                );
-              })}
+                      if (hasAnswered) {
+                        if (option.id === currentQuestion.correct) btnClass = "bg-emerald-500 text-black border-emerald-400";
+                        else if (isSelected) btnClass = "bg-red-500 text-white border-red-400";
+                        else btnClass = "opacity-40 grayscale";
+                      } else if (isSelected) {
+                        btnClass = isTrue ? "bg-emerald-600 text-white border-emerald-400" : "bg-red-600 text-white border-red-400";
+                      }
+                    }
+                    // MULTIPLE CHOICE STYLING
+                    else {
+                      if (hasAnswered) {
+                        if (option.id === currentQuestion.correct) { btnClass = "bg-emerald-500/20 border-emerald-500 text-emerald-400"; contentColor = "text-emerald-300"; }
+                        else if (isSelected) { btnClass = "bg-red-500/20 border-red-500 text-red-400"; contentColor = "text-red-300"; }
+                      } else if (isSelected) {
+                        btnClass = "bg-indigo-600 border-indigo-500 text-white";
+                      }
+                    }
+
+                    return (
+                      <button
+                        key={option.id}
+                        disabled={hasAnswered}
+                        onClick={() => handleAnswer(option.id)}
+                        className={`w-full p-4 rounded-xl border flex items-center gap-4 transition-all text-left group relative overflow-hidden ${btnClass} ${currentQuestion.type === 'true_false' ? 'h-32 justify-center flex-col gap-2' : ''}`}
+                      >
+                        {/* Background Decoration for T/F */}
+                        {currentQuestion.type === 'true_false' && (
+                          <div className={`absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-500`}>
+                            {option.id === 'true' ? <CheckCircle2 size={80} /> : <XCircle size={80} />}
+                          </div>
+                        )}
+
+                        {currentQuestion.type !== 'true_false' && (
+                          <div
+                            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border ${hasAnswered && option.id === currentQuestion.correct ? "bg-emerald-500 border-emerald-500 text-black" : "border-current opacity-50"}`}
+                          >
+                            {option.id}
+                          </div>
+                        )}
+
+                        <span className={`font-medium ${contentColor} ${currentQuestion.type === 'true_false' ? 'text-xl font-bold uppercase tracking-widest' : 'flex-1'}`}>
+                          {option.text}
+                        </span>
+
+                        {hasAnswered && currentQuestion.type !== 'true_false' && option.id === currentQuestion.correct && <Check className="w-5 h-5 text-emerald-500" />}
+                        {hasAnswered && currentQuestion.type !== 'true_false' && isSelected && option.id !== currentQuestion.correct && <X className="w-5 h-5 text-red-500" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </motion.div>
 
@@ -409,7 +460,7 @@ export const MultiplayerGame = ({ roomId, onFinish }: Props) => {
                 active={hiddenOptions.length > 0}
                 onClick={() => handlePowerUp("FIFTY_FIFTY")}
                 color="text-purple-400"
-                disabled={hiddenOptions.length > 0}
+                disabled={hiddenOptions.length > 0 || currentQuestion.type === 'puzzle_order'}
               />
             </div>
           )}
@@ -440,31 +491,159 @@ export const MultiplayerGame = ({ roomId, onFinish }: Props) => {
 
         {/* Sidebar Leaderboard (1 col) */}
         <div>
-          <div className="bg-gray-900/60 border border-white/10 rounded-2xl p-4 sticky top-6">
-            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Leaderboard</h3>
-            <div className="space-y-3">
+          <div className="bg-gray-900/60 border border-white/10 rounded-2xl p-4 sticky top-6 space-y-4">
+            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Leaderboard</h3>
+
+            {/* TEAM MODE: Show Team Rankings */}
+            {roomData.game_mode === "TEAM" && roomData.teams && roomData.teams.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-xs text-gray-500 uppercase font-semibold">Tim</p>
+                {roomData.teams
+                  .sort((a, b) => b.total_score - a.total_score)
+                  .map((team, idx) => (
+                    <div
+                      key={team.id}
+                      className="flex items-center gap-3 p-3 rounded-lg bg-gray-800/50 border"
+                      style={{ borderColor: `${team.color}40` }}
+                    >
+                      <div className="w-6 text-center font-bold text-sm" style={{ color: team.color }}>
+                        #{idx + 1}
+                      </div>
+                      <div
+                        className="w-3 h-3 rounded-full"
+                        style={{ backgroundColor: team.color }}
+                      />
+                      <div className="flex-1">
+                        <div className="text-sm font-medium text-white">{team.name}</div>
+                        <div className="text-[10px] text-gray-500">{team.member_count} Anggota</div>
+                      </div>
+                      <div className="font-mono font-bold text-emerald-400">{team.total_score.toFixed(1)}</div>
+                    </div>
+                  ))}
+                <div className="border-t border-gray-800 my-2" />
+              </div>
+            )}
+
+            {/* Player Rankings */}
+            <div className="space-y-2">
+              {roomData.game_mode === "TEAM" && <p className="text-xs text-gray-500 uppercase font-semibold">Pemain</p>}
               {(roomData.players || [])
                 .sort((a, b) => b.score - a.score)
-                .map((player, idx) => (
-                  <div key={player.id} className={`flex items-center gap-3 p-2 rounded-lg ${user?.id === player.id ? "bg-indigo-500/10 border border-indigo-500/30" : ""}`}>
-                    <div className="w-6 text-center font-bold text-gray-500 text-sm">#{idx + 1}</div>
-                    <div className="relative">
-                      <img src={player.avatar_url} className="w-8 h-8 rounded-full bg-gray-800" />
-                      {player.is_finished && <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-black" title="Selesai" />}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium text-white truncate">{player.username}</div>
-                      <div className="text-[10px] text-gray-500">
-                        Soal {player.current_question_idx}/{questions.length}
+                .map((player, idx) => {
+                  const playerTeam = roomData.game_mode === "TEAM" && roomData.teams
+                    ? roomData.teams.find(t => t.id === player.team_id)
+                    : null;
+
+                  return (
+                    <div
+                      key={player.id}
+                      className={`flex items-center gap-3 p-2 rounded-lg ${user?.id === player.id ? "bg-indigo-500/10 border border-indigo-500/30" : ""}`}
+                    >
+                      <div className="w-6 text-center font-bold text-gray-500 text-sm">#{idx + 1}</div>
+                      <div className="relative">
+                        <img
+                          src={player.avatar_url}
+                          className="w-8 h-8 rounded-full bg-gray-800 border-2"
+                          style={{ borderColor: playerTeam ? playerTeam.color : '#6366f1' }}
+                        />
+                        {player.is_finished && <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-black" title="Selesai" />}
                       </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium text-white truncate">{player.username}</div>
+                        <div className="text-[10px] text-gray-500">
+                          Soal {player.current_question_idx}/{questions.length}
+                        </div>
+                      </div>
+                      <div className="font-mono font-bold text-emerald-400">{player.score.toFixed(1)}</div>
                     </div>
-                    <div className="font-mono font-bold text-emerald-400">{player.score.toFixed(1)}</div>
-                  </div>
-                ))}
+                  );
+                })}
             </div>
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+// ------------------------------------------------------------------
+// PUZZLE ORDER VIEW COMPONENT
+// ------------------------------------------------------------------
+const PuzzleOrderView = ({ options, correct, hasAnswered, onSubmit }: any) => {
+  // We need to shuffle initial state but keep it stable for this question
+  const [items, setItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!hasAnswered) {
+      // Shuffle but avoid the correct answer if possible or just random
+      const shuffled = [...options].sort(() => Math.random() - 0.5);
+      setItems(shuffled);
+    } else {
+      // If already answered, we show the CORRECT order or their submitted order?
+      // For clarity, let's show the correct order so they learn.
+      try {
+        const correctIds: string[] = JSON.parse(correct);
+        const sorted = correctIds.map(id => options.find((o: any) => o.id === id)).filter(Boolean);
+        setItems(sorted);
+      } catch (e) {
+        setItems(options);
+      }
+    }
+  }, [options, hasAnswered, correct]);
+
+  if (items.length === 0) return null;
+
+  return (
+    <div className="space-y-6">
+      <Reorder.Group
+        axis="y"
+        values={items}
+        onReorder={hasAnswered ? () => { } : setItems}
+        className="space-y-3"
+      >
+        {items.map((item, idx) => (
+          <Reorder.Item
+            key={item.id}
+            value={item}
+            dragListener={!hasAnswered}
+            whileDrag={{ scale: 1.02, boxShadow: "0 8px 20px rgba(0,0,0,0.5)" }}
+            className={`cursor-grab active:cursor-grabbing relative`}
+          >
+            <div className={`p-4 rounded-xl border flex items-center gap-4 transition-all ${hasAnswered
+              ? 'bg-gray-800/60 border-indigo-500/30'
+              : 'bg-gray-800/80 hover:bg-gray-800 border-white/10 hover:border-indigo-500/50 shadow-sm'
+              }`}>
+              {/* Drag Handle */}
+              {!hasAnswered && (
+                <div className="text-gray-500 cursor-grab active:cursor-grabbing p-1 hover:text-white transition-colors">
+                  <GripVertical size={20} />
+                </div>
+              )}
+
+              {/* Index Number */}
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm border ${hasAnswered ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' : 'bg-white/5 text-gray-400 border-white/10'
+                }`}>
+                {idx + 1}
+              </div>
+
+              <span className="flex-1 text-white/90 font-medium select-none">{item.text}</span>
+
+              {hasAnswered && <CheckCircle2 className="w-5 h-5 text-emerald-500/50" />}
+            </div>
+          </Reorder.Item>
+        ))}
+      </Reorder.Group>
+
+      {!hasAnswered && (
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+          <Button
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-6 text-lg shadow-lg shadow-indigo-500/20 border border-indigo-400/20"
+            onClick={() => onSubmit(items.map(i => i.id))}
+          >
+            Kunci Jawaban <CheckCircle2 className="ml-2 w-5 h-5" />
+          </Button>
+        </motion.div>
+      )}
     </div>
   );
 };

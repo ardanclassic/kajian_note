@@ -1,182 +1,348 @@
 [
   {
+    "subtopic_id": "sirah-nabawiyah",
     "topic_slug": "sirah-nabawiyah",
-    "question_text": "Wahyu pertama turun di...",
+    "type": "multiple_choice",
+    "question_text": "Berapa lama periode dakwah Nabi di kota Makkah?",
     "options": [
-      { "id": "A", "text": "Gua Tsur" },
-      { "id": "B", "text": "Gua Hira" },
-      { "id": "C", "text": "Padang Arafah" },
-      { "id": "D", "text": "Rumah Khadijah" }
+      { "id": "A", "text": "10 Tahun" },
+      { "id": "B", "text": "13 Tahun" },
+      { "id": "C", "text": "23 Tahun" },
+      { "id": "D", "text": "5 Tahun" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Wahyu pertama (Surah Al-Alaq 1-5) turun di Gua Hira.",
-      "dalil": "HR. Bukhari",
-      "resources": []
+      "text": "Nabi berdakwah di Makkah selama 13 tahun sebelum akhirnya berhijrah ke Madinah.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "sirah-nabawiyah",
     "topic_slug": "sirah-nabawiyah",
-    "question_text": "Dakwah Nabi di Mekkah berlangsung selama...",
+    "type": "multiple_choice",
+    "question_text": "Peristiwa perjalanan Nabi dari Masjidil Haram ke Masjidil Aqsa lalu ke Sidratul Muntaha disebut...",
     "options": [
-      { "id": "A", "text": "10 tahun" },
-      { "id": "B", "text": "13 tahun" },
-      { "id": "C", "text": "23 tahun" },
-      { "id": "D", "text": "3 tahun" }
+      { "id": "A", "text": "Hijrah" },
+      { "id": "B", "text": "Fathu Makkah" },
+      { "id": "C", "text": "Isra' Mi'raj" },
+      { "id": "D", "text": "Bai'at Aqabah" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Isra' adalah perjalanan malam hari, Mi'raj adalah kenaikan ke langit.",
+      "dalil": "QS. Al-Isra: 1"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "true_false",
+    "question_text": "Perintah shalat 5 waktu diterima Nabi saat peristiwa Isra' Mi'raj.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Awalnya diperintah 50 waktu, lalu berkat saran Nabi Musa AS, Nabi meminta keringanan hingga menjadi 5 waktu.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "true_false",
+    "question_text": "Perang Badar terjadi pada bulan Syawal tahun ke-2 Hijriah.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "false",
+    "explanation": {
+      "text": "Perang Badar Al-Kubra terjadi pada tanggal 17 Ramadan tahun ke-2 Hijriah.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "puzzle_order",
+    "question_text": "Urutkan perang besar yang diikuti Nabi berikut ini:",
+    "options": [
+      { "id": "P_1", "text": "Perang Badar" },
+      { "id": "P_2", "text": "Perang Uhud" },
+      { "id": "P_3", "text": "Perang Khandaq" },
+      { "id": "P_4", "text": "Perang Khaibar" }
+    ],
+    "correct": ["P_1", "P_2", "P_3", "P_4"],
+    "explanation": {
+      "text": "Badar (Th 2H), Uhud (Th 3H), Khandaq (Th 5H), Khaibar (Th 7H).",
+      "dalil": ""
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "multiple_choice",
+    "question_text": "Siapakah sahabat yang menemani Nabi saat hijrah ke Madinah dan bersembunyi di Gua Tsur?",
+    "options": [
+      { "id": "A", "text": "Umar bin Khattab" },
+      { "id": "B", "text": "Abu Bakar As-Siddiq" },
+      { "id": "C", "text": "Ali bin Abi Thalib" },
+      { "id": "D", "text": "Utsman bin Affan" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Periode Mekkah berlangsung selama kurang lebih 13 tahun.",
-      "dalil": "",
-      "resources": []
+      "text": "Abu Bakar adalah sahabat karib Nabi yang paling setia menemani masa-masa sulit hijrah.",
+      "dalil": "QS. At-Taubah: 40"
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "sirah-nabawiyah",
     "topic_slug": "sirah-nabawiyah",
-    "question_text": "Hijrah pertama kaum muslimin (sebelum ke Madinah) adalah ke negeri...",
-    "options": [
-      { "id": "A", "text": "Thaif" },
-      { "id": "B", "text": "Yaman" },
-      { "id": "C", "text": "Habasyah (Ethiopia)" },
-      { "id": "D", "text": "Mesir" }
-    ],
-    "correct": "C",
-    "explanation": {
-      "text": "Hijrah pertama adalah ke Habasyah untuk menghindari siksaan Quraisy dan mencari perlindungan Raja Najasyi.",
-      "dalil": "",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "sirah-nabawiyah",
-    "question_text": "Tahun kesedihan (Amul Huzni) adalah tahun di mana Nabi kehilangan dua pelindungnya, yaitu...",
-    "options": [
-      { "id": "A", "text": "Ayah & Ibu" },
-      { "id": "B", "text": "Kakek & Paman" },
-      { "id": "C", "text": "Khadijah & Abu Thalib" },
-      { "id": "D", "text": "Hamzah & Ja'far" }
-    ],
-    "correct": "C",
-    "explanation": {
-      "text": "Khadijah (istri tercinta) dan Abu Thalib (paman pelindung) wafat pada tahun yang sama, yang membuat Nabi sangat bersedih.",
-      "dalil": "",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "sirah-nabawiyah",
-    "question_text": "Perang besar pertama antara Muslim dan Quraisy disebut perang...",
-    "options": [
-      { "id": "A", "text": "Uhud" },
-      { "id": "B", "text": "Khandaq" },
-      { "id": "C", "text": "Badr" },
-      { "id": "D", "text": "Tabuk" }
-    ],
-    "correct": "C",
-    "explanation": {
-      "text": "Perang Badr (Badr Kubra) adalah pertempuran besar pertama yang dimenangkan oleh kaum Muslimin.",
-      "dalil": "QS. Ali Imran: 123",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "sirah-nabawiyah",
-    "question_text": "Pada perang Uhud, pasukan pemanah melanggar perintah Nabi untuk...",
-    "options": [
-      { "id": "A", "text": "Tidak meninggalkan bukit" },
-      { "id": "B", "text": "Menyerang lebih dulu" },
-      { "id": "C", "text": "Mundur" },
-      { "id": "D", "text": "Berpuasa" }
-    ],
-    "correct": "A",
-    "explanation": {
-      "text": "Kekalahan di Uhud disebabkan pasukan pemanah yang turun dari bukit (Rumaat) karena tergiur ghanimah, padahal Nabi melarangnya.",
-      "dalil": "",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "sirah-nabawiyah",
-    "question_text": "Perjanjian damai antara Nabi SAW dan Quraisy Mekkah yang memberi jeda perang 10 tahun disebut...",
-    "options": [
-      { "id": "A", "text": "Piagam Madinah" },
-      { "id": "B", "text": "Perjanjian Hudaibiyah" },
-      { "id": "C", "text": "Bai'at Aqabah" },
-      { "id": "D", "text": "Hilful Fudhul" }
-    ],
-    "correct": "B",
-    "explanation": {
-      "text": "Perjanjian Hudaibiyah menjadi titik balik diplomasi yang menguntungkan Islam dalam jangka panjang.",
-      "dalil": "QS. Al-Fath: 1",
-      "resources": []
-    },
-    "points": 15,
-    "spare": null
-  },
-  {
-    "topic_slug": "sirah-nabawiyah",
-    "question_text": "Fathu Makkah (Pembebasan Mekkah) terjadi pada tahun...",
-    "options": [
-      { "id": "A", "text": "2 H" },
-      { "id": "B", "text": "6 H" },
-      { "id": "C", "text": "8 H" },
-      { "id": "D", "text": "10 H" }
-    ],
-    "correct": "C",
-    "explanation": {
-      "text": "Fathu Makkah terjadi pada tahun 8 Hijriyah.",
-      "dalil": "",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "sirah-nabawiyah",
-    "question_text": "Haji terakhir yang dilakukan Nabi SAW disebut...",
-    "options": [
-      { "id": "A", "text": "Haji Mabrur" },
-      { "id": "B", "text": "Haji Qiran" },
-      { "id": "C", "text": "Haji Wada'" },
-      { "id": "D", "text": "Haji Ifrad" }
-    ],
-    "correct": "C",
-    "explanation": {
-      "text": "Haji Wada' artinya Haji Perpisahan, karena dilakukan menjelang wafatnya beliau.",
-      "dalil": "",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "sirah-nabawiyah",
-    "question_text": "Masjid pertama yang dibangun Nabi SAW saat tiba di Madinah (Quba) adalah...",
+    "type": "multiple_choice",
+    "question_text": "Apa nama masjid pertama yang dibangun Nabi saat tiba di Madinah?",
     "options": [
       { "id": "A", "text": "Masjid Nabawi" },
       { "id": "B", "text": "Masjid Quba" },
       { "id": "C", "text": "Masjid Qiblatain" },
-      { "id": "D", "text": "Masjidil Haram" }
+      { "id": "D", "text": "Masjid Al-Aqsa" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Masjid Quba adalah masjid pertama yang dibangun atas dasar takwa saat Nabi berhijrah.",
-      "dalil": "QS. At-Taubah: 108",
-      "resources": []
+      "text": "Masjid Quba adalah masjid pertama yang dibangun atas dasar takwa.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "true_false",
+    "question_text": "Dalam Perang Uhud, pasukan muslim mengalami kekalahan karena sebagian pasukan pemanah meninggalkan posisi mereka.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Ketidakpatuhan terhadap perintah Nabi menyebabkan kekalahan sementara di bukit Rumat.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "puzzle_order",
+    "question_text": "Urutkan janji/perjanjian penting dalam Sirah Nabawiyah:",
+    "options": [
+      { "id": "J_1", "text": "Bai'at Aqabah Pertama" },
+      { "id": "J_2", "text": "Bai'at Aqabah Kedua" },
+      { "id": "J_3", "text": "Perjanjian Hudaibiyah" },
+      { "id": "J_4", "text": "Bai'atur Ridhwan" }
+    ],
+    "correct": ["J_1", "J_2", "J_3", "J_4"],
+    "explanation": {
+      "text": "Aqabah I & II (Pra-Hijrah), Hudaibiyah (Th 6H).",
+      "dalil": ""
+    },
+    "points": 25
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "multiple_choice",
+    "question_text": "Apa usulan Salman Al-Farisi dalam Perang Khandaq?",
+    "options": [
+      { "id": "A", "text": "Melakukan serangan mendadak" },
+      { "id": "B", "text": "Menggali parit (Khandaq)" },
+      { "id": "C", "text": "Berlindung di dalam masjid" },
+      { "id": "D", "text": "Melakukan negosiasi damai" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Strategi penggalian parit adalah teknik perang dari Persia yang dibawa oleh Salman.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "true_false",
+    "question_text": "Piagam Madinah adalah dokumen yang mengatur kehidupan antara umat Islam dengan kaum Yahudi dan Arab lainnya di Madinah.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Merupakan konstitusi tertulis pertama di dunia yang menjamin hak umat beragama.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "multiple_choice",
+    "question_text": "Peristiwa pembebasan kota Makkah dari kaum kafir Quraisy secara damai disebut...",
+    "options": [
+      { "id": "A", "text": "Hijrah" },
+      { "id": "B", "text": "Fathu Makkah" },
+      { "id": "C", "text": "Amul Huzni" },
+      { "id": "D", "text": "Haji Wada'" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Terjadi pada tahun 8 Hijriah tanpa pertumpahan darah yang berarti.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "true_false",
+    "question_text": "Nabi Muhammad SAW melakukan ibadah Haji hanya satu kali selama hidupnya.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Haji tersebut dikenal dengan Haji Wada' (Haji Perpisahan) pada tahun 10 H.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "puzzle_order",
+    "question_text": "Urutkan proses Islamisasi wilayah berikut (berdasarkan sejarah):",
+    "options": [
+      { "id": "V_1", "text": "Kota Madinah" },
+      { "id": "V_2", "text": "Benteng Khaibar" },
+      { "id": "V_3", "text": "Kota Makkah" },
+      { "id": "V_4", "text": "Seluruh Jazirah Arab" }
+    ],
+    "correct": ["V_1", "V_2", "V_3", "V_4"],
+    "explanation": {
+      "text": "Nabi mengamankan Madinah, menaklukkan kekuatan Yahudi di Khaibar, lalu Fathu Makkah, hingga menguasai Jazirah.",
+      "dalil": ""
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "multiple_choice",
+    "question_text": "Siapakah raja yang menolak surat dakwah Nabi dengan cara yang sopan dan mengirimkan hadiah (termasuk Maria)?",
+    "options": [
+      { "id": "A", "text": "Kisra (Persia)" },
+      { "id": "B", "text": "Muqawqis (Mesir)" },
+      { "id": "C", "text": "Heraklius (Romawi)" },
+      { "id": "D", "text": "Najasyi (Habasyah)" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Raja Muqawqis menghormati utusan Nabi dan mengirimkan hadiah.",
+      "dalil": ""
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "true_false",
+    "question_text": "Amul Huzni (Tahun Kesedihan) ditandai dengan wafatnya Khadijah dan Abu Thalib.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Terjadi pada tahun ke-10 kenabian.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "multiple_choice",
+    "question_text": "Banyaknya jumlah pasukan muslim pada Perang Badar adalah...",
+    "options": [
+      { "id": "A", "text": "313 Orang" },
+      { "id": "B", "text": "1000 Orang" },
+      { "id": "C", "text": "3000 Orang" },
+      { "id": "D", "text": "10.000 Orang" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Pasukan muslim berjumlah sedikit (313) melawan pasukan Quraisy (1000).",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "true_false",
+    "question_text": "Setelah Nabi wafat, Abu Bakar dicalonkan menjadi khalifah di tempat yang bernama Saqifah Bani Sa'idah.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Tempat pertemuan antara Muhajirin dan Anshar untuk menentukan pemimpin umat.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "multiple_choice",
+    "question_text": "Siakah muadzin pertama dalam Islam yang memiliki suara indah dan kesabaran luar biasa?",
+    "options": [
+      { "id": "A", "text": "Zaid bin Tsabit" },
+      { "id": "B", "text": "Bilal bin Rabah" },
+      { "id": "C", "text": "Abdullah bin Ummi Maktum" },
+      { "id": "D", "text": "Anas bin Malik" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Bilal dipilih Nabi karena suaranya yang lantang dan merdu.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-nabawiyah",
+    "topic_slug": "sirah-nabawiyah",
+    "type": "puzzle_order",
+    "question_text": "Susun potongan janji Bai'at Aqabah berikut ini:",
+    "options": [
+      { "id": "B_1", "text": "Tidak menyekutukan Allah" },
+      { "id": "B_2", "text": "Tidak mencuri dan berzina" },
+      { "id": "B_3", "text": "Tidak membunuh anak-anak" },
+      { "id": "B_4", "text": "Tidak berbuat dusta" }
+    ],
+    "correct": ["B_1", "B_2", "B_3", "B_4"],
+    "explanation": {
+      "text": "Poin-poin deklarasi kesetiaan penduduk Madinah pada Bai'at Aqabah Pertama.",
+      "dalil": ""
+    },
+    "points": 25
   }
 ]

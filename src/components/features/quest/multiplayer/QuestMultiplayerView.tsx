@@ -8,7 +8,7 @@ import { JoinRoomForm } from './JoinRoomForm';
 import { LobbyRoom } from './LobbyRoom';
 import { MultiplayerGame } from './MultiplayerGame';
 import { MultiplayerResults } from './MultiplayerResults';
-import { multiplayerService } from '@/services/supabase/multiplayerService';
+import { questMultiplayerService } from '@/services/supabase/QuestMultiplayerService';
 import { toast } from 'sonner';
 
 type MultiplayerState = 'MENU' | 'CREATE' | 'JOIN' | 'LOBBY' | 'GAME' | 'RESULTS';
@@ -29,7 +29,7 @@ export const QuestMultiplayerView = ({ onBack }: { onBack: () => void }) => {
       if (savedRoomId && user) {
         try {
           // Verify if room still exists and what state it is in
-          const room = await multiplayerService.getRoom(savedRoomId);
+          const room = await questMultiplayerService.getRoom(savedRoomId);
           if (room) {
             // Check if I am still in the player list
             const isPlayer = room.players.find(p => p.id === user.id);

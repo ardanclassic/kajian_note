@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useQuestStore } from '@/store/questStore';
 import { useAuthStore } from '@/store/authStore';
-import { multiplayerService } from '@/services/supabase/multiplayerService';
+import { questMultiplayerService } from '@/services/supabase/QuestMultiplayerService';
 import { questAppwriteService } from '@/services/appwrite/questService';
 import { toast } from 'sonner';
 import type { Topic, Subtopic } from '@/types/quest.types';
@@ -24,6 +24,7 @@ export const CreateRoomForm = ({ onCreated, onCancel }: Props) => {
   const [maxQuestions, setMaxQuestions] = useState<number>(20);
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [enableTeamMode, setEnableTeamMode] = useState(false); // NEW: Team Mode Toggle
 
   useEffect(() => {
     if (topics.length === 0) fetchTopics();
@@ -77,7 +78,7 @@ export const CreateRoomForm = ({ onCreated, onCancel }: Props) => {
 
     setIsSubmitting(true);
     try {
-      const room = await multiplayerService.createRoom(
+      const room = await questMultiplayerService.createRoom(
         {
           uid: user.id || 'anon',
           name: user.fullName || user.username || 'Player',
@@ -88,7 +89,8 @@ export const CreateRoomForm = ({ onCreated, onCancel }: Props) => {
           topic: selectedTopic,
           subtopic: selectedSubtopic,
           totalQuestions: questionCount
-        }
+        },
+        enableTeamMode // Pass team mode flag
       );
 
       toast.success("Room berhasil dibuat!");
@@ -139,6 +141,33 @@ export const CreateRoomForm = ({ onCreated, onCancel }: Props) => {
               <option key={s.id} value={s.id} className="bg-gray-900 text-white py-2">{s.title}</option>
             ))}
           </select>
+        </div>
+
+        {/* Team Mode Toggle */}
+        <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
+          <label className="text-xs uppercase tracking-wider text-gray-400 font-semibold">Mode Permainan</label>
+          <div className="flex items-center gap-4 p-4 bg-gray-900/80 border-2 border-gray-700 rounded-xl">
+            <div className="flex-1">
+              <h4 className="text-sm font-semibold text-white mb-1">
+                {enableTeamMode ? "🤝 Team Mode" : "👤 Solo Mode"}
+              </h4>
+              <p className="text-xs text-gray-400">
+                {enableTeamMode
+                  ? "Pemain dibagi menjadi 2 tim yang berkompetisi"
+                  : "Setiap pemain bermain untuk dirinya sendiri"}
+              </p>
+            </div>
+            <button
+              onClick={() => setEnableTeamMode(!enableTeamMode)}
+              className={`relative w-14 h-8 rounded-full transition-colors ${enableTeamMode ? 'bg-indigo-600' : 'bg-gray-700'
+                }`}
+            >
+              <div
+                className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full transition-transform ${enableTeamMode ? 'translate-x-6' : 'translate-x-0'
+                  }`}
+              />
+            </button>
+          </div>
         </div>
 
         {/* Question Count Slider - Only show when subtopic is selected */}

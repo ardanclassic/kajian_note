@@ -112,7 +112,7 @@ async function syncTopicsAndSubtopics() {
     const t = uniqueTopics[slug];
     await upsertDocument(COLLECTIONS.TOPICS, slug, {
       name: t.name,
-      description: `Kumpulan kuis ${t.name}`
+      slug: slug
     }, slug);
   }
 
@@ -122,9 +122,7 @@ async function syncTopicsAndSubtopics() {
       topic_id: item.topic.toLowerCase(),
       slug: item.slug,
       title: item.name,
-      description: item.description,
-      icon: item.icon,
-      color: item.color
+      description: item.description
     }, item.slug);
   }
 
@@ -189,12 +187,12 @@ async function syncQuestions() {
 
       const payload = {
         subtopic_id: q.subtopic_id,
+        type: q.type || 'multiple_choice',
         text: q.question_text || q.text,
         options: optionsString,
-        correct: q.correct,
+        correct: (typeof q.correct === 'object') ? JSON.stringify(q.correct) : q.correct,
         explanation: explanationString,
         points: q.points || 10,
-        difficulty: q.difficulty || "easy",
         spare: JSON.stringify(q.spare || {})
       };
 

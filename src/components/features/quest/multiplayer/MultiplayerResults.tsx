@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Trophy, Home, Loader2, Share2, Medal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/authStore';
-import { multiplayerService } from '@/services/supabase/multiplayerService';
+import { questMultiplayerService } from '@/services/supabase/QuestMultiplayerService';
 import type { QuestSession } from '@/types/quest.types';
 import confetti from 'canvas-confetti';
 
@@ -20,7 +20,7 @@ export const MultiplayerResults = ({ roomId, onExit }: Props) => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const data = await multiplayerService.getRoom(roomId);
+        const data = await questMultiplayerService.getRoom(roomId);
         if (data) {
           setRoomData(data);
           // Trigger confetti if I am the winner or top 3

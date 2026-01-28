@@ -5,7 +5,7 @@ import {
   LayoutDashboard,
   User,
   LogOut,
-  Zap,
+
   Crown,
   Users,
   ChevronsUpDown,
@@ -75,12 +75,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       icon: BookOpen,
       isActive: location.pathname === "/notes" || location.pathname.startsWith("/notes/"),
     },
-    {
-      title: "Deep Note",
-      url: "/deep-note",
-      icon: Zap,
-      isActive: location.pathname.startsWith("/deep-note"),
-    },
+
     {
       title: "Content Studio",
       url: "/content-studio",

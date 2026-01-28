@@ -25,12 +25,6 @@ import type {
   YouTubeImportResult,
   YouTubeReferenceInfo,
   YouTubeAPIError,
-  // Deep Note types
-  SubmitCleanupTaskRequest,
-  SubmitCleanupTaskResponse,
-  PollCleanupTaskStatusResponse,
-  CleanupTaskResult,
-  DeepNoteImportResult,
 } from "@/types/youtube.types";
 import { env } from "@/config/env";
 
@@ -44,7 +38,7 @@ const endpoints = {
   transcriptText: "/transcript/text",
   transcriptSummarize: "/transcript/summarize", // OLD - Sync
   transcriptSummarizeTask: "/transcript/summarize-task", // NEW - Async (Note Summary)
-  transcriptCleanupTask: "/transcript/cleanup-task", // NEW - Async (Deep Note)
+
   taskStatus: "/tasks", // NEW - Polling endpoint
   health: "/health",
 } as const;
@@ -70,17 +64,6 @@ const defaultConfig = {
 /**
  * Default configuration for Deep Note
  */
-const defaultConfigDeepNote = {
-  languages: "id,en",
-  maxTokensPerChunk: 3000,
-  outputLanguage: "Indonesian",
-  polling: {
-    interval: 3000, // 3 seconds (longer processing)
-    maxAttempts: 200, // 200 * 3s = 600s = 10 minutes
-    retryDelay: 3000,
-    maxRetries: 3,
-  },
-};
 
 /**
  * ========================================
@@ -353,162 +336,6 @@ export const fetchTranscriptSummaryAsync = async (
 /**
  * ========================================
  * END ASYNC TASK FUNCTIONS
- * ========================================
- */
-
-/**
- * ========================================
- * DEEP NOTE (CLEANUP TASK) FUNCTIONS
- * ========================================
- */
-
-/**
- * Submit cleanup task (Deep Note - ASYNC)
- * Returns task_id for polling
- */
-export const submitCleanupTask = async (
-  videoId: string,
-  languages: string = defaultConfigDeepNote.languages,
-  model: string = env.openRouter.geminiModel,
-  maxTokensPerChunk: number = defaultConfigDeepNote.maxTokensPerChunk,
-  outputLanguage: string = defaultConfigDeepNote.outputLanguage,
-): Promise<SubmitCleanupTaskResponse> => {
-  try {
-    const response = await youtubeAPI.post<SubmitCleanupTaskResponse>(endpoints.transcriptCleanupTask, {
-      video_id: videoId,
-      languages,
-      model,
-      max_tokens_per_chunk: maxTokensPerChunk,
-      output_language: outputLanguage,
-    } as SubmitCleanupTaskRequest);
-
-    return response.data;
-  } catch (error) {
-    console.error("Error submitting cleanup task:", error);
-    throw handleAPIError(error);
-  }
-};
-
-/**
- * Poll cleanup task status (Deep Note)
- * Reuses existing pollTaskStatus but with proper typing
- */
-export const pollCleanupTaskStatus = async (
-  taskId: string,
-  signal?: AbortSignal,
-): Promise<PollCleanupTaskStatusResponse> => {
-  try {
-    const response = await youtubeAPI.get<PollCleanupTaskStatusResponse>(`${endpoints.taskStatus}/${taskId}`, {
-      signal,
-    });
-
-    return response.data;
-  } catch (error) {
-    if (signal?.aborted) {
-      throw new Error("Request dibatalkan");
-    }
-    console.error("Error polling cleanup task status:", error);
-    throw handleAPIError(error);
-  }
-};
-
-/**
- * Poll cleanup task with retry and exponential backoff (Deep Note)
- */
-const pollCleanupWithRetry = async (
-  taskId: string,
-  signal?: AbortSignal,
-  onProgress?: (attempt: number, maxAttempts: number) => void,
-): Promise<CleanupTaskResult> => {
-  let attempts = 0;
-  let retryCount = 0;
-
-  while (attempts < defaultConfigDeepNote.polling.maxAttempts) {
-    if (signal?.aborted) {
-      throw new Error("Proses dibatalkan");
-    }
-
-    try {
-      attempts++;
-
-      if (onProgress) {
-        onProgress(attempts, defaultConfigDeepNote.polling.maxAttempts);
-      }
-
-      const status = await pollCleanupTaskStatus(taskId, signal);
-
-      if (status.status === "completed") {
-        if (!status.result) {
-          throw new Error("Hasil Deep Note tidak ditemukan");
-        }
-
-        if (!status.result.cleaned_text || status.result.cleaned_text.trim().length === 0) {
-          console.error("Empty cleaned_text:", status.result);
-          throw new Error("Cleaned text kosong dari API");
-        }
-
-        return status.result;
-      }
-
-      if (status.status === "failed") {
-        throw new Error(status.error || "Deep Note task gagal diproses");
-      }
-
-      // Reset retry count on successful poll
-      retryCount = 0;
-
-      // Wait before next poll
-      await sleep(defaultConfigDeepNote.polling.interval, signal);
-    } catch (error) {
-      if (signal?.aborted || (error instanceof Error && error.message === "Proses dibatalkan")) {
-        throw error;
-      }
-
-      // Retry with exponential backoff
-      retryCount++;
-      if (retryCount >= defaultConfigDeepNote.polling.maxRetries) {
-        throw new Error("Gagal mengecek status task setelah beberapa kali percobaan");
-      }
-
-      const backoffDelay = defaultConfigDeepNote.polling.retryDelay * Math.pow(2, retryCount - 1);
-      console.warn(`Retry attempt ${retryCount}/${defaultConfigDeepNote.polling.maxRetries} after ${backoffDelay}ms`);
-      await sleep(backoffDelay, signal);
-    }
-  }
-
-  throw new Error("Timeout: Proses Deep Note memakan waktu terlalu lama (>10 menit)");
-};
-
-/**
- * Fetch Deep Note (cleanup) - Complete async flow
- * Submit task → poll → return result
- */
-export const fetchDeepNoteAsync = async (
-  videoId: string,
-  languages: string = defaultConfigDeepNote.languages,
-  model: string = env.openRouter.geminiModel,
-  maxTokensPerChunk: number = defaultConfigDeepNote.maxTokensPerChunk,
-  outputLanguage: string = defaultConfigDeepNote.outputLanguage,
-  signal?: AbortSignal,
-  onProgress?: (attempt: number, maxAttempts: number) => void,
-): Promise<CleanupTaskResult> => {
-  try {
-    // Step 1: Submit task
-    const taskResponse = await submitCleanupTask(videoId, languages, model, maxTokensPerChunk, outputLanguage);
-
-    // Step 2: Poll until completed/failed
-    const result = await pollCleanupWithRetry(taskResponse.task_id, signal, onProgress);
-
-    return result;
-  } catch (error) {
-    console.error("Error fetching Deep Note (async):", error);
-    throw error instanceof Error ? error : handleAPIError(error);
-  }
-};
-
-/**
- * ========================================
- * END DEEP NOTE FUNCTIONS
  * ========================================
  */
 

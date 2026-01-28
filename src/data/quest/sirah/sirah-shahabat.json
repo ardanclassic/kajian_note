@@ -1,182 +1,347 @@
 [
   {
+    "subtopic_id": "sirah-shahabat",
     "topic_slug": "sirah-shahabat",
-    "question_text": "Sahabat yang mendapat gelar 'As-Siddiq' adalah...",
+    "type": "multiple_choice",
+    "question_text": "Siapakah Khalifah pertama setelah wafatnya Rasulullah SAW?",
     "options": [
       { "id": "A", "text": "Umar bin Khattab" },
-      { "id": "B", "text": "Utsman bin Affan" },
-      { "id": "C", "text": "Abu Bakar" },
-      { "id": "D", "text": "Ali bin Abi Thalib" }
-    ],
-    "correct": "C",
-    "explanation": {
-      "text": "Abu Bakar digelari As-Siddiq karena beliau yang paling membenarkan Isra Mi'raj Nabi ketika orang lain ingkar.",
-      "dalil": "",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "sirah-shahabat",
-    "question_text": "Khalifah kedua yang dikenal tegas dan mendapat gelar 'Al-Faruq' adalah...",
-    "options": [
-      { "id": "A", "text": "Abu Bakar" },
-      { "id": "B", "text": "Umar bin Khattab" },
+      { "id": "B", "text": "Abu Bakar As-Siddiq" },
       { "id": "C", "text": "Utsman bin Affan" },
       { "id": "D", "text": "Ali bin Abi Thalib" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Umar bin Khattab Al-Faruq (Pembeda antara yang haq dan batil).",
-      "dalil": "",
-      "resources": []
+      "text": "Abu Bakar dipilih berdasarkan kesepakatan kaum Muhajirin dan Anshar.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "sirah-shahabat",
     "topic_slug": "sirah-shahabat",
-    "question_text": "Malaikat merasa malu kepada sahabat ini karena sifat pemalunya. Beliau adalah...",
+    "type": "multiple_choice",
+    "question_text": "Gelar 'Al-Faruq' yang artinya pembeda kebenaran dan kebatilan adalah gelar...",
     "options": [
-      { "id": "A", "text": "Utsman bin Affan" },
-      { "id": "B", "text": "Ali bin Abi Thalib" },
-      { "id": "C", "text": "Abdurrahman bin Auf" },
-      { "id": "D", "text": "Sa'ad bin Abi Waqqash" }
-    ],
-    "correct": "A",
-    "explanation": {
-      "text": "Rasulullah bersabda: 'Tidakkah aku malu kepada orang yang malaikat saja malu kepadanya?' merujuk pada Utsman.",
-      "dalil": "HR. Muslim",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "topic_slug": "sirah-shahabat",
-    "question_text": "Sahabat yang dijuluki 'Gerbang Ilmu' (Baabul 'Ilm) oleh Nabi adalah...",
-    "options": [
-      { "id": "A", "text": "Ibnu Abbas" },
-      { "id": "B", "text": "Ali bin Abi Thalib" },
-      { "id": "C", "text": "Zaid bin Tsabit" },
-      { "id": "D", "text": "Muadz bin Jabal" }
+      { "id": "A", "text": "Abu Bakar" },
+      { "id": "B", "text": "Umar bin Khattab" },
+      { "id": "C", "text": "Ali bin Abi Thalib" },
+      { "id": "D", "text": "Khalid bin Walid" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Ali bin Abi Thalib dikenal dengan kecerdasannya dan kedalaman ilmunya.",
-      "dalil": "Hadits Tirmidzi",
-      "resources": []
+      "text": "Nabi memberikan gelar Al-Faruq kepada Umar karena ketegasannya.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "sirah-shahabat",
     "topic_slug": "sirah-shahabat",
-    "question_text": "Istri Nabi yang paling banyak meriwayatkan hadits adalah...",
+    "type": "true_false",
+    "question_text": "Utsman bin Affan dijuluki 'Dzun Nurain' karena menikahi dua putri Nabi.",
     "options": [
-      { "id": "A", "text": "Khadijah RA" },
-      { "id": "B", "text": "Ummu Salamah RA" },
-      { "id": "C", "text": "Aisyah RA" },
-      { "id": "D", "text": "Hafshah RA" }
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
     ],
-    "correct": "C",
+    "correct": "true",
     "explanation": {
-      "text": "Aisyah Radhiyallahu 'anha termasuk dalam 7 sahabat yang paling banyak meriwayatkan hadits (Al-Muktsirun).",
-      "dalil": "",
-      "resources": []
+      "text": "Beliau menikahi Ruqayyah, dan setelah Ruqayyah wafat, beliau menikahi Ummu Kultsum.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "sirah-shahabat",
     "topic_slug": "sirah-shahabat",
-    "question_text": "Muadzin pertama dalam Islam adalah...",
+    "type": "true_false",
+    "question_text": "Khalid bin Walid belum pernah memenangkan peperangan sebelum masuk Islam.",
     "options": [
-      { "id": "A", "text": "Bilal bin Rabah" },
-      { "id": "B", "text": "Abdullah bin Ummi Maktum" },
-      { "id": "C", "text": "Abu Mahzurah" },
-      { "id": "D", "text": "Yasir" }
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "false",
+    "explanation": {
+      "text": "Khalid bin Walid adalah panglima perang Quraisy yang mengalahkan pasukan muslim di Perang Uhud sebelum akhirnya masuk Islam.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-shahabat",
+    "topic_slug": "sirah-shahabat",
+    "type": "puzzle_order",
+    "question_text": "Urutkan Khulafaur Rasyidin berdasarkan masa jabatannya:",
+    "options": [
+      { "id": "K_1", "text": "Abu Bakar As-Siddiq" },
+      { "id": "K_2", "text": "Umar bin Khattab" },
+      { "id": "K_3", "text": "Utsman bin Affan" },
+      { "id": "K_4", "text": "Ali bin Abi Thalib" }
+    ],
+    "correct": ["K_1", "K_2", "K_3", "K_4"],
+    "explanation": {
+      "text": "Empat khalifah besar yang mendapat petunjuk Allah.",
+      "dalil": ""
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "sirah-shahabat",
+    "topic_slug": "sirah-shahabat",
+    "type": "multiple_choice",
+    "question_text": "Siapakah pemuda yang tidur di tempat tidur Nabi saat malam Hijrah untuk mengelabuhi kaum Quraisy?",
+    "options": [
+      { "id": "A", "text": "Ali bin Abi Thalib" },
+      { "id": "B", "text": "Ja'far bin Abi Thalib" },
+      { "id": "C", "text": "Zubaid bin Haritsah" },
+      { "id": "D", "text": "Mu'adz bin Jabal" }
     ],
     "correct": "A",
     "explanation": {
-      "text": "Bilal bin Rabah adalah muadzin Rasulullah yang terkenal dengan suara lantangnya.",
-      "dalil": "",
-      "resources": []
+      "text": "Ali bin Abi Thalib berani mempertaruhkan nyawanya demi keselamatan Nabi.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "sirah-shahabat",
     "topic_slug": "sirah-shahabat",
-    "question_text": "Panglima perang yang dijuluki 'Pedang Allah yang Terhunus' adalah...",
+    "type": "multiple_choice",
+    "question_text": "Sahabat yang mendapat gelar 'Pedang Allah yang Terhunus' (Saifullah al-Maslul) adalah...",
     "options": [
       { "id": "A", "text": "Hamzah bin Abdul Muthalib" },
       { "id": "B", "text": "Khalid bin Walid" },
-      { "id": "C", "text": "Amru bin Ash" },
-      { "id": "D", "text": "Abu Ubaidah bin Jarrah" }
+      { "id": "C", "text": "Sa'ad bin Abi Waqqash" },
+      { "id": "D", "text": "Zubeir bin Awwam" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Khalid bin Walid dijuluki Saifullah Al-Maslul karena kepiawaiannya dalam memimpin strategi perang tanpa pernah kalah.",
-      "dalil": "",
-      "resources": []
+      "text": "Gelar ini diberikan Nabi setelah aksi Khalid yang luar biasa di Perang Mu'tah.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "sirah-shahabat",
     "topic_slug": "sirah-shahabat",
-    "question_text": "Imam Mazhab yang empat (Ahlus Sunnah) adalah...",
+    "type": "true_false",
+    "question_text": "Abu Hurairah adalah sahabat yang paling banyak meriwayatkan hadits.",
     "options": [
-      { "id": "A", "text": "Bukhari, Muslim, Abu Daud, Tirmidzi" },
-      { "id": "B", "text": "Hanafi, Maliki, Syafi'i, Hambali" },
-      { "id": "C", "text": "Ghazali, Nawawi, Ibnu Taimiyah, Ibnu Qayyim" },
-      { "id": "D", "text": "Junaid, Qushairi, Hallaj, Rumi" }
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Beliau sangat dekat dengan Nabi dan didoakan agar memiliki ingatan yang kuat.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-shahabat",
+    "topic_slug": "sirah-shahabat",
+    "type": "puzzle_order",
+    "question_text": "Urutkan sahabat-sahabat berikut yang lebih dulu masuk Islam:",
+    "options": [
+      { "id": "S_1", "text": "Abu Bakar" },
+      { "id": "S_2", "text": "Zaid bin Haritsah" },
+      { "id": "S_3", "text": "Umar bin Khattab" }
+    ],
+    "correct": ["S_1", "S_2", "S_3"],
+    "explanation": {
+      "text": "Umar bin Khattab baru masuk Islam sekitar tahun ke-6 Kenabian.",
+      "dalil": ""
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "sirah-shahabat",
+    "topic_slug": "sirah-shahabat",
+    "type": "multiple_choice",
+    "question_text": "Siapakah ibu dari para mukmin (Ummul Mukminin) yang juga seorang ahli fiqih dan banyak meriwayatkan hadits?",
+    "options": [
+      { "id": "A", "text": "Khadijah binti Khuwailid" },
+      { "id": "B", "text": "Aisyah binti Abi Bakar" },
+      { "id": "C", "text": "Hafshah binti Umar" },
+      { "id": "D", "text": "Zainab binti Jahsy" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Empat Imam Mazhab Fiqih yang masyhur: Abu Hanifah, Malik, Syafi'i, dan Ahmad bin Hambal.",
-      "dalil": "",
-      "resources": []
+      "text": "Aisyah RA adalah wanita yang paling cerdas di zamannya dan menjadi rujukan para sahabat.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "sirah-shahabat",
     "topic_slug": "sirah-shahabat",
-    "question_text": "Penulis wahyu (Sekretaris Nabi) yang kemudian mengumpulkan Al-Quran menjadi satu mushaf di zaman Khalifah Abu Bakar & Utsman adalah...",
+    "type": "true_false",
+    "question_text": "Abdurrahman bin Auf adalah sahabat yang sangat kaya raya namun juga sangat dermawan.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Beliau pernah menyumbangkan 700 unta bermuatan barang dagangan untuk penduduk Madinah.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-shahabat",
+    "topic_slug": "sirah-shahabat",
+    "type": "multiple_choice",
+    "question_text": "Sahabat yang ditunjuk Abu Bakar untuk memimpin pengumpulan mushaf Al-Qur'an adalah...",
     "options": [
       { "id": "A", "text": "Zaid bin Tsabit" },
-      { "id": "B", "text": "Ubay bin Ka'ab" },
-      { "id": "C", "text": "Abdullah bin Mas'ud" },
-      { "id": "D", "text": "Muadz bin Jabal" }
+      { "id": "B", "text": "Abdullah bin Mas'ud" },
+      { "id": "C", "text": "Ubai bin Ka'ab" },
+      { "id": "D", "text": "Mu'adz bin Jabal" }
     ],
     "correct": "A",
     "explanation": {
-      "text": "Zaid bin Tsabit adalah ketua panitia pengumpulan Al-Quran.",
-      "dalil": "",
-      "resources": []
+      "text": "Zaid bin Tsabit adalah sekretaris Nabi dan penghafal Al-Qur'an yang sangat teliti.",
+      "dalil": ""
     },
-    "points": 15,
-    "spare": null
+    "points": 10
   },
   {
+    "subtopic_id": "sirah-shahabat",
     "topic_slug": "sirah-shahabat",
-    "question_text": "Imam Syafi'i lahir di...",
+    "type": "true_false",
+    "question_text": "Hamzah bin Abdul Muthalib gugur sebagai syahid dalam Perang Badar.",
     "options": [
-      { "id": "A", "text": "Mekkah" },
-      { "id": "B", "text": "Madinah" },
-      { "id": "C", "text": "Gaza (Palestina)" },
-      { "id": "D", "text": "Mesir" }
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
     ],
-    "correct": "C",
+    "correct": "false",
     "explanation": {
-      "text": "Imam Syafi'i lahir di Gaza tahun 150 H, dan wafat di Mesir tahun 204 H.",
-      "dalil": "",
-      "resources": []
+      "text": "Hamzah gugur sebagai Sayyidus Syuhada (Pemimpin para syuhada) dalam Perang Uhud.",
+      "dalil": ""
     },
-    "points": 10,
-    "spare": null
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-shahabat",
+    "topic_slug": "sirah-shahabat",
+    "type": "puzzle_order",
+    "question_text": "Suun tingkatan keutamaan sahabat berikut:",
+    "options": [
+      { "id": "F_1", "text": "Al-Khulafaur Rasyidin" },
+      { "id": "F_2", "text": "Sahabat yang Dijanjikan Surga (10 Orang)" },
+      { "id": "F_3", "text": "Ahlu Badar" },
+      { "id": "F_4", "text": "Ahlu Uhud" }
+    ],
+    "correct": ["F_1", "F_2", "F_3", "F_4"],
+    "explanation": {
+      "text": "Urutan prioritas keutamaan sahabat di mata umat menurut ulama.",
+      "dalil": ""
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "sirah-shahabat",
+    "topic_slug": "sirah-shahabat",
+    "type": "multiple_choice",
+    "question_text": "Siapakah sahabat yang digelari Nabi sebagai 'Mufattihul Qulub' (Pembuka Hati) atau duta Islam pertama ke Madinah?",
+    "options": [
+      { "id": "A", "text": "Mus'ab bin Umair" },
+      { "id": "B", "text": "Zaid bin Haritsah" },
+      { "id": "C", "text": "Amru bin Ash" },
+      { "id": "D", "text": "Ja'far bin Abi Thalib" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Mus'ab bin Umair adalah duta pertama yang dikirim Nabi untuk mengajar di Madinah sebelum Hijrah.",
+      "dalil": ""
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "sirah-shahabat",
+    "topic_slug": "sirah-shahabat",
+    "type": "true_false",
+    "question_text": "Bilal bin Rabah berhenti mengumandangkan adzan setelah wafatnya Rasulullah karena rasa sedih yang mendalam.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Beliau tidak sanggup menyebut nama Nabi dalam adzannya karena selalu menangis teringat beliau.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-shahabat",
+    "topic_slug": "sirah-shahabat",
+    "type": "multiple_choice",
+    "question_text": "Sahabat yang dititipkan rahasia nama-nama kaum munafik (Shahibus Sirri) oleh Nabi adalah...",
+    "options": [
+      { "id": "A", "text": "Umar bin Khattab" },
+      { "id": "B", "text": "Hudzaifah bin Al-Yaman" },
+      { "id": "C", "text": "Salman Al-Farisi" },
+      { "id": "D", "text": "Abu Bakar" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Hanya Hudzaifah yang mengetahui daftar nama munafik di Madinah.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-shahabat",
+    "topic_slug": "sirah-shahabat",
+    "type": "true_false",
+    "question_text": "Anas bin Malik telah membantu/melayani Nabi selama 10 tahun.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Anas mulai melayani Nabi sejak kecil dan Nabi tidak pernah memarahinya.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-shahabat",
+    "topic_slug": "sirah-shahabat",
+    "type": "multiple_choice",
+    "question_text": "Siapakah panglima muda yang dipilih Nabi untuk memimpin pasukan menyerang Romawi saat Nabi sedang sakit menjelang wafat?",
+    "options": [
+      { "id": "A", "text": "Usamah bin Zaid" },
+      { "id": "B", "text": "Ali bin Abi Thalib" },
+      { "id": "C", "text": "Khalid bin Walid" },
+      { "id": "D", "text": "Ja'far bin Abi Thalib" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Usamah bin Zaid ditunjuk sebagai panglima di usia yang sangat muda (sekitar 18-20 tahun).",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "sirah-shahabat",
+    "topic_slug": "sirah-shahabat",
+    "type": "puzzle_order",
+    "question_text": "Susun rukun bai'at (janji setia) dalam Fathu Makkah bagi kaum pria:",
+    "options": [
+      { "id": "P_1", "text": "Sami'na wa atha'na (Mendengar & Taat)" },
+      { "id": "P_2", "text": "Menjalankan perintah Allah" },
+      { "id": "P_3", "text": "Menjauhi larangan agama" },
+      { "id": "P_4", "text": "Berjuang di jalan Islam" }
+    ],
+    "correct": ["P_1", "P_2", "P_3", "P_4"],
+    "explanation": {
+      "text": "Poin-poin umum komitmen sahabat kepada kepemimpinan Nabi.",
+      "dalil": ""
+    },
+    "points": 25
   }
 ]

@@ -6,7 +6,7 @@ import {
   User,
   Users,
   LogOut,
-  FileText,
+
   Sparkles
 } from "lucide-react";
 import { useState } from "react";
@@ -36,7 +36,7 @@ export const useNavigationMenu = () => {
 
   const menuItems: MenuItem[] = [
     { icon: Sparkles, label: "Note Summary", onClick: () => navigate("/notes") },
-    { icon: FileText, label: "Deep Note", onClick: () => navigate("/deep-note"), badge: "Premium" },
+
     { icon: Crown, label: "Subscription", onClick: () => navigate("/subscription") },
     { icon: User, label: "Profile", onClick: () => navigate("/profile") },
     { icon: Users, label: "Kelola Users", onClick: () => navigate("/admin/users"), adminOnly: true },

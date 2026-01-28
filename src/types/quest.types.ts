@@ -66,8 +66,9 @@ export interface Question {
   options: QuestionOption[];
   explanation: QuestionExplanation | null;
 
-  correct: string; // "A", "B", etc
+  correct: string; // "A", "B"... OR JSON Array string for Puzzles
   points: number;
+  type?: "multiple_choice" | "true_false" | "puzzle_order"; // NEW: Variety Types
   spare?: any; // Future proofing field
 }
 
@@ -120,7 +121,7 @@ export interface QuestStore {
   fetchTopics: () => Promise<void>;
   fetchSubtopics: (topicSlug: string) => Promise<void>;
   startQuiz: (subtopic: Subtopic) => Promise<void>;
-  submitAnswer: (questionId: string, optionId: string) => void;
+  submitAnswer: (questionId: string, optionId: string | string[]) => void;
   nextQuestion: () => void;
   resetQuiz: () => void;
 }
@@ -146,6 +147,18 @@ export interface Player {
   // NEW: Power-Ups
   inventory: PowerUpInventory;
   active_effects: PowerUpType[];
+
+  // NEW: Team Mode
+  team_id?: string | null; // "TEAM_A", "TEAM_B", or null for solo mode
+}
+
+// NEW: Team Information
+export interface TeamInfo {
+  id: string; // "TEAM_A", "TEAM_B"
+  name: string; // "Tim A", "Tim B" or custom names
+  color: string; // Hex color for UI
+  total_score: number; // Accumulated from all members
+  member_count: number;
 }
 
 export type PowerUpType = "STREAK_SAVER" | "DOUBLE_POINTS" | "FIFTY_FIFTY" | "TIME_FREEZE";
@@ -176,6 +189,10 @@ export interface QuestSessionState {
   players: Player[];
   current_question_idx: number; // Global index (maybe for reference or forced sync)
   answer_logs?: Record<string, AnswerLogEntry[]>; // NEW: Map "q_0" -> logs
+
+  // NEW: Team Mode
+  game_mode?: "SOLO" | "TEAM"; // Default: SOLO
+  teams?: TeamInfo[]; // Active teams in this session
 }
 
 /**

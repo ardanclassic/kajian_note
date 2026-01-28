@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Loader2, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/authStore';
-import { multiplayerService } from '@/services/supabase/multiplayerService';
+import { questMultiplayerService } from '@/services/supabase/QuestMultiplayerService';
 import { toast } from 'sonner';
 
 interface Props {
@@ -21,7 +21,7 @@ export const JoinRoomForm = ({ onJoined, onCancel }: Props) => {
 
     setIsSubmitting(true);
     try {
-      const room = await multiplayerService.joinRoom(
+      const room = await questMultiplayerService.joinRoom(
         code.toUpperCase(), // Normalize case
         {
           uid: user.id || 'anon',

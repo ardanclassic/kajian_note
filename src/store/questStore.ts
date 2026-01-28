@@ -87,7 +87,7 @@ export const useQuestStore = create<QuestStore>()(
         }
       },
 
-      submitAnswer: (questionId: string, optionId: string) => {
+      submitAnswer: (questionId: string, optionId: string | string[]) => {
         const { activeSession } = get();
         if (!activeSession || activeSession.isCompleted) return;
 
@@ -98,20 +98,56 @@ export const useQuestStore = create<QuestStore>()(
           console.warn("Question ID mismatch ignored");
         }
 
-        // Robust comparison logic
-        const dbCorrect = String(currentQ.correct || "")
-          .trim()
-          .toUpperCase();
-        const userSelected = String(optionId || "")
-          .trim()
-          .toUpperCase();
-        const isCorrect = dbCorrect === userSelected;
+        let isCorrect = false;
+
+        if (currentQ.type === "puzzle_order") {
+          // Logic for Array Comparison
+          try {
+            // 1. Ensure user input is an array
+            const userArray = Array.isArray(optionId) ? optionId : JSON.parse(String(optionId));
+
+            // 2. Ensure DB Correct is an array
+            let dbCorrectArray: string[] = [];
+            try {
+              dbCorrectArray = JSON.parse(currentQ.correct);
+            } catch (e) {
+              console.error("Failed to parse DB Correct Answer for Puzzle", currentQ.correct);
+              // Fallback: If DB stores it as raw string, try to wrap it? No, DB MUST be JSON array string.
+            }
+
+            // 3. Compare Arrays Element-by-Element (More Robust)
+            if (userArray.length !== dbCorrectArray.length) {
+              isCorrect = false;
+            } else {
+              isCorrect = userArray.every(
+                (val: any, index: number) => String(val).trim() === String(dbCorrectArray[index]).trim(),
+              );
+            }
+
+            // Debug Log (To aid future debugging)
+            if (!isCorrect) {
+              console.warn("Puzzle Mismatch:", { user: userArray, db: dbCorrectArray });
+            }
+          } catch (e) {
+            console.error("Puzzle Validation Logic Error", e);
+            isCorrect = false;
+          }
+        } else {
+          // Logic for Single String
+          const dbCorrect = String(currentQ.correct || "")
+            .trim()
+            .toUpperCase();
+          const userSelected = String(optionId || "")
+            .trim()
+            .toUpperCase();
+          isCorrect = dbCorrect === userSelected;
+        }
 
         const points = isCorrect ? Number(currentQ.points) || 10 : 0;
 
         const newAnswer: UserAnswer = {
           questionId: currentQ.id,
-          selectedOptionId: optionId,
+          selectedOptionId: typeof optionId === "string" ? optionId : JSON.stringify(optionId),
           isCorrect,
           pointsEarned: points,
           timeSpentMs: 0,

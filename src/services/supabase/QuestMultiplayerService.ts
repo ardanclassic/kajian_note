@@ -39,13 +39,37 @@ const mapRowToSession = (row: any): QuestSession => {
     created_at: row.created_at,
     // Add answer logs to state wrapper if needed, for now implied in state
     answer_logs: state.answer_logs || {},
+
+    // Team Mode Mapping
+    game_mode: state.game_mode || "SOLO",
+    teams: state.teams || [],
   };
+};
+
+/**
+ * TEAM MODE: Recalculate Team Scores from Player Scores
+ * Helper function used by multiple methods
+ */
+const recalculateTeamScores = (state: QuestSessionState): QuestSessionState => {
+  if (state.game_mode !== "TEAM" || !state.teams) return state;
+
+  const updatedTeams = state.teams.map((team) => {
+    const teamMembers = state.players.filter((p) => p.team_id === team.id);
+    const totalScore = teamMembers.reduce((sum, p) => sum + (p.score || 0), 0);
+    return {
+      ...team,
+      total_score: totalScore,
+      member_count: teamMembers.length,
+    };
+  });
+
+  return { ...state, teams: updatedTeams };
 };
 
 // ------------------------------------------------------------------
 // CORE SERVICE
 // ------------------------------------------------------------------
-export const multiplayerService = {
+export const questMultiplayerService = {
   /**
    * Create a new Room
    * Uses 'quest_sessions' table, storing transient state in 'questions_data'
@@ -53,12 +77,18 @@ export const multiplayerService = {
   createRoom: async (
     host: { uid: string; name: string; avatar: string; tier?: "FREE" | "PREMIUM" },
     config: any,
+    enableTeamMode: boolean = false, // NEW: Team Mode toggle
   ): Promise<QuestSession> => {
     const roomCode = generateRoomCode();
 
+    // ⚠️ TEMPORARY: Disabled for Development/Testing Phase
+    // TODO: Re-enable tier-based limits before production
     // Determine Max Players based on Host Tier
-    const tier = host.tier || "FREE";
-    const limit = tier === "PREMIUM" ? 10 : 2;
+    // const tier = host.tier || "FREE";
+    // const limit = tier === "PREMIUM" ? 10 : 2;
+
+    // TESTING: Allow all users (free & premium) to have 10 players
+    const limit = 10;
 
     // Initial State
     const hostPlayer: Player = {
@@ -73,7 +103,16 @@ export const multiplayerService = {
       streak: 0,
       inventory: { STREAK_SAVER: 1, DOUBLE_POINTS: 1, FIFTY_FIFTY: 1, TIME_FREEZE: 1 },
       active_effects: [],
+      team_id: null, // Host starts without team (will choose in lobby)
     };
+
+    // Initialize Teams if Team Mode enabled
+    const initialTeams: any[] = enableTeamMode
+      ? [
+          { id: "TEAM_A", name: "Tim A", color: "#3b82f6", total_score: 0, member_count: 0 }, // Blue
+          { id: "TEAM_B", name: "Tim B", color: "#ef4444", total_score: 0, member_count: 0 }, // Red
+        ]
+      : [];
 
     const initialState: QuestSessionState = {
       room_code: roomCode,
@@ -82,6 +121,8 @@ export const multiplayerService = {
       players: [hostPlayer],
       current_question_idx: 0, // Keep global for host sync or other uses
       answer_logs: {}, // NEW: Track who answered what and when
+      game_mode: enableTeamMode ? "TEAM" : "SOLO",
+      teams: initialTeams,
     };
 
     // DB Insert
@@ -90,10 +131,10 @@ export const multiplayerService = {
       .insert({
         user_id: host.uid,
         topic_slug: config.topic?.id || "unknown",
-        subtopic_slug: config.subtopic?.id || "unknown", // NEW COL
+        subtopic_slug: config.subtopic?.id || "unknown",
         total_questions: config.totalQuestions || 10,
-        game_mode: "MULTIPLAYER", // NEW COL
-        match_id: roomCode, // NEW COL (Using Room Code as Match ID)
+        game_mode: "MULTIPLAYER",
+        match_id: roomCode,
         started_at: new Date().toISOString(),
         questions_data: initialState,
       })
@@ -247,6 +288,81 @@ export const multiplayerService = {
       status: "PLAYING" as const,
       current_question_idx: 0,
     };
+
+    await supabase.from("quest_sessions").update({ questions_data: newState }).eq("id", roomId);
+  },
+
+  /**
+   * TEAM MODE: Join a Team
+   */
+  joinTeam: async (roomId: string, playerId: string, teamId: string) => {
+    const { data } = await supabase.from("quest_sessions").select("questions_data").eq("id", roomId).single();
+    if (!data) return;
+
+    const currentState = data.questions_data as QuestSessionState;
+
+    // Validate team mode
+    if (currentState.game_mode !== "TEAM") {
+      console.warn("Cannot join team: Room is not in TEAM mode");
+      return;
+    }
+
+    // Validate team exists
+    if (!currentState.teams?.find((t) => t.id === teamId)) {
+      console.warn(`Team ${teamId} does not exist`);
+      return;
+    }
+
+    // Update player's team
+    const updatedPlayers = currentState.players.map((p) => {
+      if (p.id === playerId) {
+        return { ...p, team_id: teamId };
+      }
+      return p;
+    });
+
+    let newState: QuestSessionState = { ...currentState, players: updatedPlayers };
+
+    // Recalculate team member counts
+    newState = recalculateTeamScores(newState);
+
+    await supabase.from("quest_sessions").update({ questions_data: newState }).eq("id", roomId);
+  },
+
+  /**
+   * TEAM MODE: Auto Balance Teams
+   * Randomly distributes players into available teams
+   */
+  autoBalanceTeams: async (roomId: string) => {
+    const { data } = await supabase.from("quest_sessions").select("questions_data").eq("id", roomId).single();
+    if (!data) return;
+
+    const currentState = data.questions_data as QuestSessionState;
+
+    if (currentState.game_mode !== "TEAM" || !currentState.teams || currentState.teams.length < 2) {
+      return;
+    }
+
+    const players = [...currentState.players];
+    const teamIds = currentState.teams.map((t) => t.id);
+
+    // Shuffle players (Fisher-Yates)
+    for (let i = players.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [players[i], players[j]] = [players[j], players[i]];
+    }
+
+    // Distribute
+    const updatedPlayers = players.map((p, idx) => {
+      // Round robin assignment
+      const teamId = teamIds[idx % teamIds.length];
+      return { ...p, team_id: teamId };
+    });
+
+    let newState: QuestSessionState = { ...currentState, players: updatedPlayers };
+
+    // Recalculate stats
+    newState = recalculateTeamScores(newState);
 
     await supabase.from("quest_sessions").update({ questions_data: newState }).eq("id", roomId);
   },
@@ -441,11 +557,14 @@ export const multiplayerService = {
       return p;
     });
 
-    const newState = {
+    let newState: QuestSessionState = {
       ...currentState,
       players: updatedPlayers,
       answer_logs: newLogs,
     };
+
+    // Recalculate team scores if in TEAM mode
+    newState = recalculateTeamScores(newState);
 
     await supabase.from("quest_sessions").update({ questions_data: newState }).eq("id", roomId);
   },
