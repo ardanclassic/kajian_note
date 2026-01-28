@@ -7,6 +7,8 @@ import { QuizSession } from './QuizSession';
 import { Button } from '@/components/ui/button';
 import type { Topic, Subtopic } from '@/types/quest.types';
 import { QuestMultiplayerView } from './multiplayer/QuestMultiplayerView';
+import { QuestionLimitDialog } from './QuestionLimitDialog';
+import { questAppwriteService } from '@/services/appwrite';
 
 type ViewState = 'TOPICS' | 'SUBTOPICS' | 'QUIZ' | 'RESULTS' | 'MULTIPLAYER';
 
@@ -27,6 +29,9 @@ export const QuestPage = () => {
 
   const [view, setView] = useState<ViewState>('TOPICS');
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
+  const [selectedSubtopic, setSelectedSubtopic] = useState<Subtopic | null>(null);
+  const [showQuestionLimitDialog, setShowQuestionLimitDialog] = useState(false);
+  const [totalAvailableQuestions, setTotalAvailableQuestions] = useState(0);
 
   // Initial Fetch
   useEffect(() => {
@@ -48,8 +53,26 @@ export const QuestPage = () => {
   };
 
   const handleSubtopicClick = async (subtopic: Subtopic) => {
-    await startQuiz(subtopic);
-    setView('QUIZ');
+    // Fetch total questions for this subtopic
+    const questions = await questAppwriteService.getQuestionsBySubtopic(subtopic.slug);
+    setTotalAvailableQuestions(questions?.length || 0);
+    setSelectedSubtopic(subtopic);
+
+    // Show dialog to choose question count
+    setShowQuestionLimitDialog(true);
+  };
+
+  const handleQuestionLimitConfirm = async (limit: number) => {
+    if (selectedSubtopic) {
+      setShowQuestionLimitDialog(false);
+      await startQuiz(selectedSubtopic, limit);
+      setView('QUIZ');
+    }
+  };
+
+  const handleQuestionLimitCancel = () => {
+    setShowQuestionLimitDialog(false);
+    setSelectedSubtopic(null);
   };
 
   const handleBack = () => {
@@ -330,6 +353,15 @@ export const QuestPage = () => {
           )}
 
         </AnimatePresence>
+
+        {/* Question Limit Dialog */}
+        {showQuestionLimitDialog && (
+          <QuestionLimitDialog
+            totalQuestions={totalAvailableQuestions}
+            onConfirm={handleQuestionLimitConfirm}
+            onCancel={handleQuestionLimitCancel}
+          />
+        )}
       </main>
     </div>
   );

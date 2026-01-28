@@ -55,7 +55,7 @@ export const useQuestStore = create<QuestStore>()(
         }
       },
 
-      startQuiz: async (subtopic: Subtopic) => {
+      startQuiz: async (subtopic: Subtopic, questionLimit?: number) => {
         set({ isLoadingQuiz: true, error: null });
         try {
           const questions = await questAppwriteService.getQuestionsBySubtopic(subtopic.slug);
@@ -64,15 +64,22 @@ export const useQuestStore = create<QuestStore>()(
             throw new Error("No questions found for this topic.");
           }
 
+          // Shuffle all questions first
           const shuffledQuestions = shuffleArray(questions).map((q) => ({
             ...q,
             options: shuffleArray(q.options),
           }));
 
+          // If questionLimit is specified and less than total, randomly select that many questions
+          const finalQuestions =
+            questionLimit && questionLimit < shuffledQuestions.length
+              ? shuffledQuestions.slice(0, questionLimit)
+              : shuffledQuestions;
+
           const session: QuizSessionState = {
             topicSlug: subtopic.topic_id,
             subtopicSlug: subtopic.slug,
-            questions: shuffledQuestions,
+            questions: finalQuestions,
             currentQuestionIndex: 0,
             userAnswers: [],
             startedAt: Date.now(),

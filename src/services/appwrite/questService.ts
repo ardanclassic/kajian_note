@@ -111,7 +111,7 @@ const getSubtopicBySlug = async (slug: string): Promise<Subtopic | null> => {
 /**
  * Get questions by Subtopic ID/Slug
  */
-const getQuestionsBySubtopic = async (subtopicIdOrSlug: string, limit: number = 20): Promise<Question[]> => {
+const getQuestionsBySubtopic = async (subtopicIdOrSlug: string, limit: number = 1000): Promise<Question[]> => {
   try {
     const response = await appwriteDatabases.listDocuments(APPWRITE_DATABASE_ID, COLLECTIONS.QUESTIONS, [
       Query.equal("subtopic_id", subtopicIdOrSlug),

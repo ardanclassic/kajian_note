@@ -3,219 +3,17 @@
     "subtopic_id": "akidah-hari-akhir",
     "topic_slug": "akidah-hari-akhir",
     "type": "multiple_choice",
-    "question_text": "Hari di mana manusia dibangkitkan dari kuburnya disebut Yaumul...",
+    "question_text": "Apa hikmah terbesar dari iman kepada Hari Akhir yang paling berdampak pada pengendalian diri seorang Muslim di dunia?",
     "options": [
-      { "id": "A", "text": "Hisab" },
-      { "id": "B", "text": "Ba'ats" },
-      { "id": "C", "text": "Mizan" },
-      { "id": "D", "text": "Jaza" }
+      { "id": "A", "text": "Hanya sekadar mengetahui nama-nama surga dan neraka" },
+      { "id": "B", "text": "Kesadaran penuh bahwa setiap detik umur dan setiap 'klik' jempol di gadget akan dihisab" },
+      { "id": "C", "text": "Agar merasa takut secara berlebihan sehingga tidak mau bekerja" },
+      { "id": "D", "text": "Supaya bisa menebak-nebak kapan tepatnya kiamat terjadi" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Yaumul Ba'ats adalah hari kebangkitan manusia dari kubur.",
-      "dalil": "",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "subtopic_id": "akidah-hari-akhir",
-    "topic_slug": "akidah-hari-akhir",
-    "type": "multiple_choice",
-    "question_text": "Alam perantara antara dunia dan akhirat (setelah mati sebelum kiamat) disebut alam...",
-    "options": [
-      { "id": "A", "text": "Barzakh" },
-      { "id": "B", "text": "Mahsyar" },
-      { "id": "C", "text": "Arwah" },
-      { "id": "D", "text": "Ghaib" }
-    ],
-    "correct": "A",
-    "explanation": {
-      "text": "Alam Barzakh (dinding) adalah alam kubur tempat manusia menanti hari kiamat.",
-      "dalil": "QS. Al-Mu'minun: 100",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "subtopic_id": "akidah-hari-akhir",
-    "topic_slug": "akidah-hari-akhir",
-    "type": "true_false",
-    "question_text": "Matahari akan terbit dari arah barat sebagai salah satu tanda besar hari kiamat.",
-    "options": [
-      { "id": "true", "text": "Benar" },
-      { "id": "false", "text": "Salah" }
-    ],
-    "correct": "true",
-    "explanation": {
-      "text": "Terbitnya matahari dari barat adalah tanda besar kiamat yang menandakan tertutupnya pintu taubat.",
-      "dalil": "HR. Bukhari & Muslim",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "subtopic_id": "akidah-hari-akhir",
-    "topic_slug": "akidah-hari-akhir",
-    "type": "true_false",
-    "question_text": "Neraka yang paling ringan siksanya adalah Neraka Hawiyah.",
-    "options": [
-      { "id": "true", "text": "Benar" },
-      { "id": "false", "text": "Salah" }
-    ],
-    "correct": "false",
-    "explanation": {
-      "text": "Neraka Hawiyah adalah api yang sangat panas. Siksa neraka paling ringan adalah bara api yang diletakkan di telapak kaki hingga otak mendidih.",
-      "dalil": "HR. Bukhari",
-      "resources": []
-    },
-    "points": 10,
-    "spare": null
-  },
-  {
-    "subtopic_id": "akidah-hari-akhir",
-    "topic_slug": "akidah-hari-akhir",
-    "type": "puzzle_order",
-    "question_text": "Urutkan fase perjalanan manusia berikut ini dari awal hingga akhir:",
-    "options": [
-      { "id": "STEP_1", "text": "Alam Ruh" },
-      { "id": "STEP_2", "text": "Alam Dunia" },
-      { "id": "STEP_3", "text": "Alam Barzakh" },
-      { "id": "STEP_4", "text": "Alam Akhirat" }
-    ],
-    "correct": ["STEP_1", "STEP_2", "STEP_3", "STEP_4"],
-    "explanation": {
-      "text": "Manusia bermula dari alam ruh, lahir ke dunia, wafat masuk alam barzakh, dan bangkit di akhirat.",
-      "dalil": "",
-      "resources": []
-    },
-    "points": 20,
-    "spare": null
-  },
-  {
-    "subtopic_id": "akidah-hari-akhir",
-    "topic_slug": "akidah-hari-akhir",
-    "type": "puzzle_order",
-    "question_text": "Urutkan peristiwa-peristiwa pada Hari Kiamat berikut ini:",
-    "options": [
-      { "id": "EVT_1", "text": "Tiupan Sangkakala Kedua (Ba'ats)" },
-      { "id": "EVT_2", "text": "Pengumpulan di Mahsyar" },
-      { "id": "EVT_3", "text": "Hisab (Perhitungan Amal)" },
-      { "id": "EVT_4", "text": "Menyebrangi Shirat" }
-    ],
-    "correct": ["EVT_1", "EVT_2", "EVT_3", "EVT_4"],
-    "explanation": {
-      "text": "Setelah dibangkitkan, manusia dikumpulkan di Mahsyar, dihisab amalnya, lalu melewati jembatan Shirat.",
-      "dalil": "",
-      "resources": []
-    },
-    "points": 20,
-    "spare": null
-  },
-  {
-    "subtopic_id": "akidah-hari-akhir",
-    "topic_slug": "akidah-hari-akhir",
-    "type": "multiple_choice",
-    "question_text": "Malaikat yang meniup Sangkakala sebagai tanda datangnya kiamat adalah...",
-    "options": [
-      { "id": "A", "text": "Jibril" },
-      { "id": "B", "text": "Mikail" },
-      { "id": "C", "text": "Israil" },
-      { "id": "D", "text": "Israfil" }
-    ],
-    "correct": "D",
-    "explanation": {
-      "text": "Malaikat Israfil bertugas meniup sangkakala sebanyak dua atau tiga kali.",
-      "dalil": ""
-    },
-    "points": 10
-  },
-  {
-    "subtopic_id": "akidah-hari-akhir",
-    "topic_slug": "akidah-hari-akhir",
-    "type": "multiple_choice",
-    "question_text": "Tempat pengumpulan seluruh manusia setelah dibangkitkan adalah...",
-    "options": [
-      { "id": "A", "text": "Makkah" },
-      { "id": "B", "text": "Baitul Maqdis" },
-      { "id": "C", "text": "Padang Mahsyar" },
-      { "id": "D", "text": "Arafah" }
-    ],
-    "correct": "C",
-    "explanation": {
-      "text": "Padang Mahsyar adalah tanah putih yang luas tempat manusia berkumpul.",
-      "dalil": ""
-    },
-    "points": 10
-  },
-  {
-    "subtopic_id": "akidah-hari-akhir",
-    "topic_slug": "akidah-hari-akhir",
-    "type": "true_false",
-    "question_text": "Tidak ada seorangpun yang tahu kapan hari kiamat terjadi kecuali Allah ﷻ.",
-    "options": [
-      { "id": "true", "text": "Benar" },
-      { "id": "false", "text": "Salah" }
-    ],
-    "correct": "true",
-    "explanation": {
-      "text": "Ilmu tentang hari kiamat hanyalah milik Allah ﷻ, bahkan Nabi dan Malaikat tidak mengetahuinya.",
-      "dalil": "QS. Al-A'raf: 187"
-    },
-    "points": 10
-  },
-  {
-    "subtopic_id": "akidah-hari-akhir",
-    "topic_slug": "akidah-hari-akhir",
-    "type": "true_false",
-    "question_text": "Yaumul Mizan adalah hari dimana amal manusia diganti dengan pahala.",
-    "options": [
-      { "id": "true", "text": "Benar" },
-      { "id": "false", "text": "Salah" }
-    ],
-    "correct": "false",
-    "explanation": {
-      "text": "Yaumul Mizan adalah hari penimbangan amal, bukan penggantian pahala.",
-      "dalil": ""
-    },
-    "points": 10
-  },
-  {
-    "subtopic_id": "akidah-hari-akhir",
-    "topic_slug": "akidah-hari-akhir",
-    "type": "puzzle_order",
-    "question_text": "Urutkan rukun iman kepada hari akhir (dari sisi keyakinan):",
-    "options": [
-      { "id": "O_1", "text": "Kematian & Fitnah Kubur" },
-      { "id": "O_2", "text": "Kiamat Kubra" },
-      { "id": "O_3", "text": "Kebangkitan & Mahsyar" },
-      { "id": "O_4", "text": "Surga & Neraka" }
-    ],
-    "correct": ["O_1", "O_2", "O_3", "O_4"],
-    "explanation": {
-      "text": "Urutan logis kejadian mulai dari individu wafat hingga akhir perjalanan di surga/neraka.",
-      "dalil": ""
-    },
-    "points": 20
-  },
-  {
-    "subtopic_id": "akidah-hari-akhir",
-    "topic_slug": "akidah-hari-akhir",
-    "type": "multiple_choice",
-    "question_text": "Siapakah yang akan ditempatkan di dasar neraka yang paling bawah (Asfalas Safilin)?",
-    "options": [
-      { "id": "A", "text": "Orang Kafir" },
-      { "id": "B", "text": "Orang Musyrik" },
-      { "id": "C", "text": "Orang Munafik" },
-      { "id": "D", "text": "Orang Fasik" }
-    ],
-    "correct": "C",
-    "explanation": {
-      "text": "Sesungguhnya orang-orang munafik itu (ditempatkan) pada tingkatan yang paling bawah dari neraka.",
-      "dalil": "QS. An-Nisa: 145"
+      "text": "Iman kepada hari akhir adalah pengontrol internal. Kesadaran akan hisab (perhitungan) membuat seseorang berhati-hati dalam bertindak, termasuk saat berinteraksi di dunia digital.",
+      "dalil": "QS. Az-Zalzalah: 7-8"
     },
     "points": 15
   },
@@ -223,14 +21,304 @@
     "subtopic_id": "akidah-hari-akhir",
     "topic_slug": "akidah-hari-akhir",
     "type": "true_false",
-    "question_text": "Dajjal adalah seorang manusia yang memiliki ciri buta sebelah matanya.",
+    "question_text": "Kematian seorang individu disebut sebagai 'Kiamat Sugra' (Kiamat Kecil) karena bagi orang tersebut, pintu amal telah tertutup dan masa pembalasan telah dimulai.",
     "options": [
       { "id": "true", "text": "Benar" },
       { "id": "false", "text": "Salah" }
     ],
     "correct": "true",
     "explanation": {
-      "text": "Nabi ﷺ menjelaskan Dajjal buta sebelah matanya seperti anggur yang menonjol.",
+      "text": "Nabi ﷺ bersabda bahwa ketika seseorang meninggal, maka kiamatnya telah tiba. Ini adalah fase transisi menuju alam barzakh.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Seseorang sangat hobi mengunggah foto pribadinya (selfie) ke sosial media demi mendapatkan pujian (likes). Di akhirat, perbuatan ini bisa berisiko menghapus pahala karena penyakit...",
+    "options": [
+      { "id": "A", "text": "Ujub (bangga diri) dan Riya (ingin dipuji)" },
+      { "id": "B", "text": "Hasad (dengki)" },
+      { "id": "C", "text": "Kikir (pelit)" },
+      { "id": "D", "text": "Ghibah (gosip)" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Mengharap pujian manusia (Riya) dan merasa diri hebat (Ujub) adalah syirik ashghar (kecil) yang dapat membatalkan pahala amal shaleh.",
+      "dalil": "HR. Ahmad"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Banyak pemuda Muslim rela mengantre lama dan membayar mahal demi konser atau artis idola (Fandom), namun berat untuk melangkah ke masjid. Fenomena ini menunjukkan lemahnya pemahaman tentang...",
+    "options": [
+      { "id": "A", "text": "Konsep 'Al-Mar'u ma'a man ahabba' (Seseorang akan dikumpulkan bersama yang dicintainya)" },
+      { "id": "B", "text": "Cara berniaga yang baik" },
+      { "id": "C", "text": "Sejarah peradaban manusia" },
+      { "id": "D", "text": "Rukun Islam yang pertama" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Kecintaan yang berlebihan pada sosok idola kafir atau pelaku maksiat sangat berbahaya bagi akidah, karena seseorang akan dikumpulkan bersama yang dicintainya di akhirat kelak.",
+      "dalil": "HR. Bukhari & Muslim"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Fitnah Dajjal dikatakan sebagai fitnah terbesar sepanjang sejarah manusia. Salah satu senjatanya adalah memutarbalikkan fakta (batil jadi tampak haq).",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Dajjal memiliki surga (yang sebenarnya neraka) dan neraka (yang sebenarnya surga). Kemampuannya memanipulasi persepsi adalah ujian keimanan terbesar.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa respon yang paling tepat bagi seorang mukmin ketika melihat kemewahan dunia yang dimiliki orang kafir agar ia tidak melupakan hari akhir?",
+    "options": [
+      { "id": "A", "text": "Merasa minder dan ingin menjadi seperti mereka" },
+      { "id": "B", "text": "Membencinya secara membabi buta tanpa alasan" },
+      { "id": "C", "text": "Mengingat: 'Ya Allah, sesungguhnya kehidupan yang hakiki adalah kehidupan akhirat'" },
+      { "id": "D", "text": "Meninggalkan dunia sama sekali dengan tidak bekerja" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Nabi ﷺ sering mengucapkan 'Allahumma la 'aysha illa 'ayshul akhirah' (Ya Allah tidak ada kehidupan selain kehidupan akhirat) ketika melihat sesuatu yang menjanjikan kemewahan dunia.",
+      "dalil": "HR. Bukhari"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "puzzle_order",
+    "question_text": "Urutkan proses perjalanan ruh setelah kematian hingga masuk ke alam barzakh menurut hadits Al-Bara bin Azib:",
+    "options": [
+      { "id": "RUH_1", "text": "Pencabutan Nyawa oleh Malaikat Maut" },
+      { "id": "RUH_2", "text": "Dibawa naik ke langit (Illiyyin atau Sijjin)" },
+      { "id": "RUH_3", "text": "Dikembalikan ke Jasad di dalam kubur" },
+      { "id": "RUH_4", "text": "Pertanyaan oleh Munkar dan Nakir" }
+    ],
+    "correct": ["RUH_1", "RUH_2", "RUH_3", "RUH_4"],
+    "explanation": {
+      "text": "Ruh orang beriman akan disambut malaikat rahmat dan naik ke langit sebelum dikembalikan ke kubur untuk disidang.",
+      "dalil": "HR. Ahmad & Abu Dawud"
+    },
+    "points": 25
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Mengapa smartphone dan sosial media bisa menjadi penyesalan terbesar di hari kiamat?",
+    "options": [
+      { "id": "A", "text": "Karena harganya yang mahal" },
+      { "id": "B", "text": "Karena radiasinya yang berbahaya" },
+      {
+        "id": "C",
+        "text": "Karena banyaknya waktu yang terbuang sia-sia (laghwun) dan catatan dosa jariyah dari konten haram"
+      },
+      { "id": "D", "text": "Karena menyulitkan proses hisab secara teknis" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Salah satu yang ditanyakan di hari kiamat adalah tentang umur: untuk apa dihabiskan? Sosmed seringkali menjadi pencuri umur paling efektif bagi manusia modern.",
+      "dalil": "HR. Tirmidzi"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Di Padang Mahsyar, matahari didekatkan hanya satu mil di atas kepala manusia, sehingga keringat manusia akan bercucuran sesuai dengan kadar amal perbuatannya.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Ada yang keringatnya mencapai mata kaki, lutut, pinggang, bahkan ada yang tenggelam dalam keringatnya sendiri.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Menurut konsep iman kepada hari akhir, siapakah orang yang paling 'cerdas' itunya?",
+    "options": [
+      { "id": "A", "text": "Orang yang IQ-nya tinggi dan banyak gelarnya" },
+      { "id": "B", "text": "Orang yang pandai menimbun harta untuk masa depan anaknya" },
+      { "id": "C", "text": "Orang yang paling banyak mengingat mati dan paling baik persiapannya untuk setelah mati" },
+      { "id": "D", "text": "Orang yang ahli dalam teknologi digital" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Kecerdasan sejati dalam Islam diukur dari kemampuan seseorang memandang jauh ke depan, yaitu kehidupan abadi di akhirat.",
+      "dalil": "HR. Ibnu Majah"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Alam Barzakh adalah filter pertama menuju akhirat. Jika seseorang selamat di alam barzakh, maka...",
+    "options": [
+      { "id": "A", "text": "Urusan setelahnya menjadi lebih mudah" },
+      { "id": "B", "text": "Urusan setelahnya menjadi lebih berat" },
+      { "id": "C", "text": "Ia tidak perlu lagi melewati mizan" },
+      { "id": "D", "text": "Ia langsung masuk surga tanpa hisab" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Kubur adalah pintu pertama akhirat. Jika seseorang selamat darinya, maka setelahnya akan lebih mudah baginya.",
+      "dalil": "HR. Tirmidzi"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Syafa'at hanya bisa didapatkan dengan izin Allah ﷻ dan hanya diberikan kepada orang-orang yang bertauhid (tidak menyekutukan Allah ﷻ).",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Syarat syafa'at adalah keridhaan Allah ﷻ terhadap yang memberi syafa'at dan yang diberi syafa'at (ahli tauhid).",
+      "dalil": "QS. Al-Anbiya: 28"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa konsekuensi logis dari keyakinan 'Dunia adalah tempat menanam, Akhirat tempat menuai'?",
+    "options": [
+      { "id": "A", "text": "Kita tidak perlu menanam apa-apa di dunia" },
+      {
+        "id": "B",
+        "text": "Setiap kelelahan dalam ketaatan di dunia adalah investasi nikmat yang akan dibayar lunas di akhirat"
+      },
+      { "id": "C", "text": "Nikmat dunia adalah tanda pasti seseorang masuk surga" },
+      { "id": "D", "text": "Kesedihan di dunia akan hilang dengan sendirinya tanpa perlu iman" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Kesadaran ini membuat seorang Muslim sabar dalam ketaatan dan sabar dalam menjauhi kemaksiatan karena menanti 'panen' di akhirat.",
+      "dalil": "QS. Al-Qashash: 77"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Mengapa hukuman bagi orang 'Munafik' di akhirat lebih berat (dasar neraka) daripada orang kafir terang-terangan?",
+    "options": [
+      { "id": "A", "text": "Karena mereka lebih banyak jumlahnya" },
+      { "id": "B", "text": "Karena mereka melakukan pengkhianatan dan penipuan terhadap Allah ﷻ dan orang beriman" },
+      { "id": "C", "text": "Hanya karena mereka malas shalat" },
+      { "id": "D", "text": "Karena mereka tidak mau berhijrah" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Kemunafikan adalah kejahatan batin yang merusak barisan Islam dari dalam, sehingga ancamannya adalah kerak neraka paling bawah.",
+      "dalil": "QS. An-Nisa: 145"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Saat mizan (timbangan amal), amal saleh yang dilakukan dengan tujuan ingin dilihat orang lain (Riya) akan tetap memiliki bobot yang berat karena Allah ﷻ melihat hasil fisiknya.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "false",
+    "explanation": {
+      "text": "Amal tanpa ikhlas seperti debu yang beterbangan. Allah ﷻ hanya menerima amal yang murni (Ikhlas) dan sesuai Sunnah (Mutaba'ah).",
+      "dalil": "QS. Al-Furqan: 23"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa yang dimaksud dengan 'Dharar' (Bahaya) dari mengikuti tren konten medsos yang melanggar syariat dalam perspektif Hari Akhir?",
+    "options": [
+      { "id": "A", "text": "Habisnya kuota internet" },
+      {
+        "id": "B",
+        "text": "Risiko ditiru orang lain (Dosa Jariyah) yang pahalanya akan mengalir terus meskipun pelaku sudah wafat"
+      },
+      { "id": "C", "text": "Baterai HP cepat rusak" },
+      { "id": "D", "text": "Akun sosial media akan di-banned" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Barangsiapa memulai tradisi buruk, ia menanggung dosanya dan dosa orang yang mengikuti instruksinya hingga hari kiamat.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Padang Mahsyar digambarkan sebagai tanah yang putih bersih, tanpa gundukan atau lubang. Apa analogi filosofis dari bentuk tanah ini?",
+    "options": [
+      { "id": "A", "text": "Supaya mudah untuk berlari" },
+      {
+        "id": "B",
+        "text": "Simbol keadilan mutlak; tidak ada tempat bersembunyi bagi siapapun dari pandangan Allah ﷻ"
+      },
+      { "id": "C", "text": "Karena tanahnya terbuat dari perak" },
+      { "id": "D", "text": "Supaya manusia bisa duduk dengan nyaman" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Ketiadaan tempat berlindung atau bersembunyi menunjukkan bahwa tidak ada rahasia lagi di hadapan Sang Pencipta.",
+      "dalil": "HR. Bukhari"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Keyakinan akan adanya telaga Al-Haudh memotivasi seorang Muslim untuk tidak meminum khamr (minuman keras) di dunia, agar bisa meminumnya di akhirat.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Siapa yang meminum khamr di dunia dan tidak bertaubat, maka ia tidak akan meminumnya di akhirat.",
       "dalil": "HR. Bukhari"
     },
     "points": 10
@@ -239,17 +327,462 @@
     "subtopic_id": "akidah-hari-akhir",
     "topic_slug": "akidah-hari-akhir",
     "type": "multiple_choice",
-    "question_text": "Apa yang dimaksud dengan Telaga (Al-Haudh)?",
+    "question_text": "Apa peran 'Lisan' dan 'Anggota Tubuh' lainnya di fase Mahsyar saat sidang Ilahi?",
     "options": [
-      { "id": "A", "text": "Tempat mandi di surga" },
-      { "id": "B", "text": "Pemberian Allah ﷻ bagi Nabi ﷺ di Mahsyar" },
-      { "id": "C", "text": "Sumur di Padang Pasir" },
-      { "id": "D", "text": "Hujan di hari kiamat" }
+      { "id": "A", "text": "Lisan masih bisa berdusta untuk membela diri" },
+      { "id": "B", "text": "Lisan dikunci, sementara tangan dan kaki bersaksi atas apa yang mereka lakukan" },
+      { "id": "C", "text": "Semuanya diam tidak bicara" },
+      { "id": "D", "text": "Hanya malaikat yang bicara" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Al-Haudh adalah telaga milik Nabi Muhammad ﷺ yang airnya diminum umatnya sebelum masuk surga.",
-      "dalil": ""
+      "text": "Pada hari itu mulut mereka Kami kunci; dan tangan mereka bicara kepada Kami serta kaki mereka bersaksi.",
+      "dalil": "QS. Yasin: 65"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Manakah di bawah ini yang merupakan perumpamaan paling tepat tentang kehidupan dunia dibandingkan akhirat?",
+    "options": [
+      { "id": "A", "text": "Sebuah samudera yang luas" },
+      {
+        "id": "B",
+        "text": "Seperti seseorang yang mencelupkan jari ke laut, lalu melihat sisa air yang menempel di jarinya"
+      },
+      { "id": "C", "text": "Sebuah istana yang abadi" },
+      { "id": "D", "text": "Sebuah mimpi yang tidak ada artinya sama sekali" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Sisa air di jari adalah dunia, sedangkan luasnya lautan adalah akhirat. Perbandingan yang sangat kontras.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "puzzle_order",
+    "question_text": "Urutkan 7 golongan yang mendapat naungan Arsy Allah ﷻ di Mahsyar berdasarkan kedudukan moralnya (dimulai dari pemimpin):",
+    "options": [
+      { "id": "GRP_1", "text": "Pemimpin yang Adil" },
+      { "id": "GRP_2", "text": "Pemuda yang tumbuh dalam ibadah" },
+      { "id": "GRP_3", "text": "Seseorang yang hatinya terpaut dengan masjid" },
+      { "id": "GRP_4", "text": "Dua orang yang saling mencintai karena Allah ﷻ" }
+    ],
+    "correct": ["GRP_1", "GRP_2", "GRP_3", "GRP_4"],
+    "explanation": {
+      "text": "Ketujuh golongan ini memiliki satu benang merah: melawan godaan syahwat/kekuasaan demi ketaatan kepada Allah ﷻ.",
+      "dalil": "HR. Bukhari & Muslim"
+    },
+    "points": 25
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Fitnah 'Smartphone Zombi' (orang yang asyik dengan gadgetnya hingga mengabaikan sekitar dan akhirat) seringkali membuat manusia lupa akan 'Yaumul Hasrah'. Apa itu?",
+    "options": [
+      { "id": "A", "text": "Hari Kegembiraan" },
+      { "id": "B", "text": "Hari Penyesalan (saat manusia menyesali waktu luang yang terbuang)" },
+      { "id": "C", "text": "Hari Pertandingan" },
+      { "id": "D", "text": "Hari Pendidikan" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Penyesalan terbesar adalah ketika waktu yang diberikan di dunia tidak digunakan untuk bekal akhirat.",
+      "dalil": "QS. Maryam: 39"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Neraka diciptakan sebagai bentuk ketidakadilan Tuhan karena menyiksa makhluk-Nya.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "false",
+    "explanation": {
+      "text": "Sebaliknya, Neraka adalah bukti keadilan Allah ﷻ dalam memberikan konsekuensi bagi mereka yang melanggar aturan dan menolak rahmat-Nya setelah diberi petunjuk.",
+      "dalil": "QS. An-Nisa: 40"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa kaitan antara memakan harta haram (misal: hasil korupsi/penipuan online) dengan nasib seseorang di Shirat?",
+    "options": [
+      { "id": "A", "text": "Membuat langkah kaki terasa ringan" },
+      { "id": "B", "text": "Menjadi beban berat (keban) yang bisa menarik seseorang jatuh ke neraka" },
+      { "id": "C", "text": "Tidak ada hubungannya" },
+      { "id": "D", "text": "Mempercepat waktu tempuh" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Kezaliman terhadap harta orang lain adalah kegelapan yang menjadi penghambat di jembatan Shirat.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Salah satu tanda kiamat adalah munculnya perzinahan yang dilakukan terang-terangan (legalisasi kemaksiatan). Apa dampaknya bagi masyarakat menurut hadits?",
+    "options": [
+      { "id": "A", "text": "Kemajuan ekonomi" },
+      { "id": "B", "text": "Munculnya wabah dan penyakit yang belum pernah ada sebelumnya" },
+      { "id": "C", "text": "Meningkatnya populasi manusia" },
+      { "id": "D", "text": "Kehidupan sosial menjadi lebih bebas dan bahagia" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Ketika perbuatan keji (zina) sudah dilakukan terang-terangan, maka akan menyebar wabah dan penyakit menular sebagai peringatan.",
+      "dalil": "HR. Ibnu Majah"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Iman kepada hari akhir mengajarkan kita bahwa 'Keadilan' yang tertunda di dunia (misal pelaku kejahatan yang tidak tertangkap) akan diselesaikan secara sempurna di akhirat.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Inilah penghibur bagi korban kezaliman: bahwa tidak ada hak yang hilang di hadapan Allah ﷻ.",
+      "dalil": "QS. Ali Imran: 185"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa yang dimaksud dengan 'Istidraj' dalam konteks seseorang yang bermaksiat tapi hidupnya makin sukses di dunia?",
+    "options": [
+      { "id": "A", "text": "Hadiah dari Allah ﷻ" },
+      { "id": "B", "text": "Tanda doanya dikabulkan" },
+      { "id": "C", "text": "Pemberian nikmat sebagai jebakan agar ia makin jauh dan makin berat siksanya kelak" },
+      { "id": "D", "text": "Kecerdasan orang tersebut" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Istidraj adalah jebakan kenikmatan. Allah ﷻ membiarkan mereka dalam kesenangan hingga akhirnya menyiksanya dengan tiba-tiba.",
+      "dalil": "QS. Al-An'am: 44"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Bagaimana sikap seorang mukmin terhadap berita-berita 'Hoaks' dan fitnah di akhir zaman agar selamat dari fitnah Dajjal?",
+    "options": [
+      { "id": "A", "text": "Langsung membagikannya (share) agar viral" },
+      { "id": "B", "text": "Tabayyun (cek ricek) dan berpegang teguh pada bimbingan Ulama yang Rabbani" },
+      { "id": "C", "text": "Percaya pada semua yang ada di internet" },
+      { "id": "D", "text": "Tidak peduli sama sekali dengan keadaan umat" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Kunci selamat dari fitnah adalah ilmu syar'i dan tidak terburu-buru dalam menyebarkan informasi.",
+      "dalil": "QS. Al-Hujurat: 6"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Seseorang yang mencintai Nabi Muhammad ﷺ akan berusaha mengikuti sunnahnya di dunia, meskipun ia merasa 'asing' di tengah masyarakat modern yang jauh dari agama.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Islam bermula dalam keadaan asing dan akan kembali asing. Beruntunglah orang-orang yang asing tersebut (Al-Ghuraba).",
+      "dalil": "HR. Muslim"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Di dalam Surga, nikmat manakah yang merupakan puncak dari segala nikmat?",
+    "options": [
+      { "id": "A", "text": "Bidadari yang cantik" },
+      { "id": "B", "text": "Istana dari emas dan perak" },
+      { "id": "C", "text": "Melihat Wajah Allah ﷻ secara langsung" },
+      { "id": "D", "text": "Makanan yang lezat setiap saat" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Melihat wajah Allah ﷻ adalah tambahan nikmat yang paling dicintai penduduk surga.",
+      "dalil": "QS. Yunus: 26 & HR. Muslim"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa hikmah di balik peristiwa 'Ya'juj dan Ma'juj' yang meminum habis air danau Galilea?",
+    "options": [
+      { "id": "A", "text": "Supaya danau tersebut kering" },
+      {
+        "id": "B",
+        "text": "Simbol kerusakan ekologi dan eksploitasi berlebihan yang dilakukan manusia di akhir zaman"
+      },
+      { "id": "C", "text": "Karena mereka merasa haus saja" },
+      { "id": "D", "text": "Supaya ikan-ikannya mati" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Ya'juj Ma'juj melambangkan kekuatan destruktif yang menghabiskan sumber daya alam tanpa sisa.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Wangi surga dapat tercium dari jarak perjalanan 40 tahun, namun ada orang yang bahkan tidak mencium wanginya padahal ia mengaku Muslim.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Misalnya wanita yang berpakaian tapi telanjang (ketat/transparan) dan orang yang menisbatkan diri pada selain ayahnya.",
+      "dalil": "HR. Bukhari & Muslim"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Fenomena 'Lomba Membangun Gedung Tinggi' di Jazirah Arab adalah bukti nyata kebenaran sabda Nabi ﷺ tentang tanda kiamat. Apa pesan filosofis di baliknya?",
+    "options": [
+      { "id": "A", "text": "Ekonomi Islam akan maju pesat" },
+      {
+        "id": "B",
+        "text": "Tanda beralihnya fokus manusia dari 'membangun iman' ke 'membangun fisik dan gengsi dunia'"
+      },
+      { "id": "C", "text": "Supaya manusia bisa melihat pemandangan dari atas" },
+      { "id": "D", "text": "Tanda kecanggihan teknik sipil" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Berlomba-lomba dalam kemewahan bangunan adalah salah satu tanda kiamat yang menunjukkan pergeseran nilai hidup.",
+      "dalil": "HR. Muslim (Hadits Jibril)"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa yang harus dikedepankan seorang Muslim dalam menghadapi berita 'Akhir Zaman' yang seringkali menakut-nakuti?",
+    "options": [
+      { "id": "A", "text": "Memperbanyak stok makanan dan bungker" },
+      { "id": "B", "text": "Fokus pada persiapan amal (apa bekal yang sudah disiapkan)" },
+      { "id": "C", "text": "Mencari-cari siapa tokoh yang menjadi Imam Mahdi" },
+      { "id": "D", "text": "Berhenti bekerja dan sekolah" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Ketika ditanya kapan kiamat, Nabi ﷺ menjawab: 'Apa yang telah engkau siapkan?' Persiapan amallah yang utama.",
+      "dalil": "HR. Bukhari"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Seseorang yang gemar 'Flexing' (pamer kekayaan) di sosial media terancam mendapatkan siksa di akhirat karena sombong dan merendahkan orang lain.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Tidak akan masuk surga orang yang di hatinya terdapat seberat biji sawi kesombongan.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa fungsi utama 'As-Shohaif' (Lembaran Catatan Amal) yang dibagikan secara terbang?",
+    "options": [
+      { "id": "A", "text": "Sebagai bahan bacaan di waktu luang" },
+      { "id": "B", "text": "Bukti digital yang tak terbantahkan atas seluruh aktivitas manusia" },
+      { "id": "C", "text": "Sebagai dasar penentuan nasib (surga/neraka) secara adil" },
+      { "id": "D", "text": "Hanya sebagai pelengkap upacara" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Setiap orang akan menerima kitabnya, ada yang dari arah kanan (beruntung) dan ada dari arah kiri/belakang (celaka).",
+      "dalil": "QS. Al-Haqqah: 18-37"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "puzzle_order",
+    "question_text": "Urutkan prioritas cinta seorang mukmin agar selamat di hari akhir:",
+    "options": [
+      { "id": "LOVE_1", "text": "Cinta kepada Allah ﷻ di atas segalanya" },
+      { "id": "LOVE_2", "text": "Cinta kepada Rasulullah ﷺ melebihi diri sendiri" },
+      { "id": "LOVE_3", "text": "Cinta kepada sesama mukmin karena Allah ﷻ" },
+      { "id": "LOVE_4", "text": "Mencintai dunia hanya sebagai sarana ibadah" }
+    ],
+    "correct": ["LOVE_1", "LOVE_2", "LOVE_3", "LOVE_4"],
+    "explanation": {
+      "text": "Tatanan cinta yang benar akan membimbing seseorang pada keselamatan abadi.",
+      "dalil": "HR. Bukhari"
+    },
+    "points": 25
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa hikmah di balik peristiwa 'Maut' (Kematian) yang akan disembelih di depan penduduk surga dan neraka?",
+    "options": [
+      { "id": "A", "text": "Kematian itu adalah makhluk seperti hewan" },
+      { "id": "B", "text": "Tanda bahwa kehidupan setelah itu adalah abadi selamanya (tidak ada lagi kematian)" },
+      { "id": "C", "text": "Agar penduduk neraka makin sedih" },
+      { "id": "D", "text": "Agar penduduk surga pesta makan" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Penyembelihan maut menandakan keabadian: 'Wahai penduduk surga, keabadian dan tidak ada lagi kematian...' Begitu pula penduduk neraka.",
+      "dalil": "HR. Bukhari & Muslim"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Menonton film atau konten yang mengandung unsur kesyirikan (seperti pemujaan setan/sihir) tidak berpengaruh pada akidah seseorang selama itu hanya hiburan.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "false",
+    "explanation": {
+      "text": "Konten yang menormalisasi kesyirikan dapat merusak sensitivitas tauhid dan mengotori hati mukmin.",
+      "dalil": "QS. An-Nisa: 140"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apakah 'Syafaat' dapat menolong orang yang sengaja meninggalkan shalat secara total hingga akhir hayatnya?",
+    "options": [
+      { "id": "A", "text": "Ya, asalkan masih beragama Islam di KTP" },
+      { "id": "B", "text": "Tidak, karena shalat adalah garis batas antara iman dan kufur" },
+      { "id": "C", "text": "Mungkin saja jika Allah ﷻ kasihan" },
+      { "id": "D", "text": "Hanya jika ia banyak bersedekah" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Syafaat tidak bermanfaat bagi orang yang meninggalkan rukun Islam terpenting (shalat) secara sengaja.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa pesan utama dari tanda kiamat 'Waktu Terasa Cepat Berputar' (tahun seperti bulan, bulan seperti minggu)?",
+    "options": [
+      { "id": "A", "text": "Rotasi bumi makin kencang secara fisik" },
+      { "id": "B", "text": "Hilangnya keberkahan waktu; manusia sibuk tapi tidak menghasilkan amal saleh" },
+      { "id": "C", "text": "Manusia makin canggih transportasinya" },
+      { "id": "D", "text": "Kalender masehi yang salah" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Berlalunya waktu tanpa manfaat (berkah) adalah ciri akhir zaman.",
+      "dalil": "HR. Tirmidzi"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Surga bertingkat-tingkat. Seseorang bisa naik ke tingkat yang lebih tinggi berkat doa dan permohonan ampunan dari anak-anaknya yang shaleh di dunia.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Derajat seseorang di surga diangkat karena istighfar anaknya untuknya.",
+      "dalil": "HR. Ahmad"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa risiko dari seseorang yang sengaja melakukan dosa secara sembunyi-sembunyi tapi di depan orang banyak ia tampak shaleh?",
+    "options": [
+      { "id": "A", "text": "Ia akan tetap masuk surga tanpa hisab" },
+      { "id": "B", "text": "Allah ﷻ akan menjadikan amal kebaikannya seperti debu yang beterbangan (hapus pahala)" },
+      { "id": "C", "text": "Hanya mendapat teguran ringan" },
+      { "id": "D", "text": "Harta dunianya akan berkurang" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Seseorang yang tidak memiliki rasa takut kepada Allah ﷻ saat sendiri, amalnya berisiko sia-sia.",
+      "dalil": "HR. Ibnu Majah"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Nama lain hari akhir adalah 'Yaumul Mashir'. Apa artinya?",
+    "options": [
+      { "id": "A", "text": "Hari Perjalanan" },
+      { "id": "B", "text": "Hari Tempat Kembali" },
+      { "id": "C", "text": "Hari Kemenangan" },
+      { "id": "D", "text": "Hari Kehancuran" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Mashir berarti tempat kembali. Menyadarkan kita bahwa dunia hanyalah tempat persinggahan.",
+      "dalil": "QS. Ghafir: 3"
     },
     "points": 10
   },
@@ -257,32 +790,32 @@
     "subtopic_id": "akidah-hari-akhir",
     "topic_slug": "akidah-hari-akhir",
     "type": "true_false",
-    "question_text": "Nabi Isa عليه السلام akan turun kembali ke bumi untuk membunuh Dajjal.",
+    "question_text": "Hanya doa dan sedeqah jariyah yang bisa menolong seseorang setelah ia masuk ke dalam liang lahat.",
     "options": [
       { "id": "true", "text": "Benar" },
       { "id": "false", "text": "Salah" }
     ],
-    "correct": "true",
+    "correct": "false",
     "explanation": {
-      "text": "Setelah Dajjal berbuat kerusakan, Nabi Isa عليه السلام akan turun di menara putih Damaskus.",
-      "dalil": ""
+      "text": "Ada tiga hal: Sedekah Jariyah, Ilmu yang bermanfaat, dan Anak shaleh yang mendoakannya.",
+      "dalil": "HR. Muslim"
     },
     "points": 10
   },
   {
     "subtopic_id": "akidah-hari-akhir",
     "topic_slug": "akidah-hari-akhir",
-    "type": "puzzle_order",
-    "question_text": "Urutkan tanda-tanda kiamat besar berikut (yang terjadi berurutan):",
+    "type": "multiple_choice",
+    "question_text": "Apa yang dimaksud dengan 'Zuhud' terhadap dunia bagi seorang Muslim milenial?",
     "options": [
-      { "id": "T_1", "text": "Dajjal" },
-      { "id": "T_2", "text": "Nabi Isa عليه السلام" },
-      { "id": "T_3", "text": "Ya'juj Ma'juj" },
-      { "id": "T_4", "text": "Terbit Matahari dari Barat" }
+      { "id": "A", "text": "Tidak punya HP dan tidak mau sekolah" },
+      { "id": "B", "text": "Benci pada orang kaya" },
+      { "id": "C", "text": "Dunia ada di genggaman tangan tapi tidak masuk ke dalam hati (tidak jadi budak dunia)" },
+      { "id": "D", "text": "Hanya mau makan nasi dan garam" }
     ],
-    "correct": ["T_1", "T_2", "T_3", "T_4"],
+    "correct": "C",
     "explanation": {
-      "text": "Dimulai dari fitnah Dajjal, dibunuh Nabi Isa عليه السلام, muncul perusak Ya'juj Ma'juj, hingga tanda pemungkas.",
+      "text": "Zuhud bukan berarti miskin, tapi tidak menjadikan dunia sebagai tujuan utama dan tidak bergantung padanya.",
       "dalil": ""
     },
     "points": 20
@@ -291,33 +824,33 @@
     "subtopic_id": "akidah-hari-akhir",
     "topic_slug": "akidah-hari-akhir",
     "type": "multiple_choice",
-    "question_text": "Penimbang amal perbuatan manusia disebut...",
+    "question_text": "Siapakah kelompok yang pertama kali diadili (dihisab) di hari kiamat?",
     "options": [
-      { "id": "A", "text": "Mizan" },
-      { "id": "B", "text": "Shirath" },
-      { "id": "C", "text": "Jaza" },
-      { "id": "D", "text": "Haudh" }
+      { "id": "A", "text": "Para raja dan pemimpin" },
+      { "id": "B", "text": "Umat Nabi Muhammad ﷺ" },
+      { "id": "C", "text": "Kaum Yahudi" },
+      { "id": "D", "text": "Kaum Nasrani" }
     ],
-    "correct": "A",
+    "correct": "B",
     "explanation": {
-      "text": "Mizan adalah timbangan yang memiliki dua daun timbangan untuk amal.",
-      "dalil": "QS. Al-Anbiya: 47"
+      "text": "Umat Nabi Muhammad ﷺ adalah umat terakhir di dunia tapi yang pertama dihisab di akhirat.",
+      "dalil": "HR. Bukhari & Muslim"
     },
-    "points": 10
+    "points": 15
   },
   {
     "subtopic_id": "akidah-hari-akhir",
     "topic_slug": "akidah-hari-akhir",
     "type": "true_false",
-    "question_text": "Syafa'at Uzma hanya diberikan kepada Nabi Muhammad ﷺ.",
+    "question_text": "Matahari terbit dari barat menandakan berakhirnya waktu taubat bagi seluruh penduduk bumi.",
     "options": [
       { "id": "true", "text": "Benar" },
       { "id": "false", "text": "Salah" }
     ],
     "correct": "true",
     "explanation": {
-      "text": "Syafa'at Uzma adalah hak khusus Nabi kita ﷺ untuk memulai proses hisab di Mahsyar.",
-      "dalil": ""
+      "text": "Ini adalah tanda kiamat besar pertama yang menutup pintu taubat.",
+      "dalil": "HR. Muslim"
     },
     "points": 10
   },
@@ -325,37 +858,952 @@
     "subtopic_id": "akidah-hari-akhir",
     "topic_slug": "akidah-hari-akhir",
     "type": "multiple_choice",
-    "question_text": "Kitab catatan amal yang dibawa oleh orang beriman diterima dengan tangan...",
+    "question_text": "Apa visi utama seorang mukmin dalam menjalani karir/pekerjaan yang berorientasi akhirat?",
     "options": [
-      { "id": "A", "text": "Kiri" },
-      { "id": "B", "text": "Kanan" },
-      { "id": "C", "text": "Kedua tangan" },
-      { "id": "D", "text": "Mulut" }
+      { "id": "A", "text": "Supaya cepat pensiun" },
+      { "id": "B", "text": "Mencari harta agar bisa pamer" },
+      {
+        "id": "C",
+        "text": "Bekerja sebagai ibadah, mencari nafkah halal, dan bermanfaat bagi sebanyak mungkin manusia (umat)"
+      },
+      { "id": "D", "text": "Hanya sekadar menggugurkan kewajiban" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Visi mukmin adalah menjadikan setiap aktivitas dunianya bernilai pahala (investasi akhirat).",
+      "dalil": "QS. Al-Jumu'ah: 10"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Tanda kiamat manakah yang paling relevan dengan kondisi penyebaran fitnah melalui media sosial saat ini?",
+    "options": [
+      { "id": "A", "text": "Munculnya Dajjal" },
+      { "id": "B", "text": "Keluarnya Ya'juj Ma'juj" },
+      { "id": "C", "text": "Merajalelanya kebohongan dan fitnah yang tersebar cepat ke seluruh penjuru dunia" },
+      { "id": "D", "text": "Terbelahnya bulan" }
+    ],
+    "correct": "C",
+    "explanation": {
+      "text": "Nabi ﷺ menyebutkan di antara tanda akhir zaman adalah fitnah yang menyebar seperti gelapnya malam, di mana kebohongan dibenarkan.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Seseorang sering menggunakan akun anonim untuk menghujat atau mem-bully orang lain di internet. Mengapa perilaku ini berbahaya dalam timbangan hari kiamat?",
+    "options": [
+      { "id": "A", "text": "Karena akun anonim mudah dilacak polisi" },
+      {
+        "id": "B",
+        "text": "Karena meskipun tersembunyi dari manusia, setiap ketikan dicatat oleh malaikat dan akan dimintai pertanggungjawaban oleh Allah ﷻ"
+      },
+      { "id": "C", "text": "Karena kuota internet akan habis" },
+      { "id": "D", "text": "Karena orang yang dihujat akan lapor ke admin" }
     ],
     "correct": "B",
     "explanation": {
-      "text": "Adapun orang yang diberikan kitabnya dari sebelah kanan, maka ia akan diperiksa dengan pemeriksaan yang mudah.",
-      "dalil": "QS. Al-Inshiqaq: 7"
+      "text": "Kesadaran akan Muraqabah (pengawasan Allah ﷻ) harus ada bahkan di ruang digital yang terasa anonim sekalipun.",
+      "dalil": "QS. Qaf: 18"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Seorang Muslim yang beriman pada hari akhir akan lebih mementingkan 'Personal Branding' di dunia daripada 'Maslahat Akhirat' karena kesuksesan dunia adalah tanda ridha Allah ﷻ.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "false",
+    "explanation": {
+      "text": "Kesuksesan dunia bukan standar ridha Allah ﷻ. Seringkali dunia diberikan kepada siapa saja, namun akhirat hanya untuk yang bertakwa.",
+      "dalil": "QS. Al-Zukhruf: 35"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa hikmah dari 'Hisab' yang dilakukan secara rahasia antara seorang mukmin dengan Tuhannya (Al-Mana)?",
+    "options": [
+      { "id": "A", "text": "Agar orang lain tidak tahu kebaikan kita" },
+      { "id": "B", "text": "Bentuk kasih sayang Allah ﷻ yang menutupi aib hamba-Nya yang bertaubat di dunia" },
+      { "id": "C", "text": "Karena Allah ﷻ lupa dengan dosa hamba-Nya" },
+      { "id": "D", "text": "Agar proses sidang menjadi lebih cepat" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Allah ﷻ mendekatkan hamba mukmin-Nya, menutupi aibnya dari makhluk lain, mengakui dosa-dosanya, lalu mengampuninya.",
+      "dalil": "HR. Bukhari & Muslim"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa yang dimaksud dengan 'Al-Qashash' (Pembalasan) antar hewan di hari kiamat sebelum mereka dijadikan tanah?",
+    "options": [
+      { "id": "A", "text": "Hewan-hewan akan masuk surga" },
+      { "id": "B", "text": "Menunjukkan Keadilan Mutlak Allah ﷻ bahkan antar makhluk yang tidak berakal sekalipun" },
+      { "id": "C", "text": "Agar manusia bangga pada hewannya" },
+      { "id": "D", "text": "Sebagai tontonan bagi penduduk mahsyar" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Domba yang tak bertanduk akan menuntut domba bertanduk yang menanduknya di dunia. Ini menunjukkan betapa telitinya keadilan Allah ﷻ.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Dajjal tidak akan bisa memasuki dua kota suci, yaitu Makkah dan Madinah, karena setiap pintu gerbangnya dijaga oleh malaikat yang menghunus pedang.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Madinah dan Makkah adalah tanah haram yang dilindungi dari fitnah Dajjal.",
+      "dalil": "HR. Bukhari"
     },
     "points": 10
   },
   {
     "subtopic_id": "akidah-hari-akhir",
     "topic_slug": "akidah-hari-akhir",
-    "type": "puzzle_order",
-    "question_text": "Susun potongan doa agar terhindar dari fitnah Dajjal:",
+    "type": "multiple_choice",
+    "question_text": "Bagaimana pandangan aqidah terkait seseorang yang 'Ghosting' (memutus silaturahmi tanpa alasan) dalam hubungan jika dikaitkan dengan hari kiamat?",
     "options": [
-      { "id": "D_1", "text": "Allahumma inni a'udzu bika" },
-      { "id": "D_2", "text": "min 'adzabi jahannam" },
-      { "id": "D_3", "text": "wa min 'adzabil qabri" },
-      { "id": "D_4", "text": "wa min fitnatil mahya wal mamat" },
-      { "id": "D_5", "text": "wa min syarri fitnatil masihid dajjal" }
+      { "id": "A", "text": "Itu adalah hak pribadi di era modern" },
+      {
+        "id": "B",
+        "text": "Amanah dan Silaturahmi adalah dua hal yang akan berdiri di samping Jembatan Shirat untuk menuntut haknya"
+      },
+      { "id": "C", "text": "Tidak ada hubungannya, karena itu urusan perasaan" },
+      { "id": "D", "text": "Malah bagus agar tidak menambah dosa ghibah" }
     ],
-    "correct": ["D_1", "D_2", "D_3", "D_4", "D_5"],
+    "correct": "B",
     "explanation": {
-      "text": "Doa perlindungan dari empat hal (Siksa neraka, kubur, fitnah hidup/mati, dan Dajjal).",
+      "text": "Amanah dan Rahim (silaturahmi) akan berdiri di kanan dan kiri Shirat. Barangsiapa merusaknya di dunia, ia akan terhambat di sana.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa yang dimaksud dengan 'Ashhabul Mash-amah'?",
+    "options": [
+      { "id": "A", "text": "Golongan kanan yang masuk surga" },
+      { "id": "B", "text": "Golongan kiri yang akan masuk neraka" },
+      { "id": "C", "text": "Para nabi dan rasul" },
+      { "id": "D", "text": "Penduduk al-A'raf" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Ashhabul Mash-amah adalah golongan kiri, yaitu orang-orang kafir dan pendosa yang menerima kitab dengan tangan kiri.",
+      "dalil": "QS. Al-Waqi'ah: 9"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Percaya pada ramalan zodiak atau ramalan masa depan terkait nasib seseorang adalah tindakan yang bisa merusak iman kepada hari akhir, karena urusan ghaib hanya milik Allah ﷻ.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Barangsiapa mendatangi peramal dan mempercayainya, maka ia telah kafir terhadap apa yang diturunkan kepada Muhammad ﷺ.",
+      "dalil": "HR. Ahmad"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Mengapa 'Ilmu yang Bermanfaat' menjadi salah satu dari tiga amal yang tidak terputus pahalanya? Bagaimanakah konteksnya di era digital?",
+    "options": [
+      { "id": "A", "text": "Karena ilmu itu mahal harganya" },
+      {
+        "id": "B",
+        "text": "Karena share konten dakwah yang benar dapat menjadi aliran pahala (sedekah jariyah) yang terus mengalir meskipun kita sudah wafat"
+      },
+      { "id": "C", "text": "Agar kita terkenal sebagai orang pintar" },
+      { "id": "D", "text": "Hanya berlaku jika kita menulis buku fisik" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Digitalisasi memungkinkan ilmu tersebar luas. Jika diniatkan ikhlas karena Allah ﷻ, jejak digital kebaikan akan terus membuahkan pahala di kubur.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Di akhir zaman, fitnah akan datang sepotong demi sepotong seperti potongan malam yang gelap. Apa maksudnya?",
+    "options": [
+      { "id": "A", "text": "Listrik akan sering mati" },
+      {
+        "id": "B",
+        "text": "Kekacauan pemikiran dan syubhat yang membuat seseorang mukmin di pagi hari tapi kafir di sore hari"
+      },
+      { "id": "C", "text": "Akan banyak terjadi gerhana matahari" },
+      { "id": "D", "text": "Manusia akan tidur lebih lama" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Fitnah akhir zaman sangat halus dan cepat merusak iman melalui pemikiran-pemikiran yang menyimpang.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "puzzle_order",
+    "question_text": "Susunlah urutan prioritas yang benar saat menghadapi masa depan dalam kacamata iman hari akhir:",
+    "options": [
+      { "id": "PLAN_1", "text": "Memperbaiki hubungan dengan Allah ﷻ (Tauhid & Shalat)" },
+      { "id": "PLAN_2", "text": "Menyelesaikan kewajiban/hutang kepada sesama manusia" },
+      { "id": "PLAN_3", "text": "Mencari nafkah halal untuk bekal ketaatan" },
+      { "id": "PLAN_4", "text": "Menabung hanya untuk kesenangan duniawi semata" }
+    ],
+    "correct": ["PLAN_1", "PLAN_2", "PLAN_3"],
+    "explanation": {
+      "text": "Hubungan dengan Allah ﷻ adalah pondasi, diikuti dengan hak sesama manusia dan sarana penunjang (nafkah).",
       "dalil": ""
     },
     "points": 25
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa hikmah dari adanya 'Syafa'at bagi pelaku dosa besar' (selama mereka bertauhid)?",
+    "options": [
+      { "id": "A", "text": "Supaya kita boleh meremehkan dosa besar" },
+      { "id": "B", "text": "Menunjukkan luasnya rahmat Allah ﷻ dan kemuliaan Nabi Muhammad ﷺ" },
+      { "id": "C", "text": "Karena Allah ﷻ tidak tega menghukum mereka" },
+      { "id": "D", "text": "Bentuk toleransi antar agama" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Syafa'at adalah hak khusus yang diberikan Allah ﷻ untuk menunjukkan kasih sayang-Nya melalui perantaraan kekasih-Nya kepada ahli tauhid.",
+      "dalil": "HR. Bukhari"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Di dalam surga, tidak ada lagi rasa iri, benci, atau dendam di antara sesama penduduknya karena hati mereka sudah 'dibersihkan' (ghill).",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Dan Kami cabut rasa dendam yang ada di dalam dada mereka; mereka merasa bersaudara duduk berhadapan di atas dipan-dipan.",
+      "dalil": "QS. Al-Hijr: 47"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa kaitan antara membuang-buang makanan (mubazir) dengan hari perhitungan kelak?",
+    "options": [
+      { "id": "A", "text": "Hanya sekadar perbuatan tidak etis" },
+      { "id": "B", "text": "Setiap butir nikmat yang tidak disyukuri atau dibuang akan ditanya pertanggungjawabannya" },
+      { "id": "C", "text": "Bagus agar membantu pengurai sampah" },
+      { "id": "D", "text": "Mempercepat hari kiamat" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Kemudian kamu pasti akan ditanyai pada hari itu tentang kenikmatan (yang kamu megah-megahkan di dunia itu).",
+      "dalil": "QS. At-Takatsur: 8"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Siapakah 'Fariqan fil Jannah wa fariqan fis sa'ir'?",
+    "options": [
+      { "id": "A", "text": "Sekelompok masuk surga dan sekelompok masuk neraka" },
+      { "id": "B", "text": "Malaikat penjaga pintu langit" },
+      { "id": "C", "text": "Nama dua sungai di akhirat" },
+      { "id": "D", "text": "Dua saudara yang terpisah" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Ini adalah pemisahan terakhir manusia berdasarkan iman dan amal saat kiamat ditegakkan.",
+      "dalil": "QS. Asy-Syura: 7"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Seorang Muslim milenial boleh saja merasa 'relate' dengan ajaran Liberalisme atau Sekularisme selama ia masih melaksanakan shalat 5 waktu.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "false",
+    "explanation": {
+      "text": "Pemisahan agama dari kehidupan (Sekularisme) bertentangan dengan prinsip Islam yang kaffah (menyeluruh). Iman kepada hari akhir meniadakan dikotomi dunia-akhirat tersebut.",
+      "dalil": "QS. Al-Baqarah: 208"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa pesan penting dari peristiwa 'Hijrahnya orang-orang beriman ke Syam' di akhir zaman?",
+    "options": [
+      { "id": "A", "text": "Wisata sejarah" },
+      { "id": "B", "text": "Tanda pusat kekuatan Islam akan kembali ke wilayah tersebut saat fitnah memuncak" },
+      { "id": "C", "text": "Mencari peluang ekonomi baru" },
+      { "id": "D", "text": "Menghindari bencana alam" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Syam diberkahi Allah ﷻ dan menjadi basis pertahanan orang-orang beriman melawan fitnah Dajjal.",
+      "dalil": "HR. Abu Dawud & Ahmad"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Kita diperintahkan untuk segera beramal sebelum datangnya fitnah, karena saat fitnah muncak, amal yang sedikit akan terasa sangat berat dilakukan.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Bersegeralah kalian beramal sebelum datangnya fitnah yang seperti potongan malam yang gelap...",
+      "dalil": "HR. Muslim"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Mengapa kita dilarang untuk 'Mengharap Kematian' meskipun dunia terasa sangat berat penuh cobaan?",
+    "options": [
+      { "id": "A", "text": "Karena bunuh diri itu dosa besar" },
+      { "id": "B", "text": "Karena umur mukmin adalah kesempatan untuk terus menambah bekal ketaatan dan bertaubat" },
+      { "id": "C", "text": "Karena kematian itu menyakitkan" },
+      { "id": "D", "text": "Karena kita belum punya tabungan" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Janganlah seseorang mengharapkan kematian. Jika ia baik maka semoga bertambah kebaikannya, jika ia buruk semoga ia bertaubat.",
+      "dalil": "HR. Bukhari"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa kaitan antara 'Menjaga Lisan' dari Ghibah di grup WhatsApp dengan timbangan Mizan kelak?",
+    "options": [
+      { "id": "A", "text": "Agar tidak diaktifkan fitur ban oleh admin" },
+      {
+        "id": "B",
+        "text": "Ghibah akan 'memakan' pahala kebaikan kita dan memindahkannya ke orang yang dighibahi (transfer pahala)"
+      },
+      { "id": "C", "text": "Tidak ada kaitan, kan cuma tulisan bukan suara" },
+      { "id": "D", "text": "Agar handphone awet" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Ghibah digital sama dosanya dengan ghibah lisan. Ini adalah salah satu cara tercepat bangkrut di hari kiamat.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "puzzle_order",
+    "question_text": "Urutkanlah siklus hidup manusia berdasarkan QS. Al-Hajj ayat 5:",
+    "options": [
+      { "id": "CYC_1", "text": "Dari Tanah" },
+      { "id": "CYC_2", "text": "Nuthfah (Sperma/Sel Telur)" },
+      { "id": "CYC_3", "text": "Alaqah (Segumpal Darah)" },
+      { "id": "CYC_4", "text": "Mudghah (Segumpal Daging)" }
+    ],
+    "correct": ["CYC_1", "CYC_2", "CYC_3", "CYC_4"],
+    "explanation": {
+      "text": "Al-Qur'an menjelaskan asal-usul manusia untuk membuktikan bahwa membangkitkan yang sudah mati adalah hal yang mudah bagi Allah ﷻ.",
+      "dalil": "QS. Al-Hajj: 5"
+    },
+    "points": 25
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa yang dimaksud dengan 'Al-Hathama'?",
+    "options": [
+      { "id": "A", "text": "Nama sebuah sungai di surga" },
+      { "id": "B", "text": "Api neraka yang membakar sampai ke hati/jantung" },
+      { "id": "C", "text": "Bukit karang di padang mahsyar" },
+      { "id": "D", "text": "Penjaga pintu neraka" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "(Yaitu) api (azab) Allah yang dinyalakan, yang (membakar) sampai ke hati.",
+      "dalil": "QS. Al-Humazah: 6-7"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Dajjal memiliki tulisan 'K-F-R' (Kafir) di keningnya yang hanya bisa dibaca oleh orang yang bisa bahasa Arab saja.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "false",
+    "explanation": {
+      "text": "Tulisan tersebut dapat dibaca oleh setiap mukmin, baik ia buta huruf (tak bisa membaca) atau tidak.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Bagaimana sikap yang benar menghadapi fenomena 'Akhir Zaman' menurut Manhaj Salaf?",
+    "options": [
+      { "id": "A", "text": "Sibuk mengklaim seseorang sebagai Imam Mahdi" },
+      {
+        "id": "B",
+        "text": "Berpegang teguh pada Al-Qur'an dan Sunnah sesuai pemahaman Sahabat, serta menjauhi fitnah"
+      },
+      { "id": "C", "text": "Membangun bungker rahasia" },
+      { "id": "D", "text": "Mengaktifkan semua notifikasi portal berita luar negeri" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Kunci keselamatan adalah ilmu yang benar dan menjauhi sumber-sumber fitnah, bukan sekadar prediksi liar.",
+      "dalil": ""
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Mengapa penduduk surga tidak pernah merasa bosan meskipun hidup selamanya di sana?",
+    "options": [
+      { "id": "A", "text": "Karena mereka sering tertidur" },
+      {
+        "id": "B",
+        "text": "Karena Allah ﷻ memperbarui nikmat-Nya setiap saat sehingga setiap pertemuan/makanan terasa baru dan makin nikmat"
+      },
+      { "id": "C", "text": "Karena mereka lupa ingatan masa lalu" },
+      { "id": "D", "text": "Karena ada hiburan konser setiap malam" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Di surga, setiap hari adalah peningkatan kenikmatan. Allah ﷻ menghilangkan sifat bosan dari hati manusia.",
+      "dalil": ""
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Hari kiamat tidak akan terjadi selama di bumi masih ada yang mengucapkan: 'Allah, Allah'.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Kiamat hanya akan menimpa orang-orang yang paling buruk, setelah seluruh orang beriman diwafatkan sebelum peristiwa dahsyat itu terjadi.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa visi 'Eco-Friendly' seorang Muslim yang beriman pada hari akhir?",
+    "options": [
+      { "id": "A", "text": "Supaya dipuji sebagai pahlawan lingkungan" },
+      {
+        "id": "B",
+        "text": "Kesadaran bahwa merusak bumi adalah kezaliman yang akan dihisab, karena bumi akan menjadi saksi atas perbuatan manusia"
+      },
+      { "id": "C", "text": "Supaya kiamat tertunda jutaan tahun lagi" },
+      { "id": "D", "text": "Karena ikut-ikutan tren global" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Pada hari itu bumi menceritakan beritanya, karena sesungguhnya Tuhanmu telah memerintahkan (yang demikian itu) kepadanya.",
+      "dalil": "QS. Az-Zalzalah: 4-5"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa yang dimaksud dengan 'Al-Muthaffifin' dalam kaitan dengan timbangan di hari akhir?",
+    "options": [
+      { "id": "A", "text": "Orang yang gemar bersedekah" },
+      { "id": "B", "text": "Orang yang curang dalam menimbang (mengurangi hak orang lain)" },
+      { "id": "C", "text": "Para ahli tafsir" },
+      { "id": "D", "text": "Malaikat penimbang amal" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Kecelakaan besarlah bagi orang-orang yang curang (dalam menimbang). Menunjukkan bahwa kejujuran muamalah di dunia berdampak besar di akhirat.",
+      "dalil": "QS. Al-Muthaffifin: 1"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Seorang Muslim yang meninggal karena tenggelam atau wabah penyakit (seperti Covid-19) dengan sabar dan mengharap pahala Allah ﷻ, mendapatkan pahala syahid.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Ini termasuk kategori syahid akhirat, di mana mereka tetap dimandikan & dishalatkan namun mendapat pahala besar di sisi Allah ﷻ.",
+      "dalil": "HR. Bukhari & Muslim"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa hikmah di balik peristiwa 'Penenggelaman pasukan ke bumi' (Al-Khasf) sebagai tanda dekatnya kemunculan Imam Mahdi?",
+    "options": [
+      { "id": "A", "text": "Sebagai bencana geologi biasa" },
+      {
+        "id": "B",
+        "text": "Bentuk pertolongan langsung dari Allah ﷻ bagi kebenaran saat musuh-musuh Islam bersatu menghancurkannya"
+      },
+      { "id": "C", "text": "Tanda kelebihan beban penduduk bumi" },
+      { "id": "D", "text": "Hanya terjadi di wilayah kutub" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Penenggelaman pasukan ini adalah bukti nyata pembelaan Allah ﷻ bagi hamba-Nya yang benar di saat-saat genting.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Mengapa 'Anak yang Shaleh' menjadi investasi terbaik bagi orang tua setelah mereka wafat?",
+    "options": [
+      { "id": "A", "text": "Karena anak shaleh pasti kaya raya" },
+      {
+        "id": "B",
+        "text": "Karena doa tulus mereka menembus dinding alam barzakh dan dapat menaikkan derajat orang tua di surga"
+      },
+      { "id": "C", "text": "Supaya nama baik keluarga terjaga" },
+      { "id": "D", "text": "Karena anak shaleh bisa memindahkan mayat orang tuanya" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Doa anak shaleh adalah salah satu dari tiga amalan yang pahalanya tetap mengalir bagi orang yang sudah meninggal.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Kecanduan nonton drama (K-Drama) atau film yang berlebihan sampai melupakan waktu shalat dan tilawah Al-Qur'an adalah bentuk 'Laghwun' (kesia-siaan) yang akan disesali di hari kiamat.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Waktu adalah nikmat yang seringkali dilalaikan manusia. Di akhirat, setiap detik kesia-siaan akan mendatangkan penyesalan (hasrah).",
+      "dalil": "HR. Bukhari"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa yang dimaksud dengan 'Al-Qari'ah'?",
+    "options": [
+      { "id": "A", "text": "Pembaca Al-Qur'an wanita" },
+      { "id": "B", "text": "Hari Kiamat yang mengetuk/mengguncang hati manusia dengan kedahsyatannya" },
+      { "id": "C", "text": "Kota di pinggir gurun" },
+      { "id": "D", "text": "Pintu masuk surga" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Al-Qari'ah berarti yang mengetuk dengan keras. Menggambarkan bagaimana kiamat datang mengejutkan dan menggoncang segalanya.",
+      "dalil": "QS. Al-Qari'ah: 1-3"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Konteks 'Membangun Masa Depan' bagi seorang profesional Muslim harus berpijak pada prinsip...",
+    "options": [
+      { "id": "A", "text": "Profit orientasi maksimal di dunia" },
+      {
+        "id": "B",
+        "text": "Menjadikan karir sebagai 'Jihad' untuk menebar manfaat dan mencari bekal akhirat yang diridhai Allah ﷻ"
+      },
+      { "id": "C", "text": "Mengikuti arus pasar meskipun melanggar syariat" },
+      { "id": "D", "text": "Bekerja hanya saat butuh uang saja" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Seorang mukmin memandang karir cerdas; dunia sebagai sarana, akhirat sebagai tujuan utama.",
+      "dalil": ""
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Seseorang yang memohon perlindungan dari 4 hal di akhir shalat (termasuk fitnah Dajjal) secara rutin, Allah ﷻ akan menjamin keselamatannya dari segala fitnah dunia.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Doa ini adalah bentuk ikhtiar batin yang sangat kuat diajarkan Nabi ﷺ untuk membentengi iman hamba-Nya.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa yang dimaksud dengan 'Yaumun 'Asir'?",
+    "options": [
+      { "id": "A", "text": "Hari yang penuh kemudahan" },
+      { "id": "B", "text": "Hari yang sangat sulit (bagi orang-orang kafir)" },
+      { "id": "C", "text": "Hari peringatan sejarah" },
+      { "id": "D", "text": "Hari raya umat Islam" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Maka itulah hari yang sangat sulit, bagi orang-orang kafir tidaklah mudah.",
+      "dalil": "QS. Al-Muddatstsir: 9-10"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Mengapa kita dilarang untuk 'Menghina' orang lain yang sedang tertimpa musibah (seperti gempa/banjir) dengan menyebutnya sebagai azab pasti?",
+    "options": [
+      { "id": "A", "text": "Karena bisa jadi itu adalah ujian bagi mereka dan peringatan bagi kita yang melihatnya" },
+      { "id": "B", "text": "Supaya tidak kena tuntut" },
+      { "id": "C", "text": "Karena Allah ﷻ tidak pernah memberi azab di dunia" },
+      { "id": "D", "text": "Supaya kita telihat bijak" }
+    ],
+    "correct": "A",
+    "explanation": {
+      "text": "Husnudzon (berbaik sangka) kepada Allah ﷻ dan empati antar sesama adalah akhlak utama mukmin saat menghadapi tanda-tanda kekuasaan Allah ﷻ di alam.",
+      "dalil": ""
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Amal jariyah tetap mengalir kepada seseorang yang sudah meninggal dunia meskipun yang melakukannya (misal wakaf/shodaqoh) bukan dari keturunannya langsung.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Pahala amal jariyah kembali kepada si pelaku awal, siapapun yang meneruskannya atau mendoakannya.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Dajjal memiliki pengikut yang sangat banyak, terutama dari kalangan orang yang lemah imannya. Apa cara terbaik untuk menjauh jika ia muncul?",
+    "options": [
+      { "id": "A", "text": "Mendatanginya untuk berdebat" },
+      {
+        "id": "B",
+        "text": "Lari menjauh (ke gunung-gunung) dan tidak mencoba-coba melihat kekuatannya karena fitnahnya sangat menyambar-nyambar"
+      },
+      { "id": "C", "text": "Memotretnya untuk dijadikan konten sosmed" },
+      { "id": "D", "text": "Bekerja sama dengannya agar aman" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Barangsiapa mendengar tentang Dajjal, hendaknya ia menjauh. Karena seseorang mendatangi Dajjal dan merasa dirinya beriman, tapi akhirnya ia malah mengikutinya karena syubhat yang dibawanya.",
+      "dalil": "HR. Abu Dawud"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa hikmah dari 'Wajah yang berseri-seri' (Nadhirah) penduduk surga?",
+    "options": [
+      { "id": "A", "text": "Karena mereka habis perawatan kulit" },
+      { "id": "B", "text": "Karena mereka melihat wajah Tuhan mereka (Allah ﷻ)" },
+      { "id": "C", "text": "Karena mereka memakai lampu hias" },
+      { "id": "D", "text": "Karena mereka sedang tertawa" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Wajah-wajah (orang-orang mukmin) pada hari itu berseri-seri. Kepada Tuhannyalah mereka melihat.",
+      "dalil": "QS. Al-Qiyamah: 22-23"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Peristiwa 'Tatalusuh' (kekacauan/pembunuhan) yang merajalela tanpa alasan yang jelas adalah salah satu tanda kiamat sudah sangat dekat.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Kiamat tidak akan terjadi sampai banyak Haraj (pembunuhan). Si pembunuh tak tahu kenapa ia membunuh, dan yang dibunuh tak tahu kenapa ia dibunuh.",
+      "dalil": "HR. Muslim"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Bagaimana cara kita meyakini adanya 'Siksa Kubur' sementara secara fisik jasad di dalam kubur hancur dimakan tanah?",
+    "options": [
+      { "id": "A", "text": "Mengingkari karena tidak logis" },
+      {
+        "id": "B",
+        "text": "Yakin karena itu urusan alam ghaib (Barzakh); Allah ﷻ Maha Kuasa menyiksa ruh meski jasad telah hancur"
+      },
+      { "id": "C", "text": "Menganggap itu hanya mimpi buruk" },
+      { "id": "D", "text": "Menunggu bukti foto dalam kubur" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Iman kepada yang ghaib adalah rukun pertama orang bertaqwa. Barzakh memiliki hukum alamnya sendiri yang berbeda dengan dunia material.",
+      "dalil": "QS. Al-Baqarah: 3"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa visi kemanusiaan (Humanity) yang dibangun di atas pondasi iman hari akhir?",
+    "options": [
+      { "id": "A", "text": "Membantu orang lain supaya dipuji dermawan" },
+      { "id": "B", "text": "Membantu karena cinta Allah ﷻ dan mengharap balasan-Nya semata di akhirat (Ikhlas)" },
+      { "id": "C", "text": "Membantu hanya karena tuntutan sosial" },
+      { "id": "D", "text": "Membantu agar dapat keuntungan politik" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Sesungguhnya kami memberi makanan kepadamu hanyalah untuk mengharapkan keridhaan Allah, kami tidak menghendaki balasan dari kamu dan tidak pula (ucapan) terima kasih.",
+      "dalil": "QS. Al-Insan: 9"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Surga dan Neraka adalah makhluk Allah ﷻ yang sudah diciptakan sekarang ini (saat ini sudah ada) dan tidak akan pernah hancur selamanya.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Inilah akidah Ahlussunnah; Surga (untuk yang bertaqwa) dan Neraka (untuk yang kafir) telah dipersiapkan dan bersifat abadi.",
+      "dalil": "QS. Ali Imran: 131, 133"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa makna doa: 'Robbana Atina fid dunya hasanah, wa fil akhirati hasanah'?",
+    "options": [
+      { "id": "A", "text": "Hanya ingin sukses di dunia saja" },
+      {
+        "id": "B",
+        "text": "Keseimbangan orientasi hidup; memohon kebaikan di dunia (untuk ketaatan) dan keselamatan abadi di akhirat"
+      },
+      { "id": "C", "text": "Meminta harta yang melimpah" },
+      { "id": "D", "text": "Doa ketika lapar" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Seorang mukmin tidak mengabaikan dunia, tapi menjadikannya wasilah (jalan) menuju kebahagiaan akhirat.",
+      "dalil": "QS. Al-Baqarah: 201"
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa yang dimaksud dengan 'Al-Masihul Kadzdzab'?",
+    "options": [
+      { "id": "A", "text": "Nabi Isa عليه السلام" },
+      { "id": "B", "text": "Dajjal (Al-Masih si Pendusta)" },
+      { "id": "C", "text": "Penjaga neraka" },
+      { "id": "D", "text": "Malaikat Maut" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Dajjal disebut Al-Masih karena matanya yang terhapus/buta sebelah dan hobinya berkeliling bumi untuk menyebar fitnah pendustaan.",
+      "dalil": ""
+    },
+    "points": 10
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Beriman kepada hari akhir menjadikan seseorang mukmin yang tangguh mentalnya (resilient), karena ia yakin setiap penderitaan yang ia alami dengan sabar di dunia akan diganti dengan kebahagiaan tanpa batas.",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Iman akhirat adalah obat stres terbaik. Kesedihan dunia terasa kecil jika dibandingkan dengan harapan surga yang abadi.",
+      "dalil": ""
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Siapakah penduduk 'Illiyyin'?",
+    "options": [
+      { "id": "A", "text": "Orang-orang kafir yang sombong" },
+      { "id": "B", "text": "Orang-orang berbakti yang catatan amalnya di simpan di tempat yang paling tinggi" },
+      { "id": "C", "text": "Nama sebuah planet" },
+      { "id": "D", "text": "Penduduk lereng gunung" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Sekali-kali tidak! Sesungguhnya catatan amal orang-orang yang berbakti benar-benar (tersimpan) dalam 'Illiyyin.",
+      "dalil": "QS. Al-Muthaffifin: 18"
+    },
+    "points": 15
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "multiple_choice",
+    "question_text": "Apa kaitan janji Allah ﷻ tentang hari kiamat dengan semangat untuk 'Berhenti Berhutang' (Riba/Konsumerisme berlebihan)?",
+    "options": [
+      { "id": "A", "text": "Supaya kolektor tidak datang" },
+      {
+        "id": "B",
+        "text": "Kesadaran bahwa hutang yang belum lunas akan menjadi penghalang besar masuk surga dan harus dibayar dengan pahala amal shaleh"
+      },
+      { "id": "C", "text": "Agar cepat kaya" },
+      { "id": "D", "text": "Hanya tren finansial saja" }
+    ],
+    "correct": "B",
+    "explanation": {
+      "text": "Ruh seorang mukmin tergantung karena hutangnya sampai hutang itu dilunasi.",
+      "dalil": "HR. Tirmidzi"
+    },
+    "points": 20
+  },
+  {
+    "subtopic_id": "akidah-hari-akhir",
+    "topic_slug": "akidah-hari-akhir",
+    "type": "true_false",
+    "question_text": "Meskipun kiamat sudah dekat, seorang Muslim tetap diperintahkan untuk optimis, produktif, dan menebar kebaikan di bumi (seperti tetap menanam pohon meski besok kiamat).",
+    "options": [
+      { "id": "true", "text": "Benar" },
+      { "id": "false", "text": "Salah" }
+    ],
+    "correct": "true",
+    "explanation": {
+      "text": "Jika hari kiamat datang sedangkan di tangan salah seorang di antara kalian ada bibit pohon, maka jika ia mampu menanamnya sebelum kiamat tiba, hendaklah ia menanamnya.",
+      "dalil": "HR. Ahmad"
+    },
+    "points": 15
   }
 ]

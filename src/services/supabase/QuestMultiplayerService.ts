@@ -109,8 +109,8 @@ export const questMultiplayerService = {
     // Initialize Teams if Team Mode enabled
     const initialTeams: any[] = enableTeamMode
       ? [
-          { id: "TEAM_A", name: "Tim A", color: "#3b82f6", total_score: 0, member_count: 0 }, // Blue
-          { id: "TEAM_B", name: "Tim B", color: "#ef4444", total_score: 0, member_count: 0 }, // Red
+          { id: "TEAM_A", name: "Tim A", emoji: "🔵", color: "#3b82f6", total_score: 0, member_count: 0 }, // Blue
+          { id: "TEAM_B", name: "Tim B", emoji: "🔴", color: "#ef4444", total_score: 0, member_count: 0 }, // Red
         ]
       : [];
 
@@ -133,7 +133,7 @@ export const questMultiplayerService = {
         topic_slug: config.topic?.id || "unknown",
         subtopic_slug: config.subtopic?.id || "unknown",
         total_questions: config.totalQuestions || 10,
-        game_mode: "MULTIPLAYER",
+        game_mode: initialState.game_mode, // Use dynamic game_mode (SOLO or TEAM)
         match_id: roomCode,
         started_at: new Date().toISOString(),
         questions_data: initialState,

@@ -120,7 +120,7 @@ export interface QuestStore {
   // Actions
   fetchTopics: () => Promise<void>;
   fetchSubtopics: (topicSlug: string) => Promise<void>;
-  startQuiz: (subtopic: Subtopic) => Promise<void>;
+  startQuiz: (subtopic: Subtopic, questionLimit?: number) => Promise<void>;
   submitAnswer: (questionId: string, optionId: string | string[]) => void;
   nextQuestion: () => void;
   resetQuiz: () => void;
@@ -156,6 +156,7 @@ export interface Player {
 export interface TeamInfo {
   id: string; // "TEAM_A", "TEAM_B"
   name: string; // "Tim A", "Tim B" or custom names
+  emoji: string; // Team emoji/icon
   color: string; // Hex color for UI
   total_score: number; // Accumulated from all members
   member_count: number;
