@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { Download, Wand2, FileText, Settings2, X } from "lucide-react";
+import { Wand2, FileText, Settings2, X, Copy, Check, FileJson, AlertTriangle } from "lucide-react";
 import {
   DEFAULT_PROMPT_CONFIG,
   CATEGORY_OPTIONS,
@@ -26,11 +26,12 @@ import { generateMinimalistPrompt, generateMinimalistFilename } from "@/utils/pr
 import { generateVisualistPrompt, generateVisualistFilename } from "@/utils/promptGenerator/visualistGenerator";
 import { toast } from "sonner";
 
-export function PromptGeneratorDialog() {
+export function ContentPromptGeneratorDialog() {
   const [open, setOpen] = useState(false);
   const [config, setConfig] = useState<PromptConfig>(DEFAULT_PROMPT_CONFIG);
   const [generatedPrompt, setGeneratedPrompt] = useState("");
   const [activeTab, setActiveTab] = useState<"configure" | "guide">("configure");
+  const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
     if (open) setActiveTab("configure");
@@ -74,7 +75,7 @@ export function PromptGeneratorDialog() {
 
   const handleCategoryChange = (category: string) => {
     const newCategory = category as PromptConfig["category"];
-    const categoryOption = CATEGORY_OPTIONS.find((opt) => opt.value === newCategory);
+    // const categoryOption = CATEGORY_OPTIONS.find((opt) => opt.value === newCategory);
     setConfig((prev) => ({
       ...prev,
       category: newCategory,
@@ -82,19 +83,22 @@ export function PromptGeneratorDialog() {
     }));
   };
 
-  const handleDownload = () => {
-    const blob = new Blob([generatedPrompt], { type: "text/markdown" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    const timestamp = Date.now();
-    const filename = config.filename?.endsWith(".md") ? config.filename.replace(".md", "") : config.filename || "prompt";
-    a.download = `${filename}-${timestamp}.md`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    toast.success("Prompt berhasil diunduh!");
+  const handleCopyPrompt = () => {
+    if (!generatedPrompt || generatedPrompt.startsWith("Silakan") || generatedPrompt.startsWith("Error")) {
+      toast.error("Tidak ada prompt yang valid untuk disalin.");
+      return;
+    }
+
+    navigator.clipboard.writeText(generatedPrompt)
+      .then(() => {
+        setIsCopied(true);
+        toast.success("Prompt berhasil disalin ke clipboard!");
+        setTimeout(() => setIsCopied(false), 2000);
+      })
+      .catch((err) => {
+        console.error("Failed to copy:", err);
+        toast.error("Gagal menyalin prompt.");
+      });
   };
 
   const selectedCategory = CATEGORY_OPTIONS.find((opt) => opt.value === config.category);
@@ -109,7 +113,7 @@ export function PromptGeneratorDialog() {
         onClick={() => setOpen(true)}
       >
         <Wand2 className="w-4 h-4" />
-        Prompt Generator
+        Content Prompt Generator
       </Button>
 
       <AnimatePresence>
@@ -139,9 +143,9 @@ export function PromptGeneratorDialog() {
                     </div>
                     <div className="flex flex-col">
                       <span className="bg-linear-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent font-semibold text-lg!">
-                        Prompt Generator
+                        Content Prompt Generator
                       </span>
-                      <span className="text-sm! text-slate-500">Buat prompt AI untuk konten Anda</span>
+                      <span className="text-sm! text-slate-500">Buat prompt AI untuk konten Anda (Copy & Paste mechanism)</span>
                     </div>
                   </div>
 
@@ -188,12 +192,9 @@ export function PromptGeneratorDialog() {
                     <div className="lg:col-span-7 flex flex-col gap-4 h-full">
                       {/* 1. Branding (Compact Row) */}
                       <div className="p-4 rounded-xl bg-slate-900/30 border border-slate-800/50 flex items-start gap-4">
-                        <div className="flex-none p-2 rounded-lg bg-pink-500/10 text-pink-400">
-                          <Wand2 className="w-5 h-5" />
-                        </div>
                         <div className="flex-1 grid grid-cols-2 gap-4">
                           <div className="space-y-1.5">
-                            <Label htmlFor="authorName" className="text-xs! text-slate-400">Nama Penulis / Brand</Label>
+                            <Label htmlFor="authorName" className="text-xs! text-slate-400">Author / Brand</Label>
                             <Input
                               id="authorName"
                               placeholder="alwaah.project"
@@ -360,31 +361,30 @@ export function PromptGeneratorDialog() {
                         />
                       </div>
 
-                      {/* 3. Download (Bottom) */}
+                      {/* 3. Action (Bottom) */}
                       <div className="mt-auto p-5 rounded-xl bg-linear-to-br from-slate-900/50 to-purple-900/10 border border-slate-800/50 flex flex-col gap-4">
-                        <div className="space-y-1.5">
-                          <Label htmlFor="filename" className="text-xs! text-slate-500">Nama File Output</Label>
-                          <div className="flex items-center gap-2">
-                            <Input
-                              id="filename"
-                              value={config.filename}
-                              onChange={(e) => setConfig((prev) => ({ ...prev, filename: e.target.value }))}
-                              placeholder="prompt-islamic-flat"
-                              className="bg-slate-950/50 border-slate-800/50 text-slate-200 font-mono h-9 text-xs!"
-                            />
-                            <div className="px-2 py-2 bg-slate-800/50 rounded border border-slate-700/50 text-slate-400 text-[10px] font-mono whitespace-nowrap">
-                              .md
-                            </div>
-                          </div>
-                        </div>
-
                         <Button
-                          onClick={handleDownload}
-                          className="w-full gap-2 bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white shadow-lg shadow-purple-900/20 text-sm! h-10 font-medium!"
+                          onClick={handleCopyPrompt}
+                          className={`w-full gap-2 text-white shadow-lg text-sm! h-10 font-medium! transition-all duration-300 ${isCopied
+                            ? "bg-green-600 hover:bg-green-700 shadow-green-900/20"
+                            : "bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 shadow-purple-900/20"
+                            }`}
                         >
-                          <Download className="w-4 h-4" />
-                          Unduh Prompt
+                          {isCopied ? (
+                            <>
+                              <Check className="w-4 h-4" />
+                              Berhasil Disalin!
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-4 h-4" />
+                              Copy Prompt
+                            </>
+                          )}
                         </Button>
+                        <p className="text-[10px] text-slate-500 text-center">
+                          Copy prompt ini dan paste ke AI Chatbot (Deepseek, Claude, Gemini, dll)
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -394,10 +394,10 @@ export function PromptGeneratorDialog() {
                       {/* LEFT: Feature Description */}
                       <div className="space-y-5">
                         <div>
-                          <h3 className="text-xl! font-semibold! text-slate-200 mb-3!">Apa itu Prompt Generator?</h3>
+                          <h3 className="text-xl! font-semibold! text-slate-200 mb-3!">Apa itu Content Prompt Generator?</h3>
                           <p className="text-sm! text-slate-400 leading-relaxed">
                             Fitur ini membantu Anda membuat prompt AI yang terstruktur dan optimal untuk menghasilkan blueprint layout slide secara otomatis.
-                            Dengan menggunakan AI seperti Claude, Deepseek, atau Qwen, Anda dapat mengubah materi teks menjadi desain slide profesional dalam hitungan menit.
+                            Dengan menggunakan AI seperti Claude, Deepseek, Qwen, atau ChatGPT, Anda dapat mengubah materi teks menjadi desain slide profesional dalam hitungan menit.
                           </p>
                         </div>
 
@@ -426,9 +426,9 @@ export function PromptGeneratorDialog() {
                           <div className="flex gap-4">
                             <div className="flex-none w-8 h-8 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 font-semibold text-sm!">1</div>
                             <div className="flex-1">
-                              <h4 className="text-base! font-medium! text-slate-200 mb-1!">Unduh File Prompt</h4>
+                              <h4 className="text-base! font-medium! text-slate-200 mb-1!">Copy Prompt</h4>
                               <p className="text-sm! text-slate-500 leading-normal!">
-                                Klik tombol "Unduh Prompt (.MD)" di tab Config untuk menyimpan file prompt.
+                                Klik tombol "Copy Prompt" di tab Config untuk menyalin instruksi lengkap.
                               </p>
                             </div>
                           </div>
@@ -436,9 +436,9 @@ export function PromptGeneratorDialog() {
                           <div className="flex gap-4">
                             <div className="flex-none w-8 h-8 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 font-semibold text-sm!">2</div>
                             <div className="flex-1">
-                              <h4 className="text-base! font-medium! text-slate-200 mb-1!">Upload ke AI Chatbot</h4>
+                              <h4 className="text-base! font-medium! text-slate-200 mb-1!">Paste ke AI Chatbot</h4>
                               <p className="text-sm! text-slate-500 leading-normal!">
-                                Kirim file tersebut ke AI chatbot pilihan Anda. Rekomendasi kami: <span className="text-slate-400 font-medium">Deepseek, Claude, atau Qwen</span>.
+                                Paste instruksi tersebut ke AI chatbot pilihan Anda. Rekomendasi kami: <span className="text-slate-400 font-medium">Deepseek, Claude, Qwen, Gemini, atau ChatGPT</span>.
                               </p>
                             </div>
                           </div>
@@ -456,9 +456,9 @@ export function PromptGeneratorDialog() {
                           <div className="flex gap-4">
                             <div className="flex-none w-8 h-8 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-400 font-semibold text-sm!">4</div>
                             <div className="flex-1">
-                              <h4 className="text-base! font-medium! text-slate-200 mb-1!">Unduh Blueprint JSON</h4>
+                              <h4 className="text-base! font-medium! text-slate-200 mb-1!">Copy Output JSON</h4>
                               <p className="text-sm! text-slate-500 leading-normal!">
-                                Download file <code className="px-1.5 py-0.5 bg-slate-900/50 rounded border border-slate-800/50 text-green-300 text-xs!">JSON</code> (Artifact) yang dihasilkan AI.
+                                Salin kode blueprint <code className="px-1.5 py-0.5 bg-slate-900/50 rounded border border-slate-800/50 text-green-300 text-xs!">JSON</code> yang dihasilkan oleh AI Chatbot.
                               </p>
                             </div>
                           </div>
@@ -466,10 +466,58 @@ export function PromptGeneratorDialog() {
                           <div className="flex gap-4">
                             <div className="flex-none w-8 h-8 rounded-full bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 font-semibold text-sm!">5</div>
                             <div className="flex-1">
-                              <h4 className="text-base! font-medium! text-slate-200 mb-1!">Import di Content Studio</h4>
-                              <p className="text-sm! text-slate-500 leading-normal!">
-                                Kembali ke Editor ini, klik tombol Import JSON, dan pilih file tersebut untuk mulai mengedit.
+                              <h4 className="text-base! font-medium! text-slate-200 mb-2!">Import Blueprint (Pilih Metode)</h4>
+                              <p className="text-sm! text-slate-500 leading-normal mb-4">
+                                Sekarang Anda punya 2 pilihan cara import. Pilih yang paling cocok:
                               </p>
+
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                                {/* Option A: Copy Paste */}
+                                <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-blue-500/30 hover:bg-slate-900/80 transition-all group">
+                                  <div className="flex items-center gap-3 mb-3!">
+                                    <div className="p-2 rounded-lg bg-blue-500/10 text-blue-400 group-hover:bg-blue-500/20 group-hover:text-blue-300 transition-colors">
+                                      <Copy className="w-5 h-5" />
+                                    </div>
+                                    <span className="text-sm font-semibold text-slate-200">Copy Paste</span>
+                                  </div>
+                                  <p className="text-xs text-slate-400 leading-relaxed mb-4 h-10">
+                                    Salin kode JSON dari chatbot, lalu paste langsung di dialog Import.
+                                  </p>
+                                  <div className="space-y-2 pt-5!">
+                                    <div className="flex items-center gap-2 text-xs text-slate-300">
+                                      <Check className="w-3.5 h-3.5 text-green-500 shrink-0" />
+                                      <span>Sangat Cepat & Praktis</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-xs text-slate-400">
+                                      <AlertTriangle className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                                      <span>Rawan tertimpa (Clipboard)</span>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Option B: File Upload */}
+                                <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-orange-500/30 hover:bg-slate-900/80 transition-all group">
+                                  <div className="flex items-center gap-3 mb-3!">
+                                    <div className="p-2 rounded-lg bg-orange-500/10 text-orange-400 group-hover:bg-orange-500/20 group-hover:text-orange-300 transition-colors">
+                                      <FileJson className="w-5 h-5" />
+                                    </div>
+                                    <span className="text-sm font-semibold text-slate-200">File JSON</span>
+                                  </div>
+                                  <p className="text-xs text-slate-400 leading-relaxed mb-4 h-10">
+                                    Download file .json dari chatbot (Artifact), simpan, lalu upload.
+                                  </p>
+                                  <div className="space-y-2 pt-5!">
+                                    <div className="flex items-center gap-2 text-xs text-slate-300">
+                                      <Check className="w-3.5 h-3.5 text-green-500 shrink-0" />
+                                      <span>Aman & Permanen</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-xs text-slate-400">
+                                      <AlertTriangle className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                                      <span>Perlu download & upload</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>

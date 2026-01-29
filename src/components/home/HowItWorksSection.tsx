@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { UserPlus, BookOpen, Share2, ArrowRight } from "lucide-react";
+import { UserPlus, Youtube, Gamepad2, ArrowRight } from "lucide-react";
 
 interface StepCardProps {
   number: string;
@@ -19,63 +19,50 @@ const StepCard: React.FC<StepCardProps> = ({ number, icon: Icon, title, descript
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <div ref={ref} className="relative">
-      {/* Connecting Line */}
+    <div ref={ref} className="relative flex-1">
+      {/* Connecting Line (Desktop) */}
       {!isLast && (
-        <div className="hidden lg:block absolute left-1/2 top-full h-16 w-px -translate-x-1/2 mt-8">
+        <div className="hidden lg:block absolute top-[2.5rem] left-[50%] right-[-50%] h-[2px]">
+          <div className="w-full h-full bg-gray-800" />
           <motion.div
-            initial={{ scaleY: 0 }}
-            animate={isInView ? { scaleY: 1 } : {}}
-            transition={{ duration: 0.6, delay: index * 0.2 + 0.3 }}
-            className="h-full w-full bg-linear-to-b from-emerald-500 to-transparent origin-top"
+            initial={{ scaleX: 0 }}
+            animate={isInView ? { scaleX: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="absolute inset-0 bg-emerald-500 origin-left"
           />
+        </div>
+      )}
+
+      {/* Connecting Line (Mobile) */}
+      {!isLast && (
+        <div className="lg:hidden absolute left-[2.5rem] top-[50%] bottom-[-50%] w-[2px]">
+          <div className="w-full h-full bg-gray-800" />
         </div>
       )}
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: index * 0.15 }}
-        className="group"
+        transition={{ duration: 0.5, delay: index * 0.2 }}
+        className="relative z-10 flex lg:flex-col items-start lg:items-center gap-6 lg:gap-8 lg:text-center p-4"
       >
-        <div className="relative bg-black rounded-2xl p-8 border border-gray-800 hover:border-emerald-500/50 transition-all duration-500 hover:-translate-y-1 overflow-hidden">
-          {/* Glow Effect on Hover */}
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <div className="absolute inset-0 bg-emerald-500/5 blur-xl" />
+        {/* Icon Circle */}
+        <div className="relative shrink-0">
+          <div className="w-20 h-20 rounded-full bg-black border border-gray-800 flex items-center justify-center shadow-2xl relative z-10 group hover:border-emerald-500/50 transition-colors">
+            <Icon className="w-8 h-8 text-gray-300 group-hover:text-emerald-400 transition-colors" />
           </div>
+          {/* Glow under icon */}
+          <div className="absolute inset-0 bg-emerald-500/20 blur-xl rounded-full z-0" />
+        </div>
 
-          {/* Content */}
-          <div className="relative z-10">
-            {/* Number Badge & Icon */}
-            <div className="flex flex-col sm:flex-row items-start gap-6 mb-6">
-              <div className="relative shrink-0">
-                {/* Number Circle with Glow */}
-                <div className="relative w-16 h-16 rounded-xl bg-gray-900 flex items-center justify-center border border-emerald-500/30 group-hover:shadow-lg group-hover:shadow-emerald-500/30 transition-shadow">
-                  <div className="absolute inset-0 bg-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
-                  <span className="relative text-2xl font-black text-emerald-400">{number}</span>
-                </div>
-
-                {/* Icon Badge */}
-                <div className="absolute -bottom-2 -right-5 w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center border-2 border-black">
-                  <Icon className="h-5 w-5 text-emerald-400" />
-                </div>
-              </div>
-
-              {/* Text Content */}
-              <div className="flex-1 pt-2">
-                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">
-                  {title}
-                </h3>
-                <p className="text-gray-400 leading-relaxed">{description}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Sharp Corner Highlights */}
-          <div className="absolute top-0 right-0 w-24 h-24">
-            <div className="absolute top-0 right-0 w-px h-12 bg-linear-to-b from-emerald-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="absolute top-0 right-0 h-px w-12 bg-linear-to-l from-emerald-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
+        {/* Content */}
+        <div className="flex-1 space-y-3 pb-8 lg:pb-0">
+          <h3 className="text-xl font-bold text-white">
+            {title}
+          </h3>
+          <p className="text-gray-400 leading-relaxed text-sm lg:text-base">
+            {description}
+          </p>
         </div>
       </motion.div>
     </div>
@@ -87,67 +74,40 @@ export const HowItWorksSection: React.FC<HowItWorksSectionProps> = ({ isAuthenti
     {
       number: "1",
       icon: UserPlus,
-      title: "Daftar dengan Mudah",
+      title: "Daftar Cepat",
       description:
-        "Buat akun hanya dengan username dan PIN 6 digit. Tidak perlu email, tidak perlu verifikasi rumit. Langsung bisa digunakan!",
+        "Buat akun hanya dengan Username & PIN. Privasi terjaga, tanpa email ribet.",
     },
     {
       number: "2",
-      icon: BookOpen,
-      title: "Mulai Catat Kajian",
+      icon: Youtube,
+      title: "Import Kajian",
       description:
-        "Tulis catatan kajian dengan editor yang mudah digunakan. Bisa manual atau import langsung dari video YouTube dengan AI Summary.",
+        "Paste link YouTube favoritmu, biarkan AI merangkum poin-poin pentingnya.",
     },
     {
       number: "3",
-      icon: Share2,
-      title: "Bagikan & Export",
+      icon: Gamepad2,
+      title: "Explore & Play",
       description:
-        "Upgrade ke Premium untuk export PDF, kirim ke Telegram, atau bagikan via WhatsApp. Sebarkan ilmu dengan mudah!",
+        "Uji pemahaman lewat Quest, atau buat karya visual dengan Content Studio.",
     },
   ];
 
   return (
-    <section className="relative py-24 md:py-32 bg-black overflow-hidden">
-      {/* Glow Orbs */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
-
-      {/* Minimal Grid Pattern */}
-      <div className="absolute inset-0 opacity-[0.015]">
-        <div
-          className="h-full w-full"
-          style={{
-            backgroundImage: `linear-gradient(rgba(16,185,129,0.5) 1px, transparent 1px), 
-                             linear-gradient(90deg, rgba(16,185,129,0.5) 1px, transparent 1px)`,
-            backgroundSize: "80px 80px",
-          }}
-        />
-      </div>
+    <section className="relative py-24 bg-gray-950 overflow-hidden">
 
       <div className="relative container mx-auto px-4 max-w-7xl">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-20 space-y-4"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 border border-emerald-500/50 text-emerald-400 rounded-full text-sm font-semibold shadow-lg shadow-emerald-500/20">
-            <ArrowRight className="h-4 w-4" />
-            Cara Kerja
-          </div>
-
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white">Mudah dan Sederhana</h2>
-
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Hanya 3 langkah untuk mulai mencatat dan mengelola catatan kajian Anda
+        <div className="text-center mb-20 max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-black text-white mb-6">Mulai dalam Hitungan Detik</h2>
+          <p className="text-xl text-gray-400">
+            Kami desain Alwaah agar ramah untuk siapa saja, bahkan yang gaptek sekalipun.
           </p>
-        </motion.div>
+        </div>
 
-        {/* Steps */}
-        <div className="max-w-4xl mx-auto space-y-8">
+        {/* Steps Horizontal Flow */}
+        <div className="flex flex-col lg:flex-row justify-between gap-8 relative max-w-6xl mx-auto">
           {steps.map((step, index) => (
             <StepCard key={index} {...step} index={index} isLast={index === steps.length - 1} />
           ))}
@@ -155,24 +115,19 @@ export const HowItWorksSection: React.FC<HowItWorksSectionProps> = ({ isAuthenti
 
         {isAuthenticated ? null : (
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-20 text-center"
           >
-            <div className="inline-flex flex-col items-center gap-6 p-10 bg-black rounded-2xl border border-gray-800 max-w-2xl hover:border-emerald-500/30 transition-colors">
-              <h3 className="text-2xl md:text-3xl font-bold text-white">Siap Memulai?</h3>
-              <p className="text-gray-400">Bergabunglah dengan jamaah yang sudah merasakan kemudahan mencatat kajian</p>
-              <motion.button
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gray-900 border border-emerald-500/50 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all flex items-center gap-2"
-              >
-                Daftar Gratis Sekarang
-                <ArrowRight className="h-5 w-5" />
-              </motion.button>
-            </div>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-10 py-4 bg-white text-black rounded-full font-bold text-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all flex items-center gap-2 mx-auto"
+            >
+              Coba Gratis Sekarang
+              <ArrowRight className="h-5 w-5" />
+            </motion.button>
           </motion.div>
         )}
       </div>

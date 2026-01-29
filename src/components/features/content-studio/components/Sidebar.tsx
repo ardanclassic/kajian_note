@@ -10,7 +10,8 @@ import { LoadingOverlay } from './LoadingOverlay';
 
 import { CaptionDisplay } from './CaptionDisplay';
 import { ExportButton } from './ExportButton';
-import { PromptGeneratorDialog } from '@/components/features/content-studio/components/PromptGeneratorDialog';
+import { ContentPromptGeneratorDialog } from '@/components/features/content-studio/components/ContentPromptGeneratorDialog';
+import { BlueprintImportDialog } from '@/components/features/content-studio/components/BlueprintImportDialog';
 import type { Ratio, ColorPalette } from '@/types/contentStudio.types';
 import {
   Upload,
@@ -33,13 +34,15 @@ const RATIOS: { value: Ratio; label: string; icon: string }[] = [
 
 export function Sidebar() {
   const navigate = useNavigate();
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  // const fileInputRef = useRef<HTMLInputElement>(null); // Removed, handled in Dialog
   const [expandedSections, setExpandedSections] = useState({
     ratio: true,
     elements: true,
     supportingBoxes: true,
     captionHashtags: true,
   });
+
+  const [showImportDialog, setShowImportDialog] = useState(false);
 
   const {
     ratio,
@@ -59,44 +62,32 @@ export function Sidebar() {
     setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setLoadingMessage("Lagi Import Blueprint...");
-    setIsChangingLayout(true);
-    setLoadingRatio(null);
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      // Artificial delay for UX
-      setTimeout(() => {
-        try {
-          const json = JSON.parse(event.target?.result as string);
-          loadBlueprint(json);
-        } catch (error) {
-          console.error('Failed to parse JSON:', error);
-          alert('Invalid JSON file');
-        }
-
-        setTimeout(() => {
-          setIsChangingLayout(false);
-          setLoadingMessage(undefined);
-        }, 3500); // Increased for consistency with ratio change premium feel
-      }, 600);
-    };
-    reader.readAsText(file);
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
-
   const [pendingRatio, setPendingRatio] = useState<Ratio | null>(null);
   const [isChangingLayout, setIsChangingLayout] = useState(false);
   const [loadingRatio, setLoadingRatio] = useState<Ratio | null>(null);
   const [loadingMessage, setLoadingMessage] = useState<string | undefined>(undefined);
   const [pendingReset, setPendingReset] = useState(false);
+
+  const handleImportBlueprint = (json: any) => {
+    setLoadingMessage("Lagi Import Blueprint...");
+    setIsChangingLayout(true);
+    setLoadingRatio(null);
+
+    // Artificial delay for UX
+    setTimeout(() => {
+      try {
+        loadBlueprint(json);
+      } catch (error) {
+        console.error('Failed to load blueprint:', error);
+        alert('Invalid Blueprint Data');
+      }
+
+      setTimeout(() => {
+        setIsChangingLayout(false);
+        setLoadingMessage(undefined);
+      }, 1500);
+    }, 600);
+  };
 
   const handleResetConfirm = () => {
     setPendingReset(false);
@@ -155,28 +146,29 @@ export function Sidebar() {
 
       {/* AI Tools Section */}
       <div className="px-5 py-4 border-b border-white/[0.08]">
-        <PromptGeneratorDialog />
+        <ContentPromptGeneratorDialog />
       </div>
 
       {/* Quick Actions */}
       <div className="flex gap-2.5 px-5 py-4 border-b border-white/[0.08]">
         <motion.button
           className="flex-1 flex items-center justify-center gap-2 p-3 h-[42px] bg-blue-800/20 border border-blue-800/40 rounded-lg text-blue-400 cursor-pointer text-[13px] font-medium transition-all hover:bg-blue-800/40 hover:border-blue-800/60 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
-          onClick={() => fileInputRef.current?.click()}
-          title="Upload Blueprint"
+          onClick={() => setShowImportDialog(true)}
+          title="Import Blueprint (JSON)"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           <Upload size={18} />
-          <span>Blueprint</span>
+          <span>Import</span>
         </motion.button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".json"
-          onChange={handleFileUpload}
-          style={{ display: 'none' }}
+
+        <BlueprintImportDialog
+          open={showImportDialog}
+          onOpenChange={setShowImportDialog}
+          onImport={handleImportBlueprint}
+          isLoading={isChangingLayout}
         />
+
         <ExportButton />
         <button
           className="flex-1 flex items-center justify-center gap-2 p-3 h-[42px] bg-red-700/20 border border-red-700/40 rounded-lg text-red-400 cursor-pointer text-[13px] font-medium transition-all hover:bg-red-700/40 hover:border-red-700/60 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"

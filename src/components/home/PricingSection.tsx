@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { BookOpen, Crown, Sparkles, CheckCircle2, X, Zap, ArrowRight } from "lucide-react";
+import { BookOpen, Crown, Sparkles, CheckCircle2, X, Zap, ArrowRight, Infinity } from "lucide-react";
 
 interface PricingCardProps {
   name: string;
@@ -27,7 +27,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
   icon: Icon,
   index,
   isAuthenticated = false,
-  onNavigate = () => {},
+  onNavigate = () => { },
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
@@ -43,111 +43,66 @@ const PricingCard: React.FC<PricingCardProps> = ({
       {/* Popular Badge */}
       {popular && (
         <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
-          <div className="px-6 py-2 bg-gray-900 border border-emerald-500/50 rounded-full text-emerald-400 font-bold text-sm shadow-lg shadow-emerald-500/30 flex items-center gap-2">
-            <Sparkles className="h-4 w-4" />
-            Terpopuler
+          <div className="px-6 py-1.5 bg-emerald-600 rounded-full text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/30 flex items-center gap-2">
+            <Sparkles className="h-3 w-3" />
+            Most Popular
           </div>
         </div>
       )}
 
       <div
-        className={`group relative h-full bg-black rounded-2xl p-8 border transition-all duration-500 hover:-translate-y-1 overflow-hidden ${
-          popular
-            ? "border-emerald-500/50 shadow-xl shadow-emerald-500/20"
-            : "border-gray-800 hover:border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/10"
-        }`}
+        className={`group relative h-full bg-[#0A0A0A] rounded-3xl p-8 border transition-all duration-500 flex flex-col ${popular
+            ? "border-emerald-500/50 shadow-[0_0_40px_-10px_rgba(16,185,129,0.15)]"
+            : "border-gray-800 hover:border-gray-700 hover:bg-gray-900/40"
+          }`}
       >
-        {/* Glow Effect */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <div className="absolute inset-0 bg-emerald-500/5 blur-xl" />
+        {/* Header */}
+        <div className="mb-8">
+          <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-6 ${popular ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-900 text-gray-400'}`}>
+            <Icon className="w-6 h-6" />
+          </div>
+          <h3 className="text-xl font-bold text-white mb-2">{name}</h3>
+          <p className="text-gray-400 text-sm h-10">{description}</p>
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 h-full flex flex-col">
-          <div className="flex gap-3">
-            {/* Icon with Glow */}
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className={`relative inline-flex w-14 h-14 rounded-xl ${
-                popular ? "bg-gray-900 border border-emerald-500/30" : "bg-gray-900 border border-gray-800"
-              } items-center justify-center mb-6 shadow-lg group-hover:shadow-emerald-500/30 transition-shadow`}
-            >
-              <div className="absolute inset-0 bg-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
-              <Icon className={`relative h-7 w-7 ${popular ? "text-emerald-400" : "text-emerald-400"}`} />
-            </motion.div>
+        {/* Price */}
+        <div className="mb-8 p-4 rounded-2xl bg-gray-900/50 border border-gray-800/50">
+          <div className="flex items-baseline gap-1">
+            <span className="text-3xl font-black text-white tracking-tight">{price}</span>
+            <span className="text-gray-500 text-sm">{period}</span>
+          </div>
+        </div>
 
-            {/* Tier Info */}
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-2">{name}</h3>
-              <p className="text-gray-400 text-sm mb-4">{description}</p>
+        {/* Features List */}
+        <div className="flex-1 space-y-4 mb-8">
+          <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Includes:</p>
+          {features.map((feature, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <CheckCircle2 className={`w-5 h-5 shrink-0 ${popular ? 'text-emerald-400' : 'text-gray-400'}`} />
+              <span className="text-gray-300 text-sm">{feature}</span>
             </div>
-          </div>
-
-          {/* Price */}
-          <div className="mb-6">
-            <div className="flex items-baseline gap-2">
-              <span className={`text-3xl md:text-5xl font-black ${popular ? "text-emerald-400" : "text-white"}`}>{price}</span>
-              <span className="text-gray-400">{period}</span>
+          ))}
+          {notIncluded.map((feature, i) => (
+            <div key={`not-${i}`} className="flex items-start gap-3 opacity-40">
+              <X className="w-5 h-5 shrink-0 text-gray-600" />
+              <span className="text-gray-500 text-sm line-through">{feature}</span>
             </div>
-          </div>
+          ))}
+        </div>
 
-          {/* Divider */}
-          <div className="h-px bg-linear-to-r from-transparent via-gray-800 to-transparent mb-6" />
-
-          {/* Features */}
-          <div className="flex-1 space-y-3 mb-8">
-            {features.map((feature, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <div className="shrink-0 w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center mt-0.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
-                </div>
-                <span className="text-gray-300 text-sm leading-relaxed">{feature}</span>
-              </div>
-            ))}
-
-            {notIncluded.map((feature, i) => (
-              <div key={`not-${i}`} className="flex items-start gap-3 opacity-40">
-                <div className="shrink-0 w-5 h-5 rounded-full bg-gray-800 flex items-center justify-center mt-0.5">
-                  <X className="h-3.5 w-3.5 text-gray-600" />
-                </div>
-                <span className="text-gray-500 text-sm leading-relaxed line-through">{feature}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA Button */}
-          <motion.button
-            whileHover={{ scale: 1.02, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => {
-              if (name === "Free") {
-                onNavigate(isAuthenticated ? "/subscription" : "/register");
-              } else {
-                onNavigate(isAuthenticated ? "/subscription" : "/register");
-              }
-            }}
-            className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
-              popular
-                ? "bg-gray-900 border border-emerald-500/50 text-white shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40"
-                : "bg-transparent text-white border border-gray-800 hover:bg-gray-900/50 hover:border-gray-700"
+        {/* Action Button */}
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => onNavigate(isAuthenticated ? "/subscription" : "/register")}
+          className={`w-full py-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${popular
+              ? "bg-emerald-500 text-black hover:bg-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.2)]"
+              : "bg-white text-black hover:bg-gray-200"
             }`}
-          >
-            {name === "Free"
-              ? isAuthenticated
-                ? "Paket Aktif"
-                : "Mulai Gratis"
-              : isAuthenticated
-              ? "Upgrade Sekarang"
-              : "Daftar & Upgrade"}
-            {name !== "Free" && <ArrowRight className="h-5 w-5" />}
-          </motion.button>
-        </div>
+        >
+          {name === "Free" ? "Mulai Gratis" : "Upgrade Sekarang"}
+        </motion.button>
 
-        {/* Sharp Corner Highlights */}
-        <div className="absolute top-0 right-0 w-24 h-24 opacity-0 group-hover:opacity-100 transition-opacity">
-          <div className="absolute top-0 right-0 w-px h-12 bg-linear-to-b from-emerald-500/50 to-transparent" />
-          <div className="absolute top-0 right-0 h-px w-12 bg-linear-to-l from-emerald-500/50 to-transparent" />
-        </div>
       </div>
     </motion.div>
   );
@@ -159,44 +114,51 @@ export const PricingSection: React.FC<{ isAuthenticated: boolean; onNavigate: (p
 }) => {
   const tiers = [
     {
-      name: "Free",
+      name: "Starter",
       price: "Rp 0",
       period: "/selamanya",
-      description: "Untuk mencoba platform",
+      description: "Akses dasar ke ekosistem Alwaah untuk pemula.",
       features: [
-        "10 note maksimal",
+        "10 Smart Summary / bulan",
+        "Akses dasar Content Studio",
+        "Bermain Quest (Limit harian)",
         "Pencarian & filter catatan",
-        "Organisasi dengan tag",
-        "Username + PIN login",
-        "Akses via web & mobile",
-        "AI Summary",
+        "100MB Cloud Storage",
       ],
-      notIncluded: ["Export PDF", "Kirim ke Telegram", "Bagikan via WhatsApp"],
+      notIncluded: ["Export PDF High-Res", "Kirim ke Telegram", "Prompt Studio Access"],
       icon: BookOpen,
       popular: false,
     },
     {
-      name: "Premium",
+      name: "Scholar",
       price: "Rp 50K",
       period: "/bulan",
-      description: "Paling populer",
-      features: ["Semua fitur Free", "100 note maksimal", "Export ke PDF", "Kirim ke Telegram", "Bagikan via WhatsApp"],
+      description: "Untuk penuntut ilmu yang serius ingin bertumbuh.",
+      features: [
+        "100 Smart Summary / bulan",
+        "Full Akses Content Studio",
+        "Full Akses Prompt Studio",
+        "Unlimited Quest & Multiplayer",
+        "Export ke PDF & Telegram",
+        "Prioritas Support"
+      ],
       icon: Crown,
       popular: true,
     },
     {
-      name: "Advance",
+      name: "Visionary",
       price: "Rp 100K",
       period: "/bulan",
-      description: "Untuk power user",
+      description: "Fitur tanpa batas untuk creator & komunitas.",
       features: [
-        "Semua fitur Premium",
-        "Unlimited note",
-        "Unlimited AI Summary",
-        "Custom export format",
-        "Early access fitur baru",
+        "Unlimited Smart Summary",
+        "Semua fitur Scholar",
+        "4K Export Content Studio",
+        "Multiplayer Host Mode",
+        "Early Access Fitur Baru",
+        "Verified Badge",
       ],
-      icon: Sparkles,
+      icon: Infinity,
       popular: false,
     },
   ];
@@ -204,43 +166,18 @@ export const PricingSection: React.FC<{ isAuthenticated: boolean; onNavigate: (p
   return (
     <section className="relative py-24 md:py-32 bg-black overflow-hidden">
       {/* Glow Orbs */}
-      <div className="absolute top-20 right-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 left-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
-
-      {/* Subtle Grid */}
-      <div className="absolute inset-0 opacity-[0.015]">
-        <div
-          className="h-full w-full"
-          style={{
-            backgroundImage: `radial-gradient(circle at center, rgba(16,185,129,0.5) 1px, transparent 1px)`,
-            backgroundSize: "80px 80px",
-          }}
-        />
-      </div>
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[120px]" />
 
       <div className="relative container mx-auto px-4 max-w-7xl">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-20 space-y-4"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 border border-emerald-500/50 text-emerald-400 rounded-full text-sm font-semibold shadow-lg shadow-emerald-500/20">
-            <Zap className="h-4 w-4" />
-            Harga Terjangkau
-          </div>
-
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white">Pilih Paket yang Sesuai</h2>
-
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Mulai gratis, upgrade kapan saja. Tidak ada biaya tersembunyi.
+        <div className="text-center mb-16 space-y-4 max-w-3xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-black text-white">Investasi Terbaikmu</h2>
+          <p className="text-xl text-gray-400">
+            Pilih paket yang sesuai dengan kebutuhan belajarmu. <br className="hidden md:block" />
+            Upgrade kapan saja, batalkan kapan saja.
           </p>
-        </motion.div>
+        </div>
 
-        {/* Pricing Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
           {tiers.map((tier, index) => (
             <PricingCard
               key={index}
@@ -252,25 +189,22 @@ export const PricingSection: React.FC<{ isAuthenticated: boolean; onNavigate: (p
           ))}
         </div>
 
-        {/* Trust Badges */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center space-y-6"
-        >
-          <div className="flex flex-wrap justify-center gap-6 items-center">
-            <div className="flex items-center gap-2 px-6 py-3 bg-black rounded-full border border-gray-800 shadow-lg">
-              <CheckCircle2 className="h-5 w-5 text-emerald-400" />
-              <span className="font-semibold text-gray-300">Cancel kapan saja</span>
-            </div>
-            <div className="flex items-center gap-2 px-6 py-3 bg-black rounded-full border border-gray-800 shadow-lg">
-              <CheckCircle2 className="h-5 w-5 text-emerald-400" />
-              <span className="font-semibold text-gray-300">Pembayaran aman</span>
-            </div>
+        {/* Trust Indicators */}
+        <div className="mt-16 flex flex-wrap justify-center gap-8 text-sm text-gray-500 font-medium">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+            <span>Pembayaran Aman via QRIS</span>
           </div>
-        </motion.div>
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+            <span>Garansi 7 Hari Uang Kembali</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+            <span>Bebas Iklan Mengganggu</span>
+          </div>
+        </div>
+
       </div>
     </section>
   );

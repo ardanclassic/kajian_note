@@ -80,32 +80,32 @@ export default function Profile() {
 
   const headerActions = (
     <div className="flex gap-2">
-            <Button
-              variant={activeTab === "profile" ? "default" : "outline"}
-              onClick={() => setActiveTab("profile")}
-              size="sm"
-              className={
-                activeTab === "profile"
-                  ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/50 hover:bg-emerald-500/20"
-                  : "bg-gray-900 border-gray-800 hover:border-emerald-500/50 text-gray-400 hover:text-emerald-400"
-              }
-            >
-              <Edit className="h-3.5 w-3.5 sm:mr-1.5" />
-              <span className="hidden sm:inline">Edit</span>
-            </Button>
-            <Button
-              variant={activeTab === "change-pin" ? "default" : "outline"}
-              onClick={() => setActiveTab("change-pin")}
-              size="sm"
-              className={
-                activeTab === "change-pin"
-                  ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/50 hover:bg-emerald-500/20"
-                  : "bg-gray-900 border-gray-800 hover:border-emerald-500/50 text-gray-400 hover:text-emerald-400"
-              }
-            >
-              <Key className="h-3.5 w-3.5 sm:mr-1.5" />
-              <span className="hidden sm:inline">PIN</span>
-            </Button>
+      <Button
+        variant={activeTab === "profile" ? "default" : "outline"}
+        onClick={() => setActiveTab("profile")}
+        size="sm"
+        className={
+          activeTab === "profile"
+            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/50 hover:bg-emerald-500/20"
+            : "bg-gray-900 border-gray-800 hover:border-emerald-500/50 text-gray-400 hover:text-emerald-400"
+        }
+      >
+        <Edit className="h-3.5 w-3.5 sm:mr-1.5" />
+        <span className="hidden sm:inline">Edit</span>
+      </Button>
+      <Button
+        variant={activeTab === "change-pin" ? "default" : "outline"}
+        onClick={() => setActiveTab("change-pin")}
+        size="sm"
+        className={
+          activeTab === "change-pin"
+            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/50 hover:bg-emerald-500/20"
+            : "bg-gray-900 border-gray-800 hover:border-emerald-500/50 text-gray-400 hover:text-emerald-400"
+        }
+      >
+        <Key className="h-3.5 w-3.5 sm:mr-1.5" />
+        <span className="hidden sm:inline">PIN</span>
+      </Button>
     </div>
   );
 
@@ -124,12 +124,12 @@ export default function Profile() {
             {/* Title & User Info */}
             <div className="flex items-center gap-4">
               {/* Avatar */}
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-900 border border-emerald-500/50 flex items-center justify-center shadow-lg shadow-emerald-500/10 shrink-0 overflow-hidden">
-                {user.avatarUrl ? (
-                  <img src={user.avatarUrl} alt={user.fullName} className="w-full h-full object-cover" />
-                ) : (
-                  <User className="w-8 h-8 sm:w-10 sm:h-10 text-emerald-400" />
-                )}
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-900 flex items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.3)] shrink-0 overflow-hidden ring-0">
+                <img
+                  src={user.avatarUrl || `https://api.dicebear.com/9.x/bottts/svg?seed=${user.username || 'user'}`}
+                  alt={user.fullName}
+                  className="w-full h-full object-cover"
+                />
               </div>
 
               {/* Title & Username */}

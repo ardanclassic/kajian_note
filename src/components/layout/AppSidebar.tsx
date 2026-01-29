@@ -117,7 +117,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <>
       <Sidebar collapsible="icon" {...props} className="border-r border-gray-800 bg-black">
         {/* Header Section */}
-        <SidebarHeader className="h-20 flex items-center border-b border-gray-800/30 px-4 group-data-[collapsible=icon]:px-0">
+        <SidebarHeader className="flex items-center border-b border-gray-800/30 p-4 group-data-[collapsible=icon]:px-0">
           <div className={cn(
             "flex items-center w-full transition-all duration-300",
             isCollapsed ? "justify-center" : "justify-between"
@@ -140,7 +140,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     Alwaah
                   </span>
                   <span className="text-[10px] uppercase tracking-widest text-emerald-500/80 font-semibold">
-                    AI Assistant
+                    Creation Suite
                   </span>
                 </div>
               )}
@@ -260,8 +260,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       isCollapsed ? "h-12 w-12 justify-center p-0" : "h-auto px-3 py-2"
                     )}
                   >
-                    <Avatar className={cn("rounded-lg border border-gray-800", isCollapsed ? "h-9 w-9" : "h-9 w-9")}>
-                      <AvatarImage src={user?.avatarUrl || undefined} alt={user?.fullName} />
+                    <Avatar className={cn("rounded-lg shadow-[0_0_15px_rgba(16,185,129,0.2)]", isCollapsed ? "h-9 w-9" : "h-9 w-9")}>
+                      <AvatarImage
+                        src={user?.avatarUrl || `https://api.dicebear.com/9.x/bottts/svg?seed=${user?.username || 'user'}`}
+                        alt={user?.fullName}
+                      />
                       <AvatarFallback className="rounded-lg bg-emerald-950 text-emerald-400 font-bold border border-emerald-500/20">
                         {user?.fullName?.substring(0, 2).toUpperCase()}
                       </AvatarFallback>
@@ -291,7 +294,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <DropdownMenuLabel className="p-0 font-normal mb-2">
                     <div className="flex items-center gap-3 px-3 py-2.5 text-left text-sm bg-gray-900/50 rounded-lg border border-gray-800/50">
                       <Avatar className="h-9 w-9 rounded-lg border border-gray-700/50">
-                        <AvatarImage src={user?.avatarUrl || undefined} alt={user?.fullName} />
+                        <AvatarImage
+                          src={user?.avatarUrl || `https://api.dicebear.com/9.x/bottts/svg?seed=${user?.username || 'user'}`}
+                          alt={user?.fullName}
+                        />
+
                         <AvatarFallback className="rounded-lg bg-emerald-950 text-emerald-400 font-bold">
                           {user?.fullName?.substring(0, 2).toUpperCase()}
                         </AvatarFallback>
