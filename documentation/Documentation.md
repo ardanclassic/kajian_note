@@ -1,8 +1,8 @@
 # Alwaah - Project Documentation (Part 1)
 
-> **Version:** 2.0.0  
-> **Last Updated:** December 24, 2024  
-> **Status:** MVP Production  
+> **Version:** 2.5.0  
+> **Last Updated:** January 29, 2026  
+> **Status:** Production Ready  
 > **URL:** https://kajian-note.vercel.app/
 
 ---
@@ -17,33 +17,35 @@
 6. [Authentication System](#authentication-system)
 7. [Subscription System](#subscription-system)
 8. [Smart Summary Feature](#smart-summary-feature)
-9. [Deep Note Feature](#deep-note-feature)
-10. [Memory Cards Feature](#memory-cards-feature)
-11. [Knowledge Quiz Feature](#knowledge-quiz-feature)
-12. [Content Studio Feature](#content-studio-feature)
-13. [External Integrations](#external-integrations)
-14. [User Journey](#user-journey)
-15. [Development Roadmap](#development-roadmap)
+9. [Content Studio Feature](#content-studio-feature)
+10. [Prompt Studio Feature](#prompt-studio-feature)
+11. [Quest (Knowledge Quiz) Feature](#quest-knowledge-quiz-feature)
+12. [Deep Note Feature](#deep-note-feature)
+13. [Memory Cards Feature](#memory-cards-feature)
+14. [External Integrations](#external-integrations)
+15. [User Journey](#user-journey)
+16. [Development Roadmap](#development-roadmap)
 
 ---
 
 ## Overview
 
-**Alwaah** adalah platform AI-powered untuk mengolah konten kajian video YouTube menjadi berbagai format pembelajaran yang efektif.
+**Alwaah** adalah platform "Islamic Productivity Suite" yang mengintegrasikan pencatatan kajian, pembuatan konten dakwah, dan gamifikasi pembelajaran agama dalam satu ekosistem.
 
 ### Key Features
 
-- ✅ Simple Auth: Username + PIN (6 digit)
-- ✅ YouTube Import: Auto-fetch transcript & AI summarization
-- ✅ Export & Share: PDF, Telegram, WhatsApp
-- ✅ Freemium Model: Free tier dengan Premium upgrade
-- ✅ Cloud-Based: Supabase backend + ImageKit storage
+- ✅ **Smart Note**: YouTube Import + AI Summarization
+- ✅ **Creation Suite**: Content Studio & Prompt Studio untuk kreator dakwah
+- ✅ **Quest Multiplayer**: Kuis cerdas cermat Islami (Real-time Team Mode)
+- ✅ **Simple Auth**: Username + PIN (6 digit) + Dicebear Avatar
+- ✅ **Freemium Model**: Free tier dengan Premium upgrade
+- ✅ **Cloud-Based**: Supabase backend + ImageKit storage
 
 ### Target Users
 
-- Jamaah masjid (terutama orang tua/awam)
-- Mahasiswa & pelajar
-- Content creator & da'i
+- Jamaah masjid (pencatat kajian)
+- Content Creator & Da'i (pembuat konten)
+- Pelajar & Santri (peserta kuis)
 - Pengelola kajian
 
 ---
@@ -53,25 +55,24 @@
 ### Problem
 
 1. Video kajian panjang sulit di-review
-2. Note-taking manual tidak efektif
-3. Poin penting sulit diingat
-4. Ilmu sulit disebarkan dalam format menarik
+2. Membuat konten dakwah visual itu sulit & lama
+3. Metode muraja'ah (mengulang ilmu) sering membosankan
+4. Note-taking manual tidak efektif
 
 ### Solution
 
-AI transforms video kajian menjadi multiple learning formats:
+Alwaah menyediakan teknologi untuk **"Mengikat Ilmu"**:
 
-- **Smart Summary** - Ringkasan terstruktur
-- **Deep Note** - Catatan lengkap (coming soon)
-- **Memory Cards** - Flashcards muroja'ah (coming soon)
-- **Knowledge Quiz** - Interactive test (planned)
-- **Content Studio** - Visual social media (planned)
+- **Smart Summary** - Mengikat ilmu dari video kajian
+- **Content Studio** - Menyebarkan ilmu lewat visual (Carousel/Slide)
+- **Quest** - Menguji hafalan & pemahaman lewat gamifikasi
+- **Prompt Studio** - Menyimpan "resep" instruksi AI terbaik
 
 ### Value Proposition
 
-**"Transform Islamic Learning Content into Multiple Formats with AI"**
+**"Teknologi untuk Mengikat Ilmu."**
 
-Dari 1 input (video) → Multiple outputs untuk berbagai kebutuhan pembelajaran.
+Kami percaya teknologi tidak seharusnya mendistraksi, melainkan membantu menjaga keberkahan dan kekekalan ilmu yang dipelajari.
 
 ---
 
@@ -80,20 +81,11 @@ Dari 1 input (video) → Multiple outputs untuk berbagai kebutuhan pembelajaran.
 | Feature            | Status  | Description                       | Tier Access             |
 | ------------------ | ------- | --------------------------------- | ----------------------- |
 | **Smart Summary**  | ✅ Live | Ringkasan AI dari video kajian    | Free (10), Premium (75) |
+| **Content Studio** | ✅ Live | Visual content creator (Carousel) | Premium only            |
+| **Prompt Studio**  | ✅ Live | Library prompt AI terstruktur     | Free & Premium          |
+| **Quest (Quiz)**   | ✅ Live | Multiplayer Islamic Quiz          | All Users               |
 | **Deep Note**      | 🔜 Soon | Catatan komprehensif & lengkap    | Premium only            |
 | **Memory Cards**   | 🔜 Soon | Flashcards untuk muroja'ah        | Premium only            |
-| **Knowledge Quiz** | 📋 Next | Interactive quiz & test           | Premium only            |
-| **Content Studio** | 🎨 Next | Visual content untuk social media | Premium only            |
-
-### Feature Comparison: Smart Summary vs Deep Note
-
-| Aspect     | Smart Summary   | Deep Note            |
-| ---------- | --------------- | -------------------- |
-| Length     | 500-1000 words  | 2000-5000 words      |
-| Detail     | Key points only | Comprehensive        |
-| Processing | 10-30s          | 30-90s               |
-| Use Case   | Quick reference | Deep study, research |
-| Format     | Bullets, brief  | Full paragraphs      |
 
 ---
 
@@ -101,63 +93,60 @@ Dari 1 input (video) → Multiple outputs untuk berbagai kebutuhan pembelajaran.
 
 ### Frontend
 
-| Tech            | Version | Purpose          |
-| --------------- | ------- | ---------------- |
-| React           | 19.1.1  | UI Framework     |
-| TypeScript      | 5.9.3   | Type Safety      |
-| Vite            | 7.1.7   | Build Tool       |
-| Tailwind CSS    | 4.1.16  | Styling          |
-| shadcn/ui       | Latest  | UI Components    |
-| Zustand         | 5.0.8   | State Management |
-| React Hook Form | 7.66.0  | Forms            |
-| Zod             | 4.1.12  | Validation       |
-| Axios           | 1.13.1  | HTTP Client      |
+| Tech              | Version | Purpose          |
+| ----------------- | ------- | ---------------- |
+| React             | 19.1.1  | UI Framework     |
+| TypeScript        | 5.9.3   | Type Safety      |
+| Vite              | 7.1.7   | Build Tool       |
+| Tailwind CSS      | 4.1.16  | Styling          |
+| shadcn/ui         | Latest  | UI Components    |
+| Zustand           | 5.0.8   | State Management |
+| **Framer Motion** | Latest  | Animations       |
+| **Dicebear**      | API     | Robots Avatars   |
 
 ### Backend & Services
 
 | Service                | Purpose                              |
 | ---------------------- | ------------------------------------ |
 | Supabase               | Auth + PostgreSQL + Edge Functions   |
+| **Supabase Realtime**  | Multiplayer Game Sync (Quest)        |
 | YouTube Transcript API | Fetch transcripts (FastAPI + Docker) |
 | OpenRouter             | AI summarization                     |
 | Lynk.id                | Payment gateway (webhook)            |
 | ImageKit.io            | Temp file storage (auto-cleanup)     |
-| API2PDF                | PDF generation                       |
-| Telegram Bot           | Send notes                           |
-| Vercel                 | Hosting                              |
 
 ---
 
 ## System Architecture
 
+_(Updated with Multiplayer & Content Studio)_
+
 ```
 ┌────────────────────────────────────────────┐
 │         CLIENT (React - Vercel)            │
-│  Auth | Notes | Subscription | Profile     │
+│  Auth | Content Studio | Quest | Dashboard │
+│       (Creation Suite) (Multiplayer)       │
 └────────────────────────────────────────────┘
                     │
                     ▼
 ┌────────────────────────────────────────────┐
 │           SUPABASE BACKEND                 │
 │  Auth | PostgreSQL | Edge Functions        │
+│          Realtime Channels (Game)          │
 └────────────────────────────────────────────┘
                     │
+                    ▼
         ┌───────────┼───────────┐
-        ▼           ▼           ▼
    YouTube API  OpenRouter  ImageKit
    (Transcript)    (AI)    (Storage)
-        │           │           │
-        ▼           ▼           ▼
-    API2PDF     Lynk.id    Telegram
-   (PDF Gen)   (Payment)   Bot API
 ```
 
 **Data Flow:**
 
 1. User input → Frontend validation
 2. API call → Supabase Auth Layer
-3. Business logic → External APIs
-4. Data persistence → PostgreSQL (with RLS)
+3. Game State → Supabase Realtime Channels (WebSocket)
+4. Business logic → Edge Functions / External APIs
 5. Output → User
 
 ---
@@ -172,6 +161,7 @@ Dari 1 input (video) → Multiple outputs untuk berbagai kebutuhan pembelajaran.
 2. Username → Auto-generated: `ahmad-zaki` (editable)
 3. Nomor HP → Optional (untuk WhatsApp)
 4. PIN → 6 digits (replace password)
+5. **Auto Avatar** → Dicebear Bottts generated from Username
 
 **Backend Auto-Processing:**
 
@@ -179,202 +169,104 @@ Dari 1 input (video) → Multiple outputs untuk berbagai kebutuhan pembelajaran.
 - Hash PIN via Supabase Auth
 - Create user with default: `role=member`, `tier=free`
 
-### Login Flow
-
-```
-Username Input → PIN Input → Verify → JWT Token → Session
-```
-
-### Security
-
-- PIN hashing: Supabase Auth bcrypt
-- JWT tokens with expiry
-- Session: Zustand with persistence
-- Protected routes: React Router guards
-- RLS policies: Database-level
-
-### PIN Change
-
-Profile → Input old PIN → New PIN → Confirm → Verify → Update hash → Force re-login
-
 ---
 
 ## Subscription System
 
 ### Pricing Tiers
 
-| Feature            | Free       | Premium         |
-| ------------------ | ---------- | --------------- |
-| **Price**          | Rp 0       | Rp 50.000/bulan |
-| **Smart Summary**  | 10 notes   | 75 notes        |
-| **Deep Note**      | ❌         | ✅ Limited      |
-| **Memory Cards**   | ✅ Limited | ✅              |
-| **Quiz**           | ✅ Limited | ✅              |
-| **Export PDF**     | ❌         | ✅              |
-| **Send Telegram**  | ❌         | ✅              |
-| **Share WhatsApp** | ❌         | ✅              |
+| Feature            | Free     | Premium         |
+| ------------------ | -------- | --------------- |
+| **Price**          | Rp 0     | Rp 50.000/bulan |
+| **Smart Summary**  | 10 notes | 75 notes        |
+| **Content Studio** | ❌       | ✅ Unlimited    |
+| **Quest**          | ✅ User  | ✅ Host         |
+| **Export PDF**     | ❌       | ✅              |
+| **Send Telegram**  | ❌       | ✅              |
 
 ### Payment: Lynk.id (Webhook-based)
 
-**Why Lynk.id?**
-
-- Simple webhook integration (no SDK)
-- Local payment methods
-- Email-based matching
-
-**Payment Flow:**
-
-```
-User clicks Upgrade
-    ↓
-Check payment_email set?
-    ├─ ❌ Alert + redirect to Profile
-    └─ ✅ Redirect to Lynk.id
-        ↓
-    User pays
-        ↓
-    Lynk.id webhook → Supabase Edge Function
-        ↓
-    Match via email
-        ↓
-    Update subscription
-        ↓
-    User sees upgraded features
-```
-
-**Email Matching:**
-
-1. User sets `payment_email` in Profile
-2. User checkout with same email
-3. Webhook contains `customer_email`
-4. Backend matches & upgrades
-
-**Configuration:**
-
-```env
-VITE_LYNK_MERCHANT_KEY=q1UUHQZZTcW2sKpEBpJrYLAREye1XUX0
-VITE_LYNK_PREMIUM_LINK=http://lynk.id/bitlab/2q632wo7mk03/checkout
-```
-
-### Subscription Management
-
-**User Dashboard:**
-
-- Current tier & status
-- End date & days remaining
-- Usage stats (notes used/limit)
-- Feature checklist
-- Upgrade button
-- Payment history (planned)
+Using webhook integration to handle local payments via Lynk.id.
 
 ---
 
 ## Smart Summary Feature
 
-### Complete Workflow
+_(As documented in previous versions)_
 
-```
-YouTube URL Input
-    ↓
-Extract Video ID
-    ↓
-Fetch Metadata (title, channel, duration)
-    ↓
-Fetch Transcript
-    ↓
-User Choice: AI Summary?
-    ├─ NO → Manual edit
-    └─ YES → Submit AI task (async)
-        ↓
-    Waiting Experience (Story/Quiz)
-        ↓
-    Poll task status (every 3s)
-        ↓
-    AI processing complete
-        ↓
-User review & edit
-    ↓
-Save as note
-    ↓
-Available actions: View | Edit | Export | Share | Delete
-```
+**Workflow:**
+YouTube URL → Transcript → AI Summary → Rich Text Editor.
 
-### Key Features
+**Key Features:**
 
-**YouTube Import:**
+- Async processing with polling
+- Waiting experience (Mini Quiz/Story)
+- Export to PDF, Telegram, WhatsApp
 
-- Auto-extract video ID from various URL formats
-- Fetch metadata: title, channel, speaker, duration
-- Multi-language transcript (ID/EN)
-- Preserve timestamps
+---
 
-**AI Summarization (Async):**
+## Content Studio Feature
 
-- Submit task → Get task_id
-- Poll status every 3 seconds
-- Processing time: 10-60 seconds
-- Structured output with headings
+### Status: ✅ Live
 
-**Waiting Experience:**
+### Concept
 
-- **Story Mode**: Random Islamic stories
-- **Quiz Mode**: Interactive Islamic quiz
-- Progress indicator with status
-- Can skip to see progress
+Generator konten visual (slide/carousel) berbasis AI Blueprint. Memungkinkan pengguna mengubah teks kajian atau prompt menjadi desain slide profesional dalam hitungan detik.
 
-**Manual Creation:**
+### Workflow
 
-- Create without YouTube import
-- Rich text editor (TipTap)
-- Add tags (max 5 per note)
-- Save & edit anytime
+1.  **Prompt Generator**: User menjawab beberapa pertanyaan dasar di dialog.
+2.  **AI Generation**: User copy prompt ke Chatbot AI (Claude/Deepseek) -> AI menghasilkan output JSON Blueprint.
+3.  **Import Blueprint**:
+    - **Tab Text**: Copy-Paste kode JSON langsung.
+    - **Tab File**: Upload file .json yang didownload dari AI.
+4.  **Editing Canvas**: User mengedit teks/gambar di canvas "WYSYWIG" Content Studio.
+5.  **Export**: Download sebagai image sequence (PNG/JPG) untuk Instagram/TikTok.
 
-### Export & Share (Premium Only)
+### UI Features
 
-**Export to PDF:**
+- **Sidebar**: Navigasi tools editing (Design, Text, Image, Background).
+- **Canvas**: Area preview slide responsif.
+- **Import Dialog**: Interface modern untuk input blueprint.
 
-```
-Note → HTML with styling → API2PDF → PDF → ImageKit (temp 1h) → Public URL
-```
+---
 
-**Send to Telegram:**
+## Prompt Studio Feature
 
-```
-Note → Generate PDF → Upload ImageKit → Send via Bot API → User receives PDF
-```
+### Status: ✅ Live
 
-_Requires Telegram verification first_
+### Concept
 
-**Share to WhatsApp:**
+Perpustakaan template prompt yang dikurasi untuk kebutuhan produktivitas Muslim.
 
-```
-Note → PDF → ImageKit → Get link → Format message → Open WhatsApp
-```
+### Features
 
-### CRUD Operations
+1.  **Preset Libraries**: Kumpulan prompt siap pakai (Image Gen, Biodata Taaruf, Storybook, Kajian Resume).
+2.  **Variable Inputs**: Form dinamis untuk mengisi variabel dalam prompt.
+3.  **One-Click Copy**: Copy prompt yang sudah terisi variabel ke clipboard.
 
-| Action | Free   | Premium |
-| ------ | ------ | ------- |
-| Create | 10 max | 75 max  |
-| Read   | ✅ Own | ✅ Own  |
-| Update | ✅ Own | ✅ Own  |
-| Delete | ✅ Own | ✅ Own  |
-| Export | ❌     | ✅      |
-| Share  | ❌     | ✅      |
+---
 
-**Limit Checking:**
+## Quest (Knowledge Quiz) Feature
 
-- Banner when approaching limit (8/10)
-- Disabled create button at limit
-- Upgrade modal with CTA
+### Status: ✅ Live (Multiplayer Beta)
 
-**List Features:**
+### Concept
 
-- Grid/List view toggle
-- Search by title/content
-- Filter by tags
-- Sort: date, title
-- Pagination (20/page)
+Platform cerdas cermat Islami _real-time_ yang memungkinkan pengguna bermain secara _solo_ atau _team_ (Multiplayer).
+
+### Multiplayer Features
+
+1.  **Lobby System**: Host membuat Room, pemain lain Join via Room Code.
+2.  **Real-time Sync**: Pertanyaan muncul bersamaan di semua layar pemain (Supabase Realtime).
+3.  **Team Mode**:
+    - Pemain bergabung ke Tim Merah atau Tim Biru.
+    - Jawaban individu dihitung sebagai skor tim.
+4.  **Live Leaderboard**: Klasemen sementara muncul setiap selesai ronde pertanyaan.
+
+### Architecture
+
+Menggunakan **Supabase Realtime Channels** untuk sinkronisasi state game (Score, Countdown, Current Question) antar client dengan latency rendah.
 
 ---
 
@@ -382,441 +274,81 @@ Note → PDF → ImageKit → Get link → Format message → Open WhatsApp
 
 ### Status: 🔜 Coming Soon
 
-### Concept
-
-Evolution dari Smart Summary - memberikan catatan komprehensif hampir seperti transkrip penuh dengan struktur yang sangat baik.
-
-### Smart Summary vs Deep Note
-
-| Aspect   | Smart Summary     | Deep Note                    |
-| -------- | ----------------- | ---------------------------- |
-| Length   | ~500-1000 words   | ~2000-5000 words             |
-| Detail   | Key points        | Comprehensive                |
-| Time     | 10-30s            | 30-90s                       |
-| Use Case | Quick reference   | Deep study, research         |
-| Content  | Bullets, brief    | Full paragraphs with context |
-| Examples | Mentioned briefly | Detailed with explanation    |
-
-### Workflow
-
-```
-YouTube URL → Fetch transcript → User selects "Deep Note"
-    ↓
-Enhanced waiting experience (multiple stories/quizzes)
-    ↓
-AI processing (longer duration, detailed prompt)
-    ↓
-Generate comprehensive output with full structure
-    ↓
-User review & edit → Save as Deep Note
-```
-
-### Output Structure
-
-- **Executive Summary** (2-3 paragraphs)
-- **Complete Discussion** (with sections & sub-sections)
-- **Dalil & References** (full ayat/hadits with explanation)
-- **Examples & Illustrations** (detailed)
-- **Lessons & Applications** (practical takeaways)
-- **Conclusion** (comprehensive summary)
-- **Additional Notes**
-
-### Subscription Access
-
-- Free: ❌ Not available
-- Premium: ✅ 10 per month
-
----
-
-## Memory Cards Feature
-
-### Status: 🔜 Coming Soon
-
-### Concept
-
-Transform existing notes menjadi flashcards digital untuk effective memorization dan muroja'ah.
-
-### Workflow
-
-```
-Open note → Click "Generate Memory Cards"
-    ↓
-AI extracts: key concepts, terms, Q&A, dalil
-    ↓
-Generate flashcards (auto)
-    ↓
-User preview & edit (add/delete/reorder)
-    ↓
-Save as card deck → Study mode available
-```
-
-### Card Types
-
-| Type              | Front                 | Back                    |
-| ----------------- | --------------------- | ----------------------- |
-| **Definition**    | Term/Concept          | Definition/Explanation  |
-| **Q&A**           | Question              | Answer with explanation |
-| **Dalil**         | Ayat/Hadits text      | Translation + context   |
-| **Fill-in-Blank** | Statement with \_\_\_ | Complete statement      |
-
-### Study Modes
-
-1. **Classic Mode**: Flip cards, mark mastered
-2. **Shuffle Mode**: Random order for variety
-3. **Spaced Repetition**: Algorithm-based scheduling
-4. **Quiz Mode**: Hide answer, rate difficulty
-
-### Features
-
-- Create deck from note
-- Edit/add/delete cards
-- Multiple study modes
-- Progress tracking (mastered/in-progress/need-review)
-- Study statistics & streaks
-- Daily study reminders (planned)
-
-### Mastery Indicators
-
-- 🟢 Mastered (90%+ accuracy)
-- 🟡 In Progress (50-89%)
-- 🔴 Need Review (<50%)
-- ⚪ Not Studied Yet
-
-### Subscription Access
-
-- Free: ❌ Not available
-- Premium: ✅ Unlimited cards & decks
-
----
-
-## Knowledge Quiz Feature
-
-### Status: 📋 Next Feature
-
-### Concept
-
-AI-generated interactive quiz untuk test dan reinforce pemahaman materi kajian.
-
-### Workflow
-
-```
-Open note → Click "Generate Quiz"
-    ↓
-Configure: # of questions, difficulty, types
-    ↓
-AI generates questions with explanations
-    ↓
-User takes quiz interactively
-    ↓
-Submit → Instant feedback → Review wrong answers
-    ↓
-Save to history → Retake option
-```
-
-### Question Types
-
-**1. Multiple Choice** (4 options, 1 correct)
-**2. True/False** (binary choice)
-**3. Fill in the Blank** (type answer)
-
-### Difficulty Levels
-
-| Level      | Characteristics                                            |
-| ---------- | ---------------------------------------------------------- |
-| **Easy**   | Direct recall, obvious answers, 4 distinct options         |
-| **Medium** | Application, understanding, some similar options           |
-| **Hard**   | Complex scenarios, critical thinking, very similar options |
-
-### Features
-
-**Quiz Generation:**
-
-- Customizable: 5-50 questions
-- Mix of question types
-- Difficulty selection
-- Time limit (optional)
-- Preview before start
-
-**Quiz Taking:**
-
-- Clean interface
-- Progress indicator
-- Save progress (pause/resume)
-- Instant or end-of-quiz feedback
-
-**Scoring & Feedback:**
-
-- Percentage score
-- Time taken
-- Detailed explanations
-- Identify weak areas
-- Suggest related notes
-
-**Gamification:**
-
-- Achievement badges (Perfect Score, Study Streak, etc.)
-- Leaderboard (optional)
-- Points system
-- Study streaks
-
-### Subscription Access
-
-- Free: ❌ Not available
-- Premium: ✅ Unlimited quizzes
-
----
-
-## Content Studio Feature
-
-### Status: 🎨 Next Feature
-
-### COMING SOON . . . .
+Evolution dari Smart Summary - memberikan catatan komprehensif hampir seperti transkrip penuh dengan struktur yang sangat baik (2000-5000 kata).
 
 ---
 
 ## External Integrations
 
-### Integration Summary
-
-| Service                    | Purpose                              | Key Info                            |
-| -------------------------- | ------------------------------------ | ----------------------------------- |
-| **Supabase**               | Backend (Auth + DB + Edge Functions) | All-in-one BaaS with RLS            |
-| **YouTube Transcript API** | Fetch transcripts & metadata         | FastAPI + Docker, custom deployment |
-| **OpenRouter**             | AI summarization                     | Multiple model support              |
-| **Lynk.id**                | Payment gateway                      | Webhook-based, email matching       |
-| **ImageKit.io**            | Temp file storage                    | Auto-cleanup after 1 hour           |
-| **API2PDF**                | PDF generation                       | HTML to PDF conversion              |
-| **Telegram Bot**           | Send notes & verification            | Webhook for chat_id capture         |
-| **WhatsApp**               | Share notes                          | Pre-filled message link             |
-| **Vercel**                 | Frontend hosting                     | Auto-deploy from Git                |
-
-### Supabase Edge Functions
-
-| Function             | Purpose                      | Trigger            |
-| -------------------- | ---------------------------- | ------------------ |
-| **imagekit-cleanup** | Delete temp files >1h old    | Cron (hourly)      |
-| **lynk-webhook**     | Handle payment notifications | Webhook POST       |
-| **send-telegram**    | Send PDF to Telegram         | User action        |
-| **telegram-webhook** | Verify chat_id               | Bot /start command |
-
-### YouTube Transcript API
-
-**Base URL:** `https://kajian-note-api.derrylab.com`
-
-**Key Endpoints:**
-
-```
-POST /url-to-id                    # Extract video ID
-POST /video-metadata               # Fetch title, channel, duration
-POST /transcript                   # Fetch full transcript (JSON)
-POST /transcript/text              # Plain text transcript
-POST /transcript/summarize-task    # Submit AI task (async)
-GET  /tasks/{task_id}              # Poll task status
-```
-
-### ImageKit Storage
-
-**Lifecycle:**
-
-```
-Upload PDF → Get URL (expires 1h) → Send via Telegram/WhatsApp
-    ↓
-After 1 hour → imagekit-cleanup Edge Function → Delete from ImageKit
-```
-
-**Database Tracking:** `imagekit_temp_uploads` table
+| Service                    | Purpose                              | Key Info                 |
+| -------------------------- | ------------------------------------ | ------------------------ |
+| **Supabase**               | Backend (Auth + DB + Edge Functions) | All-in-one BaaS with RLS |
+| **Supabase Realtime**      | Multiplayer Game Engine              | WebSocket Sync           |
+| **YouTube Transcript API** | Fetch transcripts & metadata         | FastAPI + Docker         |
+| **Dicebear API**           | Avatar Generation                    | Style: Bottts (Robots)   |
+| **OpenRouter**             | AI summarization                     | Multiple model support   |
+| **Lynk.id**                | Payment gateway                      | Webhook-based            |
 
 ---
 
 ## User Journey
 
-### Scenario 1: New User Registration & First Note
+### Scenario: Content Creator Workflow
 
 ```
-1. Visit landing page → Click "Mulai Gratis"
-2. Register: Name, Username (auto-gen), Phone (optional), PIN
-3. Auto-login → Dashboard welcome
-4. Click "Buat Catatan Baru"
-5. Choose "Import dari YouTube"
-6. Paste URL → Fetch transcript
-7. Click "Rangkum dengan AI"
-8. Waiting experience (Story/Quiz)
-9. Review AI summary → Edit if needed
-10. Add tags → Save
-11. Note saved → View in list
-12. Try export → See "Premium only" → Upgrade prompt
+1. Login → Menu "Creation Suite" → Content Studio
+2. Buka "Prompt Generator" → Pilih topik
+3. Copy Prompt → Paste ke Deepseek/Claude
+4. Copy JSON Result → Import ke Content Studio
+5. Edit Visual di Canvas
+6. Export → Upload ke Instagram Dakwah
 ```
 
-### Scenario 2: Premium Upgrade
+### Scenario: Main Quest Multiplayer
 
 ```
-1. User at 8/10 notes → See limit warning
-2. Click "Upgrade" or visit /subscription
-3. Check payment_email set → Not set
-4. Alert: "Set payment email first"
-5. Redirect to Profile → Set email
-6. Return to subscription → Click "Upgrade to Premium"
-7. Redirect to Lynk.id → Complete payment
-8. Lynk.id webhook → Match email → Update subscription
-9. User sees "Premium Active" on dashboard
-10. Create more notes (75 limit)
-11. Export PDF → Success
-12. Send to Telegram → Verify first → Send → Receive
-```
-
-### Scenario 3: Daily Usage Flow
-
-```
-1. Login with Username + PIN
-2. Dashboard → View recent notes
-3. Click note → Read content
-4. Export to PDF → Download
-5. Send to Telegram → Receive immediately
-6. Share to WhatsApp → Select contact → Send
-7. Create new note → YouTube import → AI summary
-8. Edit content → Add tags → Save
-9. Search notes by tag/keyword
-10. Logout
-```
-
-### Scenario 4: Telegram Verification
-
-```
-1. Profile page → See "Telegram not verified"
-2. Click "Verify Now" → Opens Telegram bot
-3. Send /start {user_id} to bot
-4. Bot confirms: "✅ Verified!"
-5. Profile page updates: "Verified at {date}"
-6. Now can send notes to Telegram
+1. Host (Guru/Ortu) buka Menu "Quest"
+2. Create Room → Share Room Code
+3. Peserta Join Room menggunakan HP masing-masing
+4. Peserta otomatis mendapatkan Avatar Robot (Bottts)
+5. Host Start Game → Soal muncul serentak
+6. Skor dihitung Real-time → Tim Pemenang dirayakan
 ```
 
 ---
 
 ## Development Roadmap
 
-### Phase 1: MVP ✅ (Completed)
+### Phase 2: Creation & Gamification ✅ (Completed)
 
-**Authentication & Core:**
+- [x] **Content Studio** (Blueprint System)
+- [x] **Prompt Studio** (Template Library)
+- [x] **Quest Multiplayer** (Real-time Latency < 100ms)
+- [x] **Team Mode** in Quest
+- [x] **Dicebear Avatar Integration**
 
-- [x] Username + PIN auth system
-- [x] Auto-generated email
-- [x] Role management (member default)
+### Phase 3: Engagement & Polish 🔜 (Q2 2026)
 
-**Notes:**
-
-- [x] CRUD operations with RLS
-- [x] YouTube import & transcript
-- [x] AI summarization (async)
-- [x] Rich text editor (TipTap)
-- [x] Tags system (max 5/note)
-
-**Subscription:**
-
-- [x] Free/Premium tiers
-- [x] Lynk.id payment integration
-- [x] Webhook handler
-- [x] Usage limits & tracking
-
-**Export & Share:**
-
-- [x] PDF export via API2PDF
-- [x] Send to Telegram (with verification)
-- [x] Share to WhatsApp
-- [x] Temp file storage with auto-cleanup
-
-**Profile & Settings:**
-
-- [x] Edit profile (name, phone, payment_email)
-- [x] Change PIN
-- [x] Telegram verification
-
-### Phase 2: Advanced Features 🔜 (Q1 2025)
-
-**New Features:**
-
-- [ ] Deep Note (comprehensive notes)
-- [ ] Memory Cards (flashcards + spaced repetition)
-- [ ] Knowledge Quiz (interactive testing)
-- [ ] Content Studio (visual content generator)
-
-**Enhancements:**
-
-- [ ] Settings page implementation (theme, notifications)
-- [ ] Note templates
-- [ ] Auto-save drafts
-- [ ] Version history
-- [ ] Batch YouTube import
-- [ ] Playlist support
-
-### Phase 3: Admin & Community 📋 (Q2 2025)
-
-**Admin Panel:**
-
-- [ ] User management dashboard
-- [ ] Role-based permissions (Admin, Ustadz, Panitia)
-- [ ] Pin/feature notes
-- [ ] Content moderation
-- [ ] Analytics dashboard
-
-**Community Features:**
-
-- [ ] Public notes feed (optional)
-- [ ] Comments on notes
-- [ ] Like & bookmark
-- [ ] Share to community
-- [ ] Kajian schedule management
-
-### Phase 4: Enterprise 🎯 (Q3-Q4 2025)
-
-**Advanced Features:**
-
-- [ ] Multi-language support
-- [ ] API for third-party integrations
-- [ ] White-label solution
-- [ ] Mobile app (React Native)
-- [ ] Offline mode
-- [ ] Advanced analytics
-- [ ] Custom branding for organizations
+- [ ] **Quest Power-ups** (Shield, 2x Score)
+- [ ] **Redemption Question** (Kesempatan menjawab ulang)
+- [ ] **Deep Note** (Comprehensive analysis)
+- [ ] **Mobile App** (PWA Polish / React Native)
 
 ---
 
 ## Environment Variables
 
-### Required Variables
-
 ```env
 # Supabase
-VITE_SUPABASE_URL=https://rewtyutkcixrmporoomn.supabase.co
-VITE_SUPABASE_ANON_KEY=your_anon_key
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_ANON_KEY=...
 
 # YouTube Transcript API
-VITE_YOUTUBE_API_URL=https://kajian-note-api.derrylab.com
-VITE_API_HEADER_KEY=Bearer your_api_key
+VITE_YOUTUBE_API_URL=...
 
 # OpenRouter (AI)
-VITE_OPENROUTER_API_KEY=your_key
-VITE_OPENROUTER_DEFAULT_MODEL=qwen/qwen3-8b
+VITE_OPENROUTER_API_KEY=...
 
 # Lynk.id Payment
-VITE_LYNK_MERCHANT_KEY=your_merchant_key
-VITE_LYNK_PREMIUM_LINK=your_premium_checkout_link
-VITE_WEBHOOK_URL=your_webhook_url
-
-# Telegram Bot
-VITE_TELEGRAM_BOT_TOKEN=your_bot_token
-
-# API2PDF
-VITE_API2PDF_API_KEY=your_api_key
-
-# ImageKit
-VITE_IMAGEKIT_PUBLIC_KEY=your_public_key
-VITE_IMAGEKIT_PRIVATE_KEY=your_private_key
-VITE_IMAGEKIT_URL_ENDPOINT=your_endpoint
-
-# App Config
-VITE_APP_NAME=Alwaah
-VITE_APP_URL=https://kajian-note.vercel.app
-VITE_ENV=production
+VITE_LYNK_MERCHANT_KEY=...
 ```
-
----

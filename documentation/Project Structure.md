@@ -4,64 +4,37 @@
 
 ## 📖 Project Overview
 
-**Alwaah** - Aplikasi catatan kajian dengan sistem auth yang user-friendly untuk orang tua yang tidak familiar dengan email, dilengkapi sistem subscription untuk monetisasi, dan **fitur import otomatis dari YouTube**.
+**Alwaah** - Aplikasi Muslim Productivity Suite.
 
-### MVP Features
+### Core Modules
 
-1. **Authentication System** - Username + PIN (6 digit)
-2. **User Role Management** - Admin, Panitia, Ustadz, Member
-3. **Subscription System** - Free, Premium, Advance tiers dengan Lynk.id payment gateway (webhook-based)
-4. **Notes Management** - Create, read, update, delete notes (dengan subscription limits)
-5. **YouTube Import** - Import transcript dari video YouTube (dengan/tanpa AI summary)
-6. **Settings** - User preferences & app configuration
-
----
-
-## � Tech Stack
-
-### Frontend:
-
-- React 19.1.1 + Vite 7.1.7 + TypeScript 5.9.3
-- Tailwind CSS 4.1.16 + shadcn/ui
-- Zustand 5.0.8 (State)
-- React Hook Form 7.66.0 + Zod 4.1.12
-- Axios 1.13.1 (HTTP Client)
-
-### Backend:
-
-- Supabase 2.78.0 (Auth + PostgreSQL + Edge Functions)
-- Lynk.id (Payment webhook-based, no API)
-- ImageKit.io (file storage)
-- **YouTube Transcript API** 🆕 (FastAPI + Docker)
-
-### External APIs:
-
-- **YouTube Transcript API** - Fetch video transcripts
-- **OpenRouter API** - AI summarization (Optional)
+1. **Smart Note** (YouTube Import + AI Summary)
+2. **Creation Suite** (Content Studio + Prompt Studio)
+3. **Quest Multiplayer** (Realtime Quiz)
+4. **Auth & Subscription system**
 
 ---
 
 ## 📁 Project Structure
 
 ```
-kajian_note/
+kajian_note_9/
 ├── 📁 documentation/
-│   ├── 📄 project_summary_1.md
-│   └── 📄 project_summary_2.md
+│   ├── 📄 Documentation.md
+│   ├── 📄 Project Structure.md
+│   └── 📄 Supabase Setup & Config.md
 │
 ├── 📁 public/
+│   ├── 📄 logo.png
+│   ├── 📄 logo.svg
+│   └── ...
 │
-├── 📁 src/
+├── � src/
 │   │
 │   ├── 📁 assets/
-│   │   │
 │   │   ├── 📁 icons/
-│   │   │   └── 📄 react.svg
 │   │   ├── 📁 images/
 │   │   └── 📁 lottie/
-│   │       ├── 📄 cats.json
-│   │       ├── 📄 construction_1.json
-│   │       └── 📄 construction_2.json
 │   │
 │   ├── 📁 components/
 │   │   │
@@ -69,7 +42,7 @@ kajian_note/
 │   │   │   ├── 📄 CatLoading.tsx
 │   │   │   ├── 📄 ConfirmDialog.tsx
 │   │   │   ├── 📄 Loading.tsx
-│   │   │   └── 📄 PageHeader.tsx
+│   │   │   ├── 📄 PageHeader.tsx
 │   │   │   └── 📄 ScrollToTopButton.tsx
 │   │   │
 │   │   ├── 📁 features/
@@ -80,28 +53,59 @@ kajian_note/
 │   │   │   │   ├── 📄 TypeformRegisterForm.tsx
 │   │   │   │   └── 📄 TypeformStep.tsx
 │   │   │   │
+│   │   │   ├── 📁 content-studio/
+│   │   │   │   ├── 📁 components/
+│   │   │   │   │   ├── 📁 toolbar/              (Editing Controls)
+│   │   │   │   │   │   ├── 📄 CornerControl.tsx
+│   │   │   │   │   │   ├── 📄 FillColorControl.tsx
+│   │   │   │   │   │   ├── 📄 FontFamilySelect.tsx
+│   │   │   │   │   │   ├── 📄 FontSizeCombobox.tsx
+│   │   │   │   │   │   ├── 📄 LayerOrderPopover.tsx
+│   │   │   │   │   │   ├── 📄 LineControls.tsx
+│   │   │   │   │   │   ├── 📄 PositionControl.tsx
+│   │   │   │   │   │   └── 📄 ...
+│   │   │   │   │   ├── 📄 BlueprintImportDialog.tsx
+│   │   │   │   │   ├── 📄 CaptionDisplay.tsx
+│   │   │   │   │   ├── 📄 ContentPromptGeneratorDialog.tsx
+│   │   │   │   │   ├── 📄 DragDropOverlay.tsx
+│   │   │   │   │   ├── 📄 ElementInspector.tsx
+│   │   │   │   │   ├── 📄 ElementToolbar.tsx
+│   │   │   │   │   ├── 📄 ExportButton.tsx
+│   │   │   │   │   ├── 📄 FloatingSelectionMenu.tsx
+│   │   │   │   │   ├── 📄 ImageCropper.tsx
+│   │   │   │   │   ├── 📄 LoadingOverlay.tsx
+│   │   │   │   │   ├── 📄 Sidebar.tsx
+│   │   │   │   │   ├── 📄 SlideNavigator.tsx
+│   │   │   │   │   ├── 📄 SupportingBoxesToolbar.tsx
+│   │   │   │   │   ├── 📄 TemplateBrowser.tsx
+│   │   │   │   │   └── 📄 TopToolbar.tsx
+│   │   │   │   ├── 📁 hooks/
+│   │   │   │   │   ├── 📄 useCanvas.ts
+│   │   │   │   │   └── � useKeyboardShortcuts.ts
+│   │   │   │   ├── 📄 CanvasEditor.tsx
+│   │   │   │   ├── 📄 Editor.tsx
+│   │   │   │   └── 📄 index.ts
+│   │   │   │
 │   │   │   ├── 📁 dashboard/
 │   │   │   │   └── 📄 MenuArea.tsx
 │   │   │   │
 │   │   │   ├── 📁 notes/
-│   │   │   │   │
-│   │   │   │   ├── 📁 WaitingExperience
-│   │   │   │   │   ├── 📄 ContentSelector.tsx
+│   │   │   │   ├── 📁 WaitingExperience/        (AI Waiting Screen)
+│   │   │   │   │   ├── � ContentSelector.tsx
 │   │   │   │   │   ├── 📄 QuizMode.tsx
-│   │   │   │   │   ├── 📄 StoryMode.tsx
+│   │   │   │   │   ├── � StoryMode.tsx
 │   │   │   │   │   └── 📄 WaitingExperienceOverlay.tsx
-│   │   │   │   │
 │   │   │   │   ├── 📄 BackgroundTaskBanner.tsx
-│   │   │   │   ├── 📄 ExportActionsDropdown.tsx
+│   │   │   │   ├── � ExportActionsDropdown.tsx
 │   │   │   │   ├── 📄 NoteCard.tsx
-│   │   │   │   ├── 📄 NoteForm.tsx
+│   │   │   │   ├── � NoteForm.tsx
 │   │   │   │   ├── 📄 NoteList.tsx
-│   │   │   │   ├── 📄 NoteSearch.tsx
+│   │   │   │   ├── � NoteSearch.tsx
 │   │   │   │   ├── 📄 NoteViewer.tsx
-│   │   │   │   ├── 📄 SendToTelegramButton.tsx
-│   │   │   │   ├── 📄 SendToWhatsAppButton.tsx
+│   │   │   │   ├── � SendToTelegramButton.tsx
+│   │   │   │   ├── � SendToWhatsAppButton.tsx
 │   │   │   │   ├── 📄 SubscriptionLimitBanner.tsx
-│   │   │   │   ├── 📄 TiptapEditor.tsx
+│   │   │   │   ├── � TiptapEditor.tsx
 │   │   │   │   ├── 📄 YouTubeImportButton.tsx
 │   │   │   │   └── 📄 YouTubeImportModal.tsx
 │   │   │   │
@@ -109,170 +113,138 @@ kajian_note/
 │   │   │   │   ├── 📄 ChangePINForm.tsx
 │   │   │   │   └── 📄 EditProfileForm.tsx
 │   │   │   │
-│   │   │   ├── 📁 settings/
-│   │   │   │   ├── 📄 AppSettings.tsx
-│   │   │   │   └── 📄 UserSettings.tsx
+│   │   │   ├── 📁 prompt-studio/
+│   │   │   │   ├── 📁 components/
+│   │   │   │   │   ├── 📁 common/
+│   │   │   │   │   │   ├── 📄 GuideComponents.tsx
+│   │   │   │   │   │   ├── 📄 PromptDialogLayout.tsx
+│   │   │   │   │   │   └── 📄 PromptFormFields.tsx
+│   │   │   │   │   ├── 📄 ImagePromptConfigForm.tsx
+│   │   │   │   │   ├── 📄 ImagePromptGuide.tsx
+│   │   │   │   │   ├── 📄 PromptPreview.tsx
+│   │   │   │   │   ├── 📄 StorybookConfigForm.tsx
+│   │   │   │   │   ├── 📄 StorybookGuide.tsx
+│   │   │   │   │   ├── 📄 TaarufConfigForm.tsx
+│   │   │   │   │   └── 📄 TaarufGuide.tsx
+│   │   │   │   ├── 📁 dialogs/
+│   │   │   │   │   ├── 📄 ImagePromptDialog.tsx
+│   │   │   │   │   ├── 📄 PresetSelectionDialog.tsx
+│   │   │   │   │   ├── 📄 StorybookPromptDialog.tsx
+│   │   │   │   │   └── � TaarufPromptDialog.tsx
+│   │   │   │   └── 📄 PromptStudioPage.tsx
 │   │   │   │
-│   │   │   └── 📁 subscription/
-│   │   │       ├── 📄 PaymentButton.tsx
-│   │   │       ├── 📄 PricingTable.tsx
-│   │   │       ├── 📄 SubscriptionCard.tsx
-│   │   │       └── 📄 UpgradeModal.tsx
+│   │   │   ├── 📁 quest/
+│   │   │   │   ├── 📁 multiplayer/
+│   │   │   │   │   ├── � CreateRoomForm.tsx
+│   │   │   │   │   ├── 📄 JoinRoomForm.tsx
+│   │   │   │   │   ├── 📄 LobbyRoom.tsx
+│   │   │   │   │   ├── 📄 MultiplayerGame.tsx
+│   │   │   │   │   ├── 📄 MultiplayerResults.tsx
+│   │   │   │   │   └── 📄 QuestMultiplayerView.tsx
+│   │   │   │   ├── � QuestionLimitDialog.tsx
+│   │   │   │   ├── 📄 QuizSession.tsx
+│   │   │   │   └── 📄 QuestPage.tsx
+│   │   │   │
+│   │   │   ├── 📁 settings/
+│   │   │   ├── 📁 subscription/
+│   │   │   │   ├── 📄 PaymentButton.tsx
+│   │   │   │   ├── 📄 PricingTable.tsx
+│   │   │   │   ├── � SubscriptionCard.tsx
+│   │   │   │   └── 📄 UpgradeModal.tsx
+│   │   │   └── 📁 theme/
 │   │   │
 │   │   ├── 📁 home/
-│   │   │   │
-│   │   |   ├── 📄 CTASection.tsx
-│   │   |   ├── 📄 FeaturesSection.tsx
-│   │   |   ├── 📄 Footer.tsx
-│   │   |   ├── 📄 HeroSection.tsx
-│   │   |   ├── 📄 HowItWorksSection.tsx
-│   │   |   ├── 📄 index.tsx
-│   │   |   ├── 📄 PricingSection.tsx
-│   │   |   └── 📄 StatsSection.tsx
+│   │   │   ├── 📄 CTASection.tsx
+│   │   │   ├── � FeaturesSection.tsx
+│   │   │   ├── 📄 Footer.tsx
+│   │   │   ├── 📄 HeroSection.tsx
+│   │   │   ├── 📄 HowItWorksSection.tsx
+│   │   │   ├── 📄 PricingSection.tsx
+│   │   │   ├── 📄 StatsSection.tsx
+│   │   │   └── 📄 index.tsx
+│   │   │
+│   │   ├── 📁 layout/
+│   │   │   ├── 📄 AppSidebar.tsx
+│   │   │   └── 📄 TopHeader.tsx
 │   │   │
 │   │   └── 📁 ui/
-│   │       ├── 📄 alert.tsx
-│   │       ├── 📄 badge.tsx
-│   │       ├── 📄 button.tsx
-│   │       ├── 📄 card.tsx
-│   │       ├── 📄 dialog.tsx
-│   │       ├── 📄 form.tsx
-│   │       ├── 📄 input.tsx
-│   │       ├── 📄 label.tsx
-│   │       └── 📄 table.tsx
+│   │       ├── 📄 (shadcn components...)
+│   │       └── ...
 │   │
 │   ├── 📁 config/
-│   │   ├── 📄 env.ts
+│   │   ├── � env.ts
 │   │   ├── 📄 payment.ts
 │   │   ├── 📄 permissions.ts
 │   │   ├── 📄 theme.ts
 │   │   └── 📄 youtube.ts
 │   │
-│   ├── 📁 data/
-│   │   │
-│   │   └── 📁 waiting-experience
-│   │       │
-│   │       ├── 📁 quizzes
-│   │       │    ├── 📄 quiz_1.json
-│   │       │    ├── 📄 quiz_2.json
-│   │       │    └── 📄 quiz_3.json
-│   │       │
-│   │       ├── 📁 stories
-│   │       │    ├── 📄 story_1.json
-│   │       │    ├── 📄 story_2.json
-│   │       │    └── 📄 story_3.json
-│   │       │
-│   │       └── 📄 index.ts
+│   ├── �📁 data/
+│   │   └── 📁 waiting-experience/
 │   │
 │   ├── 📁 lib/
 │   │   ├── 📄 axios.ts
 │   │   ├── 📄 constants.ts
 │   │   ├── 📄 imagekit.ts
-│   │   ├── 📄 imagekitDelete.ts
 │   │   ├── 📄 supabase.ts
-│   │   └── 📄 utils.ts
+│   │   └── ...
 │   │
 │   ├── 📁 pages/
-│   │   │
+│   │   ├── 📁 about/
+│   │   │   └── 📄 About.tsx
 │   │   ├── 📁 admin/
 │   │   │   └── 📄 UserManagement.tsx
-│   │   │
 │   │   ├── 📁 authentication/
-│   │   │   ├── 📄 Login.tsx
+│   │   │   ├── � Login.tsx
 │   │   │   └── 📄 Register.tsx
-│   │   │
+│   │   ├── �📁 content-studio/
+│   │   │   └── 📄 index.tsx
 │   │   ├── 📁 dashboard/
 │   │   │   └── 📄 Dashboard.tsx
-│   │   │
 │   │   ├── 📁 landing/
-│   │   │   └── 📄 Landing.tsx
-│   │   │
+│   │   │   └── � Landing.tsx
 │   │   ├── 📁 notes/
-│   │   │   ├── 📄 CreateNote.tsx
-│   │   │   ├── 📄 EditNote.tsx
-│   │   │   ├── 📄 index.tsx
-│   │   │   └── 📄 ViewNote.tsx
-│   │   │
 │   │   ├── 📁 profile/
 │   │   │   └── 📄 Profile.tsx
-│   │   │
-│   │   ├── 📁 setting/
-│   │   │   └── 📄 Settings.tsx
-│   │   │
-│   │   ├── 📁 subscription/
-│   │   │   └── 📄 Subscription.tsx
-│   │   │
-│   │   ├── 📄 APITest.tsx
-│   │   └── 📄 NotFound.tsx
+│   │   ├── 📁 prompt-studio/
+│   │   │   └── 📄 index.tsx
+│   │   ├── 📁 quest/
+│   │   │   └── 📄 index.tsx
+│   │   └── ...
 │   │
 │   ├── 📁 routes/
-│   │   ├── 📄 index.tsx
-│   │   ├── 📄 ProtectedRoute.tsx
-│   │   ├── 📄 RoleBasedRoute.tsx
-│   │
 │   ├── 📁 schemas/
-│   │   ├── 📄 auth.schema.ts
-│   │   ├── 📄 notes.schema.ts
-│   │   ├── 📄 subscription.schema.ts
-│   │   └── 📄 user.schema.ts
 │   │
 │   ├── 📁 services/
-│   │   └── 📁 storage/
-│   │       └── 📄 imagekitStorage.ts
 │   │   ├── 📁 supabase/
+│   │   │   ├── 📄 QuestMultiplayerService.ts
 │   │   │   ├── 📄 auth.service.ts
 │   │   │   ├── 📄 database.service.ts
 │   │   │   ├── 📄 notes.service.ts
-│   │   │   ├── 📄 subscription.service.ts
+│   │   │   ├── � questService.ts
+│   │   │   ├── � subscription.service.ts
 │   │   │   └── 📄 user.service.ts
 │   │   └── 📁 youtube/
-│   │       └── 📄 transcript.service.ts
 │   │
 │   ├── 📁 store/
 │   │   ├── 📄 authStore.ts
+│   │   ├── 📄 contentStudioStore.ts    (NEW)
 │   │   ├── 📄 notesStore.ts
+│   │   ├── 📄 questStore.ts            (NEW)
 │   │   ├── 📄 subscriptionStore.ts
+│   │   ├── 📄 themeStore.ts
 │   │   └── 📄 userStore.ts
 │   │
 │   ├── 📁 styles/
-│   │   └── 📄 globals.css
-│   │   └── 📄 globals.css
-│   │   └── 📄 print.css
-│   │
 │   ├── 📁 types/
-│   │   ├── 📄 auth.types.ts
-│   │   ├── 📄 index.ts
-│   │   ├── 📄 notes.types.ts
-│   │   ├── 📄 payment.types.ts
-│   │   ├── 📄 subscription.types.ts
-│   │   ├── 📄 user.types.ts
-│   │   └── 📄 youtube.types.ts
+│   │   ├── 📄 contentStudio.types.ts
+│   │   ├── 📄 multiplayer.types.ts
+│   │   └── ...
 │   │
 │   ├── 📁 utils/
-│   │   ├── 📄 backgroundTaskPersistence.ts
-│   │   ├── 📄 exportUtils.ts
-│   │   ├── 📄 formPersistence.ts
-│   │   ├── 📄 paymentMatching.ts
-│   │   ├── 📄 pdfGenerator.ts
-│   │   ├── 📄 subscriptionLimits.ts
-│   │   ├── 📄 textToHtml.ts
-│   │   ├── 📄 whatsappHelper.ts
-│   │   └── 📄 youtubeHelpers.ts
-│   │
 │   ├── 📄 App.tsx
 │   └── 📄 main.tsx
 │
 ├── 📄 .env
-├── 📄 .env.example
-├── 📄 .gitignore
-├── 📄 components.json
-├── 📄 eslint.config.js
-├── 📄 index.html
-├── 📄 package-lock.json
 ├── 📄 package.json
-├── 📄 README.md
-├── 📄 tsconfig.app.json
-├── 📄 tsconfig.json
-├── 📄 tsconfig.node.json
 └── 📄 vite.config.ts
 ```
